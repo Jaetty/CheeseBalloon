@@ -1,0 +1,14 @@
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: cheeseballoon
+
+
+
+logging:
+  level:
+    org:
+      hibernate: info
