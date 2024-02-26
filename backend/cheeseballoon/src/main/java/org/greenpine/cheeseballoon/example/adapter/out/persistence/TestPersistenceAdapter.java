@@ -2,13 +2,14 @@ package org.greenpine.cheeseballoon.example.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.example.application.port.in.dto.TestReqDto;
+import org.greenpine.cheeseballoon.example.application.port.out.AnotherPort;
 import org.greenpine.cheeseballoon.example.application.port.out.TestPort;
 import org.greenpine.cheeseballoon.example.application.port.out.dto.TestResDto;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class TestPersistenceAdapter implements TestPort { //포트 인터페이스를 여기서 구현
+public class TestPersistenceAdapter implements TestPort, AnotherPort { //포트 인터페이스를 여기서 구현
 
     //private final TestRepository testRepository; //db가 없어서 주석처리
 
