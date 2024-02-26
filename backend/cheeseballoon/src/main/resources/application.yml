@@ -5,7 +5,11 @@ server:
 spring:
   application:
     name: cheeseballoon
-
+#  datasource:
+#    url: jdbc:mariadb://localhost:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+#    username: root
+#    password: root
+#    driver-class-name: org.mariadb.jdbc.Driver
 
 
 logging:
