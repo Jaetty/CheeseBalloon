@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class TestController {
 
     private final TestUsecase testUsecase; //컨트롤러가 서비스를 사용하기 위한 포트
-    private final AnotherUsecase test2Usecase;
+    private final AnotherUsecase anotherUsecase; //또다른 포트
 
     @PostMapping("")
     public ResponseEntity<CustomBody> create(@RequestBody TestReqDto testReqDto){
