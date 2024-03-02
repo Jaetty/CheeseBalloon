@@ -11,20 +11,33 @@ spring:
 #    password: root
 #    driver-class-name: org.mariadb.jdbc.Driver
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: cheeseballoon.site:9092
+    #producer.bootstrap-servers가 지정되지 않으면 kafka.bootstrap-servers가 사용된다.
     producer:
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: cheeseballoon.site:9092
+      #producer key serializer 설정
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      #producer value serializer 설정
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      #kafka broker에서 producer를 식별하기 위한 식별값
+      client-id: kafka-test-producer
+    #consumer.bootstrap-servers가 지정되지 않으면 kafka.bootstrap-servers가 사용된다.
     consumer:
-      group-id: kafka-demo
-      enable-auto-commit: true
-      auto-offset-reset: latest
+      bootstrap-servers: cheeseballoon.site:9092
+      #consumer key deserializer 설정
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      max-poll-records: 1000
-    template:
-      default-topic: kafka-demo
-
+      #consumer value deserializer 설정
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      #consumer group id 설정
+      group-id: test-group-id
+      auto-offset-reset: earliest
+      #kafka broker에서 consumer를 식별하기 위한 식별값
+      client-id: kafka-test-consumer
+      properties:
+        spring.json.trusted.packages: org.greenpine.cheeseballoon.kafkaExample.Domain
+    listener:
+      concurrency: 3
+      ack-mode: record
 
 
 logging:
