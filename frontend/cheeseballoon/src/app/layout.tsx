@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "src/styles/globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import Nav from "src/components/nav/index";
+import Menu from "src/components/nav/item/Menu";
 
 export const metadata: Metadata = {
   title: "CheeseBalloon",
@@ -16,8 +15,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className as string | undefined}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <Nav />
+        <div className="flex-container">
+          <Menu />
+          <div className="children">{children}</div>
+        </div>
+      </body>
     </html>
   );
 }
