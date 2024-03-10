@@ -16,6 +16,6 @@ public class FindLiveResDto {
     String profileUrl;
     String category;
     int viewerCnt;
-    String streamerUrl;
+    String streamUrl;
     String channelUrl;
 }

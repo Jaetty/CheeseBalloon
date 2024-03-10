@@ -25,7 +25,7 @@ public class LiveTests {
         categories.add("종겜");
         categories.add("배틀그라운드");
         FindLiveReqDto req = new FindLiveReqDto(categories,3,0);
-        ResponseEntity<CustomBody> res = liveController.findLive(
+        ResponseEntity<CustomBody> res = liveController.findLives(
             new FindLiveReqDto(categories,3,0)
             );
         List<FindLiveResDto> findLiveResDtos = (List<FindLiveResDto>)res.getBody().getData();
