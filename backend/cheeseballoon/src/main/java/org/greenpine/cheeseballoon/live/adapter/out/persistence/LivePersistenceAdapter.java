@@ -15,12 +15,12 @@ public class LivePersistenceAdapter implements LivePort {
 
     //private final LiveRepository liveRepository;
     @Override
-    public List<FindLiveResDto> readLive(FindLiveReqDto findLiveReqDto) {
+    public List<FindLiveResDto> findLives(FindLiveReqDto findLiveReqDto) {
         return null;
     }
 
     @Override
-    public List<FindLiveResDto> readLiveAll(FindLiveReqDto findLiveReqDto) {
+    public List<FindLiveResDto> findLivesAll(FindLiveReqDto findLiveReqDto) {
         return null;
     }
 }

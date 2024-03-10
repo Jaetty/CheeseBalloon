@@ -29,9 +29,9 @@ public class LiveController {
     final private LiveUsecase liveUsecase;
 
     @GetMapping("")
-    public ResponseEntity<CustomBody> findLive(FindLiveReqDto findLiveReqDto){
+    public ResponseEntity<CustomBody> findLives(FindLiveReqDto findLiveReqDto){
         System.out.println(findLiveReqDto);
-        List<FindLiveResDto> ret = liveUsecase.read(findLiveReqDto);
+        List<FindLiveResDto> ret = liveUsecase.findLives(findLiveReqDto);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
     }
@@ -42,7 +42,7 @@ public class LiveController {
         String[] chosungs = {"ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ" , "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"};
         String[] jungsungs = {"ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"};
         String[] jongsungs = {"", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"};
-        //몬스터 헌터: 월드
+
         for(int i=0; i<word.length(); i++){
             char cha = word.charAt(i);
             if(cha<0xAC00) {

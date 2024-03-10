@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface LiveUsecase {
 
-    List<FindLiveResDto> readLive(FindLiveReqDto findLiveReqDto);
+    List<FindLiveResDto> findLives(FindLiveReqDto findLiveReqDto);
 }
