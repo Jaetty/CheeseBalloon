@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindLiveResDto {
+public class FindLivesResDto {
     Long streamId;
     Long liveId;
     String name;
@@ -16,6 +16,6 @@ public class FindLiveResDto {
     String profileUrl;
     String category;
     int viewerCnt;
-    String streamerUrl;
+    String streamUrl;
     String channelUrl;
 }

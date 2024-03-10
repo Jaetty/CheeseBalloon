@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindLiveReqDto {
+public class FindLivesReqDto {
     List<String> categories;
     int limit;
     int offset;
