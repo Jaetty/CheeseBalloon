@@ -39,13 +39,13 @@ public class LiveController {
 
         FindCategoriesResDto ret = categoryUsecase.findCategories(query);
 
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, null));
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
     }
 
     @GetMapping("/category/hot")
     public ResponseEntity<CustomBody> findHotCategories(@RequestParam int limit){
         FindHotCategoriesResDto ret = categoryUsecase.findHotCategories(limit);
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, null));
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
     }
 
 
