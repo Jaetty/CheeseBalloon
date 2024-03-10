@@ -3,21 +3,18 @@ package org.greenpine.cheeseballoon.live.adapter.in.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.greenpine.cheeseballoon.example.application.port.out.message.TestResMsg;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
+import org.greenpine.cheeseballoon.live.application.port.in.CategoryUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.LiveUsecase;
-import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLiveReqDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLiveResDto;
+import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.message.LiveResMsg;
-import org.greenpine.cheeseballoon.live.application.service.LiveService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -27,13 +24,28 @@ import java.util.List;
 public class LiveController {
 
     final private LiveUsecase liveUsecase;
+    final private CategoryUsecase categoryUsecase;
 
     @GetMapping("")
-    public ResponseEntity<CustomBody> findLives(FindLiveReqDto findLiveReqDto){
+    public ResponseEntity<CustomBody> findLives(FindLivesReqDto findLiveReqDto){
         System.out.println(findLiveReqDto);
-        List<FindLiveResDto> ret = liveUsecase.findLives(findLiveReqDto);
+        List<FindLivesResDto> ret = liveUsecase.findLives(findLiveReqDto);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<CustomBody> findCategories(@RequestParam String query){
+
+        FindCategoriesResDto ret = categoryUsecase.findCategories(query);
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, null));
+    }
+
+    @GetMapping("/category/hot")
+    public ResponseEntity<CustomBody> findHotCategories(@RequestParam int limit){
+        FindHotCategoriesResDto ret = categoryUsecase.findHotCategories(limit);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, null));
     }
 
 
