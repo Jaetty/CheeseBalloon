@@ -3,8 +3,9 @@
 import style from "src/containers/ranking/rankingIndex.module.scss";
 import DaySelect from "src/components/ranking/dayselect";
 import PlatformSelect from "src/components/ranking/platformselect";
+import Subrank from "src/components/ranking/subrank";
+import SubrankAll from "src/components/ranking/subrankAll";
 import { useState, useEffect } from "react";
-import RankingIndex from "src/components/ranking/rankingIndex";
 
 export default function Ranking() {
   const [date, setDate] = useState(1);
@@ -23,26 +24,13 @@ export default function Ranking() {
   // }, [date, platform]);
   return (
     <div className={style.ranking}>
-      <p className={style.title}>랭킹</p>
-      <div className={style.wrapper}>
-        <div className={style.subtitle}>
-          정확한 데이터 수치는 더보기를 눌러 확인해주세요.
-        </div>
-        <div className={style.select_menu}>
-          <DaySelect setDate={setDate} />
-          <PlatformSelect setPlatform={setPlatform} />
-        </div>
+      <p className={style.title}>팔로워 수</p>
+      <div className={style.detail_menu}>
+        <DaySelect setDate={setDate} />
+        <PlatformSelect setPlatform={setPlatform} />
       </div>
-      <div className={style.container}>
-        <RankingIndex />
-        <RankingIndex />
-        <RankingIndex />
-      </div>
-      <div className={style.container}>
-        <RankingIndex />
-        <RankingIndex />
-        <RankingIndex />
-      </div>
+      <Subrank />
+      <SubrankAll />
     </div>
   );
 }

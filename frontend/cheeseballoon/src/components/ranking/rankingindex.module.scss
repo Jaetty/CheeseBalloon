@@ -1,0 +1,34 @@
+.rankbox {
+  box-sizing: border-box;
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+}
+
+.item {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
+}
+
+.maintitle {
+  margin: 1.2rem auto 0.9rem auto;
+}
+
+.divisionline {
+  border-top: 1px solid #444444;
+  margin: 0;
+}
+
+.morecontent {
+  margin: 0 auto 0.5rem auto;
+}
+
+.link {
+  color: #f8db46;
+  text-decoration: none;
+}

@@ -1,4 +1,48 @@
 .ranking {
-  color: blue;
+  color: white;
   font-size: 20px;
+  width: 80.625rem;
+  margin: 0 auto;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 20px;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 24px;
+  color: rgba(245, 245, 245, 0.8);
+}
+
+.select_menu {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+
+.detail_menu {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+  justify-content: right;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  gap: 135px;
+  margin-bottom: 1.2rem;
 }
