@@ -5,7 +5,6 @@ from sqlalchemy.orm import relationship
 
 from config.database import Base
 
-
 class Live(Base):
     __tablename__ = 'lives'
 
