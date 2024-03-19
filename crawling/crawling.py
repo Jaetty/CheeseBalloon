@@ -8,8 +8,15 @@ from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from tabulate import tabulate
+
+from sqlalchemy.orm import Session
+from services.streamers import StreamerService
+from schemas.streamers import StreamerCreate
+
 import time
 import re
+
+
 
 
 class Crawling:
@@ -151,7 +158,7 @@ class Crawling:
         except Exception as e:
             print(e)
 
-    def afreeca(self):
+    def afreeca(self, db: Session):
         # Chrome 옵션 설정
         # Chrome 옵션 설정
         chrome_options = Options()
@@ -198,7 +205,6 @@ class Crawling:
             streamer_items = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
             index = 0
             for item in streamer_items:
-                print(str(index) + " 시작이야")
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
                 viewer_count = item.find_element(By.XPATH, "//div[2]/div[1]/span/em")
 
@@ -223,13 +229,15 @@ class Crawling:
 
                 # 새 탭으로 스위치
                 driver.switch_to.window(driver.window_handles[1])
+                # 페이지 로드를 기다리기 위한 대기 시간 설정
+                driver.implicitly_wait(100)
 
                 try:
                     live_btn = WebDriverWait(driver, 5).until(
                         EC.visibility_of_element_located((By.XPATH, "//*[@id='stop_screen']/dl/dd[2]/a"))
                     )
                     # 버튼이 화면에 나타나면 클릭
-                    print("방송 라이브 버튼을 클릭합니다.")
+                    # print("방송 라이브 버튼을 클릭합니다.")
                     live_btn.click()
                 except TimeoutException:
                     # 버튼이 지정된 시간 내에 나타나지 않으면 실행을 계속
@@ -242,14 +250,21 @@ class Crawling:
                             'innerHTML').strip() != ""
                     )
                     # 버튼이 화면에 나타나면 클릭
-                    print("모든 정보가 나타났습니다.")
+                    # print("모든 정보가 나타났습니다.")
 
                 except TimeoutException:
                     # 버튼이 지정된 시간 내에 나타나지 않으면 실행을 계속
-                    print("정보가 뜨지 않습니다. 다음으로 넘어갑니다.")
+                    # print("정보가 뜨지 않습니다. 다음으로 넘어갑니다.")
                     driver.close()  # 새 탭 닫기
                     driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
                     continue
+
+                streamer_url = driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[2]/ul/li[5]/span/a")
+                streamer_id_pattern = re.compile(r'bj.afreecatv.com/([^/]+)')
+
+                # 정규 표현식을 사용하여 스트리머 아이디 찾기
+                streamer_id_match = streamer_id_pattern.search(streamer_url.text)
+                streamer_id = streamer_id_match.group(1) if streamer_id_match else None
 
                 data = []
                 index += 1
@@ -288,6 +303,20 @@ class Crawling:
                 category = detail_view[1].find_element(By.TAG_NAME, "span").text.strip()
                 # print(category)
                 data.append(category)
+
+                if streamer_id:
+                    if not StreamerService().get_streamer(db=db, origin_id=streamer_id):
+                        print("데이터 넣기")
+                        streamer = StreamerCreate(
+                            origin_id=streamer_id,
+                            name=streamer_name.text.strip(),
+                            profile_url=driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[1]/a/img")
+                            .get_attribute('src'),
+                            channel_url=streamer_url.text.strip(),
+                            follower_cnt=int(bookmark.text.replace(",", "")),
+                            platform="A"
+                        )
+                        StreamerService().create(db=db, streamer=streamer)
 
                 driver.close()  # 새 탭 닫기
                 driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
