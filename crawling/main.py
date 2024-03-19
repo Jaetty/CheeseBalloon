@@ -37,4 +37,9 @@ async def create_streamer_log(streamer_log: StreamerLogCreate, db: Session = Dep
 @app.get("/afreeca")
 async def start_afreeca_crawling(db: Session = Depends(get_db)):
     Crawling().afreeca(db=db)
-    return {"result":"good"}
+    return {"afreeca":"good"}
+
+@app.get("/chzzk")
+async def start_chzzk_crawling(db: Session = Depends(get_db)):
+    Crawling().chzzk(db=db)
+    return {"chzzk":"good"}
