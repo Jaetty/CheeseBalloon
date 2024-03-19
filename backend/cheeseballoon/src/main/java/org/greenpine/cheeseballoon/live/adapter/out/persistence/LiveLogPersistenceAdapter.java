@@ -10,14 +10,17 @@ import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class LivePersistenceAdapter implements LivePort, CategoryPort {
+public class LiveLogPersistenceAdapter implements LivePort, CategoryPort {
 
-    //private final LiveRepository liveRepository;
+    private final LiveLogRepository liveLogRepository;
     @Override
     public List<FindLivesResDto> findLives(FindLivesReqDto findLiveReqDto) {
+        Optional<LiveLogEntity> entity = liveLogRepository.findById(1L);
+        System.out.println(entity);
         return null;
     }
 
