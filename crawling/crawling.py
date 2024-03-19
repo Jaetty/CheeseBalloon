@@ -11,7 +11,10 @@ from tabulate import tabulate
 
 from sqlalchemy.orm import Session
 from services.streamers import StreamerService
+from services.streamer_logs import StreamerLogService
+from services.categories import CategoryService
 from schemas.streamers import StreamerCreate
+from schemas.categories import CategoryCreate
 
 import time
 import re
@@ -148,6 +151,15 @@ class Crawling:
                 try:
                     # 'video_card_category__xQ15T' 클래스를 가진 요소의 텍스트 추출 - 태그
                     live_tag = item.find_element(By.XPATH, ".//div/div/div[2]/div[2]/a/span")
+
+                    if live_tag:
+                        if not CategoryService().get_category(db=db, category=live_tag.text):
+                            # print("데이터 넣기")
+                            categories = CategoryCreate(
+                                category=live_tag.text
+                            )
+                            CategoryService().create(db=db, category=categories)
+
                     data.append(live_tag.text.strip())
                 except NoSuchElementException:
                     data.append("없음")
@@ -167,10 +179,12 @@ class Crawling:
                             name=streamer_name.text.strip(),
                             profile_url= a_tag.find_element(By.TAG_NAME, "img").get_attribute('src'),
                             channel_url= href,
-                            follower_cnt= followers,
                             platform="C"
                         )
                         StreamerService().create(db=db, streamer=streamer)
+
+                    StreamerLogService().create(db=db, follower=followers, origin_id=streamer_id)
+
 
                 streamer_list.append(data)
 
@@ -226,7 +240,7 @@ class Crawling:
             index = 0
             for item in streamer_items:
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
-                viewer_count = item.find_element(By.XPATH, "//div[2]/div[1]/span/em")
+                viewer_count = item.find_element(By.XPATH, ".//div[2]/div[1]/span/em")
 
                 if viewer_count:
                     count = re.sub(r'\D', '', viewer_count.text.strip())
@@ -319,24 +333,38 @@ class Crawling:
                 view = driver.find_element(By.CLASS_NAME, "detail_view")
 
                 detail_view = view.find_elements(By.TAG_NAME, "li")
+                try:
 
-                category = detail_view[1].find_element(By.TAG_NAME, "span").text.strip()
-                # print(category)
-                data.append(category)
+                    category = detail_view[1].find_element(By.TAG_NAME, "span").text.strip()
+                    # print(category)
+                    data.append(category)
+
+                    if category:
+                        if not CategoryService().get_category(db=db, category=category):
+                            # print("데이터 넣기")
+                            categories = CategoryCreate(
+                                category=category
+                            )
+                            CategoryService().create(db=db, category=categories)
+                except NoSuchElementException:
+                    print("없다!")
 
                 if streamer_id:
                     if not StreamerService().get_streamer(db=db, origin_id=streamer_id):
-                        print("데이터 넣기")
+                        # print("데이터 넣기")
                         streamer = StreamerCreate(
                             origin_id=streamer_id,
                             name=streamer_name.text.strip(),
                             profile_url=driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[1]/a/img")
                             .get_attribute('src'),
                             channel_url=streamer_url.text.strip(),
-                            follower_cnt=int(bookmark.text.replace(",", "")),
                             platform="A"
                         )
                         StreamerService().create(db=db, streamer=streamer)
+
+                    follower_cnt = int(bookmark.text.replace(",", ""))
+                    StreamerLogService().create(db=db, follower=follower_cnt, origin_id=streamer_id)
+
 
                 driver.close()  # 새 탭 닫기
                 driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
