@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
 
 from services.streamers import StreamerService
 from schemas.streamers import StreamerCreate
