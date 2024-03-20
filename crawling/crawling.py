@@ -181,7 +181,6 @@ class Crawling:
 
     def afreeca(self):
         # Chrome 옵션 설정
-        # Chrome 옵션 설정
         chrome_options = Options()
         chrome_options.add_argument("--headless")  # 헤드리스 모드 활성화
         chrome_options.add_argument("--disable-gpu")  # GPU 가속 비활성화 (일부 시스템에서 필요)
@@ -220,6 +219,7 @@ class Crawling:
             streamer_items = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
             index = 0
             for item in streamer_items:
+                # print("혹시 여기?")
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
                 viewer_count = item.find_element(By.XPATH, ".//div[2]/div[1]/span/em")
 
@@ -234,6 +234,18 @@ class Crawling:
 
                 # <a> 태그의 href 속성 값을 가져옴
                 href_value = click_live.get_attribute('href')
+
+                pattern = re.compile(r'afreecatv.com/([^/]+)/(\d+)$')
+
+                # 패턴으로부터 해당 부분 찾기
+                match = pattern.search(href_value)
+
+                if match:
+                    streamer_id = match.group(1)  # 첫 번째 괄호에 해당하는 부분 (username)
+                    streamer_live_id = match.group(2)  # 두 번째 괄호에 해당하는 부분 (number)
+                else:
+                    streamer_id, streamer_live_id = None, None  # 패턴에 매칭되는 부분이 없을 경우
+
 
                 # 자바스크립트를 사용하여 새 탭에서 href URL 열기
                 driver.execute_script(f"window.open('{href_value}');")
@@ -271,15 +283,17 @@ class Crawling:
                     continue
 
                 streamer_channel = driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[2]/ul/li[5]/span/a")
-                streamer_id_pattern = re.compile(r'bj.afreecatv.com/([^/]+)')
+                # streamer_id_pattern = re.compile(r'bj.afreecatv.com/([^/]+)')
+                #
+                # # 정규 표현식을 사용하여 스트리머 아이디 찾기
+                # streamer_id_match = streamer_id_pattern.search(streamer_channel.text)
+                # streamer_id = streamer_id_match.group(1) if streamer_id_match else None
 
-                # 정규 표현식을 사용하여 스트리머 아이디 찾기
-                streamer_id_match = streamer_id_pattern.search(streamer_channel.text)
-                streamer_id = streamer_id_match.group(1) if streamer_id_match else None
+                # 스트리머 이름 //*[@id="player_area"]/div[2]/div[2]/div[1]
+                streamer_name = driver.find_element(By.CLASS_NAME, "nickname")
 
-                streamer_name = driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[2]/div[1]")
-
-                bookmark = driver.find_element(By.XPATH, "//li[@class='boomark_cnt']")
+                # 팔로워 수
+                bookmark = driver.find_element(By.XPATH, ".//li[@class='boomark_cnt']")
                 streamer_follow = bookmark.find_element(By.TAG_NAME, "span")
                 if streamer_follow:
                     # print(bookmark.text.strip())
@@ -295,7 +309,7 @@ class Crawling:
 
                 streamer_start = detail_view[0].find_element(By.TAG_NAME, "span").text.strip()
                 if streamer_start:
-                    start_dt = datetime.strptime(streamer_start, '%Y-%m-%d %H:%M:%S.%f')
+                    start_dt = datetime.strptime(streamer_start, '%Y-%m-%d %H:%M:%S')
                 else:
                     start_dt = datetime.today()
                 category = None
@@ -307,7 +321,7 @@ class Crawling:
                     print("없다!")
 
                 streamer_profile = driver.find_element(By.XPATH,
-                                                       "//*[@id='player_area']/div[2]/div[1]/a/img").get_attribute(
+                                                       ".//*[@id='player_area']/div[2]/div[1]/a/img").get_attribute(
                     'src')
 
                 driver.close()  # 새 탭 닫기
@@ -318,26 +332,39 @@ class Crawling:
 
                 live_url = thumbnail.find_element(By.TAG_NAME, "img")
                 streamer_thumbnail = live_url.get_attribute('src')
-
+                print(streamer_id)
+                print(streamer_name.text)
+                # print(streamer_profile)
+                # print(streamer_channel.text.strip())
+                # print(follower)
+                # print(href_value)
+                # print(streamer_live_id)
+                # print(streamer_thumbnail)
+                # print(start_dt)
+                # print(category)
+                # print(streamer_title.text.strip())
+                # print(count)
                 streamer_info = StreamerInfo(
                     origin_id=streamer_id,
-                    name=streamer_name.text.strip(),
-                    profile_url=streamer_profile.text.strip(),
+                    name=streamer_name.text,
+                    profile_url=streamer_profile,
                     channel_url=streamer_channel.text.strip(),
                     platform="A",
                     follower=follower,
                     stream_url=href_value,
+                    live_origin_id=streamer_live_id,
                     thumbnail_url=streamer_thumbnail,
                     start_dt=start_dt,
                     category=category,
                     title=streamer_title.text.strip(),
                     viewer_cnt=count
                 )
+                print("야호")
 
                 streamer_list.append(streamer_info)
 
             # 결과 출력
-            print(tabulate(streamer_list, headers=["번호", "방송인", "팔로우", "제목", "시청자 수", "태그", "썸네일"]))
+            # print(tabulate(streamer_list, headers=["번호", "방송인", "팔로우", "제목", "시청자 수", "태그", "썸네일"]))
 
             # 브라우저 종료
             driver.quit()

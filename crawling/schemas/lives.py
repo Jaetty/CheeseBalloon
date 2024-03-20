@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class LiveCreate(BaseModel):
     streamer_id: int
+    live_origin_id: int
     stream_url: str
     thumbnail_url: str
     start_dt: str
@@ -13,6 +14,7 @@ class LiveCreate(BaseModel):
 class LiveRead(BaseModel):
     live_id: int
     streamer_id: int
+    live_origin_id: int
     stream_url: str
     thumbnail_url: str
     start_dt: str
