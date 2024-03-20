@@ -10,8 +10,8 @@ class Live(Base):
 
     live_id = Column(BigInteger, primary_key=True, autoincrement=True, nullable=False)
     streamer_id = Column(BigInteger, ForeignKey('streamers.streamer_id'), nullable=False)
-    stream_url = Column(String(400), nullable=False)
-    thumbnail = Column(String(400), nullable=False)
+    stream_url = Column(String(600), nullable=False)
+    thumbnail_url = Column(String(600), nullable=False)
     start_dt = Column(DateTime, nullable=False)
     end_dt = Column(DateTime, nullable=True)
     total_live_time = Column(Integer, nullable=True)
