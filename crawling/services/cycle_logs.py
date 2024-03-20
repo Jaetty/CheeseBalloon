@@ -4,7 +4,7 @@ from models.cycle_logs import CycleLog
 from schemas.cycle_logs import CycleLogCreate
 
 
-class StreamerLogService:
+class CycleLogService:
     def create(self, db: Session, cycle_log: CycleLogCreate):
 
         db_cycle_log = CycleLog(

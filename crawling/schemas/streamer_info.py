@@ -9,6 +9,7 @@ class StreamerInfo(BaseModel):
     platform: str
     follower: int
     stream_url: str
+    live_origin_id: int
     thumbnail_url: str
     start_dt: datetime
     category: str | None = None

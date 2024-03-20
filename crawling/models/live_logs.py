@@ -10,7 +10,7 @@ class LiveLog(Base):
 
     live_log_id = Column(BigInteger, primary_key=True, autoincrement=True, nullable=False)
     live_id = Column(BigInteger, ForeignKey('lives.live_id'), nullable=False)
-    cycle_log_id = Column(BigInteger, ForeignKey('cycle_logs.live_id'), nullable=False)
+    cycle_log_id = Column(BigInteger, ForeignKey('cycle_logs.cycle_log_id'), nullable=False)
     category_id = Column(BigInteger, ForeignKey('categories.category_id'), nullable=True)
     title = Column(String(200), nullable=True)
     viewer_cnt = Column(Integer, nullable=False)
