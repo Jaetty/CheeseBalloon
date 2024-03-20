@@ -6,20 +6,19 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
-from bs4 import BeautifulSoup
 from tabulate import tabulate
 
 from sqlalchemy.orm import Session
+from schemas.streamer_info import StreamerInfo
 from services.streamers import StreamerService
 from services.streamer_logs import StreamerLogService
 from services.categories import CategoryService
 from schemas.streamers import StreamerCreate
 from schemas.categories import CategoryCreate
 
+from datetime import datetime
 import time
 import re
-
-
 
 
 class Crawling:
@@ -110,9 +109,9 @@ class Crawling:
                 driver.switch_to.window(driver.window_handles[1])
 
                 follower = driver.find_element(By.CLASS_NAME, 'channel_profile_cell__kkiQb')
-                follower_str = follower.text.replace("팔로워 ","")
+                follower_str = follower.text.replace("팔로워 ", "")
                 if "만" in follower_str:
-                    numbers = float(follower_str.replace("만명",""))
+                    numbers = float(follower_str.replace("만명", ""))
                     followers = int(numbers * 10000)
                 elif "천" in follower_str:
                     numbers = float(follower_str.replace("천명", ""))
@@ -162,14 +161,13 @@ class Crawling:
                         streamer = StreamerCreate(
                             origin_id=streamer_id,
                             name=streamer_name.text.strip(),
-                            profile_url= a_tag.find_element(By.TAG_NAME, "img").get_attribute('src'),
-                            channel_url= href,
+                            profile_url=a_tag.find_element(By.TAG_NAME, "img").get_attribute('src'),
+                            channel_url=href,
                             platform="C"
                         )
                         StreamerService().create(db=db, streamer=streamer)
 
                     StreamerLogService().create(db=db, follower=followers, origin_id=streamer_id)
-
 
                 streamer_list.append(data)
 
@@ -181,7 +179,7 @@ class Crawling:
         except Exception as e:
             print(e)
 
-    def afreeca(self, db: Session):
+    def afreeca(self):
         # Chrome 옵션 설정
         # Chrome 옵션 설정
         chrome_options = Options()
@@ -190,16 +188,17 @@ class Crawling:
         chrome_options.add_argument("--no-sandbox")  # 샌드박스 비활성화
         chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 방지
 
+        # # 시청자 수를 저장할 리스트 초기화
+        streamer_list = []
         try:
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
             driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-            # 페이지 로드를 기다리기 위한 대기 시간 설정
-            driver.implicitly_wait(10)
+
             # 웹사이트 열기ㄴ
             driver.get('https://www.afreecatv.com/?hash=all')
 
-            # 웹사이트의 동적 컨텐츠가 로드될 때까지 기다림 (필요에 따라 시간 조정)
-            time.sleep(5)  # 적절한 로딩 시간을 기다림
+            # 페이지 로드를 기다리기 위한 대기 시간 설정
+            driver.implicitly_wait(10)
 
             while True:
 
@@ -216,10 +215,7 @@ class Crawling:
                 # print(cnt)
                 if int(cnt) < 50:
                     break
-            #
-            # # 시청자 수를 저장할 리스트 초기화
-            streamer_list = []
-            #
+
             # # 각 파트너 항목에서 시청자 수 추출
             streamer_items = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
             index = 0
@@ -236,12 +232,8 @@ class Crawling:
 
                 click_live = click_streamer.find_element(By.TAG_NAME, "a")
 
-                # print(click_live.get_attribute('href'))
-
                 # <a> 태그의 href 속성 값을 가져옴
                 href_value = click_live.get_attribute('href')
-
-                # print(href_value)
 
                 # 자바스크립트를 사용하여 새 탭에서 href URL 열기
                 driver.execute_script(f"window.open('{href_value}');")
@@ -278,89 +270,71 @@ class Crawling:
                     driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
                     continue
 
-                streamer_url = driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[2]/ul/li[5]/span/a")
+                streamer_channel = driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[2]/ul/li[5]/span/a")
                 streamer_id_pattern = re.compile(r'bj.afreecatv.com/([^/]+)')
 
                 # 정규 표현식을 사용하여 스트리머 아이디 찾기
-                streamer_id_match = streamer_id_pattern.search(streamer_url.text)
+                streamer_id_match = streamer_id_pattern.search(streamer_channel.text)
                 streamer_id = streamer_id_match.group(1) if streamer_id_match else None
 
-                data = []
-                index += 1
-                data.append(index)
-
                 streamer_name = driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[2]/div[1]")
-                if streamer_name:
-                    data.append(streamer_name.text.strip())
 
-                streamer_follow = driver.find_element(By.XPATH, "//li[@class='boomark_cnt']")
-                bookmark = streamer_follow.find_element(By.TAG_NAME, "span")
-                if bookmark:
+                bookmark = driver.find_element(By.XPATH, "//li[@class='boomark_cnt']")
+                streamer_follow = bookmark.find_element(By.TAG_NAME, "span")
+                if streamer_follow:
                     # print(bookmark.text.strip())
-                    data.append(bookmark.text.strip())
+                    follower = int(streamer_follow.text.replace(",", ""))
                 else:
-                    data.append("없음")
+                    follower = 0
 
                 streamer_title = driver.find_element(By.CLASS_NAME, 'broadcast_title')
-                # print(streamer_title.text)
-                # title = streamer_title.find_element(By.TAG_NAME, "span")
-                if streamer_title:
-                    # print(streamer_title.text.strip())
-                    data.append(streamer_title.text.strip())
-                else:
-                    data.append("없음")
-
-                # 시청자 수 데이터
-                streamer_viewer = driver.find_element(By.CLASS_NAME, "broadcast_viewer_cnt")
-                # print(streamer_viewer.text.strip())
-                data.append(streamer_viewer.text.strip())
 
                 view = driver.find_element(By.CLASS_NAME, "detail_view")
 
                 detail_view = view.find_elements(By.TAG_NAME, "li")
+
+                streamer_start = detail_view[0].find_element(By.TAG_NAME, "span").text.strip()
+                if streamer_start:
+                    start_dt = datetime.strptime(streamer_start, '%Y-%m-%d %H:%M:%S.%f')
+                else:
+                    start_dt = datetime.today()
+                category = None
                 try:
 
                     category = detail_view[1].find_element(By.TAG_NAME, "span").text.strip()
-                    # print(category)
-                    data.append(category)
 
-                    if category:
-                        if not CategoryService().get_category(db=db, category=category):
-                            # print("데이터 넣기")
-                            categories = CategoryCreate(
-                                category=category
-                            )
-                            CategoryService().create(db=db, category=categories)
                 except NoSuchElementException:
                     print("없다!")
 
-                if streamer_id:
-                    if not StreamerService().get_streamer(db=db, origin_id=streamer_id):
-                        # print("데이터 넣기")
-                        streamer = StreamerCreate(
-                            origin_id=streamer_id,
-                            name=streamer_name.text.strip(),
-                            profile_url=driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[1]/a/img")
-                            .get_attribute('src'),
-                            channel_url=streamer_url.text.strip(),
-                            platform="A"
-                        )
-                        StreamerService().create(db=db, streamer=streamer)
-
-                    follower_cnt = int(bookmark.text.replace(",", ""))
-                    StreamerLogService().create(db=db, follower=follower_cnt, origin_id=streamer_id)
-
+                streamer_profile = driver.find_element(By.XPATH,
+                                                       "//*[@id='player_area']/div[2]/div[1]/a/img").get_attribute(
+                    'src')
 
                 driver.close()  # 새 탭 닫기
                 driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
 
                 # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
-                click_streamer = driver.find_element(By.CLASS_NAME, "thumbs-box")
-                if click_streamer:
-                    live_url = click_streamer.find_element(By.TAG_NAME, "img")
-                    data.append(live_url.get_attribute('src'))
+                thumbnail = driver.find_element(By.CLASS_NAME, "thumbs-box")
 
-                streamer_list.append(data)
+                live_url = thumbnail.find_element(By.TAG_NAME, "img")
+                streamer_thumbnail = live_url.get_attribute('src')
+
+                streamer_info = StreamerInfo(
+                    origin_id=streamer_id,
+                    name=streamer_name.text.strip(),
+                    profile_url=streamer_profile.text.strip(),
+                    channel_url=streamer_channel.text.strip(),
+                    platform="A",
+                    follower=follower,
+                    stream_url=href_value,
+                    thumbnail_url=streamer_thumbnail,
+                    start_dt=start_dt,
+                    category=category,
+                    title=streamer_title.text.strip(),
+                    viewer_cnt=count
+                )
+
+                streamer_list.append(streamer_info)
 
             # 결과 출력
             print(tabulate(streamer_list, headers=["번호", "방송인", "팔로우", "제목", "시청자 수", "태그", "썸네일"]))
@@ -370,3 +344,5 @@ class Crawling:
 
         except Exception as e:
             print(e)
+
+        return streamer_list

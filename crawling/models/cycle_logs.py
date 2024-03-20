@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from config.database import Base
 
 class CycleLog(Base):
-    __tablename__ = 'live_logs'
+    __tablename__ = 'cycle_logs'
 
     cycle_log_id = Column(BigInteger, primary_key=True, autoincrement=True, nullable=False)
     afreeca_viewer_cnt = Column(Integer, nullable=False)

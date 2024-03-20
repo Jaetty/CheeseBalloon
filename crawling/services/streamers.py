@@ -18,9 +18,16 @@ class StreamerService:
         db.refresh(db_streamer)
         return db_streamer
 
-    def get_streamer(self, db: Session, origin_id: str) -> bool:
+    def is_streamer(self, db: Session, origin_id: str) -> bool:
         streamer = db.query(Streamer).filter(Streamer.origin_id == origin_id).first()
         if streamer:
             return True
         else:
             return False
+
+    def get_streamer(self, db: Session, origin_id: str):
+        streamer = db.query(Streamer).filter(Streamer.origin_id == origin_id).first()
+        if streamer:
+            return streamer.streamer_id
+        else:
+            return None
