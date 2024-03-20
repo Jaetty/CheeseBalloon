@@ -34,17 +34,12 @@ class Crawling:
         try:
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
             driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-            # 페이지 로드를 기다리기 위한 대기 시간 설정
-            driver.implicitly_wait(10)
+
             # 웹사이트 열기
             driver.get('https://chzzk.naver.com/lives')
 
-            # 웹사이트의 동적 컨텐츠가 로드될 때까지 기다림 (필요에 따라 시간 조정)
-            time.sleep(5)  # 적절한 로딩 시간을 기다림
-
-            # 페이지의 소스 가져오기
-            html = driver.page_source
-            soup = BeautifulSoup(html, 'html.parser')
+            # 페이지 로드를 기다리기 위한 대기 시간 설정
+            driver.implicitly_wait(10)
 
             # 스크롤을 위한 대기 시간 설정
             SCROLL_PAUSE_TIME = 0.5
@@ -54,7 +49,6 @@ class Crawling:
             last_height = 0
             pre_height = driver.execute_script("return document.body.scrollHeight")
             while True:
-
                 new_height = driver.execute_script("return document.body.scrollHeight")
 
                 if pre_height != new_height:
@@ -63,8 +57,7 @@ class Crawling:
 
                 # 페이지를 조금씩 내리는 스크롤 (예: 100픽셀씩)
                 scroll_position += (new_height - last_height) * 1 / 5
-                # print(scroll_position)
-                # scroll_position += 700
+
                 driver.execute_script(f"window.scrollTo(0, {scroll_position});")
 
                 # 새로운 페이지 콘텐츠 로드를 기다림
@@ -80,13 +73,6 @@ class Crawling:
 
                 if int(cnt) < 20:
                     break
-                # if last_height != new_height:
-                #     print("last가 달라" + str(last_height) + " " + str(new_height))
-                #     last_height = new_height
-                #     scroll_position = new_height / 2
-                # else:
-                #     print("last가 같아" + str(last_height) + " " + str(new_height))
-                #     scroll_position = last_height / 2
 
                 # 시청자 수를 저장할 리스트 초기화
             streamer_list = []
@@ -104,8 +90,7 @@ class Crawling:
                 data = []
                 index += 1
                 data.append(index)
-                # // *[ @ id = "layout-body"] / div / section / ul / li[2] / div / div / div[1] / a
-                # // *[ @ id = "layout-body"] / div / section / ul / li[3] / div / div / div[1] / a
+
                 # 'name_text__yQG50' 클래스를 가진 요소의 텍스트 추출 - 방송인 이름
                 streamer_name = item.find_element(By.CLASS_NAME, 'name_text__yQG50')
                 print(streamer_name.text)
