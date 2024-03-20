@@ -12,6 +12,6 @@ class CycleLog(Base):
     afreeca_viewer_cnt = Column(Integer, nullable=False)
     chzzk_viewer_cnt = Column(Integer, nullable=False)
     category_id = Column(Integer, nullable=False)
-    live_dt = Column(DateTime, nullable=False, default= datetime.today())
+    cycle_dt = Column(DateTime, nullable=False, default= datetime.today())
 
     live_logs = relationship("LiveLog", back_populates="cycle_log")
