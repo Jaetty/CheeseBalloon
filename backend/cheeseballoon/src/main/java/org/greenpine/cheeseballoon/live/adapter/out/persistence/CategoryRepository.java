@@ -8,6 +8,14 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
     @Query(value = "SELECT * " +
             "FROM  categories " +
-            "WHERE category LIKE CONCAT(:query, '%') ", nativeQuery = true)
+            "WHERE category LIKE CONCAT(:query, '%') " +
+            "ORDER BY category ASC ", nativeQuery = true)
     List<CategoryEntity> findAllByQuery(String query);
+
+    @Query(value = "SELECT * " +
+            "FROM  categories " +
+            "WHERE category LIKE CONCAT(:head, '%') "
+            //+"AND SUBSTRING(chosung, :idx, 1 = :tail "
+            , nativeQuery = true)
+    List<CategoryEntity> findAllByHeadAndTail(String head, String tail,int idx);
 }
