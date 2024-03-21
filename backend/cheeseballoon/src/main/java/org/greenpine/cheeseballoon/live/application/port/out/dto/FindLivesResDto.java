@@ -11,7 +11,7 @@ public class FindLivesResDto {
     Long liveId;
     String name;
     String title;
-    String thumbnail;
+    String thumbnailUrl;
     char platform;
     String profileUrl;
     String category;
