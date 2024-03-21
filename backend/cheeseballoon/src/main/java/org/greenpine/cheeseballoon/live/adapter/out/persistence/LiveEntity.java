@@ -24,7 +24,7 @@ public class LiveEntity {
     @GeneratedValue
     private Long liveId;
     private String streamUrl;
-    private String thumbnail;
+    private String thumbnailUrl;
     private LocalDateTime startDt;
     private LocalDateTime endDt;
     private Integer totalLiveTime;
