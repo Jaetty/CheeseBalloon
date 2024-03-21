@@ -22,5 +22,6 @@ public class CategoryEntity {
     //@Column(name = "category_id")
     private Long categoryId;
     private String category;
+    private String chosung;
 
 }
