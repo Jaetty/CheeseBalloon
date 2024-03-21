@@ -36,7 +36,7 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
                     .liveId(id++)
                     .title("제목입니다리미는뜨끈뜨끈"+id)
                     .name("이름"+id)
-                    .thumbnail("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26464698/live/4741825/record/25849301/thumbnail/image_480.jpg?date=1710086310000")
+                    .thumbnailUrl("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26464698/live/4741825/record/25849301/thumbnail/image_480.jpg?date=1710086310000")
                     .channelUrl("channelUrl")
                     .streamUrl("streamurl")
                     .platform('A')
@@ -52,14 +52,7 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
 
     @Override
     public FindCategoriesResDto findCategories(String query) {
-        categoryPort.findCategories(query);
-        List<String>categories = new ArrayList<>();
-        categories.add("배그");
-        categories.add("배틀그라운드");
-        categories.add("배틀 그라운드");
-        return FindCategoriesResDto.builder()
-                .categories(categories)
-                .build();
+        return categoryPort.findCategories(query);
     }
 
     @Override
