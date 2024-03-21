@@ -18,4 +18,7 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
             //+"AND SUBSTRING(chosung, :idx, 1 = :tail "
             , nativeQuery = true)
     List<CategoryEntity> findAllByHeadAndTail(String head);//, String tail,int idx
+
+    List<CategoryEntity> findAllByChosungIsNull();
+
 }
