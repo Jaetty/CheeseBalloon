@@ -17,5 +17,5 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
             "WHERE category LIKE CONCAT(:head, '%') "
             //+"AND SUBSTRING(chosung, :idx, 1 = :tail "
             , nativeQuery = true)
-    List<CategoryEntity> findAllByHeadAndTail(String head, String tail,int idx);
+    List<CategoryEntity> findAllByHeadAndTail(String head);//, String tail,int idx
 }
