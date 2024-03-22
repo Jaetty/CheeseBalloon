@@ -8,5 +8,6 @@ import java.util.List;
 public interface LiveUsecase {
 
     List<FindLivesResDto> findLives(FindLivesReqDto findLiveReqDto);
+    List<FindLivesResDto> searchLives(String query);
 
 }

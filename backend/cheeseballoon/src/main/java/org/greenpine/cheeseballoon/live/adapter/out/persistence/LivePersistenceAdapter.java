@@ -33,6 +33,11 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
     }
 
     @Override
+    public List<FindLivesResDto> searchLives(FindLivesReqDto findLiveReqDto) {
+        return null;
+    }
+
+    @Override
     public FindCategoriesResDto findCategories(String query) {
         List<CategoryEntity> entities = categoryRepository.findAllByQuery(query);
         List<String>categories = new ArrayList<>();
