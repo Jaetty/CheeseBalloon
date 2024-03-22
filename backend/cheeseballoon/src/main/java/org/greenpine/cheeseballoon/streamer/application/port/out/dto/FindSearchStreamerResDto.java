@@ -1,4 +1,4 @@
-package org.greenpine.cheeseballoon.search.application.port.out.dto;
+package org.greenpine.cheeseballoon.streamer.application.port.out.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,8 +15,8 @@ public class FindSearchStreamerResDto {
     String name;
     boolean isLive;
     String profileUrl;
-    String streamUrl;
-    int followerCnt;
+    String channelUrl;
+    int follower;
     char platform;
 
 }
