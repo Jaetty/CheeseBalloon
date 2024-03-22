@@ -12,6 +12,7 @@ import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesR
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.message.LiveResMsg;
+import org.greenpine.cheeseballoon.search.application.port.out.dto.FindSearchLiveResDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,15 @@ public class LiveController {
     public ResponseEntity<CustomBody> findHotCategories(@RequestParam int limit){
         FindHotCategoriesResDto ret = categoryUsecase.findHotCategories(limit);
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<CustomBody> searchLive(@RequestParam String query){
+
+        List<FindLivesResDto> ret = liveUsecase.searchLives(query);
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
+
     }
 
 
