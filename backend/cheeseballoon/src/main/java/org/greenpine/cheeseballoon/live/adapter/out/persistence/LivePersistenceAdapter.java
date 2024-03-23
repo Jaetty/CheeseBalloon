@@ -9,14 +9,17 @@ import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategori
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class LiveLogPersistenceAdapter implements LivePort, CategoryPort {
+public class LivePersistenceAdapter implements LivePort, CategoryPort {
 
     private final LiveLogRepository liveLogRepository;
+    private final CategoryRepository categoryRepository;
+
     @Override
     public List<FindLivesResDto> findLives(FindLivesReqDto findLiveReqDto) {
         Optional<LiveLogEntity> entity = liveLogRepository.findById(1L);
@@ -30,8 +33,20 @@ public class LiveLogPersistenceAdapter implements LivePort, CategoryPort {
     }
 
     @Override
-    public FindCategoriesResDto findCategories(String query) {
+    public List<FindLivesResDto> searchLives(FindLivesReqDto findLiveReqDto) {
         return null;
+    }
+
+    @Override
+    public FindCategoriesResDto findCategories(String query) {
+        List<CategoryEntity> entities = categoryRepository.findAllByQuery(query);
+        List<String>categories = new ArrayList<>();
+        for(CategoryEntity ce : entities){
+            categories.add(ce.getCategory());
+        }
+        return FindCategoriesResDto.builder()
+                .categories(categories)
+                .build();
     }
 
     @Override
