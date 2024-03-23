@@ -8,4 +8,7 @@ import java.util.List;
 public interface LivePort {
     List<FindLivesResDto> findLives(FindLivesReqDto findLiveReqDto);
     List<FindLivesResDto> findLivesAll(FindLivesReqDto findLiveReqDto);
+
+    List<FindLivesResDto> searchLives(FindLivesReqDto findLiveReqDto);
+
 }

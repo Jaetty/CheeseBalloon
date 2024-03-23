@@ -9,6 +9,7 @@ import org.greenpine.cheeseballoon.live.application.port.out.LivePort;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
+import org.greenpine.cheeseballoon.search.application.port.out.dto.FindSearchLiveResDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
                     .liveId(id++)
                     .title("제목입니다리미는뜨끈뜨끈"+id)
                     .name("이름"+id)
-                    .thumbnail("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26464698/live/4741825/record/25849301/thumbnail/image_480.jpg?date=1710086310000")
+                    .thumbnailUrl("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26464698/live/4741825/record/25849301/thumbnail/image_480.jpg?date=1710086310000")
                     .channelUrl("channelUrl")
                     .streamUrl("streamurl")
                     .platform('A')
@@ -51,15 +52,37 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
     }
 
     @Override
+    public List<FindLivesResDto> searchLives(String query) {
+
+        //        List<FindLivesResDto> result = searchPort.findLives(query);
+        List<FindLivesResDto> result = new ArrayList<>();
+
+        if(query.chars().allMatch(Character::isDigit)){
+
+            for(int i=0; i<Integer.parseInt(query); i++){
+                if(i==20) break;
+                result.add(FindLivesResDto.builder()
+                        .streamId((long)i)
+                        .liveId((long)i)
+                        .name("스트리머 넘버 :"+ i)
+                        .title("방송 이름 부분 " + i)
+                        .thumbnailUrl("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26453996/live/4794303/record/25925839/thumbnail/image_480.jpg?date=1710346950000")
+                        .platform('C')
+                        .profileUrl("https://nng-phinf.pstatic.net/MjAyMzEyMTlfMzYg/MDAxNzAyOTcwODY1OTUy.1hHkqzH-zyEhyW2EJNfj1q6r7XTDeQNNqL_owQQ6AFwg.mCjDaHbdF0jjfhB2PvFuFJLxL9jQ-PV0oSLLDRXoGLUg.GIF/popHEAD.gif?type=f120_120_na")
+                        .category("스타크래프트")
+                        .viewerCnt(15117)
+                        .streamUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=43s")
+                        .channelUrl("https://chzzk.naver.com/bb382c2c0cc9fa7c86ab3b037fb5799c")
+                        .build());
+            }
+        }
+
+        return result;
+    }
+
+    @Override
     public FindCategoriesResDto findCategories(String query) {
-        categoryPort.findCategories(query);
-        List<String>categories = new ArrayList<>();
-        categories.add("배그");
-        categories.add("배틀그라운드");
-        categories.add("배틀 그라운드");
-        return FindCategoriesResDto.builder()
-                .categories(categories)
-                .build();
+        return categoryPort.findCategories(query);
     }
 
     @Override
