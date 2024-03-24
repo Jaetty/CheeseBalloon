@@ -26,7 +26,7 @@ public class StreamerService implements StreamerUsecase {
         if(query.chars().allMatch(Character::isDigit)){
 
             for(int i=0; i<Integer.parseInt(query); i++){
-                if(i==15) break;
+                if(i==16) break;
                 result.add(FindSearchStreamerResDto.builder()
                         .streamId((long)i)
                         .name("스트리머 넘버 :"+ i)
