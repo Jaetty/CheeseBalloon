@@ -59,14 +59,14 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
         if(query.chars().allMatch(Character::isDigit)){
 
             for(int i=0; i<Integer.parseInt(query); i++){
-                if(i==20) break;
+                if(i==60) break;
                 result.add(FindLivesResDto.builder()
                         .streamId((long)i)
                         .liveId((long)i)
                         .name("스트리머 넘버 :"+ i)
                         .title("방송 이름 부분 " + i)
                         .thumbnailUrl("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26453996/live/4794303/record/25925839/thumbnail/image_480.jpg?date=1710346950000")
-                        .platform('C')
+                        .platform( i%3==0 ? 'C' : 'A')
                         .profileUrl("https://nng-phinf.pstatic.net/MjAyMzEyMTlfMzYg/MDAxNzAyOTcwODY1OTUy.1hHkqzH-zyEhyW2EJNfj1q6r7XTDeQNNqL_owQQ6AFwg.mCjDaHbdF0jjfhB2PvFuFJLxL9jQ-PV0oSLLDRXoGLUg.GIF/popHEAD.gif?type=f120_120_na")
                         .category("스타크래프트")
                         .viewerCnt(15117)
