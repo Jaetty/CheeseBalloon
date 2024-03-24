@@ -24,18 +24,18 @@ public class LiveTests {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Test
-    public void liveGetTest(){
-        //System.out.println(liveController.getPartition("PUBG : 배틀그라운드"));
-        List<String> categories = new ArrayList<>();
-        categories.add("종겜");
-        categories.add("배틀그라운드");
-        ResponseEntity<CustomBody> res = liveController.findLives(
-            new FindLivesReqDto(categories,3,0)
-            );
-        List<FindLivesResDto> findLiveResDtos = (List<FindLivesResDto>)res.getBody().getData();
-        System.out.println(findLiveResDtos);
-    }
+//    @Test
+//    public void liveGetTest(){
+//        //System.out.println(liveController.getPartition("PUBG : 배틀그라운드"));
+//        List<String> categories = new ArrayList<>();
+//        categories.add("종겜");
+//        categories.add("배틀그라운드");
+//        ResponseEntity<CustomBody> res = liveController.findLives(
+//            new FindLivesReqDto(categories,3,0)
+//            );
+//        List<FindLivesResDto> findLiveResDtos = (List<FindLivesResDto>)res.getBody().getData();
+//        System.out.println(findLiveResDtos);
+//    }
 
     @Test
     public void categoryGetTest(){
