@@ -19,7 +19,7 @@ public class StreamerService implements StreamerUsecase {
     @Override
     public List<FindSearchStreamerResDto> searchStreamer(String query) {
 
-//        List<FindSearchStreamerResDto> result = streamerPort.searchStreamer(""); // 추후 repository가 완료되면 여기서 DB에서 가져온 값이 도착함
+        streamerPort.searchStreamer("test");
         List<FindSearchStreamerResDto> result = new ArrayList<>();
 
         // 아래는 테스트용으로만 사용하는 코드
