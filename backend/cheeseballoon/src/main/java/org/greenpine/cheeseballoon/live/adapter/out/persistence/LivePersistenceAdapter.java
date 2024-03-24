@@ -22,8 +22,8 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
 
     @Override
     public List<FindLivesResDto> findLives(FindLivesReqDto findLiveReqDto) {
-        Optional<LiveLogEntity> entity = liveLogRepository.findById(1L);
-        System.out.println(entity);
+        //Optional<LiveLogEntity> entity = liveLogRepository.findById(1L);
+        //System.out.println(entity);
         return null;
     }
 
