@@ -13,10 +13,15 @@ import java.util.List;
 // 여기서 Repository를 사용하여 DB의 데이터를 가져온 후 가공하여 리턴해주는 역할
 public class StreamerPersistenceAdapter implements StreamerPort {
 
-    //    private final StreamerRepository streamerRepository;
+    private final StreamerRepository streamerRepository;
 
     @Override
     public List<FindSearchStreamerResDto> searchStreamer(String query) {
+
+        // 아래는 테스트
+        List<StreamerEntity> streamerEntities = streamerRepository.findAllByNameContaining(query);
+        StreamerEntity ss = streamerRepository.findByStreamerId(1L);
+
         return null;
     }
 
