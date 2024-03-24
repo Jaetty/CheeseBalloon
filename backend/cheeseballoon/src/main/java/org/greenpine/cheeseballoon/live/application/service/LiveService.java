@@ -9,7 +9,6 @@ import org.greenpine.cheeseballoon.live.application.port.out.LivePort;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
-import org.greenpine.cheeseballoon.search.application.port.out.dto.FindSearchLiveResDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
