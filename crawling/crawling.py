@@ -32,7 +32,7 @@ class Crawling:
 
         try:
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
-            driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+            driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
             # 웹사이트 열기
             driver.get('https://chzzk.naver.com/lives')
@@ -183,9 +183,9 @@ class Crawling:
         # Chrome 옵션 설정
         chrome_options = Options()
         chrome_options.add_argument("--headless")  # 헤드리스 모드 활성화
-        chrome_options.add_argument("--disable-gpu")  # GPU 가속 비활성화 (일부 시스템에서 필요)
-        chrome_options.add_argument("--no-sandbox")  # 샌드박스 비활성화
-        chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 방지
+        # chrome_options.add_argument("--disable-gpu")  # GPU 가속 비활성화 (일부 시스템에서 필요)
+        # chrome_options.add_argument("--no-sandbox")  # 샌드박스 비활성화
+        # chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 방지
 
         # # 시청자 수를 저장할 리스트 초기화
         streamer_list = []
@@ -217,7 +217,6 @@ class Crawling:
 
             # # 각 파트너 항목에서 시청자 수 추출
             streamer_items = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
-            index = 0
             for item in streamer_items:
                 # print("혹시 여기?")
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
@@ -227,6 +226,12 @@ class Crawling:
                     count = re.sub(r'\D', '', viewer_count.text.strip())
                     if int(count) < 50:
                         break
+
+                # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
+                thumbnail = driver.find_element(By.CLASS_NAME, "thumbs-box")
+
+                live_url = thumbnail.find_element(By.TAG_NAME, "img")
+                streamer_thumbnail = live_url.get_attribute('src')
 
                 click_streamer = item.find_element(By.CLASS_NAME, "thumbs-box")
 
@@ -246,7 +251,7 @@ class Crawling:
                 else:
                     streamer_id, streamer_live_id = None, None  # 패턴에 매칭되는 부분이 없을 경우
 
-
+                streamer_name = ""
                 # 자바스크립트를 사용하여 새 탭에서 href URL 열기
                 driver.execute_script(f"window.open('{href_value}');")
 
@@ -296,8 +301,10 @@ class Crawling:
                 bookmark = driver.find_element(By.XPATH, ".//li[@class='boomark_cnt']")
                 streamer_follow = bookmark.find_element(By.TAG_NAME, "span")
                 if streamer_follow:
-                    # print(bookmark.text.strip())
+                    print(bookmark.text.strip())
+                    print("여긴가요?")
                     follower = int(streamer_follow.text.replace(",", ""))
+                    print("맞나요")
                 else:
                     follower = 0
 
@@ -324,16 +331,8 @@ class Crawling:
                                                        ".//*[@id='player_area']/div[2]/div[1]/a/img").get_attribute(
                     'src')
 
-                driver.close()  # 새 탭 닫기
-                driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
-
-                # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
-                thumbnail = driver.find_element(By.CLASS_NAME, "thumbs-box")
-
-                live_url = thumbnail.find_element(By.TAG_NAME, "img")
-                streamer_thumbnail = live_url.get_attribute('src')
-                print(streamer_id)
-                print(streamer_name.text)
+                # print(streamer_id)
+                # print(streamer_name.text)
                 # print(streamer_profile)
                 # print(streamer_channel.text.strip())
                 # print(follower)
@@ -359,7 +358,10 @@ class Crawling:
                     title=streamer_title.text.strip(),
                     viewer_cnt=count
                 )
-                print("야호")
+                print(streamer_info)
+                # print(streamer_info)
+                driver.close()  # 새 탭 닫기
+                driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
 
                 streamer_list.append(streamer_info)
 

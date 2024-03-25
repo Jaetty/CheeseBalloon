@@ -1,12 +1,13 @@
 
 from pydantic import BaseModel
+from datetime import datetime
 
 class LiveCreate(BaseModel):
     streamer_id: int
     live_origin_id: int
     stream_url: str
     thumbnail_url: str
-    start_dt: str
+    start_dt: datetime
     end_dt: str | None = None
     total_live_time: int | None = None
 
@@ -17,7 +18,7 @@ class LiveRead(BaseModel):
     live_origin_id: int
     stream_url: str
     thumbnail_url: str
-    start_dt: str
+    start_dt: datetime
     end_dt: str | None = None
     total_live_time: int | None = None
 
