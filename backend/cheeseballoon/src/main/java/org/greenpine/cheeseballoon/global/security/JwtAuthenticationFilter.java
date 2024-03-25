@@ -19,7 +19,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String origin = httpRequest.getHeader("Origin");
-        System.out.println("Origin: " + origin);
+        //System.out.println("Origin: " + origin);
         filterChain.doFilter(request, response);
     }
 
