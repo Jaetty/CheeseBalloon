@@ -8,6 +8,7 @@ class LiveService:
     def create(self, db: Session, live: LiveCreate):
         db_live = Live(
             streamer_id=live.streamer_id,
+            live_origin_id=live.live_origin_id,
             stream_url=live.stream_url,
             thumbnail_url=live.thumbnail_url,
             start_dt= live.start_dt
