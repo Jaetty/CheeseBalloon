@@ -19,7 +19,7 @@ public class MemberTests {
 
         Long id=10L;
         String accessToken = jwtUtil.createAccessToken(10L);
-        String refreshToken = jwtUtil.createAccessToken(10L);
+        String refreshToken = jwtUtil.createRefreshToken(10L);
         System.out.println("accessToken : "+accessToken);
         Long accessMemberId = jwtUtil.getUserId(jwtUtil.extractAllClaims(accessToken));
         Long refreshMemberId = jwtUtil.getUserId(jwtUtil.extractAllClaims(refreshToken));
