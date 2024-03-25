@@ -1,5 +1,9 @@
-export default function detailDuration () {
-    return <div>
-        그래프
+import DetailDurationChart from "./detailDurationChart";
+
+export default function DetailDuration() {
+  return (
+    <div>
+      <DetailDurationChart />
     </div>
+  );
 }

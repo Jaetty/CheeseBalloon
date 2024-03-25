@@ -1,12 +1,37 @@
-export default function DetailSelect () {
-    return <div>
-        <div>
-            <div>시청자 수</div>
-            <div>카테고리</div>
-            <div>방송 시간</div>
-            <div>시청률</div>
-            <div>팔로워</div>
-            <div>방송 기록</div>
-        </div>
+"use client";
+
+import { useState } from "react";
+import DetailSelectedContent from "./detailSelectedContent";
+import DetailSelectButton from "./detailSelectButton";
+import DetailSelectDate from "./detailSelectDate";
+
+export default function DetailSelect() {
+  const [content, setContent] = useState<string>("viewer");
+  const [date, setDate] = useState<number>(30);
+
+  const handleContent = (selectedContent: string) => {
+    setContent(selectedContent);
+  };
+  const handleDate = (selectedDate: number) => {
+    setDate(selectedDate);
+  };
+
+  const selected: { content: string; date: number } = {
+    content,
+    date,
+  };
+
+  return (
+    <div>
+      <div>
+        <DetailSelectButton handleContent={handleContent} />
+      </div>
+      <div>
+        <DetailSelectDate handleDate={handleDate} />
+      </div>
+      <div>
+        <DetailSelectedContent selected={selected} />
+      </div>
     </div>
+  );
 }

@@ -1,7 +1,9 @@
-export default function detailViewer() {
+import DetailViewerChart from "./detailViewerChart";
+
+export default function DetailViewer() {
   return (
     <div>
-      <div>그래프</div>
+      <DetailViewerChart />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import DetailProfile from "@/src/containers/detail/detailProfile";
 import DetailOverview from "@/src/containers/detail/detailOverview";
 import DetailSelect from "@/src/containers/detail/detailSelect";
-import DetailSelectedContent from "@/src/containers/detail/detailSelectedContent";
 
 export default function DetailPage() {
   return (
@@ -21,9 +20,6 @@ export default function DetailPage() {
         </div>
         <div>
           <DetailSelect />
-        </div>
-        <div>
-          <DetailSelectedContent />
         </div>
       </div>
     </div>
