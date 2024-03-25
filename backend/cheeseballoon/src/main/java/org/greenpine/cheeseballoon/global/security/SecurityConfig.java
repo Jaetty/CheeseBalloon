@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.global.security;
 
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.global.token.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,6 +17,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig{
 
+    private final JwtUtil jwtUtil;
+
+    String[] permitUrls = {"/member/login"};
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //CSRF, CORS
@@ -27,11 +31,14 @@ public class SecurityConfig{
                 SessionCreationPolicy.STATELESS));
 
         //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-        http.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        //new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class
 
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize
                 //.requestMatchers().permitAll()
+                .requestMatchers("/member/login").permitAll()
+                //.requestMatchers("/member/login/test").hasRole("admin") //role 체크
                 //모든 경로에 대한 인증처리는 Pass
                 .anyRequest().permitAll()
         );
