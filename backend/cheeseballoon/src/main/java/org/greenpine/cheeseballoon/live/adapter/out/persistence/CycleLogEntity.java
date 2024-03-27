@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "lives")
+@Table(name = "cycle_logs")
 @DynamicInsert
 @DynamicUpdate
 @Getter
@@ -19,13 +19,12 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LiveEntity {
+public class CycleLogEntity {
     @Id
     @GeneratedValue
-    private Long liveId;
-    private Long streamerId;
-    private String streamUrl;
-    private String thumbnailUrl;
-    private Boolean end;
-
+    private Long cycleLogId;
+    private Integer afreecaViewerCnt;
+    private Integer chzzkViewerCnt;
+    private Integer totalViewerCnt;
+    private LocalDateTime cycleDt;
 }
