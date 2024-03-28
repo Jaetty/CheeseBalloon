@@ -2,7 +2,7 @@ package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDto;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,13 +14,14 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     private final StreamerRepository streamerRepository;
 
     @Override
-    public List<FindSearchStreamerResDto> searchStreamer(String query) {
+    public List<FindSearchStreamerResDtoInterface> searchStreamersByName(String query) {
 
         // 아래는 테스트
-        List<StreamerEntity> streamerEntities = streamerRepository.findAllByNameContaining(query);
-        StreamerEntity ss = streamerRepository.findByStreamerId(1L);
+        List<FindSearchStreamerResDtoInterface> result = streamerRepository.searchStreamerByName(query);
 
-        return null;
+
+
+        return result;
     }
 
 
