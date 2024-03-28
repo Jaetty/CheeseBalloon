@@ -21,4 +21,10 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
 
     List<CategoryEntity> findAllByChosungIsNull();
 
+    @Query(value = "SELECT * " +
+            "FROM  categories " +
+            "WHERE category in :categories "
+            , nativeQuery = true)
+    List<CategoryEntity> findAllByCategory(List<String> categories);
+
 }
