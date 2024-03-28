@@ -22,7 +22,6 @@ public class LiveLogEntity {
     private Long liveLogId;
     private String title;
     private Integer viewerCnt;
-    private LocalDateTime liveDt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "live_id")

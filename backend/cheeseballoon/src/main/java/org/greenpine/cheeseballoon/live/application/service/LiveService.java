@@ -10,6 +10,7 @@ import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesR
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +23,11 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
     private final CategoryPort categoryPort;
 
     @Override
+    @Transactional
     public List<FindLivesResDto> findLives(FindLivesReqDto findLiveReqDto) {
-        if(findLiveReqDto.getCategories() ==null){
-            livePort.findLivesAll(findLiveReqDto);
+        if(findLiveReqDto.getCategories() ==null || findLiveReqDto.getCategories().isEmpty()){
+            List<FindLivesResDto> res = livePort.findLivesAll(findLiveReqDto);
+            return res;
         }else{
             livePort.findLives(findLiveReqDto);
         }
