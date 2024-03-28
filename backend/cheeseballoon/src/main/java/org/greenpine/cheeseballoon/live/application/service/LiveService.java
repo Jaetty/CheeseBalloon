@@ -29,28 +29,9 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
             List<FindLivesResDto> res = livePort.findLivesAll(findLiveReqDto);
             return res;
         }else{
-            livePort.findLives(findLiveReqDto);
+            List<FindLivesResDto> res = livePort.findLivesByCategory(findLiveReqDto);
+            return res;
         }
-        List<FindLivesResDto> temp = new ArrayList<>();
-        Long id=1L;
-        for(int i=0; i<findLiveReqDto.getLimit(); i++) {
-            temp.add(FindLivesResDto.builder()
-                    .streamId(id)
-                    .liveId(id++)
-                    .title("제목입니다리미는뜨끈뜨끈"+id)
-                    .name("이름"+id)
-                    .thumbnailUrl("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26464698/live/4741825/record/25849301/thumbnail/image_480.jpg?date=1710086310000")
-                    .channelUrl("channelUrl")
-                    .streamUrl("streamurl")
-                    .platform('A')
-                    .profileUrl("https://nng-phinf.pstatic.net/MjAyMzEyMTVfMTgx/MDAxNzAyNjAxMjEyMTYw.Hw6vs76aI0L1zeu4fziwXDE35gidFriwTSgAjq7KWxUg.0V3KaKvctGKcVYa76UiDVTXMjXeUSuUezHX6nGU4y9kg.PNG/123.png?type=f120_120_na")
-                    .viewerCnt(100)
-                    .category("talk")
-                    .build());
-            id++;
-        }
-
-        return temp;
     }
 
     @Override

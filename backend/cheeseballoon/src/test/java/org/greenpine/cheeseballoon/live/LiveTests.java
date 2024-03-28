@@ -33,8 +33,7 @@ public class LiveTests {
     public void liveGetTest(){
         //System.out.println(liveController.getPartition("PUBG : 배틀그라운드"));
         List<String> categories = new ArrayList<>();
-//        categories.add("종겜");
-//        categories.add("배틀그라운드");
+        categories.add("오버워치 2");
         ResponseEntity<CustomBody> res = liveController.findLives(
             new FindLivesReqDto(categories,3,0)
             );
