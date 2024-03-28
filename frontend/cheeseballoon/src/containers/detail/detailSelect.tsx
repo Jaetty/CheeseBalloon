@@ -4,6 +4,7 @@ import { useState } from "react";
 import DetailSelectedContent from "./detailSelectedContent";
 import DetailSelectButton from "./detailSelectButton";
 import DetailSelectDate from "./detailSelectDate";
+import style from "./detailSelect.module.scss"
 
 export default function DetailSelect() {
   const [content, setContent] = useState<string>("viewer");
@@ -26,10 +27,10 @@ export default function DetailSelect() {
       <div>
         <DetailSelectButton handleContent={handleContent} />
       </div>
-      <div>
+      <div className={style.date}>
         <DetailSelectDate handleDate={handleDate} />
       </div>
-      <div>
+      <div className={style.content}>
         <DetailSelectedContent selected={selected} />
       </div>
     </div>

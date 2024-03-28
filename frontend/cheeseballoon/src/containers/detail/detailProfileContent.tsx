@@ -16,7 +16,7 @@ interface DetailProfileContentData {
 }
 
 // 임시 데이터
-const data = {
+const data: DetailProfileContentData = {
   streamId: 1234,
   originId: "hanryang1125",
   name: "풍월량",
@@ -32,12 +32,12 @@ const data = {
 export default function DetailProfileContent() {
   return (
     <div className={style.wrapper}>
-        <div className={style["image-container"]}>
-          <img
-            className={style["profile-image"]}
-            src={data.profileUrl}
-            alt="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png?type=f120_120_na"
-          />
+      <div className={style["image-container"]}>
+        <img
+          className={style["profile-image"]}
+          src={data.profileUrl}
+          alt="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png?type=f120_120_na"
+        />
       </div>
       <div>
         <div className={style["logo-and-name"]}>
@@ -51,10 +51,12 @@ export default function DetailProfileContent() {
         {/* <div className={style.introduce}>프로필 소개</div> */}
       </div>
       <div className={style.rank}>
-        <div className={style['rank-num']}># {data.rank}</div>
-        <div className={`${style['rank-diff']} ${data.diff > 0 ? style.positive : style.negative}`}>
+        <div className={style["rank-num"]}># {data.rank}</div>
+        <div
+          className={`${style["rank-diff"]} ${data.diff >= 0 ? style.positive : style.negative}`}
+        >
           {data.diff >= 0 ? `(+${data.diff})` : `(-${data.diff})`}
-          </div>
+        </div>
       </div>
     </div>
   );

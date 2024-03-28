@@ -1,3 +1,5 @@
+import style from './detailSelectDate.module.scss'
+
 interface DetailSelectDateProps {
   handleDate: (
     selectedDate: number,
@@ -14,8 +16,8 @@ export default function DetailSelectDate({
   };
 
   return (
-    <div>
-      <select id="selectDate" onChange={handleChange}>
+    <div className={style.wrapper}>
+      <select className={style.button} id="selectDate"  onChange={handleChange}>
         <option value={30}>30일</option>
         <option value={14}>14일</option>
         <option value={7}>7일</option>

@@ -1,5 +1,5 @@
 import DetailProfile from "@/src/containers/detail/detailProfile";
-import DetailOverview from "@/src/containers/detail/detailOverview";
+import DetailSummary from "@/src/containers/detail/detailSummary";
 import DetailSelect from "@/src/containers/detail/detailSelect";
 import style from "@/src/app/detail/[Id]/page.module.scss";
 
@@ -10,16 +10,12 @@ export default function DetailPage() {
         <div className={style.profile}>
           <DetailProfile />
         </div>
-        <div>
-          <hr />
+        <hr />
+        <div className={style.summary}>
+          <DetailSummary />
         </div>
-        <div>
-          <DetailOverview />
-        </div>
-        <div>
-          <hr />
-        </div>
-        <div>
+        <hr />
+        <div className={style.contents}>
           <DetailSelect />
         </div>
       </div>
