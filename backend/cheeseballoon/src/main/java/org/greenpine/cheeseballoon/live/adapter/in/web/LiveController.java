@@ -28,6 +28,7 @@ public class LiveController {
 
     @GetMapping("")
     public ResponseEntity<CustomBody> findLives(FindLivesReqDto findLiveReqDto){
+        log.info("findLives - Call");
         System.out.println(findLiveReqDto);
         List<FindLivesResDto> ret = liveUsecase.findLives(findLiveReqDto);
 
@@ -36,7 +37,7 @@ public class LiveController {
 
     @GetMapping("/category")
     public ResponseEntity<CustomBody> findCategories(@RequestParam String query){
-
+        log.info("findCategories - Call");
         FindCategoriesResDto ret = categoryUsecase.findCategories(query);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
@@ -44,13 +45,14 @@ public class LiveController {
 
     @GetMapping("/category/hot")
     public ResponseEntity<CustomBody> findHotCategories(@RequestParam int limit){
+        log.info("findHotCategories - Call");
         FindHotCategoriesResDto ret = categoryUsecase.findHotCategories(limit);
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
     }
 
     @GetMapping("/search")
     public ResponseEntity<CustomBody> searchLive(@RequestParam String query){
-
+        log.info("searchLive - Call");
         List<FindLivesResDto> ret = liveUsecase.searchLives(query);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));

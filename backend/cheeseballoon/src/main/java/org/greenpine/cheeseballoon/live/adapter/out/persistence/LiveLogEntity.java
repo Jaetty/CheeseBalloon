@@ -20,16 +20,8 @@ public class LiveLogEntity {
     @Id
     @GeneratedValue
     private Long liveLogId;
-
     private String title;
-
     private Integer viewerCnt;
-
-    private Float rating;
-
-    private Float totalRating;
-
-    private LocalDateTime liveDt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "live_id")
@@ -38,5 +30,9 @@ public class LiveLogEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cycle_log_id")
+    private CycleLogEntity cycleLog;
 
 }

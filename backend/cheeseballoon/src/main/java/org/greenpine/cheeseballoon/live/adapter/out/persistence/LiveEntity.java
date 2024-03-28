@@ -1,10 +1,8 @@
 package org.greenpine.cheeseballoon.live.adapter.out.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -23,10 +21,13 @@ public class LiveEntity {
     @Id
     @GeneratedValue
     private Long liveId;
+    //private liveOriginId;
     private String streamUrl;
     private String thumbnailUrl;
-    private LocalDateTime startDt;
-    private LocalDateTime endDt;
-    private Integer totalLiveTime;
+    private Boolean isEnd;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "streamer_id")
+    private StreamerEntity streamer;
 
 }
