@@ -33,8 +33,8 @@ public class LiveTests {
     public void liveGetTest(){
         //System.out.println(liveController.getPartition("PUBG : 배틀그라운드"));
         List<String> categories = new ArrayList<>();
-        categories.add("종겜");
-        categories.add("배틀그라운드");
+//        categories.add("종겜");
+//        categories.add("배틀그라운드");
         ResponseEntity<CustomBody> res = liveController.findLives(
             new FindLivesReqDto(categories,3,0)
             );
@@ -58,11 +58,7 @@ public class LiveTests {
         System.out.println(findCategoriesResDto);
     }
 
-    @Test
-    public void temp(){
-        CycleLogEntity cycleLog = cycleLogRepository.findLatestCycleLog();
-        System.out.println(cycleLog.getCycleLogId() + " " +cycleLog.getCycleDt());
-    }
+
 
     @Test
     public void CategoryTaskTest(){

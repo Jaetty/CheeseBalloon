@@ -25,6 +25,5 @@ public class CycleLogEntity {
     private Long cycleLogId;
     private Integer afreecaViewerCnt;
     private Integer chzzkViewerCnt;
-    private Integer totalViewerCnt;
     private LocalDateTime cycleDt;
 }
