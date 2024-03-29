@@ -17,7 +17,6 @@ class LiveLogRead(BaseModel):
     category_id: int | None = None
     title: str | None = None
     viewer_cnt: int
-    live_dt: datetime
 
     class Config:
         from_attributes = True

@@ -26,7 +26,6 @@ class CrawlingBusiness:
             cycle = CycleLogCreate(
                 afreeca_viewer_cnt=sum(item["viewer_cnt"] for item in streamer_list if item["platform"] == "A"),
                 chzzk_viewer_cnt=sum(item["viewer_cnt"] for item in streamer_list if item["platform"] == "C"),
-                total_viewer_cnt=sum(item["viewer_cnt"] for item in streamer_list)
             )
             cycle_id = CycleLogService().create(db=db, cycle_log=cycle).cycle_log_id
             for streamer_info in streamer_list:
@@ -65,9 +64,10 @@ class CrawlingBusiness:
                     print("라이브 데이터 넣기")
                     live = LiveCreate(
                         streamer_id= streamer_id,
-                        streamer_url= streamer_info.stream_url,
+                        live_origin_id= streamer_info.live_origin_id,
+                        stream_url= streamer_info.stream_url,
                         thumbnail_url= streamer_info.thumbnail_url,
-                        start_dt= streamer_info.start_dt
+                        is_live= True
                     )
                     LiveService().create(db=db, live=live)
                 live_id = LiveService().get_live(db=db, streamer_id=streamer_id, live_origin_id=streamer_info.live_origin_id)

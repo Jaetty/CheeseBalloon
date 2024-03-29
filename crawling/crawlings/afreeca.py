@@ -6,18 +6,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
-from tabulate import tabulate
-
-from sqlalchemy.orm import Session
 from schemas.streamer_info import StreamerInfo
-from services.streamers import StreamerService
-from services.streamer_logs import StreamerLogService
-from services.categories import CategoryService
-from schemas.streamers import StreamerCreate
-from schemas.categories import CategoryCreate
+
 
 from datetime import datetime
-import time
 import re
 
 class Afreeca:
