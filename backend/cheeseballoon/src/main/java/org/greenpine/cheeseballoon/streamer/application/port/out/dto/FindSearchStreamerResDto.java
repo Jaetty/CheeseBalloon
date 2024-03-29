@@ -1,17 +1,15 @@
 package org.greenpine.cheeseballoon.streamer.application.port.out.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Convert;
+import lombok.*;
 
-@Data
 @AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Builder
 public class FindSearchStreamerResDto {
 
-    Long streamId;
+    Long streamerId;
     String name;
     boolean isLive;
     String profileUrl;
