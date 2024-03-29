@@ -31,16 +31,10 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
 
     @Override
     public List<FindLivesResDto> findLivesByCategory(FindLivesReqDto findLiveReqDto) {
-        CycleLogEntity lastestCycle = cycleLogRepository.findLatestCycleLog();
-        Long cycleLogId = lastestCycle.getCycleLogId();
+        List<String> categoryStrs = findLiveReqDto.getCategories();
         int limit = findLiveReqDto.getLimit();
         int offset = findLiveReqDto.getOffset();
-        List<String> searchCategoryStrs=findLiveReqDto.getCategories();
-        List<CategoryEntity> searchCategories = categoryRepository.findAllByCategory(searchCategoryStrs);
-        List<Long> categoryIds = searchCategories.stream()
-                .map(CategoryEntity::getCategoryId)
-                .collect(Collectors.toList());
-        List<LiveLogEntity> liveLogList = liveLogRepository.findByCycleLogAndCategory(cycleLogId, categoryIds, limit, offset);
+        List<LiveLogEntity> liveLogList = liveLogRepository.findByCycleLogAndCategory(categoryStrs, limit, offset );
         List<FindLivesResDto> res= new ArrayList<>();
         for(LiveLogEntity liveLog : liveLogList){
             CategoryEntity category = liveLog.getCategory();
@@ -67,11 +61,9 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
 
     @Override
     public List<FindLivesResDto> findLivesAll(FindLivesReqDto findLiveReqDto) {
-        CycleLogEntity lastestCycle = cycleLogRepository.findLatestCycleLog();
-        Pageable page=PageRequest.of(findLiveReqDto.getOffset(),findLiveReqDto.getLimit(), Sort.by("viewerCnt").descending());
-        Page<LiveLogEntity> liveLogPage = liveLogRepository.findByCycleLog(lastestCycle, page);
-        List<LiveLogEntity> liveLogList = liveLogPage.getContent();
-
+        int limit = findLiveReqDto.getLimit();
+        int offset = findLiveReqDto.getOffset();
+        List<LiveLogEntity> liveLogList = liveLogRepository.findByCycleLog(limit, offset);
         List<FindLivesResDto> res= new ArrayList<>();
         for(LiveLogEntity liveLog : liveLogList){
             CategoryEntity category = liveLog.getCategory();
