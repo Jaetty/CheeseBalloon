@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.live.application.port.in.CategoryUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.LiveUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
+import org.greenpine.cheeseballoon.live.application.port.in.dto.SearchLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.out.CategoryPort;
 import org.greenpine.cheeseballoon.live.application.port.out.LivePort;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.SearchLivesResDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,43 +26,23 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
 
     @Override
     @Transactional
-    public List<FindLivesResDto> findLives(FindLivesReqDto findLiveReqDto) {
-        if(findLiveReqDto.getCategories() ==null || findLiveReqDto.getCategories().isEmpty()){
-            List<FindLivesResDto> res = livePort.findLivesAll(findLiveReqDto);
+    public List<FindLivesResDto> findLives(FindLivesReqDto reqDto) {
+        if(reqDto.getCategories() ==null || reqDto.getCategories().isEmpty()){
+            List<FindLivesResDto> res = livePort.findLivesAll(reqDto);
             return res;
         }else{
-            List<FindLivesResDto> res = livePort.findLivesByCategory(findLiveReqDto);
+            List<FindLivesResDto> res = livePort.findLivesByCategory(reqDto);
             return res;
         }
     }
 
     @Override
-    public List<FindLivesResDto> searchLives(String query) {
+    @Transactional
+    public List<SearchLivesResDto> searchLives(SearchLivesReqDto reqDto) {
 
-        //        List<FindLivesResDto> result = searchPort.findLives(query);
-        List<FindLivesResDto> result = new ArrayList<>();
+        List<SearchLivesResDto> res=livePort.searchLives(reqDto);
 
-        if(query.chars().allMatch(Character::isDigit)){
-
-            for(int i=0; i<Integer.parseInt(query); i++){
-                if(i==60) break;
-                result.add(FindLivesResDto.builder()
-                        .streamId((long)i)
-                        .liveId((long)i)
-                        .name("스트리머 넘버 :"+ i)
-                        .title("방송 이름 부분 " + i)
-                        .thumbnailUrl("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26453996/live/4794303/record/25925839/thumbnail/image_480.jpg?date=1710346950000")
-                        .platform( i%3==0 ? 'C' : 'A')
-                        .profileUrl("https://nng-phinf.pstatic.net/MjAyMzEyMTlfMzYg/MDAxNzAyOTcwODY1OTUy.1hHkqzH-zyEhyW2EJNfj1q6r7XTDeQNNqL_owQQ6AFwg.mCjDaHbdF0jjfhB2PvFuFJLxL9jQ-PV0oSLLDRXoGLUg.GIF/popHEAD.gif?type=f120_120_na")
-                        .category("스타크래프트")
-                        .viewerCnt(15117)
-                        .streamUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=43s")
-                        .channelUrl("https://chzzk.naver.com/bb382c2c0cc9fa7c86ab3b037fb5799c")
-                        .build());
-            }
-        }
-
-        return result;
+        return res;
     }
 
     @Override

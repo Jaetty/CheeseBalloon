@@ -29,4 +29,12 @@ public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
             "LIMIT :limit OFFSET :offset"
             , nativeQuery = true)
     List<LiveLogEntity> findByCycleLogAndCategory(List<String> categoryStrs, int limit, int offset);
+
+    @Query(value = "SELECT ll.* FROM lives l, live_logs ll " +
+            "WHERE l.live_id = ll.live_id "+
+            "AND l.is_live=1 " +
+            "AND ll.title LIKE CONCAT('%', :query, '%') "+
+            "ORDER BY ll.viewer_cnt DESC "
+            , nativeQuery = true)
+    List<LiveLogEntity> searchByTitle(String query);
 }

@@ -24,7 +24,7 @@ public class LiveEntity {
     //private liveOriginId;
     private String streamUrl;
     private String thumbnailUrl;
-    private Boolean isEnd;
+    private Boolean isLive;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "streamer_id")
