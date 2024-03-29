@@ -16,3 +16,8 @@ class CycleLogRead(BaseModel):
 
     class Config:
         from_attributes = True
+
+class CycleLogId(BaseModel):
+    cycle_log_id: int
+    class Config:
+        from_attributes = True
