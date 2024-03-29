@@ -7,9 +7,11 @@ import org.greenpine.cheeseballoon.live.adapter.out.persistence.CategoryReposito
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.CycleLogEntity;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.CycleLogRepository;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
+import org.greenpine.cheeseballoon.live.application.port.in.dto.SearchLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.SearchLivesResDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,6 +60,12 @@ public class LiveTests {
         System.out.println(findCategoriesResDto);
     }
 
+    @Test
+    public void searchLivesTest(){
+        ResponseEntity<CustomBody> res = liveController.searchLive("아");
+        List<SearchLivesResDto> resDto = (List<SearchLivesResDto>) res.getBody().getData();
+        System.out.println(resDto);
+    }
 
 
     @Test
