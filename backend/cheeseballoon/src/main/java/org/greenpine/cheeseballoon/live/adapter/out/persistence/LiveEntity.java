@@ -21,7 +21,7 @@ public class LiveEntity {
     @Id
     @GeneratedValue
     private Long liveId;
-    //private liveOriginId;
+    private Long liveOriginId;
     private String streamUrl;
     private String thumbnailUrl;
     private Boolean isLive;
