@@ -5,6 +5,7 @@ import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchS
 import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +41,13 @@ public class StreamerService implements StreamerUsecase {
 //        }
 
         return result;
+    }
+
+    @Override
+    public FindStreamerDetailResDto streamerDetail(Long streamerId) {
+
+        streamerPort.streamerDetail(streamerId);
+
+        return null;
     }
 }
