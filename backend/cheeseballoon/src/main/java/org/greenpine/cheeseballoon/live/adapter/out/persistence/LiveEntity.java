@@ -6,8 +6,6 @@ import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEnti
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "lives")
 @DynamicInsert
@@ -21,10 +19,10 @@ public class LiveEntity {
     @Id
     @GeneratedValue
     private Long liveId;
-    //private liveOriginId;
+    private Long liveOriginId;
     private String streamUrl;
     private String thumbnailUrl;
-    private Boolean isEnd;
+    private Boolean isLive;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "streamer_id")
