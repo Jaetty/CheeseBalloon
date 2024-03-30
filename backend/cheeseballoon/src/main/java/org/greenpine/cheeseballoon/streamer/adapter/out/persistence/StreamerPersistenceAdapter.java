@@ -2,11 +2,16 @@ package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveEntity;
+import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDto;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -14,24 +19,29 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
 
     private final StreamerRepository streamerRepository;
     private final StreamerLogRepository streamerLogRepository;
+    private final LiveRepository liveRepository;
 
     @Override
     public List<FindSearchStreamerResDtoInterface> searchStreamersByName(String query) {
 
-        // 아래는 테스트
         List<FindSearchStreamerResDtoInterface> result = streamerRepository.searchStreamerByName(query);
-
-//        List<StreamerLogEntity> searchStreamers = streamerLogRepository.findStreamerLogEntitiesByNameSearch(query);
-//
-//        for(int i=0; i< searchStreamers.size(); i++){
-//            System.out.println(searchStreamers.get(i).getStreamer().getName());
-//        }
-
-
 
         return result;
     }
 
+    @Override
+    public FindStreamerDetailResDto streamerDetail(Long streamerId) {
+
+        StreamerEntity streamerEntity = streamerRepository.findByStreamerId(1369L);
+
+        System.out.println(streamerEntity.getName());
+
+        LiveEntity liveEntity = liveRepository.findByStreamer_StreamerId(streamerId);
+
+        System.out.println("라이브 엔티티 테스트" + liveEntity.getStreamer().getName() +" " + liveEntity.getStreamUrl());
+
+        return null;
+    }
 
 
 }
