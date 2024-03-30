@@ -13,7 +13,7 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
 
     List<StreamerEntity> findAllByNameContaining(String query);
 
-    @Query(value = "SELECT s.streamer_id AS streamerId, s.NAME, li.is_end AS isLive, s.profile_url AS profileUrl, s.channel_url AS channelUrl,sl.follower, s.platform\n" +
+    @Query(value = "SELECT s.streamer_id AS streamerId, s.NAME, li.is_live AS isLive, s.profile_url AS profileUrl, s.channel_url AS channelUrl,sl.follower, s.platform\n" +
             "FROM streamers s JOIN (SELECT streamer_id, follower, reg_dt \n" +
             "\tFROM streamer_logs \n" +
             "\tWHERE (streamer_id, reg_dt) IN (SELECT streamer_id, max(reg_dt) AS reg_dt FROM streamer_logs GROUP BY streamer_id) ORDER BY reg_dt DESC) sl\n" +
