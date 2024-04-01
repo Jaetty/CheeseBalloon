@@ -23,16 +23,15 @@ import java.util.Random;
 public class RankingController {
     private final RankingUsecase rankingUsecase;
     @GetMapping("/follow")
-    public ResponseEntity<CustomBody> findFollowRanking(@RequestBody FindFollowRankingReqDto findRankingReqDto){
-        List<FindFollowRankingResDto> res = rankingUsecase.findFollowRanking(findRankingReqDto);
+    public ResponseEntity<CustomBody> test(@RequestParam int limit, int offset, int startDate, char platform){
 
         List<FindFollowRankingResDto> result = new ArrayList<>();
         Random random = new Random();
 
         // 테스트용 데이터 제공
-        for(int i=0; i< findRankingReqDto.getLimit(); i++){
+        for(int i=0; i< limit; i++){
 
-            if(findRankingReqDto.getLimit() > 300) break;
+            if(limit > 300) break;
 
             FindFollowRankingResDto temp = FindFollowRankingResDto.builder()
                     .streamerId((long) i)
@@ -51,11 +50,11 @@ public class RankingController {
                 else temp.setDiff(random.nextInt(100));
             }
 
-            if(findRankingReqDto.getPlatform()=='T'){
+            if(platform=='T'){
                 if(i%2==0) temp.setPlatform('C');
             }
             else{
-                temp.setPlatform(findRankingReqDto.getPlatform());
+                temp.setPlatform(platform);
             }
 
             result.add(temp);

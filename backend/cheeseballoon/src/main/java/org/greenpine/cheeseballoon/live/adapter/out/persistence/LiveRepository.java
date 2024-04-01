@@ -13,4 +13,6 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
 //    @Query("SELECT LiveEntity FROM LiveEntity le where le.streamer.streamerId = :streamerId order by le.liveId ")
     LiveEntity findFirstByStreamer_StreamerIdOrderByLiveId(Long streamerId);
 
+    LiveEntity findByLiveId(Long liveId);
+
 }
