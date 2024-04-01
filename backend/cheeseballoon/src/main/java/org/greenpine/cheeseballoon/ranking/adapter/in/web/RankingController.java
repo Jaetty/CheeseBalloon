@@ -5,8 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
-import org.greenpine.cheeseballoon.ranking.application.port.in.dto.FindRankingReqDto;
-import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FollowRankingResDto;
+import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
+import org.greenpine.cheeseballoon.ranking.application.port.in.dto.FindFollowRankingReqDto;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.message.RankingResMsg;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +21,12 @@ import java.util.Random;
 @RequestMapping("/ranking")
 @RequiredArgsConstructor
 public class RankingController {
-
+    private final RankingUsecase rankingUsecase;
     @GetMapping("/follow")
-    public ResponseEntity<CustomBody> test(@RequestBody FindRankingReqDto findRankingReqDto){
+    public ResponseEntity<CustomBody> findFollowRanking(@RequestBody FindFollowRankingReqDto findRankingReqDto){
+        List<FindFollowRankingResDto> res = rankingUsecase.findFollowRanking(findRankingReqDto);
 
-        List<FollowRankingResDto> result = new ArrayList<>();
+        List<FindFollowRankingResDto> result = new ArrayList<>();
         Random random = new Random();
 
         // 테스트용 데이터 제공
@@ -32,7 +34,7 @@ public class RankingController {
 
             if(findRankingReqDto.getLimit() > 300) break;
 
-            FollowRankingResDto temp = FollowRankingResDto.builder()
+            FindFollowRankingResDto temp = FindFollowRankingResDto.builder()
                     .streamerId((long) i)
                     .name( i%3==0 ? "최대한 긴 글자의 방송인" : "방송인")
                     .rank(i+1)
