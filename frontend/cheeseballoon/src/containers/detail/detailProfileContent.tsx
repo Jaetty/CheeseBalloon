@@ -29,12 +29,14 @@ const data: DetailProfileContentData = {
   diff: 3,
 };
 
+const isLive: boolean = true
+
 export default function DetailProfileContent() {
   return (
     <div className={style.wrapper}>
       <div className={style["image-container"]}>
         <img
-          className={style["profile-image"]}
+          className={`${style["profile-image"]} ${isLive ? style.live : null}`}
           src={data.profileUrl}
           alt="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png?type=f120_120_na"
         />

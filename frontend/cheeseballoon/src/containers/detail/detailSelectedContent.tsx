@@ -1,3 +1,6 @@
+"use client";
+
+import { useParams, useRouter } from "next/navigation";
 import DetailViewer from "@/src/containers/detail/detailViewer";
 import DetailCategory from "./detailCategory";
 import DetailDuration from "./detailDuration";
@@ -5,15 +8,12 @@ import DetailRating from "./detailRating";
 import DetailFollower from "./detailFollower";
 import DetailCalendar from "./detailCalendar";
 
-export default function DetailSelectedContent({
-  selected,
-}: {
-  selected: {
-    content: string;
-    date: number;
-  };
-}) {
-  switch (selected.content) {
+// 임시
+export default function DetailSelectedContent() {
+  const { category } = useParams();
+  const router = useRouter()
+
+  switch (category) {
     case "viewer":
       return <DetailViewer />;
     case "category":
@@ -27,6 +27,6 @@ export default function DetailSelectedContent({
     case "calendar":
       return <DetailCalendar />;
     default:
-      return null;
+      router.push("/404");
   }
 }
