@@ -13,6 +13,11 @@ export default function DetailRatingChart() {
       title: {
         text: "시청률",
         align: "center",
+        style: {
+          fontSize: "20px",
+          fontWeight: "bold",
+          color: "white",
+        },
       },
       chart: {
         toolbar: {
@@ -30,11 +35,37 @@ export default function DetailRatingChart() {
       },
       xaxis: {
         categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+        labels: {
+          style: {
+            colors: "white",
+            fontWeight: "bold",
+          },
+        },
       },
-      yaxis: [{}],
+      yaxis: [{
+        labels: {
+          style: {
+            colors: "white",
+            fontWeight: "bold",
+          },
+        },
+      }],
       grid: {
-        show: false,
+        show: true,
+        strokeDashArray: 5,
+        borderColor: "#bcbcbc",
+        xaxis: {
+          lines: {
+            show: false,
+          },
+        },
+        yaxis: {
+          lines: {
+            show: true,
+          },
+        },
       },
+      colors: ["#F0BD53"],
     },
 
     series: [
@@ -52,8 +83,8 @@ export default function DetailRatingChart() {
         type="line"
         options={chartData.options}
         series={chartData.series}
-        height={500}
-        width={500}
+        height={"auto"}
+        width={"100%"}
       />
     </div>
   );

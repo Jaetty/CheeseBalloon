@@ -1,0 +1,45 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  column-gap: 2rem;
+  row-gap: 2rem;
+}
+
+.content {
+  border-radius: 20px;
+  padding: 1.5rem;
+  background-color: #4e4e4e;
+}
+
+.content:nth-child(5) {
+  grid-column: 1 / span 2;
+}
+
+.content-name {
+  color: white;
+}
+
+.content-num {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+}
+
+.content-diff {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.chart-container {
+  padding: 1rem;
+}
+
+.positive {
+  color: #8ce09e;
+}
+
+.negative {
+  color: #d38883;
+}
