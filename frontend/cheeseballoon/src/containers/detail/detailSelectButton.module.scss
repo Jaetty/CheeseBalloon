@@ -1,6 +1,7 @@
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-flow: column;
   column-gap: 0.5rem;
   background-color: #4e4e4e;
   padding: 0.5rem;
@@ -15,27 +16,27 @@
   border-radius: 0.5rem;
   padding: 1rem;
   cursor: pointer;
+  font-weight: bold;
+  color: white;
 }
 
-.button-container:hover {
+.button:hover {
   background-color: #969696;
-}
-
-.button-container:hover .button {
   color: black;
 }
 
 .button {
+  padding: 1rem;
   border: none;
   background-color: transparent;
   color: white;
   font-weight: bold;
   cursor: pointer;
+  border: 1px solid gray;
+  border-radius: 0.5rem;
 }
 
 .select {
   background-color: gray;
-  .button {
-    color: black;
-  }
+  color: black;
 }

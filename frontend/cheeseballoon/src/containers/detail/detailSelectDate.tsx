@@ -1,27 +1,24 @@
+'use client'
+
+import { useParams, useRouter } from "next/navigation";
 import style from "./detailSelectDate.module.scss";
 
-// interface DetailSelectDateProps {
-//   handleDate: (
-//     selectedDate: number,
-//     event: React.ChangeEvent<HTMLSelectElement>
-//   ) => void;
-// }
-
 export default function DetailSelectDate() {
-//   {
-//   handleDate,
-// }: DetailSelectDateProps
-  // const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const selectedDate = parseInt(event?.target.value, 30);
-  //   handleDate(selectedDate, event);
-  // };
+  const { id, category } = useParams();
+  const router = useRouter();
+  const handleChangeDate = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newDate = e.target.value;
+    router.push(category ? `/detail/${id}/${category}/${newDate}` : `/detail/${id}/viewer/${newDate}`);
+
+  };
 
   return (
     <div className={style.wrapper}>
       <select
+        onChange={(e) => {
+          handleChangeDate(e);
+        }}
         className={style.button}
-        id="selectDate"
-        // onChange={handleChange}
       >
         <option value={7}>7일</option>
         <option value={14}>14일</option>

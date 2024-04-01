@@ -1,5 +1,6 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import style from "./detailChart.module.scss";
 
@@ -8,6 +9,9 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 export default function DetailViewerChart() {
+  const { id, category, date } = useParams()
+  
+
   const chartData = {
     options: {
       title: {
