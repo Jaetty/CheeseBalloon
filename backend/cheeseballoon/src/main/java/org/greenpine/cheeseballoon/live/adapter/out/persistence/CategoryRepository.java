@@ -21,10 +21,15 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
 
     List<CategoryEntity> findAllByChosungIsNull();
 
-    @Query(value = "SELECT * " +
-            "FROM  categories " +
-            "WHERE category in :categories "
-            , nativeQuery = true)
-    List<CategoryEntity> findAllByCategory(List<String> categories);
+    @Query(value ="SELECT c.* FROM live_logs ll "+
+    "JOIN categories c ON ll.category_id = c.category_id " +
+    "JOIN ( SELECT cycle_log_id FROM cycle_logs "+
+        "ORDER BY cycle_log_id DESC LIMIT 10) lc "+
+        "ON ll.cycle_log_id = lc.cycle_log_id "+
+    "GROUP BY ll.category_id "+
+    "ORDER BY SUM(ll.viewer_cnt) DESC "+
+    "LIMIT :limit "
+    , nativeQuery = true)
+    List<CategoryEntity> findHot(Integer limit);
 
 }

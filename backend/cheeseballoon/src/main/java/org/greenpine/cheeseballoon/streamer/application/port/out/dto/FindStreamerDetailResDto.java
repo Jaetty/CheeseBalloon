@@ -13,10 +13,9 @@ public class FindStreamerDetailResDto {
 
     Long streamerId;
     String name;
-    boolean isLive;
+    String originId;
     String profileUrl;
     String channelUrl;
-    int follower;
     char platform;
     Integer rank;
     Integer diff;

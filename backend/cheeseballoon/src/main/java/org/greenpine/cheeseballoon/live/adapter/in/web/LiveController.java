@@ -8,9 +8,11 @@ import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.live.application.port.in.CategoryUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.LiveUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
+import org.greenpine.cheeseballoon.live.application.port.in.dto.SearchLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.SearchLivesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.message.LiveResMsg;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +55,10 @@ public class LiveController {
     @GetMapping("/search")
     public ResponseEntity<CustomBody> searchLive(@RequestParam String query){
         log.info("searchLive - Call");
-        List<FindLivesResDto> ret = liveUsecase.searchLives(query);
+        SearchLivesReqDto searchLivesReqDto = SearchLivesReqDto.builder()
+                .query(query)
+                .build();
+        List<SearchLivesResDto> ret = liveUsecase.searchLives(searchLivesReqDto);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
 

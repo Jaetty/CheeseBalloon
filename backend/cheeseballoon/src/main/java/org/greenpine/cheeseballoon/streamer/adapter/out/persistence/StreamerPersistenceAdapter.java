@@ -2,7 +2,9 @@ package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveEntity;
+import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveLogRepository;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.FindAvgViewerRankByStreamerIdAndDateDto;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
@@ -10,6 +12,9 @@ import org.greenpine.cheeseballoon.streamer.domain.StreamerDomain;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Repository
@@ -19,6 +24,7 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     private final StreamerRepository streamerRepository;
     private final StreamerLogRepository streamerLogRepository;
     private final LiveRepository liveRepository;
+    private final LiveLogRepository liveLogRepository;
 
     @Override
     public List<FindSearchStreamerResDtoInterface> searchStreamersByName(String query) {
@@ -28,12 +34,33 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
         return result;
     }
 
+
+    // 이 부분으로 특정 기간 동안의 평균 랭킹을 낸다.
     @Override
     public FindStreamerDetailResDto streamerDetail(Long streamerId) {
 
-        StreamerEntity streamerEntity = streamerRepository.findByStreamerId(1369L);
+        StreamerEntity streamerEntity = streamerRepository.findByStreamerId(streamerId);
 
-        System.out.println(streamerEntity.getName());
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime before = now.minus(7, ChronoUnit.DAYS);
+
+        System.out.println(before.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00")));
+        System.out.println(before.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 23:59:59")));
+
+//        FindAvgViewerRankByStreamerIdAndDateDto currDate = liveLogRepository.findAvgViewerRankByStreamerIdAndDate(streamerId, now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), before.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+        int diff = 0;
+
+//        FindStreamerDetailResDto result = FindStreamerDetailResDto.builder()
+//                .streamerId(streamerId)
+//                .channelUrl(streamerEntity.getChannelUrl())
+//                .rank(currDate.getRank())
+//                .name(streamerEntity.getName())
+//                .profileUrl(streamerEntity.getProfileUrl())
+//                .channelUrl(streamerEntity.getChannelUrl())
+//                .platform(streamerEntity.getPlatform())
+//                .rank(currDate.getRank())
+//                .diff(diff).build();
 
         return null;
     }

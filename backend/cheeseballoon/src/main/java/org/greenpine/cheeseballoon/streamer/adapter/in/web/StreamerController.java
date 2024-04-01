@@ -8,6 +8,7 @@ import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDto;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailLiveResDto;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
 import org.greenpine.cheeseballoon.streamer.application.port.out.message.StreamerResMsg;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class StreamerController {
     @GetMapping("")
     public ResponseEntity<CustomBody> streamerDetail(@RequestParam Long streamerId){
 
-        streamerUsecase.streamerDetail(streamerId);
+        FindStreamerDetailResDto result = streamerUsecase.streamerDetail(streamerId);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, null));
     }
