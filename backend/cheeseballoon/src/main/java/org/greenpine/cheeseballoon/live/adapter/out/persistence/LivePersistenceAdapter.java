@@ -10,12 +10,7 @@ import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategori
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.SearchLivesResDto;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -132,6 +127,14 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
 
     @Override
     public FindHotCategoriesResDto findHotCategories(int limit) {
-        return null;
+        List<CategoryEntity> entities = categoryRepository.findHot(limit);
+        List<String>categories = new ArrayList<>();
+        for(CategoryEntity ce : entities){
+            categories.add(ce.getCategory());
+        }
+        return FindHotCategoriesResDto.builder()
+                .categories(categories)
+                .build();
+
     }
 }

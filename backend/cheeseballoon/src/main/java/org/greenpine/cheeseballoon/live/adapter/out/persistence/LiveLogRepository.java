@@ -37,4 +37,7 @@ public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
             "ORDER BY ll.viewer_cnt DESC "
             , nativeQuery = true)
     List<LiveLogEntity> searchByTitle(String query);
+
+
+
 }

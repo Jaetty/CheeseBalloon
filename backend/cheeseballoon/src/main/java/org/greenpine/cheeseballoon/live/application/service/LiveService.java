@@ -52,8 +52,8 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
 
     @Override
     public FindHotCategoriesResDto findHotCategories(int limit) {
-        categoryPort.findHotCategories(limit);
-        List<String>categories = new ArrayList<>();
+        return categoryPort.findHotCategories(limit);
+        /*List<String>categories = new ArrayList<>();
         categories.add("배그");
         categories.add("리그 오브 레전드");
         categories.add("보라");
@@ -65,6 +65,6 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
 
         return FindHotCategoriesResDto.builder()
                 .categories(categories)
-                .build();
+                .build();*/
     }
 }
