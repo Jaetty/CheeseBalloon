@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 async function getData() {
   const res = await fetch(
-    "https://www.cheeseballoon.site/api/live/category/hot?limit=10"
+    `${API_URL}/live/category/hot?limit=10`
   );
 
   if (!res.ok) {
