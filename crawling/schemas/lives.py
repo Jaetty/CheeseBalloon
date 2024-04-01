@@ -1,15 +1,12 @@
 
 from pydantic import BaseModel
-from datetime import datetime
 
 class LiveCreate(BaseModel):
     streamer_id: int
     live_origin_id: int
     stream_url: str
     thumbnail_url: str
-    start_dt: datetime
-    end_dt: str | None = None
-    total_live_time: int | None = None
+    is_live: bool
 
 # Streamer 데이터 읽기를 위한 스키마 (ID 포함)
 class LiveRead(BaseModel):
@@ -18,9 +15,7 @@ class LiveRead(BaseModel):
     live_origin_id: int
     stream_url: str
     thumbnail_url: str
-    start_dt: datetime
-    end_dt: str | None = None
-    total_live_time: int | None = None
+    is_live: bool
 
     class Config:
         from_attributes = True

@@ -14,7 +14,7 @@ class LiveLog(Base):
     category_id = Column(BigInteger, ForeignKey('categories.category_id'), nullable=True)
     title = Column(String(200), nullable=True)
     viewer_cnt = Column(Integer, nullable=False)
-    live_dt = Column(DateTime, nullable=False, default= datetime.today())
+
 
     live = relationship("Live", back_populates="logs")
     cycle_log = relationship("CycleLog", back_populates="live_logs")

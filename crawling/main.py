@@ -7,6 +7,7 @@ from schemas.streamers import StreamerCreate, StreamerRead
 from models.streamer_logs import StreamerLog
 from schemas.streamer_logs import StreamerLogCreate, StreamerLogRead
 from crawling import Crawling
+from crawlings.afreeca import Afreeca
 # from controllers import users
 
 
@@ -41,7 +42,7 @@ async def start_crawling(db: Session = Depends(get_db)):
 
 @app.get("/afreeca")
 async def start_afreeca_crawling():
-    Crawling().afreeca()
+    Afreeca().afreeca()
     return {"afreeca":"good"}
 
 @app.get("/chzzk")
