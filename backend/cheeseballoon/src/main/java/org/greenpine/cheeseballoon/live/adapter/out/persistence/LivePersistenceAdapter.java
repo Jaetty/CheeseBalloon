@@ -2,18 +2,15 @@ package org.greenpine.cheeseballoon.live.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
+import org.greenpine.cheeseballoon.live.application.port.in.dto.SearchLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.out.CategoryPort;
 import org.greenpine.cheeseballoon.live.application.port.out.LivePort;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.SearchLivesResDto;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -30,17 +27,11 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
     private final CycleLogRepository cycleLogRepository;
 
     @Override
-    public List<FindLivesResDto> findLivesByCategory(FindLivesReqDto findLiveReqDto) {
-        CycleLogEntity lastestCycle = cycleLogRepository.findLatestCycleLog();
-        Long cycleLogId = lastestCycle.getCycleLogId();
-        int limit = findLiveReqDto.getLimit();
-        int offset = findLiveReqDto.getOffset();
-        List<String> searchCategoryStrs=findLiveReqDto.getCategories();
-        List<CategoryEntity> searchCategories = categoryRepository.findAllByCategory(searchCategoryStrs);
-        List<Long> categoryIds = searchCategories.stream()
-                .map(CategoryEntity::getCategoryId)
-                .collect(Collectors.toList());
-        List<LiveLogEntity> liveLogList = liveLogRepository.findByCycleLogAndCategory(cycleLogId, categoryIds, limit, offset);
+    public List<FindLivesResDto> findLivesByCategory(FindLivesReqDto reqDto) {
+        List<String> categoryStrs = reqDto.getCategories();
+        int limit = reqDto.getLimit();
+        int offset = reqDto.getOffset();
+        List<LiveLogEntity> liveLogList = liveLogRepository.findByCycleLogAndCategory(categoryStrs, limit, offset );
         List<FindLivesResDto> res= new ArrayList<>();
         for(LiveLogEntity liveLog : liveLogList){
             CategoryEntity category = liveLog.getCategory();
@@ -66,12 +57,10 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
     }
 
     @Override
-    public List<FindLivesResDto> findLivesAll(FindLivesReqDto findLiveReqDto) {
-        CycleLogEntity lastestCycle = cycleLogRepository.findLatestCycleLog();
-        Pageable page=PageRequest.of(findLiveReqDto.getOffset(),findLiveReqDto.getLimit(), Sort.by("viewerCnt").descending());
-        Page<LiveLogEntity> liveLogPage = liveLogRepository.findByCycleLog(lastestCycle, page);
-        List<LiveLogEntity> liveLogList = liveLogPage.getContent();
-
+    public List<FindLivesResDto> findLivesAll(FindLivesReqDto reqDto) {
+        int limit = reqDto.getLimit();
+        int offset = reqDto.getOffset();
+        List<LiveLogEntity> liveLogList = liveLogRepository.findByCycleLog(limit, offset);
         List<FindLivesResDto> res= new ArrayList<>();
         for(LiveLogEntity liveLog : liveLogList){
             CategoryEntity category = liveLog.getCategory();
@@ -97,8 +86,31 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
     }
 
     @Override
-    public List<FindLivesResDto> searchLives(FindLivesReqDto findLiveReqDto) {
-        return null;
+    public List<SearchLivesResDto> searchLives(SearchLivesReqDto reqDto) {
+        String query = reqDto.getQuery();
+        List<LiveLogEntity> liveLogEntities = liveLogRepository.searchByTitle(query);
+        List<SearchLivesResDto> res = new ArrayList<>();
+        for(LiveLogEntity liveLog : liveLogEntities){
+            CategoryEntity category = liveLog.getCategory();
+            LiveEntity live = liveLog.getLive();
+            StreamerEntity streamer = live.getStreamer();
+            res.add(
+                    SearchLivesResDto.builder()
+                            .liveId(live.getLiveId())
+                            .streamId(streamer.getStreamerId())
+                            .thumbnailUrl(live.getThumbnailUrl())
+                            .profileUrl(streamer.getProfileUrl())
+                            .streamUrl(live.getStreamUrl())
+                            .channelUrl(streamer.getChannelUrl())
+                            .name(streamer.getName())
+                            .viewerCnt(liveLog.getViewerCnt())
+                            .platform(streamer.getPlatform())
+                            .category(category.getCategory())
+                            .title(liveLog.getTitle())
+                            .build()
+            );
+        }
+        return res;
     }
 
     @Override
@@ -115,6 +127,14 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
 
     @Override
     public FindHotCategoriesResDto findHotCategories(int limit) {
-        return null;
+        List<CategoryEntity> entities = categoryRepository.findHot(limit);
+        List<String>categories = new ArrayList<>();
+        for(CategoryEntity ce : entities){
+            categories.add(ce.getCategory());
+        }
+        return FindHotCategoriesResDto.builder()
+                .categories(categories)
+                .build();
+
     }
 }

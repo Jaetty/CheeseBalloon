@@ -23,4 +23,6 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
 
     StreamerEntity findByStreamerId(Long id);
 
+
+
 }
