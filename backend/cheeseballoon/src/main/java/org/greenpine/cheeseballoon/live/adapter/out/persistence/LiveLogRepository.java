@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 
 import java.util.List;
+import java.util.Objects;
 
 public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
     @Query(value = "SELECT * FROM live_logs " +
@@ -37,6 +38,9 @@ public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
             "ORDER BY ll.viewer_cnt DESC "
             , nativeQuery = true)
     List<LiveLogEntity> searchByTitle(String query);
+    @Query(value = "SELECT *, COUNT(*) as sum FROM live_logs GROUP BY category_id"
+    , nativeQuery = true)
+    List<Object[]> test();
 
 
 
