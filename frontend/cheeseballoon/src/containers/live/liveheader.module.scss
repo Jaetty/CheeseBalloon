@@ -1,21 +1,23 @@
-.entire {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+.wrapper {
 }
 
-.header {
-    font-size: 30px;
+.icon-container {
+  display: flex;
+  align-items: center;
 }
 
-.introduce {
-    color: gray
+.icon {
+  height: 3rem;
 }
 
-
-
-.liveicon {
-    height: 7rem;
-    width: auto;
+.page-name {
+  font-weight: bold;
+  font-size: 2rem;
+  color: white;
 }
 
+.page-introduce {
+  margin: 0;
+  padding: 0;
+  color: gray;
+}
