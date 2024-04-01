@@ -6,8 +6,6 @@ import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEnti
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "lives")
 @DynamicInsert
