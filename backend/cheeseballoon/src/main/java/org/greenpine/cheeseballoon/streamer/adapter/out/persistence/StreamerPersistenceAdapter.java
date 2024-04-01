@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveEntity;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDto;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
+import org.greenpine.cheeseballoon.streamer.domain.StreamerDomain;
+import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -36,11 +35,31 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
 
         System.out.println(streamerEntity.getName());
 
-        LiveEntity liveEntity = liveRepository.findByStreamer_StreamerId(streamerId);
-
-        System.out.println("라이브 엔티티 테스트" + liveEntity.getStreamer().getName() +" " + liveEntity.getStreamUrl());
-
         return null;
+    }
+
+    @Override
+    public StreamerLiveDomain streamerDetailLive(Long streamerId) {
+
+        LiveEntity liveEntity = liveRepository.findFirstByStreamer_StreamerIdOrderByLiveId(streamerId);
+
+        StreamerDomain streamerDomain = new StreamerDomain(
+                liveEntity.getStreamer().getStreamerId(),
+                liveEntity.getStreamer().getOriginId(),
+                liveEntity.getStreamer().getName(),
+                liveEntity.getStreamer().getProfileUrl(),
+                liveEntity.getStreamer().getChannelUrl(),
+                liveEntity.getStreamer().getPlatform());
+
+        StreamerLiveDomain liveDomain = new StreamerLiveDomain(liveEntity.getLiveId(),
+                liveEntity.getLiveOriginId(),
+                liveEntity.getStreamUrl(),
+                liveEntity.getThumbnailUrl(),
+                liveEntity.getIsLive(),
+                streamerDomain);
+
+
+        return liveDomain;
     }
 
 

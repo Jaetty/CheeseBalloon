@@ -7,6 +7,7 @@ import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDto;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailLiveResDto;
 import org.greenpine.cheeseballoon.streamer.application.port.out.message.StreamerResMsg;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,14 @@ public class StreamerController {
         streamerUsecase.streamerDetail(streamerId);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, null));
+    }
+
+    @GetMapping("/live")
+    public ResponseEntity<CustomBody> streamerDetailLive(@RequestParam Long streamerId){
+
+        FindStreamerDetailLiveResDto ret = streamerUsecase.streamerDetailLive(streamerId);
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
     }
 
     @GetMapping("/search")
