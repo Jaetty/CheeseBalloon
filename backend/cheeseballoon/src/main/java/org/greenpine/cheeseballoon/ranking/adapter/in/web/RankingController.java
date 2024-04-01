@@ -22,15 +22,15 @@ import java.util.Random;
 public class RankingController {
 
     @GetMapping("/follow")
-    public ResponseEntity<CustomBody> test(@RequestBody FindRankingReqDto findRankingReqDto){
+    public ResponseEntity<CustomBody> test(@RequestParam int limit, int offset, int startDate, char platform){
 
         List<FollowRankingResDto> result = new ArrayList<>();
         Random random = new Random();
 
         // 테스트용 데이터 제공
-        for(int i=0; i< findRankingReqDto.getLimit(); i++){
+        for(int i=0; i< limit; i++){
 
-            if(findRankingReqDto.getLimit() > 300) break;
+            if(limit > 300) break;
 
             FollowRankingResDto temp = FollowRankingResDto.builder()
                     .streamerId((long) i)
@@ -49,11 +49,11 @@ public class RankingController {
                 else temp.setDiff(random.nextInt(100));
             }
 
-            if(findRankingReqDto.getPlatform()=='T'){
+            if(platform=='T'){
                 if(i%2==0) temp.setPlatform('C');
             }
             else{
-                temp.setPlatform(findRankingReqDto.getPlatform());
+                temp.setPlatform(platform);
             }
 
             result.add(temp);
