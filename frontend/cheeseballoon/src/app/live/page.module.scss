@@ -1,6 +1,19 @@
-.line {
-    background-color: gray;
-    height: 3px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
+.wrapper {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+  
+  .container {
+      width: 80%;
+      max-width: 1290px;
+      margin: 0 auto;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .search {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
