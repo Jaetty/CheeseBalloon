@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
 
-//    @Query("SELECT LiveEntity FROM LiveEntity le where le.streamer.streamerId = :stre order by le.liveId desc limit 1")
-    LiveEntity findByStreamer_StreamerId(Long streamerId);
+//    @Query("SELECT LiveEntity FROM LiveEntity le where le.streamer.streamerId = :streamerId order by le.liveId ")
+    LiveEntity findFirstByStreamer_StreamerIdOrderByLiveId(Long streamerId);
 
 }
