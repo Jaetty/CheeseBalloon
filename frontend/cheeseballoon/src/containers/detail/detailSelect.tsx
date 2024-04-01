@@ -24,7 +24,7 @@ export default function DetailSelect() {
 
   return (
     <div>
-      <div>
+      <div className={style.select}>
         {/* <DetailSelectButton handleContent={handleContent} /> */}
         <DetailSelectButton />
       </div>

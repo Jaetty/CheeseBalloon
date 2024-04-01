@@ -22,7 +22,7 @@ export default function DetailSelectedContent() {
       return <DetailDuration />;
     case "rating":
       return <DetailRating />;
-    case "follwer":
+    case "follower":
       return <DetailFollower />;
     case "calendar":
       return <DetailCalendar />;
