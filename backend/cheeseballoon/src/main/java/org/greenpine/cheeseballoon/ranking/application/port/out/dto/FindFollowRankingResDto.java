@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FollowRankingResDto {
+public class FindFollowRankingResDto {
 
     Long streamerId;
     String name;
