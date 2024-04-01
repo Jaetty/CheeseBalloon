@@ -12,8 +12,8 @@ from schemas.streamer_info import StreamerInfo
 from datetime import datetime
 import re
 
-class Afreeca:
-    def afreeca(self):
+class Soop:
+    def soop(self):
         # Chrome 옵션 설정
         chrome_options = Options()
         chrome_options.add_argument("headless")  # 헤드리스 모드 활성화
@@ -50,19 +50,28 @@ class Afreeca:
                 if int(cnt) < 50:
                     break
 
+            # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
+            thumbnail = driver.find_element(By.CLASS_NAME, "thumbs-box")
+
+            live_url = thumbnail.find_element(By.TAG_NAME, "img")
+            streamer_thumbnail = live_url.get_attribute('src')
+
             # # 각 파트너 항목에서 시청자 수 추출
             streamer_items = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
             index = 0
             for item in streamer_items:
-                # print("혹시 여기?")
+                index += 1
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
                 viewer_count = item.find_element(By.XPATH, ".//div[2]/div[1]/span/em")
 
                 if viewer_count:
                     count = re.sub(r'\D', '', viewer_count.text.strip())
-                    print(count)
+                    print(str(index) + " " + count)
                     if int(count) < 50:
                         break
+
+                streamer_url = item.find_element(By.CLASS_NAME, "thumb")
+                streamer_channel = streamer_url.get_attribute('href')
 
                 click_streamer = item.find_element(By.CLASS_NAME, "thumbs-box")
 
@@ -103,7 +112,7 @@ class Afreeca:
                     print("클릭할 수 없습니다.")
 
                 try:
-                    WebDriverWait(driver, 10).until(
+                    WebDriverWait(driver, 5).until(
                         lambda x: x.find_element(By.XPATH,
                                                  "//*[@id='player_area']/div[2]/div[2]/ul/li[2]/span").get_attribute(
                             'innerHTML').strip() != ""
@@ -112,30 +121,13 @@ class Afreeca:
                     # print("모든 정보가 나타났습니다.")
 
                 except TimeoutException:
+                    print("새 탭을 닫습니다.")
                     driver.close()  # 새 탭 닫기
                     driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
                     continue
 
-                streamer_channel = driver.find_element(By.XPATH, "//*[@id='player_area']/div[2]/div[2]/ul/li[5]/span/a")
-                # streamer_id_pattern = re.compile(r'bj.afreecatv.com/([^/]+)')
-                #
-                # # 정규 표현식을 사용하여 스트리머 아이디 찾기
-                # streamer_id_match = streamer_id_pattern.search(streamer_channel.text)
-                # streamer_id = streamer_id_match.group(1) if streamer_id_match else None
-
                 # 스트리머 이름 //*[@id="player_area"]/div[2]/div[2]/div[1]
                 streamer_name = driver.find_element(By.CLASS_NAME, "nickname")
-                print(streamer_name.text)
-                # 팔로워 수
-                bookmark = driver.find_element(By.XPATH, ".//li[@class='boomark_cnt']")
-                print(bookmark.text)
-                streamer_follow = bookmark.find_element(By.TAG_NAME, "span")
-                print(streamer_follow.text)
-                if streamer_follow:
-                    # print(bookmark.text.strip())
-                    follower = int(streamer_follow.text.replace(",", ""))
-                else:
-                    follower = 0
 
                 streamer_title = driver.find_element(By.CLASS_NAME, 'broadcast_title')
 
@@ -143,16 +135,17 @@ class Afreeca:
 
                 detail_view = view.find_elements(By.TAG_NAME, "li")
 
-                streamer_start = detail_view[0].find_element(By.TAG_NAME, "span").text.strip()
-                if streamer_start:
-                    start_dt = datetime.strptime(streamer_start, '%Y-%m-%d %H:%M:%S')
-                else:
-                    start_dt = datetime.today()
+                # streamer_start = detail_view[0].find_element(By.TAG_NAME, "span").text.strip()
+                #
+                # if streamer_start:
+                #     start_dt = datetime.strptime(streamer_start, '%Y-%m-%d %H:%M:%S')
+                # else:
+                #     start_dt = datetime.today()
+
                 category = None
                 try:
 
                     category = detail_view[1].find_element(By.TAG_NAME, "span").text.strip()
-
                 except NoSuchElementException:
                     print("없다!")
 
@@ -160,23 +153,13 @@ class Afreeca:
                                                        ".//*[@id='player_area']/div[2]/div[1]/a/img").get_attribute(
                     'src')
 
-                driver.close()  # 새 탭 닫기
-                driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
-
-                # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
-                thumbnail = driver.find_element(By.CLASS_NAME, "thumbs-box")
-
-                live_url = thumbnail.find_element(By.TAG_NAME, "img")
-                streamer_thumbnail = live_url.get_attribute('src')
-                print(streamer_id)
-                print(streamer_name.text)
+                # print(streamer_id)
+                # print(streamer_name.text)
                 # print(streamer_profile)
-                # print(streamer_channel.text.strip())
-                # print(follower)
+                # print(streamer_channel)
                 # print(href_value)
                 # print(streamer_live_id)
                 # print(streamer_thumbnail)
-                # print(start_dt)
                 # print(category)
                 # print(streamer_title.text.strip())
                 # print(count)
@@ -184,23 +167,20 @@ class Afreeca:
                     origin_id=streamer_id,
                     name=streamer_name.text,
                     profile_url=streamer_profile,
-                    channel_url=streamer_channel.text.strip(),
-                    platform="A",
-                    follower=follower,
+                    channel_url=streamer_channel,
+                    platform="S",
                     stream_url=href_value,
                     live_origin_id=streamer_live_id,
                     thumbnail_url=streamer_thumbnail,
-                    start_dt=start_dt,
                     category=category,
                     title=streamer_title.text.strip(),
                     viewer_cnt=count
                 )
-                print("야호")
+
+                driver.close()  # 새 탭 닫기
+                driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
 
                 streamer_list.append(streamer_info)
-
-            # 결과 출력
-            # print(tabulate(streamer_list, headers=["번호", "방송인", "팔로우", "제목", "시청자 수", "태그", "썸네일"]))
 
             # 브라우저 종료
             driver.quit()
@@ -208,4 +188,5 @@ class Afreeca:
         except Exception as e:
             print(e)
 
+        print(streamer_list)
         return streamer_list
