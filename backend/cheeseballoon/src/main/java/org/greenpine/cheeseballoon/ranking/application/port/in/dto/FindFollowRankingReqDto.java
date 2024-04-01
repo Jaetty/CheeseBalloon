@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindRankingReqDto {
+public class FindFollowRankingReqDto {
 
     int limit;
     int offset;
