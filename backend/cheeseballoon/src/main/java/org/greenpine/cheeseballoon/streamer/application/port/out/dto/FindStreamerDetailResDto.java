@@ -1,13 +1,15 @@
 package org.greenpine.cheeseballoon.streamer.application.port.out.dto;
 
-import jakarta.persistence.Convert;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @Builder
-public class FindSearchStreamerResDto {
+public class FindStreamerDetailResDto {
 
     Long streamerId;
     String name;
@@ -16,5 +18,7 @@ public class FindSearchStreamerResDto {
     String channelUrl;
     int follower;
     char platform;
+    Integer rank;
+    Integer diff;
 
 }
