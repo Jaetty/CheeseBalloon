@@ -11,7 +11,7 @@ export default function DetailCategoryChart() {
   const chartData = {
     options: {
       title: {
-        align: "center",
+        align: undefined,
         text: "카테고리",
         style: {
           fontSize: "15px",
