@@ -8,6 +8,7 @@ from models.streamer_logs import StreamerLog
 from schemas.streamer_logs import StreamerLogCreate, StreamerLogRead
 from crawling import Crawling
 from crawlings.soop import Soop
+from crawlings.chzzk import Chzzk
 # from controllers import users
 
 
@@ -49,3 +50,8 @@ async def start_afreeca_crawling():
 async def start_chzzk_crawling(db: Session = Depends(get_db)):
     Crawling().chzzk(db=db)
     return {"chzzk":"good"}
+
+@app.get("/chzzkapi")
+async def start_chzzk_api():
+    await Chzzk().chzzk()
+    return {"chzzk": "good"}
