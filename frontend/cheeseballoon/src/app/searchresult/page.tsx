@@ -42,9 +42,9 @@ export default function SearchResult() {
         console.error("Error fetching search results:", error);
       });
   }, []); // 빈 배열을 의존성 배열로 지정하여 최초 한 번만 실행되도록 설정
-  console.log(cheese_api);
-  console.log(searchStreamerResults);
-  console.log(searchLiveResults);
+  // console.log(cheese_api);
+  // console.log(searchStreamerResults);
+  // console.log(searchLiveResults);
   return (
     <div className={styles.searchresult}>
       <div className={styles.top}>
