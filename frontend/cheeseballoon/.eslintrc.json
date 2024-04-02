@@ -9,6 +9,7 @@
   ],
   "plugins": ["react", "react-hooks"],
   "rules": {
+    "react/no-array-index-key": "off",
     "react/self-closing-comp": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [2, { "extensions": [".tsx"] }],
