@@ -42,7 +42,7 @@ interface data_3 {
 
 export default function SearchResult() {
   const cheese_api = process.env.NEXT_PUBLIC_CHEESEBALLOON_API;
-  const [query, setQuery] = useState(""); // query 상태를 설정
+  const [query, setQuery] = useState<string | null>(""); // query 상태를 설정
   const [searchStreamerResults, setSearchStreamerResults] = useState<data_3>({
     data: null,
   }); // 검색 결과 상태를 설정
@@ -80,8 +80,8 @@ export default function SearchResult() {
     // });
   }, [cheese_api, query]); // 빈 배열을 의존성 배열로 지정하여 최초 한 번만 실행되도록 설정
   // console.log(cheese_api);
-  // console.log(searchStreamerResults);
-  // console.log(searchLiveResults);
+  console.log(searchStreamerResults);
+  console.log(searchLiveResults);
   return (
     <div className={styles.searchresult}>
       <div className={styles.top}>
@@ -129,9 +129,12 @@ export default function SearchResult() {
         {searchLiveResults.data &&
           searchLiveResults.data.map((live) => (
             // eslint-disable-next-line react/jsx-key
-            <div className={styles.live}>
+            <div key={live.liveId} className={styles.live}>
               <div className={styles.live_thumbnail}>
-                <img src={live.thumbnailUrl} alt="123" />
+                <img
+                  src="https://image.newsis.com/2024/03/03/NISI20240303_0001492267_web.jpg"
+                  alt="123"
+                />
               </div>
               <div className={styles.second_container}>
                 <div className={styles.platform_icon}>
