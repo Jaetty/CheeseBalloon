@@ -26,7 +26,7 @@ export default function DetailLayout({
         <div>
           <DetailSelect />
         </div>
-        <div className="children">{children}</div>
+        <div>{children}</div>
       </div>
     </div>
   );
