@@ -9,6 +9,8 @@
   ],
   "plugins": ["react", "react-hooks"],
   "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "react/no-array-index-key": "off",
     "react/self-closing-comp": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [2, { "extensions": [".tsx"] }],

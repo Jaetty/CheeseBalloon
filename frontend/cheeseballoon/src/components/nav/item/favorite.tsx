@@ -52,7 +52,7 @@ export default function Fav() {
                 role="presentation"
               >
                 접기
-                <div className={styles.image_rotate}>
+                <div className={styles.open_image_rotate}>
                   <Image src={arrow} alt="" />
                 </div>
               </div>

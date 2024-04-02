@@ -1,6 +1,6 @@
 import LivePopularCategories from "./livePopularCategories";
 import LiveSelectedCategories from "./liveSelectedCategories";
-import LiveSearch from "./liveSearch";
+import LiveSearch from "./livesearch";
 import style from "./liveCategory.module.scss";
 
 export default function LiveCategory() {
