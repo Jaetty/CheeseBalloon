@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.member.application.port.out.message.MemberResMsg;
+import org.greenpine.cheeseballoon.member.service.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
-public class MemeberController {
-
+public class MemberController {
+    private final MemberService memberService;
     @PostMapping("/login")
     public ResponseEntity<CustomBody> login(){
         log.info("login - Call");
