@@ -1,5 +1,5 @@
-import LiveCard from "./livecard";
-import style from "./livecards.module.scss";
+import LiveCard from "./liveCard";
+import style from "./liveCards.module.scss";
 
 const livehref = Array(10).fill({
   name: "풍월량",

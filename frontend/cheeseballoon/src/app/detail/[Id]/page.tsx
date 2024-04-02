@@ -1,26 +1,15 @@
-import DetailProfile from "@/src/containers/detail/detailProfile";
-import DetailOverview from "@/src/containers/detail/detailOverview";
-import DetailSelect from "@/src/containers/detail/detailSelect";
+import DetailViewer from "@/src/containers/detail/detailViewer";
+import DetailSelectDate from "@/src/containers/detail/detailSelectDate";
+import style from "./page.module.scss"
 
 export default function DetailPage() {
   return (
     <div>
-      <div>
-        <div>
-          <DetailProfile />
-        </div>
-        <div>
-          <hr />
-        </div>
-        <div>
-          <DetailOverview />
-        </div>
-        <div>
-          <hr />
-        </div>
-        <div>
-          <DetailSelect />
-        </div>
+      <div className={style.date}>
+        <DetailSelectDate />
+      </div>
+      <div className={style.content}>
+        <DetailViewer />;
       </div>
     </div>
   );

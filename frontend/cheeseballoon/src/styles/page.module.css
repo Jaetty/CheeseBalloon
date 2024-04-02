@@ -1,0 +1,274 @@
+.main {
+  color: white;
+  background-color: #1e1f27;
+}
+
+.container {
+  padding-top: 1.5625%;
+  padding-left: 10.67708333333333%;
+  padding-right: 10.67708333333333%;
+}
+
+.content {
+  padding: 1.8%;
+  display: flex;
+  flex-direction: column;
+}
+.notice {
+  /* height: 100%; */
+  background-image: url(../stores/image\ 91.png);
+  background-repeat: no-repeat;
+  left: 30%;
+  background-size: cover;
+  /* left: 50%; */
+}
+
+.notice_title {
+  font-family: "GmarketSans";
+  font-size: 20px;
+  padding-top: 1%;
+}
+
+.pin {
+  font-family: "SeoulHangangM";
+  /* height: fit-content; */
+  font-family: "GmarketSans";
+  font-size: 13px;
+}
+
+.date {
+  font-family: "SeoulHangangM";
+  font-size: 13px;
+  padding-top: 1%;
+}
+
+.border {
+  border: solid 2px rgba(217, 217, 217, 50%);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.ranking {
+  padding-top: 2.76%;
+}
+
+.animation {
+  height: 30rem;
+}
+
+.title {
+  font-size: 40px;
+  font-family: "GmarketSans";
+}
+
+.sub_title {
+  font-size: 13px;
+}
+.live_main {
+  display: flex;
+  flex-direction: column;
+}
+
+.more {
+  padding-left: 95%;
+}
+
+.streaming_list {
+  /* border: solid 2px red; */
+  display: flex;
+  /* padding: 1.8%; */
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.live_list {
+  display: flex;
+  /* padding: 1.8%; */
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-family: "GmarketSans";
+}
+
+.live_list_title {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "GmarketSans";
+  margin-top: 2%;
+  padding-bottom: 2%;
+}
+
+.live {
+  /* width: calc(25% - 1.8%); */
+  background-color: #3e3e3e;
+  padding: 1%;
+  display: flex;
+  flex-direction: column;
+
+  /* border: red 1px solid; */
+  margin-bottom: 1.8%;
+  /* width:200px; */
+  border-radius: 10%;
+}
+
+.live_thumbnail > img {
+  width: 100%;
+}
+
+.platform_icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain; /* 이미지의 비율을 유지하면서 부모 요소에 맞게 조절 */
+}
+
+.platform_icon > img {
+  border-radius: 10%;
+  width: 24px;
+}
+
+.second_container {
+  display: flex;
+  justify-content: space-between;
+}
+.ff {
+  display: flex;
+}
+
+.bj_name {
+  font-size: 13px;
+  justify-content: flex-start;
+  top: 25%;
+  /* padding-left: 3%; */
+  position: relative;
+}
+
+.category {
+  font-size: 10px;
+  justify-content: flex-end;
+  padding-left: 8%;
+  top: 25%;
+  position: relative;
+}
+
+.third_container {
+  width: 100%;
+  /* border: solid 1px yellow; */
+  /* height: 12%; */
+  display: flex;
+  flex-direction: row;
+
+  /* padding: 4px; */
+}
+
+.bj_thumbnail > img {
+  margin-top: 10%;
+  max-height: 100%; /* 이미지의 최대 높이를 부모 요소의 높이에 맞게 설정 */
+  max-width: 100%; /* 이미지의 최대 너비를 부모 요소의 너비에 맞게 설정 */
+  width: 50px;
+}
+
+.live_title {
+  margin-left: 3%;
+  padding-top: 5%;
+  font-size: 15px;
+  display: flex; /* 요소를 플렉스 박스로 설정하여 내부의 요소들을 정렬하기 쉽게 합니다. */
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  height: 100%; /* 부모 요소인 third_container의 높이에 맞게 요소를 확장합니다. */
+}
+
+.cnt {
+  display: flex; /* 자식 요소들을 나란히 배치하기 위해 flex 사용 */
+  justify-content: flex-end; /* 자식 요소들을 좌우로 분산 정렬 */
+}
+
+.cnt_icon {
+  margin-right: 5px;
+}
+
+.cnt_icon > img {
+  opacity: 69%;
+}
+
+.viewer {
+  opacity: 69%;
+  align-self: flex-start; /* 오른쪽 정렬 */
+}
+
+.live_title {
+  font: "GmarketSans";
+  font-size: 17px;
+  display: flex; /* 요소를 플렉스 박스로 설정하여 내부의 요소들을 정렬하기 쉽게 합니다. */
+  padding-top: 0;
+}
+
+@media (max-width: 1200px) {
+  .live {
+    width: calc(50% - 1%); /* 브라우저 너비가 768px 이하일 때 2개씩 배치 */
+  }
+}
+
+@media (min-width: 1200px) {
+  .live {
+    width: calc(20%); /* 브라우저 너비가 769px 이상일 때 4개씩 배치 */
+  }
+}
+
+.more {
+  float: right;
+}
+@font-face {
+  font-family: "GmarketSans";
+  font-weight: 300;
+  font-style: normal;
+  src: url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.eot");
+  src:
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.woff2")
+      format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.woff")
+      format("woff"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.ttf")
+      format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "GmarketSans";
+  font-weight: 500;
+  font-style: normal;
+  src: url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.eot");
+  src:
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.woff2")
+      format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.woff")
+      format("woff"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.ttf")
+      format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "GmarketSans";
+  font-weight: 700;
+  font-style: normal;
+  src: url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.eot");
+  src:
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.woff2")
+      format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.woff")
+      format("woff"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.ttf")
+      format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SeoulHangangM";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SeoulHangangM.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}

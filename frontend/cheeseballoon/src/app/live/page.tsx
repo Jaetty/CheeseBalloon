@@ -1,18 +1,25 @@
-import LiveHeader from "@/src/containers/live/liveheader";
-import LiveCards from "@/src/containers/live/livecards";
-import LiveSearch from "@/src/containers/live/livesearch";
-import LiveLayout from "./layout";
+import LiveHeader from "@/src/containers/live/liveHeader";
+import LiveCards from "@/src/containers/live/liveCards";
+import LiveCategory from "@/src/containers/live/liveCategory";
 import style from "./page.module.scss";
 
 export default function LivePage() {
   return (
-    <LiveLayout>
-      <LiveHeader />
-      <hr className={style.line} />
-      <LiveSearch />
-      <hr className={style.line} />
-      <LiveCards />
-      <hr className={style.line} />
-    </LiveLayout>
+    <div className={style.wrapper}>
+      <div className={style.container}>
+        <div className={style.header}>
+          <LiveHeader />
+        </div>
+        <hr />
+        <div className={style.search}>
+          <LiveCategory />
+        </div>
+        <hr />
+        <div className={style.live}>
+          <LiveCards />
+        </div>
+        <hr />
+      </div>
+    </div>
   );
 }

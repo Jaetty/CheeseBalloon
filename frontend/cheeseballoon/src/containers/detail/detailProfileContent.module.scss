@@ -1,0 +1,71 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.image-container {
+  height: 6rem;
+}
+
+.profile-image {
+  height: 100%;
+  border-radius: 31%;
+  margin-right: 2rem;
+}
+
+.info-container {
+  display: flex;
+}
+
+.logo-and-name {
+  display: flex;
+  align-items: center;
+}
+
+.platform-logo {
+  width: 2rem;
+  margin-right: 0.5rem;
+}
+
+.name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.introduce {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 100;
+  color: white;
+}
+
+.rank {
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: 2rem;
+}
+
+.rank-num {
+  font-size: 2rem;
+  padding-right: 1rem;
+  color: white;
+}
+
+.rank-diff {
+  text-align: end;
+}
+
+.positive {
+  color: #8ce09e
+}
+
+.negative {
+  color: #d38883
+}
+
+.live {
+  box-sizing: border-box;
+  border: 5px solid red;
+}

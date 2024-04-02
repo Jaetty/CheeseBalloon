@@ -11,8 +11,13 @@ export default function DetailCategoryChart() {
   const chartData = {
     options: {
       title: {
+        align: undefined,
         text: "카테고리",
-        align: "center",
+        style: {
+          fontSize: "15px",
+          fontWeight: "bold",
+          color: "white",
+        },
       },
       chart: {
         toolbar: {
@@ -53,13 +58,13 @@ export default function DetailCategoryChart() {
   };
 
   return (
-    <div >
+    <div>
       <ApexChart
         type="treemap"
         options={chartData.options}
         series={chartData.series}
-        height={500}
-        width={500}
+        height="auto"
+        width="100%"
       />
     </div>
   );
