@@ -1,14 +1,13 @@
-"use client";
-
-import { useRouter } from "next/navigation"; // 수정: next/router에서 useRouter 가져오기
+import { useRouter } from "next/navigation";
 
 export default function Search() {
-  const router = useRouter(); // 수정: useRouter 사용
+  const router = useRouter();
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    // 이벤트 객체 타입 명시
     e.preventDefault();
-    const query = e.target.elements.searchQuery.value;
-    router.push(`/searchresult?query=${query}`); // 수정: router.push 사용
+    const query = e.currentTarget.searchQuery.value; // 현재 대상 요소에 직접 액세스
+    router.push(`/searchresult?query=${query}`);
   };
 
   return (

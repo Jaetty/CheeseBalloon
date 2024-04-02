@@ -1,22 +1,59 @@
 "use client";
 
+/* eslint-disable camelcase */
+
 import { useEffect, useState } from "react";
 import styles from "./searchresult.module.scss";
 import empty from "../../stores/Frame 114.png";
-import fill from "../../stores/Frame 116.png";
 import a_icon from "../../stores/afreeca_icon.png";
 import cnt from "../../stores/cnt_icon.png";
 
+interface data_2 {
+  data:
+    | {
+        streamerId: number;
+        liveId: number;
+        name: string;
+        title: string;
+        thumbnailUrl: string;
+        platform: string;
+        profileUrl: string;
+        category: string; // category 속성 추가
+        viewerCnt: number;
+        streamUrl: string;
+        channelUrl: string;
+      }[]
+    | null;
+}
+
+interface data_3 {
+  data:
+    | {
+        streamerId: number;
+        name: string;
+        isLive: boolean;
+        profileUrl: string;
+        channelUrl: string;
+        followerCnt: number;
+        platform: string;
+      }[]
+    | null;
+}
+
 export default function SearchResult() {
   const cheese_api = process.env.NEXT_PUBLIC_CHEESEBALLOON_API;
-  const [query, setQuery] = useState(""); // query 상태를 설정
-  const [searchStreamerResults, setSearchStreamerResults] = useState(null); // 검색 결과 상태를 설정
-  const [searchLiveResults, setSearchLiveResults] = useState(null); // 검색 결과 상태를 설정
+  const [query, setQuery] = useState<string | null>(""); // query 상태를 설정
+  const [searchStreamerResults, setSearchStreamerResults] = useState<data_3>({
+    data: null,
+  }); // 검색 결과 상태를 설정
+  const [searchLiveResults, setSearchLiveResults] = useState<data_2>({
+    data: null,
+  }); // 검색 결과 상태를 설정
 
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
-    const query = urlSearchParams.get("query");
-    setQuery(query); // query 값을 상태로 설정
+    const query_2 = urlSearchParams.get("query");
+    setQuery(query_2); // query 값을 상태로 설정
 
     // API 요청 함수 호출
     fetch(`${cheese_api}/streamer/search?query=${query}`, {
@@ -25,10 +62,10 @@ export default function SearchResult() {
       .then((response) => response.json())
       .then((data) => {
         setSearchStreamerResults(data); // 검색 결과를 상태로 설정
-      })
-      .catch((error) => {
-        console.error("Error fetching search results:", error);
       });
+    // .catch((error) => {
+    //   console.error("Error fetching search results:", error);
+    // });
 
     // API 요청 함수 호출
     fetch(`${cheese_api}/live/search?query=${query}`, {
@@ -37,11 +74,11 @@ export default function SearchResult() {
       .then((response) => response.json())
       .then((data) => {
         setSearchLiveResults(data); // 검색 결과를 상태로 설정
-      })
-      .catch((error) => {
-        console.error("Error fetching search results:", error);
       });
-  }, []); // 빈 배열을 의존성 배열로 지정하여 최초 한 번만 실행되도록 설정
+    // .catch((error) => {
+    //   console.error("Error fetching search results:", error);
+    // });
+  }, [cheese_api, query]); // 빈 배열을 의존성 배열로 지정하여 최초 한 번만 실행되도록 설정
   // console.log(cheese_api);
   // console.log(searchStreamerResults);
   // console.log(searchLiveResults);
@@ -56,7 +93,7 @@ export default function SearchResult() {
       </div>
       <div className={styles.streamer_title}>스트리머</div>
       <div className={styles.streamer_list}>
-        {searchStreamerResults &&
+        {searchStreamerResults.data &&
           searchStreamerResults.data.map((streamer) => (
             <div key={streamer.streamerId} className={styles.streamer}>
               <div className={styles.streamer_thumbnail}>
@@ -78,7 +115,7 @@ export default function SearchResult() {
                   <div className={styles.streamer_name}>{streamer.name}</div>
                 </div>
                 <div className={styles.followers}>
-                  팔로워 {streamer.follower}명
+                  팔로워 {streamer.followerCnt}명
                 </div>
               </div>
               <div className={styles.favorites}>
@@ -89,7 +126,7 @@ export default function SearchResult() {
       </div>
       <div className={styles.live_list_title}>LIVE</div>
       <div className={styles.live_list}>
-        {searchLiveResults &&
+        {searchLiveResults.data &&
           searchLiveResults.data.map((live) => (
             // eslint-disable-next-line react/jsx-key
             <div className={styles.live}>

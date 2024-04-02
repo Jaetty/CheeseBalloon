@@ -1,5 +1,6 @@
-/* eslint-disable camelcase */
 "use client";
+
+/* eslint-disable camelcase */
 
 import { useEffect, useState } from "react";
 import styles from "src/styles/page.module.css";
@@ -8,8 +9,28 @@ import ChartRace from "react-chart-race";
 import a_icon from "src/stores/afreeca_icon.png";
 import cnt from "src/stores/cnt_icon.png";
 
+interface live_data {
+  data:
+    | {
+        streamerId: number;
+        liveId: number;
+        name: string;
+        title: string;
+        thumbnailUrl: string;
+        platform: string;
+        profileUrl: string;
+        category: string;
+        viewerCnt: number;
+        streamUrl: string;
+        channelUrl: string;
+      }[]
+    | null;
+}
+
 export default function Home() {
-  const [liveData, setLiveData] = useState(null);
+  const [liveData, setLiveData] = useState<live_data>({
+    data: null,
+  });
   const cheese_api = process.env.NEXT_PUBLIC_CHEESEBALLOON_API;
   const [raceData, setRaceData] = useState([{}]);
 
@@ -19,11 +40,11 @@ export default function Home() {
       .then((data) => {
         // 가져온 데이터를 liveData 상태로 설정
         setLiveData(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching live data:", error);
       });
-  }, []); // 빈 배열을 의존성 배열로 지정하여 최초 한 번만 실행되도록 설정
+    // .catch((error) => {
+    //   console.error("Error fetching live data:", error);
+    // });
+  }, [cheese_api]); // 빈 배열을 의존성 배열로 지정하여 최초 한 번만 실행되도록 설정
 
   useEffect(() => {
     const exampleData = [
@@ -95,7 +116,7 @@ export default function Home() {
             <p>더보기</p>
           </div>
           <div className={styles.streaming_list}>
-            {liveData &&
+            {liveData.data &&
               liveData.data.map((live) => (
                 <div key={live.liveId} className={styles.live}>
                   <a
