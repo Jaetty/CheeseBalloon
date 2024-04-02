@@ -1,4 +1,4 @@
-import style from "./livecard.module.scss";
+import style from "./liveCard.module.scss";
 
 interface LiveInfo {
   liveinfo: {
