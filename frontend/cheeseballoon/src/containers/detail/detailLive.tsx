@@ -10,15 +10,15 @@ interface response {
   };
 }
 
-async function getData() {
-  const res = await fetch(`${API_URL}1369`);
+// async function getData() {
+//   const res = await fetch(`${API_URL}1369`);
 
-  return res.json();
-}
+//   return res.json();
+// }
 
-export default async function DetailLive() {
-  const data: response = await getData();
-
+export default function DetailLive() {
+  // const data: response = await getData();
+  const data = { data: { live: false } };
   return (
     <div>
       {data.data.live ? (
