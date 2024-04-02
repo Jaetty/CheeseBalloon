@@ -14,11 +14,7 @@ export default function DetailDurationChart() {
         text: "방송시간",
         align: "center",
         style: {
-<<<<<<< HEAD
           fontSize: "15px",
-=======
-          fontSize: "20px",
->>>>>>> ac51269add7b7511c14ac32c724f421166ad45ff
           fontWeight: "bold",
           color: "white",
         },
@@ -89,13 +85,8 @@ export default function DetailDurationChart() {
         type="bar"
         options={chartData.options}
         series={chartData.series}
-<<<<<<< HEAD
         height="auto"
         width="100%"
-=======
-        height={"auto"}
-        width={"100%"}
->>>>>>> ac51269add7b7511c14ac32c724f421166ad45ff
       />
     </div>
   );

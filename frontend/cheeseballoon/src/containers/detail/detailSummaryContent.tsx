@@ -145,8 +145,8 @@ export default function DetailSummaryContent() {
               type="line"
               options={chartData.options}
               series={chartData.series}
-              height={"auto"}
-              width={"100%"}
+              height="auto"
+              width="100%"
             />
           </div>
         ) : (

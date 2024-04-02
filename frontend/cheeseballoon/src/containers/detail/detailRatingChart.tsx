@@ -12,14 +12,9 @@ export default function DetailRatingChart() {
     options: {
       title: {
         align: "center",
-<<<<<<< HEAD
         text: "시청률",
         style: {
           fontSize: "15px",
-=======
-        style: {
-          fontSize: "20px",
->>>>>>> ac51269add7b7511c14ac32c724f421166ad45ff
           fontWeight: "bold",
           color: "white",
         },
@@ -47,7 +42,6 @@ export default function DetailRatingChart() {
           },
         },
       },
-<<<<<<< HEAD
       yaxis: [
         {
           labels: {
@@ -58,16 +52,6 @@ export default function DetailRatingChart() {
           },
         },
       ],
-=======
-      yaxis: [{
-        labels: {
-          style: {
-            colors: "white",
-            fontWeight: "bold",
-          },
-        },
-      }],
->>>>>>> ac51269add7b7511c14ac32c724f421166ad45ff
       grid: {
         show: true,
         strokeDashArray: 5,
@@ -101,8 +85,8 @@ export default function DetailRatingChart() {
         type="line"
         options={chartData.options}
         series={chartData.series}
-        height={"auto"}
-        width={"100%"}
+        height="auto"
+        width="100%"
       />
     </div>
   );
