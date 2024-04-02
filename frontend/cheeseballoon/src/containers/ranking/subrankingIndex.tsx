@@ -5,7 +5,7 @@ import DaySelect from "src/components/ranking/dayselect";
 import PlatformSelect from "src/components/ranking/platformselect";
 import Subrank from "src/components/ranking/subrank";
 import SubrankAll from "src/components/ranking/subrankAll";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Ranking() {
   const [date, setDate] = useState(1);

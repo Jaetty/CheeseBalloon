@@ -9,18 +9,27 @@ import RankingIndex from "src/components/ranking/rankingIndex";
 export default function Ranking() {
   const [date, setDate] = useState(1);
   const [platform, setPlatform] = useState("option1");
-  // 데이터 상태
-  // const [data, setData] = useState(null);
+  const title: (
+    | "팔로워 수"
+    | "평균 시청자 수"
+    | "최고 시청자 수"
+    | "총 방송시간"
+    | "시청률"
+    | "실시간 LIVE"
+  )[] = [
+    "팔로워 수",
+    "평균 시청자 수",
+    "최고 시청자 수",
+    "총 방송시간",
+    "시청률",
+    "실시간 LIVE",
+  ];
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     // 예: const response = await fetch(`api/data?date=${date}&platform=${platform}`);
-  //     // const newData = await response.json();
-  //     // setData(newData);
-  //   };
-
-  //   fetchData();
-  // }, [date, platform]);
+  const chunkSize = 3;
+  const chunks = [];
+  for (let i = 0; i < title.length; i += chunkSize) {
+    chunks.push(title.slice(i, i + chunkSize));
+  }
   return (
     <div className={style.ranking}>
       <p className={style.title}>랭킹</p>
@@ -33,15 +42,14 @@ export default function Ranking() {
           <PlatformSelect setPlatform={setPlatform} />
         </div>
       </div>
-      <div className={style.container}>
-        <RankingIndex />
-        <RankingIndex />
-        <RankingIndex />
-      </div>
-      <div className={style.container}>
-        <RankingIndex />
-        <RankingIndex />
-        <RankingIndex />
+      <div>
+        {chunks.map((chunk, index) => (
+          <div key={index} className={style.container}>
+            {chunk.map((titleItem) => (
+              <RankingIndex key={titleItem} title={titleItem} />
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );

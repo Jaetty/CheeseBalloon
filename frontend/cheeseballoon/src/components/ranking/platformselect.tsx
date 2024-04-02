@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import style from "src/components/ranking/select.module.scss";
 
 interface PlatformSelectProps {
