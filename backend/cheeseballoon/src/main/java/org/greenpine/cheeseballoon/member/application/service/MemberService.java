@@ -1,4 +1,4 @@
-package org.greenpine.cheeseballoon.member.service;
+package org.greenpine.cheeseballoon.member.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.member.application.port.in.AuthUsecase;
