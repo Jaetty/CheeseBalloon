@@ -11,7 +11,7 @@ export default function DetailFollowerChart() {
   const chartData = {
     options: {
       title: {
-        align: "center",
+        align: undefined,
         text: "팔로워",
         style: {
           fontSize: "15px",

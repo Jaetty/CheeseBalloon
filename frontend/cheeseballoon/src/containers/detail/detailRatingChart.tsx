@@ -11,7 +11,7 @@ export default function DetailRatingChart() {
   const chartData = {
     options: {
       title: {
-        align: "center",
+        align: undefined,
         text: "시청률",
         style: {
           fontSize: "15px",

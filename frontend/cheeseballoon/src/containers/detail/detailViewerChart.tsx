@@ -11,7 +11,7 @@ export default function DetailViewerChart() {
   const chartData = {
     options: {
       title: {
-        align: "center",
+        align: undefined,
         text: "시청자",
         style: {
           fontSize: "15px",

@@ -1,24 +1,27 @@
 "use client";
 
-// const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_LIVE_CHECK_API_URL;
 
-// async function getData() {
-//   const res = await fetch(`${API_URL}/streamer/live`);
+interface response {
+  data: {
+    live: boolean;
+    streamUrl: string;
+    thumbnailUrl: string;
+  };
+}
 
-//   return res.json();
-// }
+async function getData() {
+  const res = await fetch(`${API_URL}1369`);
 
-const data = {
-  isLive: true,
-  streamUrl: 'https://chzzk.naver.com/live/75cbf189b3bb8f9f687d2aca0d0a382b',
-  thumbnailUrl: 'https://livecloud-thumb.akamaized.net/chzzk/livecl…570458/thumbnail/image_480.jpg?date=1712037630000',
+  return res.json();
 }
 
 export default async function DetailLive() {
-  // const data = await getData();
+  const data: response = await getData();
+
   return (
     <div>
-      {data.isLive ? (
+      {data.data.live ? (
         <div>
           <div>라이브</div>
           <hr />

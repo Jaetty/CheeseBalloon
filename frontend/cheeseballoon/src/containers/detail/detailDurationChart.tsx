@@ -12,7 +12,7 @@ export default function DetailDurationChart() {
     options: {
       title: {
         text: "방송시간",
-        align: "center",
+        align: undefined,
         style: {
           fontSize: "15px",
           fontWeight: "bold",
