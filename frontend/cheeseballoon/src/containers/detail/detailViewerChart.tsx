@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import style from "./detailChart.module.scss";
 
@@ -9,15 +8,23 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 export default function DetailViewerChart() {
+<<<<<<< HEAD
+=======
   const { id, category, date } = useParams();
 
+>>>>>>> ac51269add7b7511c14ac32c724f421166ad45ff
   const chartData = {
     options: {
       title: {
-        text: "시청자수",
         align: "center",
+<<<<<<< HEAD
+        text: "시청자",
+        style: {
+          fontSize: "15px",
+=======
         style: {
           fontSize: "20px",
+>>>>>>> ac51269add7b7511c14ac32c724f421166ad45ff
           fontWeight: "bold",
           color: "white",
         },
@@ -97,8 +104,13 @@ export default function DetailViewerChart() {
         type="line"
         options={chartData.options}
         series={chartData.series}
+<<<<<<< HEAD
+        height="auto"
+        width="100%"
+=======
         height={"auto"}
         width={"100%"}
+>>>>>>> ac51269add7b7511c14ac32c724f421166ad45ff
       />
     </div>
   );

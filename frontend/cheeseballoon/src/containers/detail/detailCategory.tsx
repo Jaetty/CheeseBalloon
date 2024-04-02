@@ -6,7 +6,7 @@ export default function DetailCategory() {
       <div>
         <DetailCategoryChart />
       </div>
-      <div>순위</div>
+      {/* <div>순위</div> */}
     </div>
   );
 }

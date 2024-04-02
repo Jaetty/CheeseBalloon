@@ -1,21 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import style from "./livePopularCategories.module.scss";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_LIVE_CATEGORY_API_URL;
 async function getData() {
-  const res = await fetch(
-    `${API_URL}/live/category/hot?limit=10`
-  );
+  const res = await fetch(`${API_URL}`);
 
-  if (!res.ok) {
-    throw new Error("데이터 수신 실패");
-  }
   return res.json();
 }
 
 export default async function LivePopularCategories() {
   const data = await getData();
-  console.log(data.data.categories);
-  return <div></div>;
+  return (
+    <div className={style.categories}>
+      {data.data.categories.map((category: string) => (
+        <div className={style.category} key={category}>
+          {category}
+        </div>
+      ))}
+    </div>
+  );
 }
