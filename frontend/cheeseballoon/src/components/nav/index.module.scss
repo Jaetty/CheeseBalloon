@@ -17,9 +17,21 @@
 
 .searchbar {
   width: 25%;
+  padding-right: 1.5rem;
 }
 
 .islogin {
   height: 50%;
-  margin-right: 40px;
+  padding-right: 40px;
+}
+
+.logowrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mainlogo {
+  padding-top: 0.25rem;
 }

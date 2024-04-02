@@ -1,21 +1,21 @@
-.entire {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+
+.icon-container {
+  display: flex;
+  align-items: center;
 }
 
-.header {
-    font-size: 30px;
+.icon {
+  height: 3rem;
 }
 
-.introduce {
-    color: gray
+.page-name {
+  font-weight: bold;
+  font-size: 2rem;
+  color: white;
 }
 
-
-
-.liveicon {
-    height: 7rem;
-    width: auto;
+.page-introduce {
+  margin: 0;
+  padding: 0;
+  color: gray;
 }
-
