@@ -5,8 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
-import org.greenpine.cheeseballoon.ranking.application.port.in.dto.FindRankingReqDto;
-import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FollowRankingResDto;
+import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
+import org.greenpine.cheeseballoon.ranking.application.port.in.dto.FindFollowRankingReqDto;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.message.RankingResMsg;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,19 +21,19 @@ import java.util.Random;
 @RequestMapping("/ranking")
 @RequiredArgsConstructor
 public class RankingController {
-
+    private final RankingUsecase rankingUsecase;
     @GetMapping("/follow")
-    public ResponseEntity<CustomBody> test(@RequestBody FindRankingReqDto findRankingReqDto){
+    public ResponseEntity<CustomBody> test(@RequestParam int limit, int offset, int startDate, char platform){
 
-        List<FollowRankingResDto> result = new ArrayList<>();
+        List<FindFollowRankingResDto> result = new ArrayList<>();
         Random random = new Random();
 
         // 테스트용 데이터 제공
-        for(int i=0; i< findRankingReqDto.getLimit(); i++){
+        for(int i=0; i< limit; i++){
 
-            if(findRankingReqDto.getLimit() > 300) break;
+            if(limit > 300) break;
 
-            FollowRankingResDto temp = FollowRankingResDto.builder()
+            FindFollowRankingResDto temp = FindFollowRankingResDto.builder()
                     .streamerId((long) i)
                     .name( i%3==0 ? "최대한 긴 글자의 방송인" : "방송인")
                     .rank(i+1)
@@ -49,11 +50,11 @@ public class RankingController {
                 else temp.setDiff(random.nextInt(100));
             }
 
-            if(findRankingReqDto.getPlatform()=='T'){
+            if(platform=='T'){
                 if(i%2==0) temp.setPlatform('C');
             }
             else{
-                temp.setPlatform(findRankingReqDto.getPlatform());
+                temp.setPlatform(platform);
             }
 
             result.add(temp);

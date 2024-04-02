@@ -1,23 +1,23 @@
-package org.greenpine.cheeseballoon.ranking.application.port.out.dto;
+package org.greenpine.cheeseballoon.streamer.application.port.out.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Builder
-public class FollowRankingResDto {
+public class FindStreamerDetailResDto {
 
     Long streamerId;
     String name;
-    int rank;
-    char platform;
+    String originId;
     String profileUrl;
-    int followCnt;
-    int diff;
-    boolean bookmark;
+    String channelUrl;
+    char platform;
+    Integer rank;
+    Integer diff;
 
 }
