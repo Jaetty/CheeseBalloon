@@ -42,7 +42,7 @@ interface data_3 {
 
 export default function SearchResult() {
   const cheese_api = process.env.NEXT_PUBLIC_CHEESEBALLOON_API;
-  const [query, setQuery] = useState<string | null>(""); // query 상태를 설정
+  const [query, setQuery] = useState(""); // query 상태를 설정
   const [searchStreamerResults, setSearchStreamerResults] = useState<data_3>({
     data: null,
   }); // 검색 결과 상태를 설정
@@ -56,7 +56,7 @@ export default function SearchResult() {
     setQuery(query_2); // query 값을 상태로 설정
 
     // API 요청 함수 호출
-    fetch(`${cheese_api}/streamer/search?query=${query}`, {
+    fetch(`${cheese_api}/streamer/search?query=${query_2}`, {
       // mode: "no-cors",
     })
       .then((response) => response.json())
@@ -68,7 +68,7 @@ export default function SearchResult() {
     // });
 
     // API 요청 함수 호출
-    fetch(`${cheese_api}/live/search?query=${query}`, {
+    fetch(`${cheese_api}/live/search?query=${query_2}`, {
       // mode: "no-cors",
     })
       .then((response) => response.json())
