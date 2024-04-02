@@ -1,7 +1,7 @@
 import styles from "src/components/ranking/rankingIndexCard.module.scss";
 import Image from "next/image";
 import ArrowUp from "public/svgs/uparrow.png";
-import ArrowDown from "public/svgs/downarrow.png";
+// import ArrowDown from "public/svgs/downarrow.png";
 import Test from "public/svgs/test1.png";
 
 type Props = {
