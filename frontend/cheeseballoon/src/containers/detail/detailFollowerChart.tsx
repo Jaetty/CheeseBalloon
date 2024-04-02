@@ -11,8 +11,13 @@ export default function DetailFollowerChart() {
   const chartData = {
     options: {
       title: {
-        text: "팔로워수",
         align: "center",
+        text: "팔로워",
+        style: {
+          fontSize: "15px",
+          fontWeight: "bold",
+          color: "white",
+        },
       },
       chart: {
         toolbar: {
@@ -30,11 +35,39 @@ export default function DetailFollowerChart() {
       },
       xaxis: {
         categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+        labels: {
+          style: {
+            colors: "white",
+            fontWeight: "bold",
+          },
+        },
       },
-      yaxis: [{}],
+      yaxis: [
+        {
+          labels: {
+            style: {
+              colors: "white",
+              fontWeight: "bold",
+            },
+          },
+        },
+      ],
       grid: {
-        show: false,
+        show: true,
+        strokeDashArray: 5,
+        borderColor: "#bcbcbc",
+        xaxis: {
+          lines: {
+            show: false,
+          },
+        },
+        yaxis: {
+          lines: {
+            show: true,
+          },
+        },
       },
+      colors: ["#F0BD53"],
     },
 
     series: [
@@ -52,8 +85,8 @@ export default function DetailFollowerChart() {
         type="line"
         options={chartData.options}
         series={chartData.series}
-        height={500}
-        width={500}
+        height="auto"
+        width="100%"
       />
     </div>
   );

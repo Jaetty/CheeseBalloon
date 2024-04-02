@@ -11,9 +11,15 @@ export default function DetailViewerChart() {
   const chartData = {
     options: {
       title: {
-        text: "시청자수",
         align: "center",
+        text: "시청자",
+        style: {
+          fontSize: "15px",
+          fontWeight: "bold",
+          color: "white",
+        },
       },
+
       chart: {
         toolbar: {
           show: false,
@@ -30,6 +36,41 @@ export default function DetailViewerChart() {
       },
       xaxis: {
         categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+        labels: {
+          style: {
+            colors: "white",
+            fontWeight: "bold",
+          },
+        },
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: "white",
+            fontWeight: "bold",
+          },
+        },
+      },
+      grid: {
+        show: true,
+        strokeDashArray: 5,
+        borderColor: "#bcbcbc",
+        xaxis: {
+          lines: {
+            show: false,
+          },
+        },
+        yaxis: {
+          lines: {
+            show: true,
+          },
+        },
+      },
+      colors: ["#F0BD53"],
+      legend: {
+        labels: {
+          colors: "white",
+        },
       },
     },
 
@@ -53,8 +94,8 @@ export default function DetailViewerChart() {
         type="line"
         options={chartData.options}
         series={chartData.series}
-        height={500}
-        width={500}
+        height="auto"
+        width="100%"
       />
     </div>
   );
