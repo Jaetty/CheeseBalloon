@@ -11,10 +11,10 @@ export default function DetailCategoryChart() {
   const chartData = {
     options: {
       title: {
-        text: "카테고리",
         align: "center",
+        text: "카테고리",
         style: {
-          fontSize: "20px",
+          fontSize: "15px",
           fontWeight: "bold",
           color: "white",
         },
@@ -63,8 +63,8 @@ export default function DetailCategoryChart() {
         type="treemap"
         options={chartData.options}
         series={chartData.series}
-        height={"auto"}
-        width={"100%"}
+        height="auto"
+        width="100%"
       />
     </div>
   );

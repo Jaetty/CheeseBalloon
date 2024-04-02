@@ -11,10 +11,10 @@ export default function DetailDurationChart() {
   const chartData = {
     options: {
       title: {
-        text: "방송 시간",
+        text: "방송시간",
         align: "center",
         style: {
-          fontSize: "20px",
+          fontSize: "15px",
           fontWeight: "bold",
           color: "white",
         },
@@ -85,8 +85,8 @@ export default function DetailDurationChart() {
         type="bar"
         options={chartData.options}
         series={chartData.series}
-        height={"auto"}
-        width={"100%"}
+        height="auto"
+        width="100%"
       />
     </div>
   );

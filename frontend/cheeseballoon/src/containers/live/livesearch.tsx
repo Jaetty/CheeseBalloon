@@ -1,9 +1,11 @@
 "use client";
 
-import style from "./livesearch.module.scss";
+import style from "./liveSearch.module.scss";
 
 export default function LiveSearch() {
-  return <div>
-    <input type="text" />
-    </div>;
+  return (
+    <div className={style.container}>
+      <input type="text" id="1" defaultValue="1"></input>
+    </div>
+  );
 }

@@ -11,10 +11,10 @@ export default function DetailRatingChart() {
   const chartData = {
     options: {
       title: {
-        text: "시청률",
         align: "center",
+        text: "시청률",
         style: {
-          fontSize: "20px",
+          fontSize: "15px",
           fontWeight: "bold",
           color: "white",
         },
@@ -42,14 +42,16 @@ export default function DetailRatingChart() {
           },
         },
       },
-      yaxis: [{
-        labels: {
-          style: {
-            colors: "white",
-            fontWeight: "bold",
+      yaxis: [
+        {
+          labels: {
+            style: {
+              colors: "white",
+              fontWeight: "bold",
+            },
           },
         },
-      }],
+      ],
       grid: {
         show: true,
         strokeDashArray: 5,

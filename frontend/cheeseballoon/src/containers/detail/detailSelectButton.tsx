@@ -22,7 +22,7 @@ export default function DetailSelectButton() {
         type="button"
         className={`${style.button} ${category === "viewer" || !category ? style.select : null}`}
       >
-        시청자 수
+        시청자
       </button>
 
       <button

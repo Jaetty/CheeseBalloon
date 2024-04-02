@@ -11,10 +11,10 @@ export default function DetailFollowerChart() {
   const chartData = {
     options: {
       title: {
-        text: "팔로워수",
         align: "center",
+        text: "팔로워",
         style: {
-          fontSize: "20px",
+          fontSize: "15px",
           fontWeight: "bold",
           color: "white",
         },
@@ -85,8 +85,8 @@ export default function DetailFollowerChart() {
         type="line"
         options={chartData.options}
         series={chartData.series}
-        height={"auto"}
-        width={"100%"}
+        height="auto"
+        width="100%"
       />
     </div>
   );
