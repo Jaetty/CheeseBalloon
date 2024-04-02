@@ -9,15 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Builder
-public class FindStreamerDetailResDto {
+public class FindStreamerDetailLiveResDto {
 
-    Long streamerId;
-    String name;
-    String originId;
-    String profileUrl;
-    String channelUrl;
-    char platform;
-    Integer rank;
-    Integer diff;
+    private boolean isLive;
+    private String streamerUrl;
+    private String thumbnailUrl;
 
 }
