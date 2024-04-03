@@ -32,12 +32,26 @@ public class MemberController {
         log.info("login/google - Call");
         System.out.println(code);
         try{
-            UserInfoDto userInfoDto = oauthService.getGoogleAccessToken(code);
+            UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
         }catch (BadRequestException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
         }
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+    }
+
+    @GetMapping("/login/kakao")
+    public ResponseEntity<CustomBody> loginKakao(@RequestParam String code) {
+        log.info("login/kakao - Call");
+
+        System.out.println(code);
+        try {
+            oauthService.getKakaoUserInfo(code);
+        }catch (JsonProcessingException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
+        }
+
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
     }
 
