@@ -20,6 +20,9 @@ export default function DetailRatingChart() {
         },
       },
       chart: {
+        animations: {
+          enabled: false,
+        },
         toolbar: {
           show: false,
           tools: {

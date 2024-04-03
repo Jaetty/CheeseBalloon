@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import style from "./detailProfileContent.module.scss";
+
+const LIVE_CHECK_API_URL = process.env.NEXT_PUBLIC_LIVE_CHECK_API_URL;
 
 interface DetailProfileContentData {
   streamId: number;
@@ -12,6 +15,11 @@ interface DetailProfileContentData {
   platform: string;
   rank: number;
   diff: number;
+}
+interface liveDataType {
+  live: boolean;
+  streamUrl: string;
+  thumbnailUrl: string;
 }
 
 // 임시 데이터
@@ -27,15 +35,29 @@ const data: DetailProfileContentData = {
   rank: 1,
   diff: 3,
 };
+async function getData() {
+  const res = await fetch(`${LIVE_CHECK_API_URL}1369`);
 
-const isLive: boolean = true
+  return res.json();
+}
 
 export default function DetailProfileContent() {
+  const [liveData, setLiveData] = useState<liveDataType | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data2 = await getData();
+      setLiveData(data2.data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className={style.wrapper}>
       <div className={style["image-container"]}>
         <img
-          className={`${style["profile-image"]} ${isLive ? style.live : null}`}
+          className={`${style["profile-image"]} ${liveData && liveData.live ? style.live : null}`}
           src={data.profileUrl}
           alt="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png?type=f120_120_na"
         />
@@ -49,7 +71,6 @@ export default function DetailProfileContent() {
           />
           <div className={style.name}>{data.name}</div>
         </div>
-        {/* <div className={style.introduce}>프로필 소개</div> */}
       </div>
       <div className={style.rank}>
         <div className={style["rank-num"]}># {data.rank}</div>

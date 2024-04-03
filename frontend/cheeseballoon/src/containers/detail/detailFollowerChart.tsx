@@ -20,6 +20,9 @@ export default function DetailFollowerChart() {
         },
       },
       chart: {
+        animations: {
+          enabled: false,
+        },
         toolbar: {
           show: false,
           tools: {

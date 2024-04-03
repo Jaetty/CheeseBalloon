@@ -21,6 +21,9 @@ export default function DetailViewerChart() {
       },
 
       chart: {
+        animations: {
+          enabled: false,
+        },
         toolbar: {
           show: false,
           tools: {

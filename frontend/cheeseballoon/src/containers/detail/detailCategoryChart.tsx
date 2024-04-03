@@ -2,6 +2,7 @@
 
 // import ReactApexChart from "react-apexcharts";
 import dynamic from "next/dynamic";
+import style from "./detailChart.module.scss"
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -20,6 +21,9 @@ export default function DetailCategoryChart() {
         },
       },
       chart: {
+        animations: {
+          enabled: false,
+        },
         toolbar: {
           show: false,
           tools: {
@@ -58,7 +62,7 @@ export default function DetailCategoryChart() {
   };
 
   return (
-    <div>
+    <div className={style.container}>
       <ApexChart
         type="treemap"
         options={chartData.options}
