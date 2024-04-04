@@ -22,13 +22,20 @@ import re
 
 import httpx
 
+
 class Chzzk:
 
     async def chzzk(self):
         async with httpx.AsyncClient() as client:
-            res = await client.get('https://api.chzzk.naver.com/service/v1/lives?size=20&sortType=POPULAR')
-            # print(res.text) 왜안돼
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" +
+                              " Chrome/37.0.2049.0 Safari/537.36"
+            }
+            res = await client.get('https://api.chzzk.naver.com/service/v1/home/recommendation-channels',
+                                   headers=headers)
+            print(res.text)
             return "good"
+
     def chzzk_crawling(self, db: Session):
         # Chrome 옵션 설정
         chrome_options = Options()
