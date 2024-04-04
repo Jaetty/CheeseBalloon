@@ -5,16 +5,10 @@ from models.streamer_logs import StreamerLog
 
 
 class StreamerLogService:
-    def create(self, db: Session, follower: int, origin_id: str):
-
-        streamer = db.query(Streamer).filter(Streamer.origin_id == origin_id).first()
-
-        if not streamer:
-            print(f"No streamer found with origin_id {origin_id}")
-            return
+    def create(self, db: Session, follower: int, streamer_id: int):
 
         db_streamer_log = StreamerLog(
-            streamer_id=streamer.streamer_id,
+            streamer_id=streamer_id,
             follower=follower
         )
         db.add(db_streamer_log)
