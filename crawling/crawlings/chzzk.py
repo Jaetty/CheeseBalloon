@@ -28,8 +28,8 @@ class Chzzk:
     async def chzzk(self):
         async with httpx.AsyncClient() as client:
             headers = {
-                "User-Agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)" +
-                              " Chrome/37.0.2049.0 Safari/537.36"
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                              "Chrome/123.0.0.0 Safari/537.36"
             }
             res = await client.get('https://api.chzzk.naver.com/service/v1/home/recommendation-channels',
                                    headers=headers)
