@@ -83,7 +83,7 @@ public class OauthService {
             return UserInfoDto.builder()
                     .email(googleUserInfo.getEmail())
                     .name(googleUserInfo.getName())
-                    .profileUrl(googleUserInfo.getPicture())
+                    .profileImgUrl(googleUserInfo.getPicture())
                     .originId(googleUserInfo.getSub())
                     .platform('G')
                     .build();
@@ -153,7 +153,7 @@ public class OauthService {
             System.out.println("nickname: " + kakaoUserInfo.getProperties().getNickname());
             System.out.println("Thumbnail Image: " + kakaoUserInfo.getProperties().getProfileImage());
             return UserInfoDto.builder()
-                    .profileUrl(kakaoUserInfo.getProperties().getProfileImage())
+                    .profileImgUrl(kakaoUserInfo.getProperties().getProfileImage())
                     .name(kakaoUserInfo.getProperties().getNickname())
                     .originId(kakaoUserInfo.getId())
                     .platform('K')

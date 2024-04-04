@@ -1,18 +1,14 @@
 package org.greenpine.cheeseballoon.member.adapter.out.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "lives")
+@Table(name = "members")
 @DynamicInsert
 @DynamicUpdate
 @Getter
@@ -29,4 +25,9 @@ public class MemberEntity {
     private String originId;
     private Character platform;
     private LocalDateTime regDt;
+    private String profileImgUrl;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
 }
