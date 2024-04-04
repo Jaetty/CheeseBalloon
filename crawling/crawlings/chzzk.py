@@ -27,7 +27,7 @@ class Chzzk:
     async def chzzk(self):
         async with httpx.AsyncClient() as client:
             res = await client.get('https://api.chzzk.naver.com/service/v1/lives?size=20&sortType=POPULAR')
-            # print(res.text)
+            # print(res.text) 왜안돼
             return "good"
     def chzzk_crawling(self, db: Session):
         # Chrome 옵션 설정
