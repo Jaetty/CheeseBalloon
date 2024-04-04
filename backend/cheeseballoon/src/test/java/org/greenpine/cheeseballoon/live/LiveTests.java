@@ -2,10 +2,7 @@ package org.greenpine.cheeseballoon.live;
 
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.live.adapter.in.web.LiveController;
-import org.greenpine.cheeseballoon.live.adapter.out.persistence.CategoryEntity;
-import org.greenpine.cheeseballoon.live.adapter.out.persistence.CategoryRepository;
-import org.greenpine.cheeseballoon.live.adapter.out.persistence.CycleLogEntity;
-import org.greenpine.cheeseballoon.live.adapter.out.persistence.CycleLogRepository;
+import org.greenpine.cheeseballoon.live.adapter.out.persistence.*;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.SearchLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
@@ -29,7 +26,7 @@ public class LiveTests {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private CycleLogRepository cycleLogRepository;
+    private LiveLogRepository liveLogRepository;
 
     @Test
     public void liveGetTest(){
@@ -91,6 +88,16 @@ public class LiveTests {
                 categoryChosung += chosungs[chosung];
             }
             System.out.println(categoryChosung);
+        }
+    }
+
+    @Test
+    public void entityExtendTest(){
+        List<Object[]> res = liveLogRepository.test();
+        for(Object[] obj :res ){
+            Long live = (Long) obj[0];
+            Long cnt = (Long) obj[1];
+            System.out.println(live + " " + cnt);
         }
     }
 

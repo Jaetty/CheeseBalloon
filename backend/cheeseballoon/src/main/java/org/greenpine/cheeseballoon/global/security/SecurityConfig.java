@@ -37,7 +37,7 @@ public class SecurityConfig{
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize
                 //.requestMatchers().permitAll()
-                .requestMatchers("/member/login").permitAll()
+                .requestMatchers("/member/login/*").permitAll()
                 //.requestMatchers("/member/login/test").hasRole("admin") //role 체크
                 //모든 경로에 대한 인증처리는 Pass
                 .anyRequest().permitAll()
