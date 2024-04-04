@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.GoogleUserInfoResDto;
+import org.greenpine.cheeseballoon.member.application.port.out.dto.KakaoUserInfoResDto;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -30,6 +31,7 @@ public class OauthService {
     @Value("${oauth2.google.redirect-uri}")
     private String GOOGLE_REDIRECT_URL;
 
+    private final String KAKAO_USER_API = "https://kapi.kakao.com/v2/user/me";
     @Value("${oauth2.kakao.redirect-uri}")
     private String KAKAO_REDIRECT_URL;
     @Value("${oauth2.kakao.rest-api-key}")
@@ -54,7 +56,7 @@ public class OauthService {
             Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
             String accessToken = (String) jsonMap.get("access_token");
             //System.out.println("accessToken:"+accessToken);
-            return getGoogleUserInfo(accessToken);
+            return requestGoogleUserInfo(accessToken);
         }
 
         return null;
@@ -82,13 +84,15 @@ public class OauthService {
                     .email(googleUserInfo.getEmail())
                     .name(googleUserInfo.getName())
                     .profileUrl(googleUserInfo.getPicture())
+                    .originId(googleUserInfo.getSub())
+                    .platform('G')
                     .build();
         }else
             throw new BadRequestException();
 
     }
 
-    public UserInfoDto getKakaoUserInfo(String accessCode) throws JsonProcessingException {
+    public UserInfoDto getKakaoUserInfo(String accessCode) throws JsonProcessingException, BadRequestException {
         RestTemplate rt = new RestTemplate();
 
         // HTTP POST를 요청할 때 보내는 데이터(body)를 설명해주는 헤더도 만들어 같이 보내줘야 한다.
@@ -104,14 +108,13 @@ public class OauthService {
         params.add("code", accessCode);
 
         // 요청하기 위해 헤더(Header)와 데이터(Body)를 합친다.
-        // kakaoTokenRequest는 데이터(Body)와 헤더(Header)를 Entity가 된다.
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
 
         // POST 방식으로 Http 요청한다. 그리고 response 변수의 응답 받는다.
         ResponseEntity<String> responseEntity = rt.exchange(
-                "https://kauth.kakao.com/oauth/token", // https://{요청할 서버 주소}
-                HttpMethod.POST, // 요청할 방식
-                kakaoTokenRequest, // 요청할 때 보낼 데이터
+                "https://kauth.kakao.com/oauth/token",
+                HttpMethod.POST,
+                kakaoTokenRequest,
                 String.class // 요청 시 반환되는 데이터 타입
         );
 
@@ -121,9 +124,42 @@ public class OauthService {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
             String accessToken = (String) jsonMap.get("access_token");
-            System.out.println(accessToken);
+            //System.out.println(accessToken);
+            requestKakaoUserInfo(accessToken);
         }
         return null;
     }
 
+    public UserInfoDto requestKakaoUserInfo(String accessToken) throws BadRequestException, JsonProcessingException {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                KAKAO_USER_API,
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            String responseBody = response.getBody();
+            //System.out.println(responseBody);
+            ObjectMapper objectMapper = new ObjectMapper();
+            KakaoUserInfoResDto kakaoUserInfo = objectMapper.readValue(response.getBody(), KakaoUserInfoResDto.class);
+            System.out.println("id: " + kakaoUserInfo.getId());
+            System.out.println("nickname: " + kakaoUserInfo.getProperties().getNickname());
+            System.out.println("Thumbnail Image: " + kakaoUserInfo.getProperties().getProfileImage());
+            return UserInfoDto.builder()
+                    .profileUrl(kakaoUserInfo.getProperties().getProfileImage())
+                    .name(kakaoUserInfo.getProperties().getNickname())
+                    .originId(kakaoUserInfo.getId())
+                    .platform('K')
+                    .build();
+        } else {
+            throw new BadRequestException();
+        }
+    }
 }
