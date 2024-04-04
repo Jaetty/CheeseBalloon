@@ -7,12 +7,14 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
+type AlignType = "center";
+
 export default function DetailDurationChart() {
   const chartData = {
     options: {
       title: {
         text: "방송시간",
-        align: undefined,
+        align: "center" as AlignType,
         style: {
           fontSize: "15px",
           fontWeight: "bold",

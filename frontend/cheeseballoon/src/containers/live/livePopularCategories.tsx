@@ -1,27 +1,39 @@
 "use client";
 
-// import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import style from "./livePopularCategories.module.scss";
 
-// const API_URL = process.env.NEXT_PUBLIC_LIVE_CATEGORY_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_HOT_CATEGORY_API_URL;
 
-// async function getData() {
-//   const res = await fetch(`${API_URL}`);
+type categoriesType = string[];
 
-//   return res.json();
-// }
+async function getData() {
+  const res = await fetch(`${API_URL}`);
 
-const data = { data: { categories: ["1", "2", "3"] } };
+  return res.json();
+}
 
 export default function LivePopularCategories() {
-  // const data = await getData();
+  const [categories, setCategories] = useState<categoriesType | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getData();
+      setCategories(data.data.categories);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className={style.categories}>
-      {data.data.categories.map((category: string) => (
-        <div className={style.category} key={category}>
-          {category}
-        </div>
-      ))}
+        {categories
+          ? categories.map((category: string, idx: number) => (
+              <div className={style.category} key={idx}>
+                {category}
+              </div>
+            ))
+          : null}
     </div>
   );
 }

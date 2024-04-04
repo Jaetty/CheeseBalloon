@@ -7,12 +7,14 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
+type AlignType = "center";
+
 export default function DetailFollowerChart() {
   const chartData = {
     options: {
       title: {
-        align: undefined,
         text: "팔로워",
+        align: "center" as AlignType,
         style: {
           fontSize: "15px",
           fontWeight: "bold",
