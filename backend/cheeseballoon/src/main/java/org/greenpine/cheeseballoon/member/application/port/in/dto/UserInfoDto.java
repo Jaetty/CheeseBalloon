@@ -14,6 +14,8 @@ public class UserInfoDto {
     String name;
     String profileUrl;
     String email;
+    String originId;
+    Character platform;
 }
 
 
