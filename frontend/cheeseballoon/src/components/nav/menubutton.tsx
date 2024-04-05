@@ -2,7 +2,7 @@
 
 import useToggleState from "src/stores/store";
 import styles1 from "src/components/nav/menubutton.module.scss";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import menu from "public/svgs/big.png";
 
 export default function Nav() {

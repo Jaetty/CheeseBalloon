@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import notice from "public/svgs/notice.svg";
 import live from "public/svgs/live.svg";
 import ranking from "public/svgs/rank.svg";

@@ -2,7 +2,7 @@
 
 import styles from "src/components/nav/item/recomend.module.scss";
 import FavCard from "src/components/nav/item/favcard";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import arrow from "public/svgs/down_arrow.png";
 import { useState } from "react";
 import useToggleState from "src/stores/store";
