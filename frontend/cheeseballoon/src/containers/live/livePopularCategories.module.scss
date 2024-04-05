@@ -2,9 +2,16 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  max-height: 4rem;
+  overflow-y: hidden;
 }
 
 .category {
   color: yellow;
   font-size: small;
+}
+
+.category:hover {
+  color: greenyellow;
+  cursor: pointer;
 }

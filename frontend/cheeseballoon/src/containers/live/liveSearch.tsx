@@ -18,6 +18,7 @@ async function getData(query: string) {
 export default function LiveSearch() {
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchResponse, setSearchResponse] = useState<searchType>([]);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +44,22 @@ export default function LiveSearch() {
         className={style.input}
         value={searchInput}
         onChange={handleInput}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       ></input>
+      {isFocused && searchInput && (
+        <div className={style["dropdown-container"]}>
+          {searchResponse.length ? (
+            <div className={style.dropdown}>
+              {searchResponse.map((item, index) => (
+                <div key={index} className={style.dropdownItem}>
+                  {item}
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 }
