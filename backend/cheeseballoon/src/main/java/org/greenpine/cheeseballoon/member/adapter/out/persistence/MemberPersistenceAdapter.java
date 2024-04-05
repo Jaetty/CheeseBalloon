@@ -36,6 +36,7 @@ public class MemberPersistenceAdapter implements MemberPort, BookmarkPort, ViewL
                 .nickname(dto.getName())
                 .originId(dto.getOriginId())
                 .profileImgUrl(dto.getProfileImgUrl())
+                .platform(dto.getPlatform())
                 .build();
         member = memberRepository.save(member);
         return member;
