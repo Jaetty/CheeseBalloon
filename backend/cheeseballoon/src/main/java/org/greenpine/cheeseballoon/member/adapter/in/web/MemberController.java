@@ -8,6 +8,7 @@ import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.member.application.port.in.MemberUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
+import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.message.MemberResMsg;
 import org.greenpine.cheeseballoon.member.application.service.MemberService;
 import org.greenpine.cheeseballoon.member.application.service.OauthService;
@@ -34,13 +35,14 @@ public class MemberController {
         System.out.println(code);
         try{
             UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
-            memberUsecase.login(userInfoDto);
+            LoginResDto resDto = memberUsecase.login(userInfoDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
         }catch (BadRequestException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
         }
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+
     }
 
     @GetMapping("/login/kakao")
@@ -50,14 +52,13 @@ public class MemberController {
         System.out.println(code);
         try {
             UserInfoDto userInfoDto = oauthService.getKakaoUserInfo(code);
-            memberUsecase.login(userInfoDto);
+            LoginResDto resDto = memberUsecase.login(userInfoDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
         }catch (BadRequestException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
         }
-
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
     }
 
     @PostMapping("/login/test")

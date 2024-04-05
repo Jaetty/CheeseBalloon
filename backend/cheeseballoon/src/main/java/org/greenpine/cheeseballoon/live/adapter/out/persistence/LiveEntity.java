@@ -17,7 +17,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor
 public class LiveEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long liveId;
     private Long liveOriginId;
     private String streamUrl;
