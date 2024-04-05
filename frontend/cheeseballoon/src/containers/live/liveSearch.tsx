@@ -7,7 +7,7 @@ import searchIcon from "../../stores/search_glass.png";
 
 const API_URL = process.env.NEXT_PUBLIC_CATEGORY_API_URL;
 
-type searchType = string[]
+type searchType = string[];
 
 async function getData(query: string) {
   const res = await fetch(`${API_URL}${query}`);
@@ -17,20 +17,20 @@ async function getData(query: string) {
 
 export default function LiveSearch() {
   const [searchInput, setSearchInput] = useState<string>("");
-  const [searchResponse, setSearchResponse] = useState<searchType>([])
+  const [searchResponse, setSearchResponse] = useState<searchType>([]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await getData(searchInput);
-  //     setSearchResponse(data.data.categories);
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getData(searchInput);
+      setSearchResponse(data.data.categories);
+    };
 
-  //   fetchData();
-  // }, [searchInput]);
+    fetchData();
+  }, [searchInput]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value)
-  }
+    setSearchInput(e.target.value);
+  };
 
   return (
     <div className={style.container}>
