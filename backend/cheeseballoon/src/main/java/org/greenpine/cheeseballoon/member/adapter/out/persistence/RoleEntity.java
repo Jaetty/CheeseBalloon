@@ -1,14 +1,12 @@
-package org.greenpine.cheeseballoon.live.adapter.out.persistence;
+package org.greenpine.cheeseballoon.member.adapter.out.persistence;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "cycle_logs")
+@Table(name = "roles")
 @DynamicInsert
 @DynamicUpdate
 @Getter
@@ -16,11 +14,9 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CycleLogEntity {
+public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cycleLogId;
-    private Integer afreecaViewerCnt;
-    private Integer chzzkViewerCnt;
-    private LocalDateTime cycleDt;
+    private Long roleId;
+    private String role;
 }

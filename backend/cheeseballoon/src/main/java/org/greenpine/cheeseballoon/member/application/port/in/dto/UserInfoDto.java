@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UserInfoDto {
-    //String sub;
     String name;
-    String profileUrl;
+    String profileImgUrl;
     String email;
     String originId;
     Character platform;
