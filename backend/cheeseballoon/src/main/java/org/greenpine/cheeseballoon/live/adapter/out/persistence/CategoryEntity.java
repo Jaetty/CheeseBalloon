@@ -18,7 +18,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor
 public class CategoryEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     //@Column(name = "category_id")
     private Long categoryId;
     private String category;
