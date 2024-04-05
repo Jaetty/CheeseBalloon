@@ -1,4 +1,40 @@
 .container {
+  position: relative;
+  width: 200px;
+}
+
+.icon {
+  position: absolute;
+  width: 15px;
   display: flex;
-  align-items: center;
+  padding: 0.5rem;
+}
+
+.input {
+  height: 30px;
+  outline: none;
+  padding: 0 0 0 2rem;
+  background-color: #4e4e4e;
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  color: white;
+}
+
+.input::placeholder {
+  color: white;
+  font-weight: bold;
+  font-size: smaller;
+}
+
+.input:focus {
+  border: solid 2px;
+}
+
+.input:focus::placeholder {
+  color: transparent;
+}
+
+.input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
 }

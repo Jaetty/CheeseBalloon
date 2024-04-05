@@ -16,14 +16,14 @@ async function getData() {
 export default function LivePopularCategories() {
   const [categories, setCategories] = useState<categoriesType | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getData();
-      setCategories(data.data.categories);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await getData();
+  //     setCategories(data.data.categories);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   return (
     <div className={style.categories}>
