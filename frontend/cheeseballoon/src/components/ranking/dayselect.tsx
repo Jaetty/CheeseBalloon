@@ -12,16 +12,6 @@ export default function DaySelect({ setDate }: DaySelectProps) {
     setSelectedOption(event.target.value);
     setDate(parseInt(event.target.value, 10));
   };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch(`/api/data?option=${selectedOption}`);
-  //     const newData = await response.json();
-  //     setData(newData);
-  //   };
-
-  //   fetchData();
-  // }, [selectedOption]);
   return (
     <div>
       <select
