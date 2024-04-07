@@ -41,7 +41,7 @@ public class OauthService {
 
     private final JwtUtil jwtUtil;
 
-    public GetAccessTokenResDto getAccessToken(Long memberId){
+    public GetAccessTokenResDto getNewAccessToken(Long memberId){
         String accessToken = jwtUtil.createAccessToken(memberId);
         return GetAccessTokenResDto.builder()
                 .accessToken(accessToken)

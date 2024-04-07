@@ -12,10 +12,8 @@ import org.greenpine.cheeseballoon.member.application.port.in.dto.GetAccessToken
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.message.MemberResMsg;
-import org.greenpine.cheeseballoon.member.application.service.MemberService;
 import org.greenpine.cheeseballoon.member.application.service.OauthService;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +33,7 @@ public class MemberController {
 
     @PostMapping("/accessToken")
     public ResponseEntity<CustomBody> getAccessToken(@AuthenticationPrincipal Long memberId){
-        GetAccessTokenResDto resDto = oauthService.getAccessToken(memberId);
+        GetAccessTokenResDto resDto = oauthService.getNewAccessToken(memberId);
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
     }
 
