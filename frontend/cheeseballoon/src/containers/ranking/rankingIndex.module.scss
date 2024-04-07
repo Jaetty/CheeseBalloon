@@ -5,12 +5,17 @@
 // .minicontainer {
 //   padding-left: 60px;
 // }
+@font-face {
+  font-family: "esamanru";
+  src: url("/styles/font/esamanru Light.ttf") format("truetype");
+}
 
 .ranking {
   color: white;
   font-size: 20px;
   width: 80.625rem;
   margin: 0 auto;
+  font-family: "esamanru";
 }
 
 .title {
