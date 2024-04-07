@@ -7,11 +7,14 @@ import org.apache.coyote.BadRequestException;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.member.application.port.in.MemberUsecase;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.ChangeNicknameReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.message.MemberResMsg;
 import org.greenpine.cheeseballoon.member.application.service.MemberService;
 import org.greenpine.cheeseballoon.member.application.service.OauthService;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +63,19 @@ public class MemberController {
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
         }
     }
+
+    @PostMapping("/changeNickname")
+    public ResponseEntity<CustomBody> changeNickname(@AuthenticationPrincipal Long memberId, @RequestBody ChangeNicknameReqDto reqDto) {
+        log.info("changeNickname - Call");
+        try{
+            memberUsecase.changeNickname(memberId, reqDto);
+        }catch (DataIntegrityViolationException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.BAD_REQUEST, MemberResMsg.DUP_NICKNAME, null));
+        }
+
+        return null;
+    }
+
 
     @PostMapping("/login/test")
     public ResponseEntity<CustomBody> loginTest(@AuthenticationPrincipal Long memberId){
