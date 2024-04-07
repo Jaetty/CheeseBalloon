@@ -22,7 +22,6 @@ export default function LiveSearch() {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
-  // const [query, setQuery] = useState<string>(useSearchParams().toString());
   const searchParams = useSearchParams();
   const query = searchParams.getAll("category");
 
@@ -44,7 +43,7 @@ export default function LiveSearch() {
     let newQuery
     if (newCategory && !query.includes(newCategory)) {
       if (query.length > 0) {
-        newQuery = `${query},${newCategory}`;
+        newQuery = `${query.join('&category=')}&category=${newCategory}`;
       } else {
         newQuery = newCategory
       }
