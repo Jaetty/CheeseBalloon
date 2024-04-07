@@ -31,8 +31,8 @@ interface LiveInfo {
 export default function LiveCards() {
   return (
     <div>
-      {livehref.map((liveinfo: LiveInfo) => (
-        <div className={style.livecard} key={liveinfo.name}>
+      {livehref.map((liveinfo: LiveInfo, idx: number) => (
+        <div className={style.livecard} key={idx}>
           <LiveCard liveinfo={liveinfo} />
         </div>
       ))}
