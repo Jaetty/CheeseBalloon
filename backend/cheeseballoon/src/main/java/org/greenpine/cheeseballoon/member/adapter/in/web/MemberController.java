@@ -8,6 +8,7 @@ import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.member.application.port.in.MemberUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.ChangeNicknameReqDto;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.GetAccessTokenResDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.message.MemberResMsg;
@@ -30,6 +31,12 @@ public class MemberController {
     public ResponseEntity<CustomBody> login(){
         log.info("login - Call");
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+    }
+
+    @PostMapping("/accessToken")
+    public ResponseEntity<CustomBody> getAccessToken(@AuthenticationPrincipal Long memberId){
+        GetAccessTokenResDto resDto = oauthService.getAccessToken(memberId);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
     }
 
     @GetMapping("/login/google")
