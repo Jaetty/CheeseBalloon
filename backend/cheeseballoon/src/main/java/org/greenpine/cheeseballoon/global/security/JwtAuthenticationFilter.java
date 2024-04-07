@@ -1,6 +1,8 @@
 package org.greenpine.cheeseballoon.global.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -26,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, JwtException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String origin = httpRequest.getHeader("Origin");
         System.out.println("Origin: " + origin);
@@ -34,6 +36,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(token!=null){
             System.out.println("token:"+token);
             Claims claims = jwtUtil.extractAllClaims(token);
+            if(jwtUtil.isTokenExpired(claims)){
+                throw new JwtException("Token Expired");
+            }
             Long memberId = jwtUtil.getUserId(claims);
 
 
