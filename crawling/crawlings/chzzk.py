@@ -31,9 +31,9 @@ class Chzzk:
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
                               "Chrome/123.0.0.0 Safari/537.36"
             }
-            res = await client.get('https://api.chzzk.naver.com/service/v1/home/recommendation-channels',
+            res = await client.get('https://api.chzzk.naver.com/service/v1/lives?size=20&sortType=POPULAR',
                                    headers=headers)
-            print(res.text)
+            print(res.json())
             return "good"
 
     def chzzk_crawling(self, db: Session):
