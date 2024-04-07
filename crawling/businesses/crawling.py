@@ -14,6 +14,7 @@ from schemas.live_logs import LiveLogCreate
 from schemas.cycle_logs import CycleLogCreate
 
 from crawlings.soop import Soop
+from crawlings.chzzk import Chzzk
 
 
 class CrawlingBusiness:
@@ -22,6 +23,7 @@ class CrawlingBusiness:
         try:
 
             streamer_list = Soop().soop()
+            streamer_list.extend(Chzzk().chzzk())
 
             cycle = CycleLogCreate(
                 afreeca_viewer_cnt=sum(item.viewer_cnt for item in streamer_list if item.platform == "S"),
