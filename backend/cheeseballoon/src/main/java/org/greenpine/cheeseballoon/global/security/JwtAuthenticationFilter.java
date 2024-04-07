@@ -18,6 +18,7 @@ import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -34,6 +35,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("token:"+token);
             Claims claims = jwtUtil.extractAllClaims(token);
             Long memberId = jwtUtil.getUserId(claims);
+
+
+            System.out.println("필터 memberId : " + memberId);
             //memberId 담고 인증 부여
             AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     memberId, null, AuthorityUtils.NO_AUTHORITIES);
