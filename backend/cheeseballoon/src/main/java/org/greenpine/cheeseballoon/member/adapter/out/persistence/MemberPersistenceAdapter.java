@@ -1,12 +1,14 @@
 package org.greenpine.cheeseballoon.member.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.ChangeNicknameReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.MemberPort;
 import org.greenpine.cheeseballoon.member.application.port.out.BookmarkPort;
 import org.greenpine.cheeseballoon.member.application.port.out.ViewLogPort;
-import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,5 +42,15 @@ public class MemberPersistenceAdapter implements MemberPort, BookmarkPort, ViewL
                 .build();
         member = memberRepository.save(member);
         return member;
+    }
+
+    @Override
+    public void changeNickname(Long memberId, ChangeNicknameReqDto dto) {
+        Optional<MemberEntity> memberOptional = memberRepository.findById(memberId);
+        if(memberOptional.isPresent()){
+            MemberEntity member = memberOptional.get();
+            member.setNickname(dto.getNewNickname());
+            memberRepository.save(member);
+        }
     }
 }
