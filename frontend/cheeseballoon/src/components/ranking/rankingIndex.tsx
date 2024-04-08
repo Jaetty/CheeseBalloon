@@ -30,6 +30,7 @@ export default function Rank({ title, data }: Props) {
             profileUrl={item.profileUrl}
             platform={item.platform}
             id={item.streamId}
+            title={title}
           />
         </div>
       ))}
