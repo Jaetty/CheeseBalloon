@@ -12,30 +12,56 @@ import { LiveData } from "src/types/type";
 
 type Props = {
   data: LiveData[] | undefined;
+  title: string;
 };
-export default function Subrank({ data }: Props) {
+export default function Subrank({ data, title }: Props) {
   const reorderedData = data && [data[1], data[0], data[2]];
+  const RenderRank = title === "실시간 LIVE";
   return (
     <div className={style.wrapper}>
       {reorderedData &&
         reorderedData.map((item, index) => (
           <div key={index} className={style.box}>
-            <div className={style.image}>
-              <Link href={`/detail/${item.streamId}`}>
-                <Image src={item.profileUrl} alt="" width={70} height={70} />
-              </Link>
-            </div>
-            <div className={style.rankimage}>
-              {index === 0 && (
-                <Image src={second} alt="" width={28} height={28} />
-              )}
-              {index === 1 && (
-                <Image src={first} alt="" width={28} height={28} />
-              )}
-              {index === 2 && (
-                <Image src={third} alt="" width={28} height={28} />
-              )}
-            </div>
+            {!RenderRank && (
+              <div className={style.image}>
+                <Link href={`/detail/${item.streamId}`}>
+                  <Image src={item.profileUrl} alt="" width={70} height={70} />
+                </Link>
+              </div>
+            )}
+            {RenderRank && (
+              <div className={style.liveimage}>
+                <Link href={`/detail/${item.streamId}`}>
+                  <Image src={item.profileUrl} alt="" width={70} height={70} />
+                </Link>
+              </div>
+            )}
+            {!RenderRank && (
+              <div className={style.rankimage}>
+                {index === 0 && (
+                  <Image src={second} alt="" width={28} height={28} />
+                )}
+                {index === 1 && (
+                  <Image src={first} alt="" width={28} height={28} />
+                )}
+                {index === 2 && (
+                  <Image src={third} alt="" width={28} height={28} />
+                )}
+              </div>
+            )}
+            {RenderRank && (
+              <div className={style.liverankimage}>
+                {index === 0 && (
+                  <Image src={second} alt="" width={28} height={28} />
+                )}
+                {index === 1 && (
+                  <Image src={first} alt="" width={28} height={28} />
+                )}
+                {index === 2 && (
+                  <Image src={third} alt="" width={28} height={28} />
+                )}
+              </div>
+            )}
             <div className={style.name}>
               <Link href={`/detail/${item.streamId}`} className={style.link}>
                 {item.name}
@@ -46,9 +72,24 @@ export default function Subrank({ data }: Props) {
                 <Image src={chzlogo} alt="" width={14} height={14} />
               )}
             </div>
-            <div className={style.info}>
-              {item.viewerCnt.toLocaleString()} 명
-            </div>
+            {RenderRank && (
+              <>
+                <div className={style.liveinfo}>
+                  {item?.title || ""}
+                  <div className={style.subinfo}>
+                    {item?.category || "리그 오브 레전드"}
+                  </div>
+                </div>
+                <div className={style.livecntinfo}>
+                  {item.viewerCnt.toLocaleString()} 명
+                </div>
+              </>
+            )}
+            {!RenderRank && (
+              <div className={style.info}>
+                {item.viewerCnt.toLocaleString()} 명
+              </div>
+            )}
           </div>
         ))}
     </div>

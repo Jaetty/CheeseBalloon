@@ -90,8 +90,8 @@ export default function Ranking() {
         <DaySelect setDate={setDate} />
         <PlatformSelect setPlatform={setPlatform} />
       </div>
-      <Subrank data={subrankData} />
-      <SubrankAll data={subrankAllData} />
+      <Subrank data={subrankData} title={mapping[pathname]} />
+      <SubrankAll data={subrankAllData} title={mapping[pathname]} />
       {allDataLoaded && <p className={style.DataLoaded}></p>}
       <div id="bottom" style={{ height: "1px" }} />
     </div>

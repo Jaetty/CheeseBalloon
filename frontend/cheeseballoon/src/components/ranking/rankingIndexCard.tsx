@@ -12,6 +12,7 @@ type Props = {
   profileUrl: string;
   platform: string;
   id: number;
+  title: string;
 };
 
 export default function RankCard({
@@ -20,6 +21,7 @@ export default function RankCard({
   profileUrl,
   platform,
   id,
+  title,
 }: Props) {
   let logo = null;
   if (platform === "A" || platform === "S") {
@@ -27,6 +29,7 @@ export default function RankCard({
   } else if (platform === "C") {
     logo = chzlogo;
   }
+  const RenderRank = title !== "실시간 LIVE";
   return (
     <div className={styles.container}>
       <div className={styles.number}>{number}</div>
@@ -41,10 +44,12 @@ export default function RankCard({
         </Link>{" "}
         {logo && <Image src={logo} alt="" width={16} height={16} />}
       </div>
-      <div className={styles.rank}>
-        <Image src={ArrowUp} alt="" width={7} height={11} />
-        {number}
-      </div>
+      {RenderRank && (
+        <div className={styles.rank}>
+          <Image src={ArrowUp} alt="" width={7} height={11} />
+          {number}
+        </div>
+      )}
     </div>
   );
 }

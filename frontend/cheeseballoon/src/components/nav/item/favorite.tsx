@@ -5,32 +5,48 @@ import FavCard from "src/components/nav/item/favcard";
 import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
 import useToggleState from "src/stores/store";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Fav() {
   const { value } = useToggleState();
+  const [data, setData] = useState([]);
   const [toggle1, setToggle] = useState(false);
   const switchToggle = () => {
     setToggle(!toggle1);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_LIVE_API}?offset=10&limit=20`
+      );
+      const responseData = await response.json();
+      setData(responseData.data);
+    };
+
+    fetchData();
+  }, []);
+
+  const visibleData = data.slice(0, 5);
+  const hiddenData = data.slice(5, 15);
+
   return (
     <div>
       {value && (
         <div>
           <div className={styles.open_container}>
             <div className={styles.open_description}>즐겨찾기</div>
-            <FavCard />
-            <FavCard />
-            <FavCard />
-            <FavCard />
-            <FavCard />
+            {visibleData.map((item, index) => (
+              <div key={index}>
+                <FavCard data={item} />
+              </div>
+            ))}
             {toggle1 && (
               <>
-                <FavCard />
-                <FavCard />
-                <FavCard />
-                <FavCard />
-                <FavCard />
+                {hiddenData.map((item) => (
+                  <div key={item}>
+                    <FavCard data={item} />
+                  </div>
+                ))}
               </>
             )}
             {!toggle1 && (
@@ -64,18 +80,18 @@ export default function Fav() {
         <div>
           <div className={styles.closed_container}>
             <div className={styles.closed_description}>즐겨찾기</div>
-            <FavCard />
-            <FavCard />
-            <FavCard />
-            <FavCard />
-            <FavCard />
+            {visibleData.map((item, index) => (
+              <div key={index}>
+                <FavCard data={item} />
+              </div>
+            ))}
             {toggle1 && (
               <>
-                <FavCard />
-                <FavCard />
-                <FavCard />
-                <FavCard />
-                <FavCard />
+                {hiddenData.map((item) => (
+                  <div key={item}>
+                    <FavCard data={item} />
+                  </div>
+                ))}
               </>
             )}
             {!toggle1 && (
