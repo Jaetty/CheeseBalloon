@@ -39,6 +39,8 @@ export default function LiveSearch() {
   };
 
   const handleQuery = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (query.length >= 10) {return}
+
     const newCategory = e.currentTarget.textContent;
     let newQuery
     if (newCategory && !query.includes(newCategory)) {
@@ -64,9 +66,9 @@ export default function LiveSearch() {
         value={searchInput}
         onChange={handleInput}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        // onBlur={() => setIsFocused(false)}
       ></input>
-      {/* {isFocused && ( */}
+      {isFocused && (
       <div className={style["dropdown-container"]}>
         {searchResponse.length ? (
           <div className={style.dropdown}>
@@ -86,7 +88,7 @@ export default function LiveSearch() {
           </div>
         ) : null}
       </div>
-      {/* )} */}
+      )}
     </div>
   );
 }
