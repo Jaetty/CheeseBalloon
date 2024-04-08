@@ -51,7 +51,7 @@ export default function FavCard({ data }: Props) {
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className={styles.on_image}>
-            <Image src={testimage} alt="" width={32} height={32} />
+            <Image src={data?.profileUrl || ""} alt="" width={28} height={28} />
           </div>
           {isHovered && (
             <div className={styles.description_modal}>

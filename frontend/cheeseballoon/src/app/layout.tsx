@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "src/styles/globals.css";
 import Nav from "src/components/nav/index";
 import Menu from "src/components/nav/item/Menu";
+import Footer from "src/components/footer";
 
 export const metadata: Metadata = {
   title: "CheeseBalloon",
@@ -20,7 +21,10 @@ export default function RootLayout({
         <Nav />
         <div className="flex-container">
           <Menu />
-          <div className="children">{children}</div>
+          <div className="children">
+            {children}
+            <Footer />
+          </div>
         </div>
       </body>
     </html>
