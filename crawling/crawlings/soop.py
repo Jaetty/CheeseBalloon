@@ -8,9 +8,9 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 from schemas.streamer_info import StreamerInfo
 
-
 from datetime import datetime
 import re
+
 
 class Soop:
     def soop(self):
@@ -26,7 +26,7 @@ class Soop:
         streamer_list = []
         try:
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
-            driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options = chrome_options)
+            driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
             # 웹사이트 열기ㄴ
             driver.get('https://www.afreecatv.com/?hash=all')
@@ -50,12 +50,6 @@ class Soop:
                 if int(cnt) < 50:
                     break
 
-            # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
-            thumbnail = driver.find_element(By.CLASS_NAME, "thumbs-box")
-
-            live_url = thumbnail.find_element(By.TAG_NAME, "img")
-            streamer_thumbnail = live_url.get_attribute('src')
-
             # # 각 파트너 항목에서 시청자 수 추출
             streamer_items = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
             index = 0
@@ -63,12 +57,18 @@ class Soop:
                 index += 1
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
                 viewer_count = item.find_element(By.XPATH, ".//div[2]/div[1]/span/em")
-
+                count = 0
                 if viewer_count:
                     count = re.sub(r'\D', '', viewer_count.text.strip())
                     print(str(index) + " " + count)
                     if int(count) < 50:
                         break
+
+                # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
+                thumbnail = driver.find_element(By.CLASS_NAME, "thumbs-box")
+
+                live_url = thumbnail.find_element(By.TAG_NAME, "img")
+                streamer_thumbnail = live_url.get_attribute('src')
 
                 streamer_url = item.find_element(By.CLASS_NAME, "thumb")
                 streamer_channel = streamer_url.get_attribute('href')
@@ -90,7 +90,6 @@ class Soop:
                     streamer_live_id = match.group(2)  # 두 번째 괄호에 해당하는 부분 (number)
                 else:
                     streamer_id, streamer_live_id = None, None  # 패턴에 매칭되는 부분이 없을 경우
-
 
                 # 자바스크립트를 사용하여 새 탭에서 href URL 열기
                 driver.execute_script(f"window.open('{href_value}');")
@@ -188,5 +187,5 @@ class Soop:
         except Exception as e:
             print(e)
 
-        print(streamer_list)
+        # print(streamer_list)
         return streamer_list
