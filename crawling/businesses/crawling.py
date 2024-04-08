@@ -1,5 +1,8 @@
+from typing import List
+
 from sqlalchemy.orm import Session
 
+from schemas.streamer_info import StreamerInfo
 from services.streamers import StreamerService
 from services.streamer_logs import StreamerLogService
 from services.categories import CategoryService
@@ -18,12 +21,14 @@ from crawlings.chzzk import Chzzk
 
 
 class CrawlingBusiness:
-    def crawling(self, db: Session):
+    async def crawling(self, db: Session):
 
         try:
 
             streamer_list = Soop().soop()
-            streamer_list.extend(Chzzk().chzzk())
+            streamer_list.extend(await Chzzk().chzzk())
+
+            # streamer_list = await Chzzk().chzzk()
 
             cycle = CycleLogCreate(
                 afreeca_viewer_cnt=sum(item.viewer_cnt for item in streamer_list if item.platform == "S"),
