@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/legacy/image";
 import style from "./liveSearch.module.scss";
@@ -19,39 +19,88 @@ async function getData(query: string) {
 export default function LiveSearch() {
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchResponse, setSearchResponse] = useState<searchType>([]);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number>(0);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const query = searchParams.getAll("category");
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const selected = selectRef?.current?.querySelector(`.${style.hover}`);
+    if (selected) {
+      selected?.scrollIntoView({
+        block: "center",
+      });
+    }
+  }, [selectedItemIndex]);
 
   useEffect(() => {
     const fetchData = async () => {
       const responseData = await getData(searchInput);
-      const data = responseData.data.categories.filter((category: string) => category !== "")
+      const data = responseData.data.categories.filter(
+        (category: string) => category !== ""
+      );
       setSearchResponse(data);
     };
-
-    fetchData();
+    if (searchInput) {
+      fetchData();
+    } else {
+      setSearchResponse([]);
+    }
   }, [searchInput]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
+    setSelectedItemIndex(0);
   };
 
   const handleQuery = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (query.length >= 10) {return}
+    if (query.length >= 10) {
+      return;
+    }
 
     const newCategory = e.currentTarget.textContent;
-    let newQuery
+    let newQuery;
     if (newCategory && !query.includes(newCategory)) {
       if (query.length > 0) {
-        newQuery = `${query.join('&category=')}&category=${newCategory}`;
+        newQuery = `${query.join("&category=")}&category=${newCategory}`;
       } else {
-        newQuery = newCategory
+        newQuery = newCategory;
       }
       const newPath = `${pathname}?category=${newQuery}`;
       router.push(newPath);
+    }
+    setSearchInput("");
+    setSelectedItemIndex(0);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedItemIndex((prevIndex) =>
+        prevIndex > 0 ? prevIndex - 1 : prevIndex
+      );
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedItemIndex((prevIndex) =>
+        prevIndex < searchResponse.length - 1 ? prevIndex + 1 : prevIndex
+      );
+    } else if (e.key === "Enter") {
+      let newQuery;
+      const newCategory = searchResponse[selectedItemIndex];
+      if (newCategory && !query.includes(newCategory)) {
+        if (query.length > 0) {
+          newQuery = `${query.join("&category=")}&category=${newCategory}`;
+        } else {
+          newQuery = newCategory;
+        }
+        const newPath = `${pathname}?category=${newQuery}`;
+        router.push(newPath);
+        setSearchInput("");
+        setSelectedItemIndex(0);
+      }
     }
   };
 
@@ -66,29 +115,34 @@ export default function LiveSearch() {
         className={style.input}
         value={searchInput}
         onChange={handleInput}
-        onFocus={() => setIsFocused(true)}
-        // onBlur={() => setIsFocused(false)}
+        onFocus={() => setIsOpen(true)}
+        onBlur={() => {
+          setTimeout(() => {
+            setIsOpen(false);
+          }, 100);
+        }}
+        onKeyDown={handleKeyDown}
       ></input>
-      {isFocused && (
-      <div className={style["dropdown-container"]}>
-        {searchResponse.length ? (
-          <div className={style.dropdown}>
-            {searchResponse.map((item, index) => (
-              <div key={index}>
-                <button
-                  type="button"
-                  className={style.dropdownItem}
-                  onClick={(e) => {
-                    handleQuery(e);
-                  }}
-                >
-                  {item}
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : null}
-      </div>
+      {isOpen && (
+        <div className={style["dropdown-container"]}>
+          {searchResponse.length ? (
+            <div className={style.dropdown} ref={selectRef}>
+              {searchResponse.map((item, index) => (
+                <div key={index}>
+                  <button
+                    type="button"
+                    className={`${style.dropdownItem} ${selectedItemIndex === index ? style.hover : null}`}
+                    onClick={(e) => {
+                      handleQuery(e);
+                    }}
+                  >
+                    {item}
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
       )}
     </div>
   );

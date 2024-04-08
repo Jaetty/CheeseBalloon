@@ -33,7 +33,6 @@
 }
 
 .input:focus::placeholder {
-  
   color: transparent;
 }
 
@@ -55,8 +54,9 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: gray #4e4e4e;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
-
 
 .dropdownItem {
   color: white;
@@ -67,9 +67,20 @@
   padding-left: 2rem;
   border: 0;
   background-color: transparent;
+  width: 100%;
+  text-align: left;
+  display: inline-flex;
+  justify-content: flex-start;
 }
 
 .dropdownItem:hover {
   color: gray;
+  background-color: darkcyan;
+  cursor: pointer;
+}
+
+.hover {
+  color: gray;
+  background-color: darkcyan;
   cursor: pointer;
 }
