@@ -27,8 +27,9 @@ export default function LiveSearch() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getData(searchInput);
-      setSearchResponse(data.data.categories);
+      const responseData = await getData(searchInput);
+      const data = responseData.data.categories.filter((category: string) => category !== "")
+      setSearchResponse(data);
     };
 
     fetchData();

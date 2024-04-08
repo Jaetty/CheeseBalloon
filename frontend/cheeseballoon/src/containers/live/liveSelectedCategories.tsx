@@ -22,22 +22,25 @@ export default function LiveSelectedCategories() {
   };
 
   return (
-    <div className={style.categories}>
-      {query.length > 0 &&
-        query.map((params: string, idx: number) => (
-          <div key={idx} className={style.category}>
-            <div className={style.hash}>#</div>
-            <div className={style.name}> {params} </div>
-            <button
-              type="button"
-              className={style.x}
-              value={params}
-              onClick={(e) => handleQuery(e)}
-            >
-              X
-            </button>
-          </div>
-        ))}
+    <div>
+      {query.length > 0 && (
+        <div className={style.categories}>
+          {query.map((params: string, idx: number) => (
+            <div key={idx} className={style.category}>
+              <div className={style.hash}>#</div>
+              <div className={style.name}> {params} </div>
+              <button
+                type="button"
+                className={style.x}
+                value={params}
+                onClick={(e) => handleQuery(e)}
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

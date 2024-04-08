@@ -1,4 +1,5 @@
 .categories {
+  margin-top: 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -6,7 +7,6 @@
 
 .category {
   display: flex;
-  margin-top: 2rem;
   padding: 0.3rem 0.5rem 0.3rem 0.5rem;
   border-radius: 0.5rem;
   background-color: #538ff8;
@@ -17,20 +17,19 @@
 }
 
 .category:hover {
-    background-color: blueviolet;
+  background-color: blueviolet;
 }
 
-
 .x {
-    cursor: pointer;
-    border-radius: 50%;
-    border: 0;
-    background-color: transparent;
-    font-size: smaller;
-    font-weight: bolder;
-    color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 0;
+  background-color: transparent;
+  font-size: smaller;
+  font-weight: bolder;
+  color: white;
 }
 
 .x:hover {
-    color: black;
+  color: black;
 }
