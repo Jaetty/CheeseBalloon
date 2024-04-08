@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class LoginResDto {
     private String refreshToken;
     private String accessToken;
+    private String nickname;
+    private String profileImgUrl;
 }

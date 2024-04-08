@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.security.SignatureException;
 import java.util.Date;
 
 @Slf4j
@@ -35,13 +36,13 @@ public class JwtUtil {
         claims.put("memberId", memberId);
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + accessTokenExpTime);
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
+
     }
     public String createRefreshToken(Long memberId){
         Claims claims = Jwts.claims();

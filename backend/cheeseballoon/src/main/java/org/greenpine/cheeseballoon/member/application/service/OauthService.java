@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.coyote.BadRequestException;
+import org.greenpine.cheeseballoon.global.token.JwtUtil;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.GetAccessTokenResDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.GoogleUserInfoResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.KakaoUserInfoResDto;
@@ -37,6 +39,14 @@ public class OauthService {
     @Value("${oauth2.kakao.rest-api-key}")
     private String KAKAO_RESTAPI_KEY;
 
+    private final JwtUtil jwtUtil;
+
+    public GetAccessTokenResDto getNewAccessToken(Long memberId){
+        String accessToken = jwtUtil.createAccessToken(memberId);
+        return GetAccessTokenResDto.builder()
+                .accessToken(accessToken)
+                .build();
+    }
 
     public UserInfoDto getGoogleUserInfo(String accessCode) throws JsonProcessingException, BadRequestException {
         RestTemplate restTemplate=new RestTemplate();
