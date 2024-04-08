@@ -15,7 +15,10 @@
 .image {
   max-width: 44px;
   max-height: 44px;
-  padding-left: 0.5rem;
+  margin-left: 0.5rem;
+  border-radius: 3rem;
+  overflow: hidden;
+  border: 1px solid white;
 }
 
 .name {
@@ -23,10 +26,11 @@
   font-size: 1rem;
   padding-left: 1rem;
   color: rgba(255, 255, 255, 0.8);
-
+  display: flex;
+  flex-direction: row;
+  gap: 0.4rem;
   flex: 8.5;
 }
-
 .rank {
   flex: 2;
   display: flex;
@@ -36,4 +40,9 @@
   gap: 0.3rem;
   vertical-align: bottom;
   line-height: 1;
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
 }
