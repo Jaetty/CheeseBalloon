@@ -1,74 +1,79 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import chzzkIcon from "public/svgs/chzzk.svg";
+import afreecaIcon from "public/svgs/afreeca.svg";
+import anya from "public/svgs/anya.jpg";
 import style from "./liveCard.module.scss";
 
 interface LiveInfo {
   liveinfo: {
+    streamerId: number;
+    liveId: number;
     name: string;
-    profilePictureUrl: string;
-    platformIcon: string;
-    platformUrl: string;
-    channelUrl: string;
-    category: string;
     title: string;
-    viewers: number;
-    videoUrl: string;
-    thumbnail: string;
+    thumbnailUrl: string;
+    platform: string;
+    profileUrl: string;
+    category: string;
+    viewerCnt: number;
+    streamUrl: string;
+    channelUrl: string;
   };
 }
 
 export default function LiveCard({ liveinfo }: LiveInfo) {
+  const [imageError, setImageError] = useState<boolean>(false);
+
   return (
-    <div className={style.livecard}>
-      <div className={style.content}>
-        <div className={style.thumbnail}>
-          <a href={liveinfo.videoUrl} target="_blank" rel="noopener noreferrer">
-            <img src={liveinfo.thumbnail} alt="/svgs/liveicon.png" />
-          </a>
+    <div className={style.wrapper}>
+      <div className={style["first-container"]}>
+        <img
+          src={imageError ? anya.src : liveinfo.thumbnailUrl}
+          alt="썸네일"
+          onError={() => setImageError(true)}
+          className={style.thumbnail}
+        />
+      </div>
+      <div className={style["second-container"]}>
+        <div className={style["platform-icon"]}>
+          {liveinfo.platform === "C" ? (
+            <Image src={chzzkIcon} alt="" />
+          ) : (
+            <Image src={afreecaIcon} alt="" />
+          )}
         </div>
-        <div className={style.iconnamecategory}>
-          <a
-            href={liveinfo.platformUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={liveinfo.platformIcon}
-              alt="/svgs/liveicon.png"
-              className={style.platformicon}
-            />
-          </a>
-          <a
-            href={liveinfo.channelUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <p className={style.name}>{liveinfo.name}</p>
-          </a>
-          <p className={style.category}>{liveinfo.category}</p>
-        </div>
-        <div className={style.channeltitle}>
-          <a
-            href={liveinfo.channelUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={liveinfo.profilePictureUrl}
-              alt="/svgs/liveicon.png"
-              className={style.channel}
-            />
-          </a>
-          <a
-            href={liveinfo.channelUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <p className={style.title}>{liveinfo.title}</p>
-          </a>
-        </div>
-        <div className={style.iconviewers}>
-          <img src="/svgs/viewericon.svg" alt="" className={style.viewericon} />
-          <p className={style.viewers}>{liveinfo.viewers}</p>
-        </div>
+        <a
+          href={liveinfo.channelUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={style.name}
+        >
+          {liveinfo.name}
+        </a>
+        <div className={style.category}>{liveinfo.category}</div>
+      </div>
+      <div className={style["third-container"]}>
+        <a href={liveinfo.channelUrl} target="_blank" rel="noopener noreferrer">
+          <img
+            src={liveinfo.profileUrl}
+            alt="프로필"
+            className={style.profile}
+          />
+        </a>
+        <a
+          href={liveinfo.channelUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={style.title}
+        >
+          {liveinfo.title}
+        </a>
+      </div>
+      <div className={style["fourth-container"]}>
+        <img src="/svgs/viewericon.svg" alt="" className={style.viewericon} />
+        <div className={style.viewers}>{liveinfo.viewerCnt}</div>
       </div>
     </div>
   );
