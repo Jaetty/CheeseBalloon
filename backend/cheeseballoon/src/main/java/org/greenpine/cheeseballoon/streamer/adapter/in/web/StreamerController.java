@@ -28,9 +28,9 @@ public class StreamerController {
     @GetMapping("")
     public ResponseEntity<CustomBody> streamerDetail(@RequestParam Long streamerId){
 
-        FindStreamerDetailResDto result = streamerUsecase.streamerDetail(streamerId);
+        FindStreamerDetailResDto ret = streamerUsecase.streamerDetail(streamerId);
 
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, null));
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
     }
 
     @GetMapping("/live")

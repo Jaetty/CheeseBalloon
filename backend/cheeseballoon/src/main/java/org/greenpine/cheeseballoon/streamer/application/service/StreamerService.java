@@ -48,9 +48,9 @@ public class StreamerService implements StreamerUsecase {
     @Override
     public FindStreamerDetailResDto streamerDetail(Long streamerId) {
 
-        streamerPort.streamerDetail(streamerId);
+        FindStreamerDetailResDto ret = streamerPort.streamerDetail(streamerId);
 
-        return null;
+        return ret;
     }
 
     @Override
