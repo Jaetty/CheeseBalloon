@@ -56,7 +56,17 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
         currRank = currRank == null ? 0 : currRank;
         beforeRank = beforeRank == null ? 0 : beforeRank;
 
-        int diff = currRank==0 ? (301-beforeRank) * -1 : (currRank - beforeRank) * -1;
+        int diff = 0;
+
+        if(currRank > 0 && beforeRank > 0){
+            diff = (currRank - beforeRank) * -1;
+        }
+        else if(currRank > 0){
+            diff = 300 - currRank;
+
+        }else if(beforeRank > 0){
+            diff = (301-beforeRank) * -1;
+        }
 
         FindStreamerDetailResDto result = FindStreamerDetailResDto.builder()
                 .streamerId(streamerId)
