@@ -41,7 +41,7 @@ export default function DetailLive() {
       {liveData && !liveData?.live ? (
         <div className={style.container}>
           <div className={style["image-container"]}>
-            <a href={d.streamUrl} className={style.link}>
+            <a href={d.streamUrl} className={style.link} target="_blank" rel="noopener noreferrer">
               <img src={d.thumbnailUrl} alt="123" className={style.thumbnail} />
             </a>
           </div>

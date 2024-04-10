@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import chzzkIcon from "public/svgs/chzzk.svg";
 import afreecaIcon from "public/svgs/afreeca.svg";
@@ -25,8 +26,30 @@ interface LiveInfo {
 }
 
 export default function LiveCard({ liveinfo }: LiveInfo) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const query = searchParams.getAll("category");
   const [streamImageError, setStreamImageError] = useState<boolean>(false);
   const [profileImageError, setProfileImageError] = useState<boolean>(false);
+
+  const handleQuery = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (query.length >= 10) {
+      return;
+    }
+
+    const newCategory = e.currentTarget.textContent;
+    let newQuery;
+    if (newCategory && !query.includes(newCategory)) {
+      if (query.length > 0) {
+        newQuery = `${query.join("&category=")}&category=${newCategory}`;
+      } else {
+        newQuery = newCategory;
+      }
+      const newPath = `${pathname}?category=${newQuery}`;
+      router.push(newPath);
+    }
+  };
 
   const handleOpenUrl = (url: string) => {
     window.open(url, "_blank");
@@ -76,7 +99,18 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
         >
           {liveinfo.name}
         </div>
-        <div className={style.category}>{liveinfo.category}</div>
+        {liveinfo.category.length > 0 && (
+          <button
+            className={style.category}
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              handleQuery(event);
+            }}
+          >
+            {liveinfo.category}
+          </button>
+        )}
       </div>
       <div className={style["third-container"]}>
         <div
