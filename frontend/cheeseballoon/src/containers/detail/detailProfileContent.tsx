@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import style from "./detailProfileContent.module.scss";
 
-const STREAMER_API_URL = process.env.NEXT_PUBLIC_STREAMER_API_URL;
-
-interface DetailProfileContentData {
+interface StreamerDataType {
   streamId: number;
   originId: string;
   name: string;
@@ -17,14 +15,14 @@ interface DetailProfileContentData {
   rank: number;
   diff: number;
 }
-interface liveDataType {
+interface LiveDataType {
   live: boolean;
-  streamUrl: string;
+  streamerUrl: string;
   thumbnailUrl: string;
 }
 
 // 임시 데이터
-const data: DetailProfileContentData = {
+const data: StreamerDataType = {
   streamId: 1234,
   originId: "hanryang1125",
   name: "풍월량",
@@ -37,23 +35,41 @@ const data: DetailProfileContentData = {
   diff: 3,
 };
 
-async function getData(streamerId: string) {
-  const res = await fetch(`${STREAMER_API_URL}${streamerId}`);
+const STREAMER_API_URL = process.env.NEXT_PUBLIC_STREAMER_API_URL;
+const STREAMER_LIVE_API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
+
+async function getData(api: string, streamerId: string) {
+  const res = await fetch(`${api}${streamerId}`);
 
   return res.json();
 }
 
 export default function DetailProfileContent() {
   const { id } = useParams();
-  const [liveData, setLiveData] = useState<liveDataType | null>(null);
+  const [streamerData, setStreamerData] =
+    useState<StreamerDataType | null>(null);
+  const [liveData, setLiveData] = useState<LiveDataType | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
-      const data2 = await getData(id.toString());
+      const streamerDataResponse = await getData(
+        STREAMER_API_URL as string,
+        id.toString()
+      );
+      const liveDataResponse = await getData(
+        STREAMER_LIVE_API_URL as string,
+        id.toString()
+      );
 
-      if ("data" in data2) {
-        setLiveData(data2.data);
+      if ("data" in streamerDataResponse) {
+        setStreamerData(streamerDataResponse.data);
+      } else {
+        router.push("/error");
+      }
+
+      if ("data" in liveDataResponse) {
+        setLiveData(liveDataResponse.data);
       } else {
         router.push("/error");
       }
