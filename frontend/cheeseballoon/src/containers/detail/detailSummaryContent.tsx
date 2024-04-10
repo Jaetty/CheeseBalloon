@@ -172,7 +172,7 @@ export default function DetailSummaryContent() {
         {contentBox("평균 방송시간", data.avgTime, data.timeDiff)}
         {contentBox("팔로워", data.follow, data.followDiff)}
         {contentBox("평균 시청률", data.rating, data.ratingDiff)}
-        {contentBox("누적 방송시간", 123, 345)}
+        {/* {contentBox("누적 방송시간", 123, 345)} */}
       </div>
     </div>
   );

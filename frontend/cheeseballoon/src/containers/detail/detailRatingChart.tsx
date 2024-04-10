@@ -7,12 +7,14 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
+type AlignType = "center";
+
 export default function DetailRatingChart() {
   const chartData = {
     options: {
       title: {
-        align: undefined,
         text: "시청률",
+        align: "center" as AlignType,
         style: {
           fontSize: "15px",
           fontWeight: "bold",
@@ -20,6 +22,9 @@ export default function DetailRatingChart() {
         },
       },
       chart: {
+        animations: {
+          enabled: false,
+        },
         toolbar: {
           show: false,
           tools: {

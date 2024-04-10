@@ -7,12 +7,14 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
+type AlignType = "center";
+
 export default function DetailViewerChart() {
   const chartData = {
     options: {
       title: {
-        align: undefined,
         text: "시청자",
+        align: "center" as AlignType,
         style: {
           fontSize: "15px",
           fontWeight: "bold",
@@ -21,6 +23,9 @@ export default function DetailViewerChart() {
       },
 
       chart: {
+        animations: {
+          enabled: false,
+        },
         toolbar: {
           show: false,
           tools: {

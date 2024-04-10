@@ -2,17 +2,20 @@
 
 // import ReactApexChart from "react-apexcharts";
 import dynamic from "next/dynamic";
+import style from "./detailChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
+type AlignType = "center";
+
 export default function DetailCategoryChart() {
   const chartData = {
     options: {
       title: {
-        align: undefined,
         text: "카테고리",
+        align: "center" as AlignType,
         style: {
           fontSize: "15px",
           fontWeight: "bold",
@@ -20,6 +23,9 @@ export default function DetailCategoryChart() {
         },
       },
       chart: {
+        animations: {
+          enabled: false,
+        },
         toolbar: {
           show: false,
           tools: {
@@ -58,7 +64,7 @@ export default function DetailCategoryChart() {
   };
 
   return (
-    <div>
+    <div className={style.container}>
       <ApexChart
         type="treemap"
         options={chartData.options}

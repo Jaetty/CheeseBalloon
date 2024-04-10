@@ -3,6 +3,7 @@ import LiveSelectedCategories from "./liveSelectedCategories";
 import LiveSearch from "./liveSearch";
 import style from "./liveCategory.module.scss";
 
+
 export default function LiveCategory() {
   return (
     <div className={style.wrapper}>

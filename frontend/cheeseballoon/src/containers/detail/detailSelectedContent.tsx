@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import DetailViewer from "@/src/containers/detail/detailViewer";
 import DetailCategory from "./detailCategory";
 import DetailDuration from "./detailDuration";
@@ -13,6 +14,15 @@ import style from "./detailSelectedContent.module.scss";
 export default function DetailSelectedContent() {
   const { category } = useParams();
   const router = useRouter();
+  const [isRendered, setIsRendered] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (category) {
+      setIsRendered(true);
+    } else {
+      setIsRendered(false);
+    }
+  }, [category]);
 
   const selectedContent = () => {
     switch (category) {
@@ -39,7 +49,7 @@ export default function DetailSelectedContent() {
       <div className={style.date}>
         <DetailSelectDate />
       </div>
-      <div className={style.content}>{selectedContent()}</div>
+      <div className={`${style.content} ${isRendered? style.rendered : null}`}>{selectedContent()}</div>
     </div>
   );
 }
