@@ -138,11 +138,11 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
           tabIndex={0}
           onClick={(event) => {
             event.stopPropagation();
-            handleOpenUrl(liveinfo.channelUrl);
+            handleOpenUrl(liveinfo.streamUrl);
           }}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
-              handleOpenUrl(liveinfo.channelUrl);
+              handleOpenUrl(liveinfo.streamUrl);
             }
           }}
           className={style.title}
