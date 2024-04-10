@@ -1,40 +1,51 @@
 "use client";
 
 import styles from "src/components/nav/item/recomend.module.scss";
-import FavCard from "src/components/nav/item/favcard";
-import Image from "next/legacy/image";
+import RecomendCard from "src/components/nav/item/recomendCard";
+import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useToggleState from "src/stores/store";
 
 export default function Recomend() {
   const { value } = useToggleState();
+  const [data, setData] = useState([]);
   const [toggle2, setToggle] = useState(false);
   const switchToggle = () => {
     setToggle(!toggle2);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_LIVE_API}?offset=1&limit=15`
+      );
+      const responseData = await response.json();
+      setData(responseData.data);
+    };
+
+    fetchData();
+  }, []);
+
+  const visibleData = data.slice(0, 5);
+  const hiddenData = data.slice(5, 15);
+
   return (
     <div className={styles.container}>
       <div className={value ? styles.description : styles.closed_description}>
         추천
       </div>
-      <FavCard />
-      <FavCard />
-      <FavCard />
-      <FavCard />
-      <FavCard />
+      {visibleData.map((item, index) => (
+        <div key={index}>
+          <RecomendCard data={item} />
+        </div>
+      ))}
       {toggle2 && (
         <>
-          <FavCard />
-          <FavCard />
-          <FavCard />
-          <FavCard />
-          <FavCard />
-          <FavCard />
-          <FavCard />
-          <FavCard />
-          <FavCard />
-          <FavCard />
+          {hiddenData.map((item) => (
+            <div key={item}>
+              <RecomendCard data={item} />
+            </div>
+          ))}
         </>
       )}
       {!toggle2 && (

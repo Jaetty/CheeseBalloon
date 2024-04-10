@@ -12,18 +12,6 @@ export default function PlatformSelect({ setPlatform }: PlatformSelectProps) {
     setSelectedOption(event.target.value);
     setPlatform(event.target.value);
   };
-
-  // const [data, setData] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch(`/api/data?option=${selectedOption}`);
-  //     const newData = await response.json();
-  //     setData(newData);
-  //   };
-
-  //   fetchData();
-  // }, [selectedOption]);
   return (
     <div>
       <select
