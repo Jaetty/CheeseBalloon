@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Error from "next/error";
 import style from "./detailProfileContent.module.scss";
 
 const STREAMER_API_URL = process.env.NEXT_PUBLIC_STREAMER_API_URL;
