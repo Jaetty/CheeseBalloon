@@ -2,6 +2,11 @@
   background-color: #4e4e4e;
   border-radius: 1rem;
   padding: 1rem;
+  cursor: pointer;
+}
+
+.wrapper:hover {
+  background-color: gray;
 }
 
 
@@ -22,11 +27,22 @@
 }
 
 .name {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   color: white;
   text-decoration-line: none;
   font-size: x-small;
   font-weight: bold;
   padding-left: 0.3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.name:hover {
+  font-weight: bold;
+  color: yellow;
+  font-weight: bolder;
 }
 
 .category {
@@ -41,6 +57,11 @@
   text-overflow: ellipsis;
 }
 
+.category:hover {
+  font-weight: bold;
+  color: yellow;
+}
+
 .third-container {
   display: flex;
   padding-top: 1rem;
@@ -48,6 +69,7 @@
 
 .profile {
   height: 2rem;
+  width: 2rem;
   border-radius: 25%;
 }
 

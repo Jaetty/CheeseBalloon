@@ -5,6 +5,7 @@ import Image from "next/image";
 import chzzkIcon from "public/svgs/chzzk.svg";
 import afreecaIcon from "public/svgs/afreeca.svg";
 import anya from "public/svgs/anya.jpg";
+import blankProfile from "public/svgs/blank_profile.png";
 import style from "./liveCard.module.scss";
 
 interface LiveInfo {
@@ -24,15 +25,30 @@ interface LiveInfo {
 }
 
 export default function LiveCard({ liveinfo }: LiveInfo) {
-  const [imageError, setImageError] = useState<boolean>(false);
+  const [streamImageError, setStreamImageError] = useState<boolean>(false);
+  const [profileImageError, setProfileImageError] = useState<boolean>(false);
+
+  const handleOpenUrl = (url: string) => {
+    window.open(url, "_blank");
+  };
 
   return (
-    <div className={style.wrapper}>
+    <div
+      role="button"
+      tabIndex={0}
+      className={style.wrapper}
+      onClick={() => handleOpenUrl(liveinfo.streamUrl)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") {
+          handleOpenUrl(liveinfo.streamUrl);
+        }
+      }}
+    >
       <div className={style["first-container"]}>
         <img
-          src={imageError ? anya.src : liveinfo.thumbnailUrl}
+          src={streamImageError ? anya.src : liveinfo.thumbnailUrl}
           alt="썸네일"
-          onError={() => setImageError(true)}
+          onError={() => setStreamImageError(true)}
           className={style.thumbnail}
         />
       </div>
@@ -44,32 +60,61 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
             <Image src={afreecaIcon} alt="" />
           )}
         </div>
-        <a
-          href={liveinfo.channelUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+        <div
+          role="button"
+          tabIndex={0}
           className={style.name}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleOpenUrl(liveinfo.channelUrl);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              handleOpenUrl(liveinfo.channelUrl);
+            }
+          }}
         >
           {liveinfo.name}
-        </a>
+        </div>
         <div className={style.category}>{liveinfo.category}</div>
       </div>
       <div className={style["third-container"]}>
-        <a href={liveinfo.channelUrl} target="_blank" rel="noopener noreferrer">
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleOpenUrl(liveinfo.channelUrl);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              handleOpenUrl(liveinfo.channelUrl);
+            }
+          }}
+        >
           <img
-            src={liveinfo.profileUrl}
+            src={profileImageError ? blankProfile.src : liveinfo.profileUrl}
             alt="프로필"
+            onError={() => setProfileImageError(true)}
             className={style.profile}
           />
-        </a>
-        <a
-          href={liveinfo.channelUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+        </div>
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleOpenUrl(liveinfo.channelUrl);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              handleOpenUrl(liveinfo.channelUrl);
+            }
+          }}
           className={style.title}
         >
           {liveinfo.title}
-        </a>
+        </div>
       </div>
       <div className={style["fourth-container"]}>
         <img src="/svgs/viewericon.svg" alt="" className={style.viewericon} />

@@ -22,15 +22,14 @@ interface LiveInfo {
 const API_URL = process.env.NEXT_PUBLIC_LIVE_API_URL;
 
 async function getData(query: string) {
-  // console.log(`${API_URL}${query}`)
   const res = await fetch(`${API_URL}${query}`);
 
   return res.json();
 }
 
 export default function LiveList() {
-  const [liveData, setLiveData] = useState<LiveInfo[]>([]);
-  const [liveNum, setLiveNum] = useState<number>(20);
+  const [liveData, setLiveData] = useState<LiveInfo[] | null>(null);
+  const [liveNum, setLiveNum] = useState<number>(36);
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -49,22 +48,28 @@ export default function LiveList() {
     fetchData();
   }, [searchParams]);
 
+  const handleLiveNum = () => {
+    setLiveNum(liveNum + 24);
+  };
+
   return (
     <div className={style.wrapper}>
-      {liveData &&
-        liveData.slice(0, liveNum).map((liveinfo: LiveInfo, idx: number) => (
-          <div className={style.livecard} key={idx}>
-            <a
-              href={liveinfo.streamUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={liveinfo.title}
-              className={style.atag}
-            >
+      {liveData && liveData.length > 0
+        ? liveData.slice(0, liveNum).map((liveinfo: LiveInfo, idx: number) => (
+            <div className={style.livecard} key={idx}>
               <LiveCard liveinfo={liveinfo} />
-            </a>
-          </div>
-        ))}
+            </div>
+          ))
+        : liveData && (
+            <div className={style["no-result-container"]}>
+              <div className={style["no-result"]}>결과가 없습니다</div>
+            </div>
+          )}
+      {liveData && liveData.length > liveNum && (
+        <button type="button" className={style.plus} onClick={handleLiveNum}>
+          +
+        </button>
+      )}
     </div>
   );
 }

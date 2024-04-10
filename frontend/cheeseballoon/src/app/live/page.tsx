@@ -18,7 +18,6 @@ export default function LivePage() {
         <div className={style.live}>
           <LiveList />
         </div>
-        <hr />
       </div>
     </div>
   );
