@@ -1,7 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import style from "./detailChart.module.scss";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import style from "./detailDurationChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -9,7 +11,80 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 
 type AlignType = "center";
 
+type TimeDataType = {
+  totalTime: number;
+  timeDiff: number;
+  dailyTimes: [date: string, time: number];
+};
+
+type DateArrayType = string[];
+type TimeArrayType = number[];
+type DairyTimesType = {
+  date: string;
+  time: string;
+};
+
+const API_URL = process.env.NEXT_PUBLIC_TIME_API_URL;
+
+async function getData(streamerId: string, date: string) {
+  let res;
+  if (date) {
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=${date}`);
+  } else {
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=7`);
+  }
+
+  return res.json();
+}
+
 export default function DetailDurationChart() {
+  const { id, date } = useParams();
+  const [timeData, setTimeData] = useState<TimeDataType | null>(null);
+  const [timeArray, setTimeArray] = useState<TimeArrayType | null>([1]);
+  // const [totalTimeArray, setTotalTimeArray] = useState<TimeArrayType | null>([
+  //   1,
+  // ]);
+  // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const responseData = await getData(id as string, date as string);
+      const dairyData = responseData.data.dailyTimes;
+      if (dairyData && dairyData.length > 0) {
+        const dates = dairyData.map((item: DairyTimesType) => item.date);
+        const times = dairyData.map((item: DairyTimesType) =>
+          parseInt(item.time, 10)
+        );
+        // const totalTime = () => {
+        //   let timeSum = 0;
+        //   const resultArray = [];
+        //   for (let i = 0; i < times.length; i += 1) {
+        //     timeSum += times[i];
+        //     resultArray.push(timeSum);
+        //   }
+        //   return resultArray;
+        // };
+        const datesChange = dates.map((dateString: string) => {
+          const parts = dateString.split("-");
+          const [year, month, day] = parts.map(Number);
+          const dateObj = new Date(year, month - 1, day);
+          const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
+            weekday: "short",
+          });
+          return `${year}.${month}.${day} (${dayOfWeek})`;
+        });
+
+        // setTotalTimeArray(totalTime());
+        // setDateArray(dates);
+        setTimeArray(times);
+        setDateXaxis(datesChange);
+      }
+      setTimeData(responseData.data);
+    };
+    fetchData();
+  }, [id, date]);
+
   const chartData = {
     options: {
       title: {
@@ -39,7 +114,7 @@ export default function DetailDurationChart() {
         size: 3,
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+        categories: dateXaxis,
         labels: {
           style: {
             colors: "white",
@@ -49,11 +124,13 @@ export default function DetailDurationChart() {
       },
       yaxis: [
         {
+          forceNiceScale: true,
           labels: {
             style: {
               colors: "white",
               fontWeight: "bold",
             },
+            formatter: (value: number) => `${value}시간`,
           },
         },
       ],
@@ -73,26 +150,52 @@ export default function DetailDurationChart() {
         },
       },
       colors: ["#F0BD53"],
+      legend: {
+        labels: {
+          colors: "white",
+        },
+      },
     },
 
     series: [
       {
-        name: "방송 시간",
+        name: "방송시간",
         type: "bar",
-        data: [40, 50, 45, 60, 69, 70, 80, 101, 135],
+        data: timeArray as number[],
       },
+      // {
+      //   name: "총 방송시간",
+      //   type: "line",
+      //   data: totalTimeArray as number[],
+      // },
     ],
   };
 
   return (
-    <div className={style.container}>
-      <ApexChart
-        type="bar"
-        options={chartData.options}
-        series={chartData.series}
-        height="auto"
-        width="100%"
-      />
+    <div className={style.wrapper}>
+      <div className={style.container}>
+        <ApexChart
+          type="line"
+          options={chartData.options}
+          series={chartData.series}
+          height="auto"
+          width="100%"
+        />
+      </div>
+      {timeData && (
+        <div className={style.time}>
+          <div className={style["time-container"]}>
+            <div className={style["time-title"]}>총 방송시간</div>
+            <div className={style["time-cnt"]}>{timeData.totalTime}시간</div>
+            <div
+              className={`${style["time-diff"]} ${timeData.timeDiff >= 0 ? style.positive : style.negative}`}
+            >
+              {Math.abs(timeData.timeDiff)}시간{" "}
+              {timeData.timeDiff >= 0 ? "증가 ↑" : "감소 ↓"}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,47 @@
+.container {
+  background-color: #4e4e4e;
+  border-radius: 20px;
+  padding: 4rem;
+}
+
+.time {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  margin-top: 3rem;
+  color: white;
+  gap: 3rem;
+}
+
+.time-container {
+  background-color: #4e4e4e;
+  border-radius: 20px;
+  padding: 2rem;
+  width: 20%;
+}
+
+.time-title {
+  color: white;
+}
+
+.time-cnt {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+}
+
+.time-diff {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.positive {
+  color: #8ce09e;
+}
+
+.negative {
+  color: #d38883;
+}

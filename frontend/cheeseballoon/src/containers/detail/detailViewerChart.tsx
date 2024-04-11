@@ -42,9 +42,9 @@ async function getData(streamerId: string, date: string) {
 export default function DetailViewerChart() {
   const { id, date } = useParams();
   const [viewerData, setViewerData] = useState<ViewerDataType | null>(null);
-  const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
-  const [viewerArray, setViewerArray] = useState<ViewerArrayType | null>(null);
-  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(null);
+  const [viewerArray, setViewerArray] = useState<ViewerArrayType | null>([1]);
+  // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(['1']);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +64,7 @@ export default function DetailViewerChart() {
           });
           return `${year}.${month}.${day} (${dayOfWeek})`;
         });
-        setDateArray(dates);
+        // setDateArray(dates);
         setViewerArray(viewers);
         setDateXaxis(datesChange);
       }
@@ -119,6 +119,7 @@ export default function DetailViewerChart() {
           },
           formatter: (value: number) => `${value}명`,
         },
+        min: 0,
       },
       grid: {
         show: true,
@@ -141,12 +142,15 @@ export default function DetailViewerChart() {
           colors: "white",
         },
       },
+      dataLabels: {
+        enabled: false,
+      }
     },
 
     series: [
       {
         name: "평균 시청자수",
-        type: "column",
+        type: "bar",
         data: viewerArray as number[],
       },
     ],
@@ -156,7 +160,7 @@ export default function DetailViewerChart() {
     <div className={style.wrapper}>
       <div className={style.container}>
         <ApexChart
-          type="line"
+          type="bar"
           options={chartData.options}
           series={chartData.series}
           height="auto"
@@ -167,7 +171,7 @@ export default function DetailViewerChart() {
         <div className={style.viewer}>
           <div className={style["viewer-container"]}>
             <div className={style["viewer-title"]}>최고 시청자수</div>
-            <div className={style["viewer-cnt"]}>{viewerData.maxViewer}</div>
+            <div className={style["viewer-cnt"]}>{viewerData.maxViewer}명</div>
             <div
               className={`${style["viewer-diff"]} ${viewerData.maxDiff >= 0 ? style.positive : style.negative}`}
             >
@@ -177,7 +181,7 @@ export default function DetailViewerChart() {
           </div>
           <div className={style["viewer-container"]}>
             <div className={style["viewer-title"]}>평균 시청자수</div>
-            <div className={style["viewer-cnt"]}>{viewerData.avgViewer}</div>
+            <div className={style["viewer-cnt"]}>{viewerData.avgViewer}명</div>
             <div
               className={`${style["viewer-diff"]} ${viewerData.avgDiff >= 0 ? style.positive : style.negative}`}
             >
