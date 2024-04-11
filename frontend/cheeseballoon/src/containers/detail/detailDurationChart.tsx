@@ -125,13 +125,12 @@ export default function DetailDurationChart() {
       yaxis: [
         {
           tickAmount: 10,
-
           labels: {
             style: {
               colors: "white",
               fontWeight: "bold",
             },
-            formatter: (value: number) => `${value}시간`,
+            formatter: (value: number) => `${value.toLocaleString()}시간`,
           },
         },
       ],

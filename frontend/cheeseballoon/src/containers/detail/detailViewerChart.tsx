@@ -118,7 +118,7 @@ export default function DetailViewerChart() {
             colors: "white",
             fontWeight: "bold",
           },
-          formatter: (value: number) => `${value}명`,
+          formatter: (value: number) => `${value.toLocaleString()}명`,
         },
       },
       grid: {
