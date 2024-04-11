@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import style from "./detailChart.module.scss";
+import style from "./detailCategoryChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -54,6 +54,9 @@ export default function DetailCategoryChart() {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data.dailyCategories;
+      dailyData.sort(
+        (a: DailyCategoryType, b: DailyCategoryType) => b.time - a.time
+      );
 
       const seriesData = dailyData.map((item: DailyCategoryType) => ({
         x: item.category,
@@ -104,11 +107,11 @@ export default function DetailCategoryChart() {
             zoomout: false,
           },
         },
-        plotOptions: {
-          treemap: {
-            distributed: true,
-            enableShades: true,
-          },
+      },
+      plotOptions: {
+        treemap: {
+          distributed: true,
+          enableShades: true,
         },
       },
     },
@@ -120,14 +123,42 @@ export default function DetailCategoryChart() {
   };
 
   return (
-    <div className={style.container}>
-      <ApexChart
-        type="treemap"
-        options={chartData.options}
-        series={chartData.series}
-        height="auto"
-        width="100%"
-      />
+    <div className={style.wrapper}>
+      <div className={style["chart-container"]}>
+        <ApexChart
+          type="treemap"
+          options={chartData.options}
+          series={chartData.series}
+          height="auto"
+          width="100%"
+        />
+      </div>
+      <div className={style["list-container"]}>
+        <div className={style.label}>
+          <div className={style.rank}>#</div>
+          <div className={style.name}>카테고리</div>
+          <div className={style.time}>
+            <div>시간</div>
+          </div>
+          <div className={style.viewer}>시청자수</div>
+        </div>
+        <hr />
+        {categoryData &&
+          treemapData &&
+          treemapData.map((item, idx: number) => (
+            <div className={style.list} key={idx}>
+              <div className={style.rank}>{idx + 1}</div>
+              <div className={style.name}>{item.x}</div>
+              <div className={style.time}>
+                <div>{item.y.toLocaleString()}시간</div>
+                <div>
+                  {`(${((item.y * 100) / categoryData.totalTime).toFixed(1)}%)`}
+                </div>
+              </div>
+              <div className={style.viewer}>{item.z.toLocaleString()}명</div>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }
