@@ -152,11 +152,11 @@ export default function DetailSummaryContent() {
         ) : (
           <div>
             <div className={style["content-name"]}>{name}</div>
-            <div className={style["content-num"]}>{num}</div>
+            <div className={style["content-num"]}>{num.toLocaleString()}{mod}</div>
             <div
               className={`${style["content-diff"]} ${diff >= 0 ? style.positive : style.negative}`}
             >
-              {Math.abs(diff)}
+              {Math.abs(diff).toLocaleString()}
               {mod} {updown}
             </div>
           </div>

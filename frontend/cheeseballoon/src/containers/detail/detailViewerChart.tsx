@@ -171,21 +171,21 @@ export default function DetailViewerChart() {
         <div className={style.viewer}>
           <div className={style["viewer-container"]}>
             <div className={style["viewer-title"]}>최고 시청자수</div>
-            <div className={style["viewer-cnt"]}>{viewerData.maxViewer}명</div>
+            <div className={style["viewer-cnt"]}>{viewerData.maxViewer.toLocaleString()}명</div>
             <div
               className={`${style["viewer-diff"]} ${viewerData.maxDiff >= 0 ? style.positive : style.negative}`}
             >
-              {Math.abs(viewerData.maxDiff)}명{" "}
+              {Math.abs(viewerData.maxDiff).toLocaleString()}명{" "}
               {viewerData.maxDiff >= 0 ? "상승 ↑" : "하락 ↓"}
             </div>
           </div>
           <div className={style["viewer-container"]}>
             <div className={style["viewer-title"]}>평균 시청자수</div>
-            <div className={style["viewer-cnt"]}>{viewerData.avgViewer}명</div>
+            <div className={style["viewer-cnt"]}>{viewerData.avgViewer.toLocaleString()}명</div>
             <div
               className={`${style["viewer-diff"]} ${viewerData.avgDiff >= 0 ? style.positive : style.negative}`}
             >
-              {Math.abs(viewerData.avgDiff)}명{" "}
+              {Math.abs(viewerData.avgDiff).toLocaleString()}명{" "}
               {viewerData.avgDiff >= 0 ? "상승 ↑" : "하락 ↓"}
             </div>
           </div>

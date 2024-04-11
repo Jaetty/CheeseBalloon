@@ -187,11 +187,11 @@ export default function DetailDurationChart() {
         <div className={style.time}>
           <div className={style["time-container"]}>
             <div className={style["time-title"]}>총 방송시간</div>
-            <div className={style["time-cnt"]}>{timeData.totalTime}시간</div>
+            <div className={style["time-cnt"]}>{timeData.totalTime.toLocaleString()}시간</div>
             <div
               className={`${style["time-diff"]} ${timeData.timeDiff >= 0 ? style.positive : style.negative}`}
             >
-              {Math.abs(timeData.timeDiff)}시간{" "}
+              {Math.abs(timeData.timeDiff).toLocaleString()}시간{" "}
               {timeData.timeDiff >= 0 ? "증가 ↑" : "감소 ↓"}
             </div>
           </div>
