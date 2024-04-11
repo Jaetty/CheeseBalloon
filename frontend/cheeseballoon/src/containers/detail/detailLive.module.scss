@@ -1,0 +1,32 @@
+.wrapper {
+  margin-top: 2rem;
+}
+
+.container {
+  justify-content: center;
+}
+
+.image-container {
+  margin: auto;
+  background-color: #4e4e4e;
+  width: 50%;
+  border-radius: 20px;
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+.thumbnail {
+  display: block;
+  width: 100%;
+  border-radius: 20px;
+}
+
+.thumbnail:hover {
+  filter: brightness(90%)
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "src/components/nav/item/favcard.module.scss";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import testimage from "public/svgs/test1.png";
 import chzzk from "public/svgs/chzzk.svg";
 import aflogo from "public/svgs/afreeca.svg";

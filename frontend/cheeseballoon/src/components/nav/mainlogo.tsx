@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Logo from "public/svgs/logo.png";
 import Link from "next/link";
 

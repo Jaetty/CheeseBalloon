@@ -9,7 +9,7 @@ export default function DetailPage() {
         <DetailSelectDate />
       </div>
       <div className={style.content}>
-        <DetailViewer />;
+        <DetailViewer />
       </div>
     </div>
   );

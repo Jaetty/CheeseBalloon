@@ -1,18 +1,81 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import style from "./detailChart.module.scss";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import style from "./detailViewerChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
+type AlignType = "center";
+
+type ViewerDataType = {
+  maxViewer: number;
+  maxDiff: number;
+  avgViewer: number;
+  avgDiff: number;
+  dailyAvgViewers: [date: string, viewer: number];
+};
+
+type DateArrayType = string[];
+type ViewerArrayType = number[];
+type dailyAvgViewersType = {
+  date: string;
+  avgViewer: string;
+};
+
+const API_URL = process.env.NEXT_PUBLIC_VIEWER_API_URL;
+
+async function getData(streamerId: string, date: string) {
+  let res;
+  if (date) {
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=${date}`);
+  } else {
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=7`);
+  }
+
+  return res.json();
+}
+
 export default function DetailViewerChart() {
+  const { id, date } = useParams();
+  const [viewerData, setViewerData] = useState<ViewerDataType | null>(null);
+  const [viewerArray, setViewerArray] = useState<ViewerArrayType>([1]);
+  // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const responseData = await getData(id as string, date as string);
+      const dailyData = responseData.data.dailyAvgViewers;
+      const dates = dailyData.map((item: dailyAvgViewersType) => item.date);
+      const viewers = dailyData.map((item: dailyAvgViewersType) =>
+        parseInt(item.avgViewer, 10)
+      );
+      const datesChange = dates.map((dateString: string) => {
+        const parts = dateString.split("-");
+        const [year, month, day] = parts.map(Number);
+        const dateObj = new Date(year, month - 1, day);
+        const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
+          weekday: "short",
+        });
+        return `${year}.${month}.${day} (${dayOfWeek})`;
+      });
+      // setDateArray(dates);
+      setViewerArray(viewers);
+      setDateXaxis(datesChange);
+      setViewerData(responseData.data);
+    };
+    fetchData();
+  }, [id, date]);
+
   const chartData = {
     options: {
       title: {
-        align: undefined,
         text: "시청자",
+        align: "center" as AlignType,
         style: {
           fontSize: "15px",
           fontWeight: "bold",
@@ -21,6 +84,9 @@ export default function DetailViewerChart() {
       },
 
       chart: {
+        animations: {
+          enabled: false,
+        },
         toolbar: {
           show: false,
           tools: {
@@ -35,7 +101,7 @@ export default function DetailViewerChart() {
         size: 3,
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+        categories: dateXaxis,
         labels: {
           style: {
             colors: "white",
@@ -44,11 +110,13 @@ export default function DetailViewerChart() {
         },
       },
       yaxis: {
+        tickAmount: 10,
         labels: {
           style: {
             colors: "white",
             fontWeight: "bold",
           },
+          formatter: (value: number) => `${value.toLocaleString()}명`,
         },
       },
       grid: {
@@ -72,31 +140,59 @@ export default function DetailViewerChart() {
           colors: "white",
         },
       },
+      dataLabels: {
+        enabled: false,
+      },
     },
 
     series: [
       {
-        name: "최고 시청자수",
-        type: "line",
-        data: [40, 50, 45, 60, 69, 70, 80, 101, 135],
-      },
-      {
         name: "평균 시청자수",
-        type: "column",
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+        type: "bar",
+        data: viewerArray as number[],
       },
     ],
   };
 
   return (
-    <div className={style.container}>
-      <ApexChart
-        type="line"
-        options={chartData.options}
-        series={chartData.series}
-        height="auto"
-        width="100%"
-      />
+    <div className={style.wrapper}>
+      <div className={style.container}>
+        <ApexChart
+          type="bar"
+          options={chartData.options}
+          series={chartData.series}
+          height="auto"
+          width="100%"
+        />
+      </div>
+      {viewerData && (
+        <div className={style.viewer}>
+          <div className={style["viewer-container"]}>
+            <div className={style["viewer-title"]}>최고 시청자수</div>
+            <div className={style["viewer-cnt"]}>
+              {viewerData.maxViewer.toLocaleString()}명
+            </div>
+            <div
+              className={`${style["viewer-diff"]} ${viewerData.maxDiff >= 0 ? style.positive : style.negative}`}
+            >
+              {Math.abs(viewerData.maxDiff).toLocaleString()}명{" "}
+              {viewerData.maxDiff >= 0 ? "상승 ↑" : "하락 ↓"}
+            </div>
+          </div>
+          <div className={style["viewer-container"]}>
+            <div className={style["viewer-title"]}>평균 시청자수</div>
+            <div className={style["viewer-cnt"]}>
+              {viewerData.avgViewer.toLocaleString()}명
+            </div>
+            <div
+              className={`${style["viewer-diff"]} ${viewerData.avgDiff >= 0 ? style.positive : style.negative}`}
+            >
+              {Math.abs(viewerData.avgDiff).toLocaleString()}명{" "}
+              {viewerData.avgDiff >= 0 ? "상승 ↑" : "하락 ↓"}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

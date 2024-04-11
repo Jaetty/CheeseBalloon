@@ -1,5 +1,5 @@
 import LiveHeader from "@/src/containers/live/liveHeader";
-import LiveCards from "@/src/containers/live/liveCards";
+import LiveList from "@/src/containers/live/liveList";
 import LiveCategory from "@/src/containers/live/liveCategory";
 import style from "./page.module.scss";
 
@@ -16,9 +16,8 @@ export default function LivePage() {
         </div>
         <hr />
         <div className={style.live}>
-          <LiveCards />
+          <LiveList />
         </div>
-        <hr />
       </div>
     </div>
   );

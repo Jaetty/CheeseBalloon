@@ -1,0 +1,45 @@
+.container {
+    background-color: #4e4e4e;
+    border-radius: 20px;
+    padding: 4rem;
+  }
+  
+  .rating {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin-top: 3rem;
+    color: white;
+    gap: 3rem;
+  }
+  
+  .rating-container {
+    background-color: #4e4e4e;
+    border-radius: 20px;
+    padding: 2rem;
+    width: 20%;
+  }
+  
+  .rating-title {
+    color: white;
+  }
+  
+  .rating-cnt {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  
+  .positive {
+      color: #8ce09e;
+    }
+    
+    .negative {
+      color: #d38883;
+    }
+    

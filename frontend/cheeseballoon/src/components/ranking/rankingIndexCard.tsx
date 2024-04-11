@@ -1,5 +1,5 @@
 import styles from "src/components/ranking/rankingIndexCard.module.scss";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import ArrowUp from "public/svgs/uparrow.png";
 // import ArrowDown from "public/svgs/downarrow.png";
 import aflogo from "public/svgs/afreeca.svg";

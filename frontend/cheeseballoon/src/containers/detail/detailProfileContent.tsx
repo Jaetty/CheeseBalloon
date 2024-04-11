@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import style from "./detailProfileContent.module.scss";
 
-interface DetailProfileContentData {
+interface StreamerDataType {
   streamId: number;
   originId: string;
   name: string;
@@ -13,9 +15,14 @@ interface DetailProfileContentData {
   rank: number;
   diff: number;
 }
+interface LiveDataType {
+  live: boolean;
+  streamerUrl: string;
+  thumbnailUrl: string;
+}
 
 // 임시 데이터
-const data: DetailProfileContentData = {
+const data: StreamerDataType = {
   streamId: 1234,
   originId: "hanryang1125",
   name: "풍월량",
@@ -28,14 +35,54 @@ const data: DetailProfileContentData = {
   diff: 3,
 };
 
-const isLive: boolean = true
+const STREAMER_API_URL = process.env.NEXT_PUBLIC_STREAMER_API_URL;
+const STREAMER_LIVE_API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
+
+async function getData(api: string, streamerId: string) {
+  const res = await fetch(`${api}${streamerId}`);
+
+  return res.json();
+}
 
 export default function DetailProfileContent() {
+  const { id } = useParams();
+  const [streamerData, setStreamerData] =
+    useState<StreamerDataType | null>(null);
+  const [liveData, setLiveData] = useState<LiveDataType | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const streamerDataResponse = await getData(
+        STREAMER_API_URL as string,
+        id.toString()
+      );
+      const liveDataResponse = await getData(
+        STREAMER_LIVE_API_URL as string,
+        id.toString()
+      );
+
+      if ("data" in streamerDataResponse) {
+        setStreamerData(streamerDataResponse.data);
+      } else {
+        router.push("/error");
+      }
+
+      if ("data" in liveDataResponse) {
+        setLiveData(liveDataResponse.data);
+      } else {
+        router.push("/error");
+      }
+    };
+
+    fetchData();
+  }, [id, router]);
+
   return (
     <div className={style.wrapper}>
       <div className={style["image-container"]}>
         <img
-          className={`${style["profile-image"]} ${isLive ? style.live : null}`}
+          className={`${style["profile-image"]} ${liveData && liveData.live ? style.live : null}`}
           src={data.profileUrl}
           alt="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png?type=f120_120_na"
         />
@@ -49,7 +96,6 @@ export default function DetailProfileContent() {
           />
           <div className={style.name}>{data.name}</div>
         </div>
-        {/* <div className={style.introduce}>프로필 소개</div> */}
       </div>
       <div className={style.rank}>
         <div className={style["rank-num"]}># {data.rank}</div>
