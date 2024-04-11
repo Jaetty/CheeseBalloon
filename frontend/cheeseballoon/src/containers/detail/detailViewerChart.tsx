@@ -44,30 +44,28 @@ export default function DetailViewerChart() {
   const [viewerData, setViewerData] = useState<ViewerDataType | null>(null);
   const [viewerArray, setViewerArray] = useState<ViewerArrayType>([1]);
   // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
-  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(['1']);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
 
   useEffect(() => {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data.dailyAvgViewers;
-      if (dailyData && dailyData.length > 0) {
-        const dates = dailyData.map((item: dailyAvgViewersType) => item.date);
-        const viewers = dailyData.map((item: dailyAvgViewersType) =>
-          parseInt(item.avgViewer, 10)
-        );
-        const datesChange = dates.map((dateString: string) => {
-          const parts = dateString.split("-");
-          const [year, month, day] = parts.map(Number);
-          const dateObj = new Date(year, month - 1, day);
-          const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
-            weekday: "short",
-          });
-          return `${year}.${month}.${day} (${dayOfWeek})`;
+      const dates = dailyData.map((item: dailyAvgViewersType) => item.date);
+      const viewers = dailyData.map((item: dailyAvgViewersType) =>
+        parseInt(item.avgViewer, 10)
+      );
+      const datesChange = dates.map((dateString: string) => {
+        const parts = dateString.split("-");
+        const [year, month, day] = parts.map(Number);
+        const dateObj = new Date(year, month - 1, day);
+        const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
+          weekday: "short",
         });
-        // setDateArray(dates);
-        setViewerArray(viewers);
-        setDateXaxis(datesChange);
-      }
+        return `${year}.${month}.${day} (${dayOfWeek})`;
+      });
+      // setDateArray(dates);
+      setViewerArray(viewers);
+      setDateXaxis(datesChange);
       setViewerData(responseData.data);
     };
     fetchData();
@@ -144,7 +142,7 @@ export default function DetailViewerChart() {
       },
       dataLabels: {
         enabled: false,
-      }
+      },
     },
 
     series: [
@@ -171,7 +169,9 @@ export default function DetailViewerChart() {
         <div className={style.viewer}>
           <div className={style["viewer-container"]}>
             <div className={style["viewer-title"]}>최고 시청자수</div>
-            <div className={style["viewer-cnt"]}>{viewerData.maxViewer.toLocaleString()}명</div>
+            <div className={style["viewer-cnt"]}>
+              {viewerData.maxViewer.toLocaleString()}명
+            </div>
             <div
               className={`${style["viewer-diff"]} ${viewerData.maxDiff >= 0 ? style.positive : style.negative}`}
             >
@@ -181,7 +181,9 @@ export default function DetailViewerChart() {
           </div>
           <div className={style["viewer-container"]}>
             <div className={style["viewer-title"]}>평균 시청자수</div>
-            <div className={style["viewer-cnt"]}>{viewerData.avgViewer.toLocaleString()}명</div>
+            <div className={style["viewer-cnt"]}>
+              {viewerData.avgViewer.toLocaleString()}명
+            </div>
             <div
               className={`${style["viewer-diff"]} ${viewerData.avgDiff >= 0 ? style.positive : style.negative}`}
             >

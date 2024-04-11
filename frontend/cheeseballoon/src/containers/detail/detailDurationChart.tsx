@@ -51,35 +51,33 @@ export default function DetailDurationChart() {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data.dailyTimes;
-      if (dailyData && dailyData.length > 0) {
-        const dates = dailyData.map((item: DairyTimesType) => item.date);
-        const times = dailyData.map((item: DairyTimesType) =>
-          parseInt(item.time, 10)
-        );
-        // const totalTime = () => {
-        //   let timeSum = 0;
-        //   const resultArray = [];
-        //   for (let i = 0; i < times.length; i += 1) {
-        //     timeSum += times[i];
-        //     resultArray.push(timeSum);
-        //   }
-        //   return resultArray;
-        // };
-        const datesChange = dates.map((dateString: string) => {
-          const parts = dateString.split("-");
-          const [year, month, day] = parts.map(Number);
-          const dateObj = new Date(year, month - 1, day);
-          const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
-            weekday: "short",
-          });
-          return `${year}.${month}.${day} (${dayOfWeek})`;
+      const dates = dailyData.map((item: DairyTimesType) => item.date);
+      const times = dailyData.map((item: DairyTimesType) =>
+        parseInt(item.time, 10)
+      );
+      // const totalTime = () => {
+      //   let timeSum = 0;
+      //   const resultArray = [];
+      //   for (let i = 0; i < times.length; i += 1) {
+      //     timeSum += times[i];
+      //     resultArray.push(timeSum);
+      //   }
+      //   return resultArray;
+      // };
+      const datesChange = dates.map((dateString: string) => {
+        const parts = dateString.split("-");
+        const [year, month, day] = parts.map(Number);
+        const dateObj = new Date(year, month - 1, day);
+        const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
+          weekday: "short",
         });
+        return `${year}.${month}.${day} (${dayOfWeek})`;
+      });
 
-        // setTotalTimeArray(totalTime());
-        // setDateArray(dates);
-        setTimeArray(times);
-        setDateXaxis(datesChange);
-      }
+      // setTotalTimeArray(totalTime());
+      // setDateArray(dates);
+      setTimeArray(times);
+      setDateXaxis(datesChange);
       setTimeData(responseData.data);
     };
     fetchData();
@@ -186,7 +184,9 @@ export default function DetailDurationChart() {
         <div className={style.time}>
           <div className={style["time-container"]}>
             <div className={style["time-title"]}>총 방송시간</div>
-            <div className={style["time-cnt"]}>{timeData.totalTime.toLocaleString()}시간</div>
+            <div className={style["time-cnt"]}>
+              {timeData.totalTime.toLocaleString()}시간
+            </div>
             <div
               className={`${style["time-diff"]} ${timeData.timeDiff >= 0 ? style.positive : style.negative}`}
             >

@@ -47,23 +47,21 @@ export default function DetailFollowerChart() {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data;
-      if (dailyData && dailyData.length > 0) {
-        const dates = dailyData.map((item: DailyDataType) => item.date);
-        const followers = dailyData.map((item: DailyDataType) =>
-          parseInt(item.follower, 10)
-        );
-        const datesChange = dates.map((dateString: string) => {
-          const parts = dateString.split("-");
-          const [year, month, day] = parts.map(Number);
-          const dateObj = new Date(year, month - 1, day);
-          const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
-            weekday: "short",
-          });
-          return `${year}.${month}.${day} (${dayOfWeek})`;
+      const dates = dailyData.map((item: DailyDataType) => item.date);
+      const followers = dailyData.map((item: DailyDataType) =>
+        parseInt(item.follower, 10)
+      );
+      const datesChange = dates.map((dateString: string) => {
+        const parts = dateString.split("-");
+        const [year, month, day] = parts.map(Number);
+        const dateObj = new Date(year, month - 1, day);
+        const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
+          weekday: "short",
         });
-        setFollowerArray(followers);
-        setDateXaxis(datesChange);
-      }
+        return `${year}.${month}.${day} (${dayOfWeek})`;
+      });
+      setFollowerArray(followers);
+      setDateXaxis(datesChange);
       setFollowerData(responseData.data);
     };
     fetchData();
