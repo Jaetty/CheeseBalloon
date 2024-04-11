@@ -42,17 +42,17 @@ async function getData(streamerId: string, date: string) {
 export default function DetailViewerChart() {
   const { id, date } = useParams();
   const [viewerData, setViewerData] = useState<ViewerDataType | null>(null);
-  const [viewerArray, setViewerArray] = useState<ViewerArrayType | null>([1]);
+  const [viewerArray, setViewerArray] = useState<ViewerArrayType>([1]);
   // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
   const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(['1']);
 
   useEffect(() => {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
-      const dairyData = responseData.data.dailyAvgViewers;
-      if (dairyData && dairyData.length > 0) {
-        const dates = dairyData.map((item: dailyAvgViewersType) => item.date);
-        const viewers = dairyData.map((item: dailyAvgViewersType) =>
+      const dailyData = responseData.data.dailyAvgViewers;
+      if (dailyData && dailyData.length > 0) {
+        const dates = dailyData.map((item: dailyAvgViewersType) => item.date);
+        const viewers = dailyData.map((item: dailyAvgViewersType) =>
           parseInt(item.avgViewer, 10)
         );
         const datesChange = dates.map((dateString: string) => {
@@ -112,6 +112,7 @@ export default function DetailViewerChart() {
         },
       },
       yaxis: {
+        tickAmount: 10,
         labels: {
           style: {
             colors: "white",
@@ -119,7 +120,6 @@ export default function DetailViewerChart() {
           },
           formatter: (value: number) => `${value}명`,
         },
-        min: 0,
       },
       grid: {
         show: true,

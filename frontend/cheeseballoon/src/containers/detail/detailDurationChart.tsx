@@ -50,10 +50,10 @@ export default function DetailDurationChart() {
   useEffect(() => {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
-      const dairyData = responseData.data.dailyTimes;
-      if (dairyData && dairyData.length > 0) {
-        const dates = dairyData.map((item: DairyTimesType) => item.date);
-        const times = dairyData.map((item: DairyTimesType) =>
+      const dailyData = responseData.data.dailyTimes;
+      if (dailyData && dailyData.length > 0) {
+        const dates = dailyData.map((item: DairyTimesType) => item.date);
+        const times = dailyData.map((item: DairyTimesType) =>
           parseInt(item.time, 10)
         );
         // const totalTime = () => {
@@ -124,7 +124,8 @@ export default function DetailDurationChart() {
       },
       yaxis: [
         {
-          forceNiceScale: true,
+          tickAmount: 10,
+
           labels: {
             style: {
               colors: "white",
