@@ -39,7 +39,6 @@ export default function DetailSelectedContent() {
       case "calendar":
         return <DetailCalendar />;
       default:
-        router.push("/404");
         return null;
     }
   };
@@ -49,7 +48,7 @@ export default function DetailSelectedContent() {
       <div className={style.date}>
         <DetailSelectDate />
       </div>
-      <div className={`${style.content} ${isRendered? style.rendered : null}`}>{selectedContent()}</div>
+      <div className={`${isRendered? style.rendered : null}`}>{selectedContent()}</div>
     </div>
   );
 }

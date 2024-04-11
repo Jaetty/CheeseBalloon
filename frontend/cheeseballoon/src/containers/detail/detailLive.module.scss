@@ -20,8 +20,13 @@
   color: inherit;
 }
 
+
 .thumbnail {
   display: block;
   width: 100%;
   border-radius: 20px;
+}
+
+.thumbnail:hover {
+  filter: brightness(90%)
 }

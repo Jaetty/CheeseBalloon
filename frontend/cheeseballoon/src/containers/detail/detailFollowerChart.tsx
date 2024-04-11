@@ -1,6 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import style from "./detailChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
@@ -9,7 +11,62 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 
 type AlignType = "center";
 
+type FollowerDataType = {
+  data: [date: string, follower: number];
+};
+
+type DateArrayType = string[];
+type FollowerArrayType = number[];
+type DailyDataType = {
+  date: string;
+  follower: string;
+};
+
+const API_URL = process.env.NEXT_PUBLIC_FOLLOW_API_URL;
+
+async function getData(streamerId: string, date: string) {
+  let res;
+  if (date) {
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=${date}`);
+  } else {
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=7`);
+  }
+
+  return res.json();
+}
+
 export default function DetailFollowerChart() {
+  const { id, date } = useParams();
+  const [followerData, setFollowerData] = useState<FollowerDataType | null>(
+    null
+  );
+  const [followerArray, setFollowerArray] = useState<FollowerArrayType>([1]);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const responseData = await getData(id as string, date as string);
+      const dailyData = responseData.data;
+      const dates = dailyData.map((item: DailyDataType) => item.date);
+      const followers = dailyData.map((item: DailyDataType) =>
+        parseInt(item.follower, 10)
+      );
+      const datesChange = dates.map((dateString: string) => {
+        const parts = dateString.split("-");
+        const [year, month, day] = parts.map(Number);
+        const dateObj = new Date(year, month - 1, day);
+        const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
+          weekday: "short",
+        });
+        return `${year}.${month}.${day} (${dayOfWeek})`;
+      });
+      setFollowerArray(followers);
+      setDateXaxis(datesChange);
+      setFollowerData(responseData.data);
+    };
+    fetchData();
+  }, [id, date]);
+
   const chartData = {
     options: {
       title: {
@@ -39,7 +96,7 @@ export default function DetailFollowerChart() {
         size: 3,
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+        categories: dateXaxis,
         labels: {
           style: {
             colors: "white",
@@ -49,10 +106,18 @@ export default function DetailFollowerChart() {
       },
       yaxis: [
         {
+          tickAmount: 10,
           labels: {
             style: {
               colors: "white",
               fontWeight: "bold",
+            },
+            formatter: (value: number) => {
+              if (value > 100000) {
+                const formattedValue = (value / 10000).toFixed(1);
+                return `${formattedValue}만명`;
+              }
+              return `${value.toLocaleString()}명`;
             },
           },
         },
@@ -79,7 +144,7 @@ export default function DetailFollowerChart() {
       {
         name: "시청률",
         type: "line",
-        data: [40, 50, 45, 60, 69, 70, 80, 101, 135],
+        data: followerArray as number[],
       },
     ],
   };

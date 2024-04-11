@@ -1,53 +1,60 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import anya from "@/public/svgs/anya2.jpg"
 import style from "./detailLive.module.scss";
 
-const API_URL = process.env.NEXT_PUBLIC_LIVE_CHECK_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
 
-interface responseData {
+interface liveDataType {
   live: boolean;
-  streamUrl: string;
+  streamerUrl: string;
   thumbnailUrl: string;
 }
 
-async function getData() {
-  const res = await fetch(`${API_URL}1369`);
+async function getData(streamerId: string) {
+  const res = await fetch(`${API_URL}${streamerId}`);
 
   return res.json();
 }
 
-// 임시 데이터
-const d = {
-  streamUrl: "https://chzzk.naver.com/live/75cbf189b3bb8f9f687d2aca0d0a382b",
-  thumbnailUrl:
-    "https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26464698/live/5166956/record/26622172/thumbnail/image_480.jpg?date=1712170800000",
-};
-
 export default function DetailLive() {
-  const [liveData, setLiveData] = useState<responseData | null>(null);
+  const [liveData, setLiveData] = useState<liveDataType | null>(null);
+  const [isImgError, setIsImgError] = useState<boolean>(false)
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getData();
+      const data = await getData(id.toString());
       setLiveData(data.data);
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <div className={style.wrapper}>
-      {liveData && !liveData?.live ? (
+      {liveData && liveData.live && (
         <div className={style.container}>
           <div className={style["image-container"]}>
-            <a href={d.streamUrl} className={style.link} target="_blank" rel="noopener noreferrer">
-              <img src={d.thumbnailUrl} alt="123" className={style.thumbnail} />
+            <a
+              href={liveData.streamerUrl}
+              className={style.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={isImgError ? anya.src : liveData.thumbnailUrl}
+                alt="라이브"
+                onError={() => setIsImgError(true)}
+                className={style.thumbnail}
+              />
             </a>
           </div>
           <hr />
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

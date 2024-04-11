@@ -6,7 +6,7 @@ import Image from "next/legacy/image";
 import style from "./liveSearch.module.scss";
 import searchIcon from "../../stores/search_glass.png";
 
-const API_URL = process.env.NEXT_PUBLIC_CATEGORY_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_LIVE_CATEGORY_API_URL;
 
 type searchType = string[];
 
