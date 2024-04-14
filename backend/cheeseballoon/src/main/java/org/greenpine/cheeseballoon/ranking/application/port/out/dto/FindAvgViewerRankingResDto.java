@@ -16,7 +16,7 @@ public class FindAvgViewerRankingResDto {
     int rank;
     char platform;
     String profileUrl;
-    int viewerCnt;
+    int averageViewer;
     int rankDiff;
     int diff;
     boolean bookmark;

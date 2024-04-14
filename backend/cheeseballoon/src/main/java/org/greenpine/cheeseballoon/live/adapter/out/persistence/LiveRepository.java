@@ -16,7 +16,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
 
     LiveEntity findByLiveId(Long liveId);
 
-    @Query(value = "SELECT ranksql.rank AS rank, ranksql.streamer_id AS streamerId, ranksql.name, ranksql.platform, ranksql.profile_url AS profileUrl, ranksql.viewer_cnt AS viewerCnt, case when b.bookmark_id > 0 then TRUE else FALSE END AS bookmark\n" +
+    @Query(value = "SELECT ranksql.rank AS rank, ranksql.streamer_id AS streamerId, ranksql.name, ranksql.platform, ranksql.profile_url AS profileUrl, ranksql.viewer_cnt AS averageViewer, case when b.bookmark_id > 0 then TRUE else FALSE END AS bookmark\n" +
             "FROM \n" +
             "(SELECT ROW_NUMBER() OVER(ORDER BY viewer_cnt DESC) AS rank, live.live_id, live.streamer_id, live.live_origin_id, live.stream_url, live.thumbnail_url, live_log.live_log_id ,live_log.cycle_log_id, live_log.category_id, live_log.title, round(avg(live_log.viewer_cnt),0) AS viewer_cnt, s.name, s.platform, s.profile_url\n" +
             "FROM lives AS live\n" +
@@ -31,7 +31,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "ON ranksql.streamer_id = b.streamer_id", nativeQuery = true)
     List<FindAvgViewerRankResDtoInterface> findAllAvgViewerRanking(String beforeDay, String today);
 
-    @Query(value = "SELECT ranksql.rank AS rank, ranksql.streamer_id AS streamerId, ranksql.name, ranksql.platform, ranksql.profile_url AS profileUrl, ranksql.viewer_cnt AS viewerCnt, case when b.bookmark_id > 0 then TRUE else FALSE END AS bookmark\n" +
+    @Query(value = "SELECT ranksql.rank AS rank, ranksql.streamer_id AS streamerId, ranksql.name, ranksql.platform, ranksql.profile_url AS profileUrl, ranksql.viewer_cnt AS averageViewer, case when b.bookmark_id > 0 then TRUE else FALSE END AS bookmark\n" +
             "FROM \n" +
             "(SELECT live.live_id, live.streamer_id, live.live_origin_id, live.stream_url, live.thumbnail_url, live_log.live_log_id ,live_log.cycle_log_id, live_log.category_id, live_log.title, round(avg(live_log.viewer_cnt),0) AS viewer_cnt, s.name, s.platform, s.profile_url\n" +
             "FROM lives AS live\n" +

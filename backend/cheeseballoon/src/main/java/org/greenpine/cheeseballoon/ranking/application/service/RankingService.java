@@ -46,7 +46,7 @@ public class RankingService implements RankingUsecase {
             // hashmap에 각 스트리머의 고유 아이디 값과 랭킹 값을 기준으로 몇 위 상승했는지 넣어줌
             // MAX_RANK의 값이 300이고 순위가 1등이면 랭킹 값은 300 + 1 - 1 = 300위 상승이라는 뜻
             rank.put(val.getStreamerId(), (MAX_RANK+1) - val.getRank());
-            diff.put(val.getStreamerId(), val.getViewerCnt());
+            diff.put(val.getStreamerId(), val.getAverageViewer());
 
             ret.add(FindAvgViewerRankingResDto.builder()
                     .streamerId(val.getStreamerId())
@@ -54,7 +54,7 @@ public class RankingService implements RankingUsecase {
                     .rank(val.getRank())
                     .platform(val.getPlatform())
                     .profileUrl(val.getProfileUrl())
-                    .viewerCnt(val.getViewerCnt())
+                    .averageViewer(val.getAverageViewer())
                     .bookmark(val.getBookmark() == 1 ? true : false)
                     .build());
         }
@@ -82,7 +82,7 @@ public class RankingService implements RankingUsecase {
 
                     // 시청자 diff 값 계산
 
-                    diff.put(s_id, view_diff >= val.getViewerCnt() ? view_diff - val.getViewerCnt() : -(val.getViewerCnt() - view_diff));
+                    diff.put(s_id, view_diff >= val.getAverageViewer() ? view_diff - val.getAverageViewer() : -(val.getAverageViewer() - view_diff));
 
                 }
             }
