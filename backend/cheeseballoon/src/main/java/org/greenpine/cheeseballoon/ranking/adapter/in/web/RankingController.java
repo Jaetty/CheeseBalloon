@@ -9,6 +9,7 @@ import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankResDtoInterface;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.message.RankingResMsg;
 import org.hibernate.validator.constraints.Range;
@@ -72,13 +73,12 @@ public class RankingController {
     }
 
     @GetMapping("/average")
-    public ResponseEntity<CustomBody> findAvgViewerRanking(@RequestParam @Range(min = 15, max = 30) int limit,
-                                                           @Range(min = 0, max = 300) int offset,
+    public ResponseEntity<CustomBody> findAvgViewerRanking(@RequestParam
                                                            @Range(min = 0, max = 3) int date,
                                                            @Pattern(regexp = "^[ASCT]") String platform){
 
 
-        List<FindAvgViewerRankResDtoInterface> ret = rankingUsecase.findAvgViewerRanking(limit, offset, date, platform.charAt(0));
+        List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0));
 
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));

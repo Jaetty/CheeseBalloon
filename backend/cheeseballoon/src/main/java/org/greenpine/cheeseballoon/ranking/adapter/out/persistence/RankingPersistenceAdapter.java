@@ -10,7 +10,6 @@ import org.greenpine.cheeseballoon.ranking.domain.DateValue;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -27,20 +26,20 @@ public class RankingPersistenceAdapter implements RankingPort {
     }
 
     @Override
-    public List<FindAvgViewerRankResDtoInterface> findAvgViewerRanking(int limit, int off, int date, char platform) {
+    public List<FindAvgViewerRankResDtoInterface>[] findAvgViewerRanking(int date, char platform) {
 
         String[] dates = dateValue.getPeriod(date);
 
-        List<FindAvgViewerRankResDtoInterface> ret;
+        List<FindAvgViewerRankResDtoInterface>[] ret = new List[2];
 
-        System.out.println(dates[0] + " " + dates[1]);
-        System.out.println(dates[2] + " " + dates[3]);
-
+        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
         if(platform=='T'){
-            ret = liveRepository.findAllAvgViewerRanking(limit, off, dates[0], dates[1]);
+            ret[0] = liveRepository.findAllAvgViewerRanking(dates[0], dates[1]);
+            ret[1] = liveRepository.findAllAvgViewerRanking(dates[2], dates[3]);
         }
         else{
-            ret = liveRepository.findAvgViewerRankingByPlatform(limit, off, dates[0], dates[1], platform);
+            ret[0] = liveRepository.findAvgViewerRankingByPlatform(dates[0], dates[1], platform);
+            ret[1] = liveRepository.findAvgViewerRankingByPlatform(dates[2], dates[3], platform);
         }
 
         return ret;

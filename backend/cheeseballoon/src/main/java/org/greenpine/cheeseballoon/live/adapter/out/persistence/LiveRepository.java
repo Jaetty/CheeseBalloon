@@ -28,9 +28,8 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "LIMIT 300) AS ranksql\n" +
             "LEFT OUTER JOIN\n" +
             "(SELECT * FROM bookmarks WHERE member_id = -1) AS b\n" +
-            "ON ranksql.streamer_id = b.streamer_id\n" +
-            "LIMIT :limit OFFSET :off", nativeQuery = true)
-    List<FindAvgViewerRankResDtoInterface> findAllAvgViewerRanking(int limit, int off, String beforeDay, String today);
+            "ON ranksql.streamer_id = b.streamer_id", nativeQuery = true)
+    List<FindAvgViewerRankResDtoInterface> findAllAvgViewerRanking(String beforeDay, String today);
 
     @Query(value = "SELECT ranksql.rank AS rank, ranksql.streamer_id AS streamerId, ranksql.name, ranksql.platform, ranksql.profile_url AS profileUrl, ranksql.viewer_cnt AS viewerCnt, case when b.bookmark_id > 0 then TRUE else FALSE END AS bookmark\n" +
             "FROM \n" +
@@ -45,8 +44,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "LEFT OUTER JOIN\n" +
             "(SELECT * FROM bookmarks WHERE member_id = -1) AS b\n" +
             "ON ranksql.streamer_id = b.streamer_id\n" +
-            "ORDER BY viewer_cnt DESC\n" +
-            "LIMIT :limit OFFSET :off", nativeQuery = true)
-    List<FindAvgViewerRankResDtoInterface> findAvgViewerRankingByPlatform(int limit, int off, String beforeDay, String today, char platform);
+            "ORDER BY viewer_cnt DESC", nativeQuery = true)
+    List<FindAvgViewerRankResDtoInterface> findAvgViewerRankingByPlatform(String beforeDay, String today, char platform);
 
 }
