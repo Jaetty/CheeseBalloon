@@ -7,7 +7,7 @@ public interface FindAvgViewerRankResDtoInterface {
     String getName();
     Character getPlatform();
     String getProfileUrl();
-    Integer getViewerCnt();
+    Integer getAverageViewer();
     Integer getBookmark();
 
 }
