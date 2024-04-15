@@ -11,6 +11,7 @@ import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowRankingResDto;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.message.RankingResMsg;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
@@ -79,6 +80,18 @@ public class RankingController {
 
 
         List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0));
+
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
+    }
+
+    @GetMapping("/topview")
+    public ResponseEntity<CustomBody> findTopViewerRanking(@RequestParam
+                                                           @Range(min = 0, max = 3) int date,
+                                                           @Pattern(regexp = "^[ASCT]") String platform){
+
+
+        List<FindTopViewerRankingResDto> ret = rankingUsecase.findTopViewerRanking(date, platform.charAt(0));
 
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
