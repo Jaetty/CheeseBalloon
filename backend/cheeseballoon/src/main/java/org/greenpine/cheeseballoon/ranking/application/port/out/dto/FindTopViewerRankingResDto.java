@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindAvgViewerRankingResDto {
+public class FindTopViewerRankingResDto {
 
     Long streamerId;
     String name;
     int rank;
     char platform;
     String profileUrl;
-    int averageViewer;
+    int topViewer;
     int rankDiff;
     int diff;
     boolean bookmark;
