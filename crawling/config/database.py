@@ -11,7 +11,7 @@ SECRET_FILE = os.path.join(BASE_DIR, 'secrets.json')
 secrets = json.loads(open(SECRET_FILE).read())
 db = secrets["DB"]
 
-SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{db.get('user')}:{db.get('password')}@{db.get('host')}:{db.get('port')}/{db.get('database')}?charset=utf8"
+SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{db.get('user')}:{db.get('password')}@{db.get('host')}:{db.get('port')}/{db.get('database')}?charset=utf8mb4"
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)

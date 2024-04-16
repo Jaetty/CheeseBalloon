@@ -13,9 +13,16 @@ class CategoryService:
         db.refresh(db_category)
         return db_category
 
-    def get_category(self, db: Session, category: str) -> bool:
+    def is_category(self, db: Session, category: str) -> bool:
         db_category = db.query(Category).filter(Category.category == category).first()
         if db_category:
             return True
         else:
             return False
+
+    def get_category(self, db: Session, category: str) -> bool:
+        category = db.query(Category).filter(Category.category == category).first()
+        if category:
+            return category.category_id
+        else:
+            return None

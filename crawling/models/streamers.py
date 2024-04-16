@@ -8,7 +8,7 @@ class Streamer(Base):
     __tablename__ = "streamers"
 
     streamer_id = Column(BIGINT, primary_key=True, autoincrement=True, nullable=False)
-    origin_id = Column(Text, nullable=False)
+    origin_id = Column(Text, nullable=False, unique=True)
     name = Column(String(20), nullable=False)
     profile_url = Column(String(600), nullable=False)
     channel_url = Column(Text, nullable=False)
