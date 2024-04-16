@@ -32,7 +32,7 @@ class Soop:
             driver.get('https://www.afreecatv.com/?hash=all')
 
             # 페이지 로드를 기다리기 위한 대기 시간 설정
-            driver.implicitly_wait(10)
+            driver.implicitly_wait(3)
 
             while True:
 
@@ -100,7 +100,7 @@ class Soop:
                 driver.implicitly_wait(100)
 
                 try:
-                    live_btn = WebDriverWait(driver, 5).until(
+                    live_btn = WebDriverWait(driver, 3).until(
                         EC.visibility_of_element_located((By.XPATH, "//*[@id='stop_screen']/dl/dd[2]/a"))
                     )
                     # 버튼이 화면에 나타나면 클릭

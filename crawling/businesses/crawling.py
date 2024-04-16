@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 from sqlalchemy.orm import Session
@@ -22,7 +23,7 @@ from crawlings.chzzk import Chzzk
 
 class CrawlingBusiness:
     async def crawling(self, db: Session):
-
+        print(datetime.datetime.now())
         try:
 
             streamer_list = Soop().soop()
@@ -39,7 +40,7 @@ class CrawlingBusiness:
 
                 if streamer_info.category is not None:
                     if not CategoryService().is_category(db=db, category=streamer_info.category):
-                        print("카테고리 데이터 넣기")
+                        # print("카테고리 데이터 넣기")
                         categories = CategoryCreate(
                             category=streamer_info.category
                         )
@@ -49,7 +50,7 @@ class CrawlingBusiness:
                     category_id = None
 
                 if not StreamerService().is_streamer(db=db, origin_id=streamer_info.origin_id):
-                    print("스트리머 데이터 넣기")
+                    # print("스트리머 데이터 넣기")
                     streamer = StreamerCreate(
                         origin_id=streamer_info.origin_id,
                         name=streamer_info.name,
@@ -67,7 +68,7 @@ class CrawlingBusiness:
                 # 이전 라이브 로그는 있었는데 현재 라이브 목록에는 없다면..? <- 끝나고 체크해야할듯..
                 # 라이브가 없다면 라이브 추가
                 if not LiveService().is_live(db=db, streamer_id=streamer_id, live_origin_id=streamer_info.live_origin_id):
-                    print("라이브 데이터 넣기")
+                    # print("라이브 데이터 넣기")
                     live = LiveCreate(
                         streamer_id= streamer_id,
                         live_origin_id=streamer_info.live_origin_id,
@@ -77,7 +78,7 @@ class CrawlingBusiness:
                     )
                     LiveService().create(db=db, live=live)
                 live_id = LiveService().get_live(db=db, streamer_id=streamer_id, live_origin_id=streamer_info.live_origin_id)
-                print("라이브 로그 데이터 넣기")
+                # print("라이브 로그 데이터 넣기")
                 live_log = LiveLogCreate(
                     live_id=live_id,
                     cycle_log_id=cycle_id,
@@ -89,4 +90,5 @@ class CrawlingBusiness:
         except Exception as e:
             print(e)
 
+        print(datetime.datetime.now())
         return {"result": "good"}
