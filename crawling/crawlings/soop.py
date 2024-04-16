@@ -24,10 +24,11 @@ class Soop:
 
         # # 시청자 수를 저장할 리스트 초기화
         streamer_list = []
+        print("되라되라")
         try:
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
-            driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
-
+            driver = webdriver.Chrome(options=chrome_options)
+            print("되라되라2")
             # 웹사이트 열기ㄴ
             driver.get('https://www.afreecatv.com/?hash=all')
 
