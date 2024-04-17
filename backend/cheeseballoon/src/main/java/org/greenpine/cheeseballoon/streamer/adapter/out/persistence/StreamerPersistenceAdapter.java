@@ -26,19 +26,22 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     private final LiveLogRepository liveLogRepository;
 
     @Override
-    public List<FindSearchStreamerResDtoInterface> searchStreamersByName(String query) {
+    public List<FindSearchStreamerResDtoInterface> searchStreamersByName(String query, long memberId) {
 
-        List<FindSearchStreamerResDtoInterface> result = streamerRepository.searchStreamerByName(query);
+        List<FindSearchStreamerResDtoInterface> result = streamerRepository.searchStreamerByName(query, memberId);
 
         return result;
     }
 
 
     // 이 부분으로 특정 기간 동안의 평균 랭킹을 낸다.
+    // 멤버id로 즐겨찾기 여부를 검색해줘야한다.
     @Override
-    public FindStreamerDetailResDto streamerDetail(Long streamerId) {
+    public FindStreamerDetailResDto streamerDetail(Long streamerId, long memberId) {
 
         StreamerEntity streamerEntity = streamerRepository.findByStreamerId(streamerId);
+
+        System.out.println(streamerEntity.getOriginId());
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime before = now.minus(8, ChronoUnit.DAYS);
@@ -68,10 +71,13 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
             diff = (301-beforeRank) * -1;
         }
 
+        // 여기 북마크 수정해야함
         FindStreamerDetailResDto result = FindStreamerDetailResDto.builder()
                 .streamerId(streamerId)
                 .channelUrl(streamerEntity.getChannelUrl())
                 .rank(currRank)
+                .originId(streamerEntity.getOriginId())
+                .bookmark(false)
                 .name(streamerEntity.getName())
                 .profileUrl(streamerEntity.getProfileUrl())
                 .channelUrl(streamerEntity.getChannelUrl())

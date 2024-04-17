@@ -8,9 +8,9 @@ import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
 import java.util.List;
 
 public interface StreamerPort {
-    List<FindSearchStreamerResDtoInterface> searchStreamersByName(String query);
+    List<FindSearchStreamerResDtoInterface> searchStreamersByName(String query, long memberId);
 
-    FindStreamerDetailResDto streamerDetail(Long streamerId);
+    FindStreamerDetailResDto streamerDetail(Long streamerId, long memberId);
 
     StreamerLiveDomain streamerDetailLive(Long streamerId);
 
