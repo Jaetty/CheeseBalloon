@@ -1,16 +1,16 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
+# from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver_manager.chrome import ChromeDriverManager
 from schemas.streamer_info import StreamerInfo
 
 from datetime import datetime
 import re
-import os
+# import os
 
 
 class Soop:
@@ -27,11 +27,8 @@ class Soop:
         streamer_list = []
         print("되라되라")
         try:
-            # 원하는 버전을 환경 변수로 설정
-            os.environ['WDM_CHROMEDRIVER_VERSION'] = '114.0.5735.90'
-            service = ChromeService(ChromeDriverManager().install())
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
-            driver = webdriver.Chrome(service=service, options=chrome_options)
+            driver = webdriver.Chrome(options=chrome_options)
             print("되라되라2")
             # 웹사이트 열기ㄴ
             driver.get('https://www.afreecatv.com/?hash=all')
