@@ -16,6 +16,7 @@ import org.greenpine.cheeseballoon.ranking.application.port.out.message.RankingR
 import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -76,10 +77,14 @@ public class RankingController {
     @GetMapping("/average")
     public ResponseEntity<CustomBody> findAvgViewerRanking(@RequestParam
                                                            @Range(min = 0, max = 3) int date,
-                                                           @Pattern(regexp = "^[ASCT]") String platform){
+                                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                                           @AuthenticationPrincipal Long memberId){
 
+        if(memberId == null){
+            memberId = -1L;
+        }
 
-        List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0));
+        List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0), memberId);
 
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
@@ -88,10 +93,14 @@ public class RankingController {
     @GetMapping("/topview")
     public ResponseEntity<CustomBody> findTopViewerRanking(@RequestParam
                                                            @Range(min = 0, max = 3) int date,
-                                                           @Pattern(regexp = "^[ASCT]") String platform){
+                                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                                           @AuthenticationPrincipal Long memberId){
 
+        if(memberId == null){
+            memberId = -1L;
+        }
 
-        List<FindTopViewerRankingResDto> ret = rankingUsecase.findTopViewerRanking(date, platform.charAt(0));
+        List<FindTopViewerRankingResDto> ret = rankingUsecase.findTopViewerRanking(date, platform.charAt(0), memberId);
 
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));

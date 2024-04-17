@@ -10,6 +10,6 @@ import java.util.List;
 public interface RankingUsecase {
     List<FindFollowRankingResDto> findFollowRanking(FindFollowRankingReqDto reqDto);
 
-    List<FindAvgViewerRankingResDto> findAvgViewerRanking(int date, char platform);
-    List<FindTopViewerRankingResDto> findTopViewerRanking(int date, char platform);
+    List<FindAvgViewerRankingResDto> findAvgViewerRanking(int date, char platform, long memberId);
+    List<FindTopViewerRankingResDto> findTopViewerRanking(int date, char platform, long memberId);
 }

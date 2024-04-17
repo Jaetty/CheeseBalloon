@@ -28,7 +28,7 @@ public class RankingPersistenceAdapter implements RankingPort {
 
     // 평균 시청자 수 db 값 가져오기
     @Override
-    public List<FindAvgViewerRankResDtoInterface>[] findAvgViewerRanking(int date, char platform) {
+    public List<FindAvgViewerRankResDtoInterface>[] findAvgViewerRanking(int date, char platform, long memberId) {
 
         String[] dates = dateValue.getPeriod(date);
 
@@ -36,12 +36,12 @@ public class RankingPersistenceAdapter implements RankingPort {
 
         // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
         if(platform=='T'){
-            ret[0] = liveRepository.findAllAvgViewerRanking(dates[0], dates[1]);
-            ret[1] = liveRepository.findAllAvgViewerRanking(dates[2], dates[3]);
+            ret[0] = liveRepository.findAllAvgViewerRanking(dates[0], dates[1], memberId);
+            ret[1] = liveRepository.findAllAvgViewerRanking(dates[2], dates[3], memberId);
         }
         else{
-            ret[0] = liveRepository.findAvgViewerRankingByPlatform(dates[0], dates[1], platform);
-            ret[1] = liveRepository.findAvgViewerRankingByPlatform(dates[2], dates[3], platform);
+            ret[0] = liveRepository.findAvgViewerRankingByPlatform(dates[0], dates[1], platform, memberId);
+            ret[1] = liveRepository.findAvgViewerRankingByPlatform(dates[2], dates[3], platform, memberId);
         }
 
         return ret;
@@ -49,7 +49,7 @@ public class RankingPersistenceAdapter implements RankingPort {
 
     // 최대 시청자 수 db 값 가져오기
     @Override
-    public List<FindTopViewerRankResDtoInterface>[] findTopViewerRanking(int date, char platform) {
+    public List<FindTopViewerRankResDtoInterface>[] findTopViewerRanking(int date, char platform, long memberId) {
 
         String[] dates = dateValue.getPeriod(date);
 
@@ -57,12 +57,12 @@ public class RankingPersistenceAdapter implements RankingPort {
 
         // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
         if(platform=='T'){
-            ret[0] = liveRepository.findAllTopViewerRanking(dates[0], dates[1]);
-            ret[1] = liveRepository.findAllTopViewerRanking(dates[2], dates[3]);
+            ret[0] = liveRepository.findAllTopViewerRanking(dates[0], dates[1], memberId);
+            ret[1] = liveRepository.findAllTopViewerRanking(dates[2], dates[3], memberId);
         }
         else{
-            ret[0] = liveRepository.findTopViewerRankingByPlatform(dates[0], dates[1], platform);
-            ret[1] = liveRepository.findTopViewerRankingByPlatform(dates[2], dates[3], platform);
+            ret[0] = liveRepository.findTopViewerRankingByPlatform(dates[0], dates[1], platform, memberId);
+            ret[1] = liveRepository.findTopViewerRankingByPlatform(dates[2], dates[3], platform, memberId);
         }
 
         return ret;
