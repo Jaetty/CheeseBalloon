@@ -1,6 +1,7 @@
 from selenium import webdriver
 # from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -15,6 +16,8 @@ import re
 
 class Soop:
     def soop(self):
+        # ChromeDriver 경로 설정
+        chrome_driver_path = '/usr/bin/chromedriver'  # ChromeDriver가 설치된 경로
         # Chrome 옵션 설정
         chrome_options = Options()
         chrome_options.add_argument("headless")  # 헤드리스 모드 활성화
@@ -27,8 +30,10 @@ class Soop:
         streamer_list = []
         print("되라되라")
         try:
+            # WebDriver 서비스 설정
+            service = Service(executable_path=chrome_driver_path)
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
-            driver = webdriver.Chrome(options=chrome_options)
+            driver = webdriver.Chrome(service=service, options=chrome_options)
             print("되라되라2")
             # 웹사이트 열기ㄴ
             driver.get('https://www.afreecatv.com/?hash=all')
