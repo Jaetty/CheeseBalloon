@@ -8,6 +8,6 @@ public interface FindTopViewerRankResDtoInterface {
     Character getPlatform();
     String getProfileUrl();
     Integer getTopViewer();
-    Integer getBookmark();
+    Boolean getBookmark();
 
 }

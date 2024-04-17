@@ -53,7 +53,7 @@ public class RankingService implements RankingUsecase {
                     .platform(val.getPlatform())
                     .profileUrl(val.getProfileUrl())
                     .averageViewer(val.getAverageViewer())
-                    .bookmark(val.getBookmark() == 1 ? true : false)
+                    .bookmark(val.getBookmark())
                     .build());
         }
 
@@ -126,7 +126,7 @@ public class RankingService implements RankingUsecase {
                     .platform(val.getPlatform())
                     .profileUrl(val.getProfileUrl())
                     .topViewer(val.getTopViewer())
-                    .bookmark(val.getBookmark() == 1 ? true : false)
+                    .bookmark(val.getBookmark())
                     .build());
         }
 
