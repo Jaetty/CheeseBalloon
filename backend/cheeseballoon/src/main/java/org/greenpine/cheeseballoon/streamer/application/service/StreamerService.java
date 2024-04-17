@@ -20,37 +20,19 @@ public class StreamerService implements StreamerUsecase {
     private final StreamerPort streamerPort;
 
     @Override
-    public List<FindSearchStreamerResDtoInterface> searchStreamer(String query) {
+    public List<FindSearchStreamerResDtoInterface> searchStreamer(String query, long memberId) {
 
-        List<FindSearchStreamerResDtoInterface> result =  streamerPort.searchStreamersByName(query);
-//        List<FindSearchStreamerResDto> result = new ArrayList<>();
-
-        // 아래는 테스트용으로만 사용하는 코드
-//        if(query.chars().allMatch(Character::isDigit)){
-//
-//            for(int i=0; i<Integer.parseInt(query); i++){
-//                if(i==16) break;
-//                result.add(FindSearchStreamerResDto.builder()
-//                        .streamId((long)i)
-//                        .name("스트리머 넘버 :"+ i)
-//                        .isLive( i%4 == 0 ? false : true )
-//                        .profileUrl("https://nng-phinf.pstatic.net/MjAyMzEyMTlfMzYg/MDAxNzAyOTcwODY1OTUy.1hHkqzH-zyEhyW2EJNfj1q6r7XTDeQNNqL_owQQ6AFwg.mCjDaHbdF0jjfhB2PvFuFJLxL9jQ-PV0oSLLDRXoGLUg.GIF/popHEAD.gif?type=f120_120_na")
-//                        .channelUrl("https://chzzk.naver.com/ca1850b2eceb7f86146695fd9bb9cefc")
-//                        .follower(58000)
-//                        .platform(i%3 == 0 ? 'C' : 'A')
-//                        .build());
-//            }
-//        }
+        List<FindSearchStreamerResDtoInterface> result =  streamerPort.searchStreamersByName(query, memberId);
 
         return result;
     }
 
     @Override
-    public FindStreamerDetailResDto streamerDetail(Long streamerId) {
+    public FindStreamerDetailResDto streamerDetail(Long streamerId, long memberId) {
 
-        streamerPort.streamerDetail(streamerId);
+        FindStreamerDetailResDto ret = streamerPort.streamerDetail(streamerId, memberId);
 
-        return null;
+        return ret;
     }
 
     @Override
