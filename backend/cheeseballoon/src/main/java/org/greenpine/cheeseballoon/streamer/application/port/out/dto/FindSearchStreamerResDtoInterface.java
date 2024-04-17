@@ -16,4 +16,5 @@ public interface FindSearchStreamerResDtoInterface {
     int getFollower();
 
     char getPlatform();
+    Boolean getBookmark();
 }
