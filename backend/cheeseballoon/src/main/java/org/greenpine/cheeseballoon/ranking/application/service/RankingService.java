@@ -26,9 +26,9 @@ public class RankingService implements RankingUsecase {
 
     // 평균 시청자 수 랭킹 DTO 리턴
     @Override
-    public List<FindAvgViewerRankingResDto> findAvgViewerRanking(int date, char platform) {
+    public List<FindAvgViewerRankingResDto> findAvgViewerRanking(int date, char platform, long memberId) {
 
-        List<FindAvgViewerRankResDtoInterface>[] res = rankingPort.findAvgViewerRanking(date, platform);
+        List<FindAvgViewerRankResDtoInterface>[] res = rankingPort.findAvgViewerRanking(date, platform, memberId);
 
         // diff 값의 경우 O(N) 만큼 상수를 제외하지 않는다면 정확히 O(3 * MAX_RANK)만큼의 수행시간을 가짐
         // 우선 Repository에서 특정 기간의 값(res[0])과 그 전 기간의 값(res[1])을 가져옴
@@ -99,9 +99,9 @@ public class RankingService implements RankingUsecase {
 
     // 최대 시청자 수 랭킹 DTO 리턴
     @Override
-    public List<FindTopViewerRankingResDto> findTopViewerRanking(int date, char platform) {
+    public List<FindTopViewerRankingResDto> findTopViewerRanking(int date, char platform, long memberId) {
 
-        List<FindTopViewerRankResDtoInterface>[] res = rankingPort.findTopViewerRanking(date, platform);
+        List<FindTopViewerRankResDtoInterface>[] res = rankingPort.findTopViewerRanking(date, platform, memberId);
 
         // diff 값의 경우 O(N) 만큼 상수를 제외하지 않는다면 정확히 O(3 * MAX_RANK)만큼의 수행시간을 가짐
         // 우선 Repository에서 특정 기간의 값(res[0])과 그 전 기간의 값(res[1])을 가져옴

@@ -10,6 +10,6 @@ import java.util.List;
 public interface RankingPort {
     List<FindFollowRankingResDto> findFollowRanking(FindFollowRankingReqDto reqDto);
 
-    List<FindAvgViewerRankResDtoInterface>[] findAvgViewerRanking(int date, char platform);
-    List<FindTopViewerRankResDtoInterface>[] findTopViewerRanking(int date, char platform);
+    List<FindAvgViewerRankResDtoInterface>[] findAvgViewerRanking(int date, char platform, long memberId);
+    List<FindTopViewerRankResDtoInterface>[] findTopViewerRanking(int date, char platform, long memberId);
 }
