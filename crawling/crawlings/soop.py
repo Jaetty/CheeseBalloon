@@ -10,6 +10,7 @@ from schemas.streamer_info import StreamerInfo
 
 from datetime import datetime
 import re
+import os
 
 
 class Soop:
@@ -26,7 +27,9 @@ class Soop:
         streamer_list = []
         print("되라되라")
         try:
-            service = ChromeService(ChromeDriverManager(version='114.0.5735.90').install())
+            # 원하는 버전을 환경 변수로 설정
+            os.environ['WDM_CHROMEDRIVER_VERSION'] = '114.0.5735.90'
+            service = ChromeService(ChromeDriverManager().install())
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
             driver = webdriver.Chrome(service=service, options=chrome_options)
             print("되라되라2")
