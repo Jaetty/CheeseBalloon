@@ -26,8 +26,9 @@ class Soop:
         streamer_list = []
         print("되라되라")
         try:
+            service = ChromeService(ChromeDriverManager(version='114.0.5735.90').install())
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
-            driver = webdriver.Chrome(options=chrome_options)
+            driver = webdriver.Chrome(service=service, options=chrome_options)
             print("되라되라2")
             # 웹사이트 열기ㄴ
             driver.get('https://www.afreecatv.com/?hash=all')
