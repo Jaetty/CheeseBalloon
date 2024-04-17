@@ -1,16 +1,26 @@
 package org.greenpine.cheeseballoon.ranking.adapter.in.web;
 
 
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
-import org.greenpine.cheeseballoon.ranking.application.port.in.dto.FindFollowRankingReqDto;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankResDtoInterface;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowRankingResDto;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.message.RankingResMsg;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +35,7 @@ public class RankingController {
     @GetMapping("/follow")
     public ResponseEntity<CustomBody> test(@RequestParam int limit, int offset, int startDate, char platform){
 
-        List<FindFollowRankingResDto> result = new ArrayList<>();
+        List<FindFollowRankingResDto> ret = new ArrayList<>();
         Random random = new Random();
 
         // 테스트용 데이터 제공
@@ -57,11 +67,43 @@ public class RankingController {
                 temp.setPlatform(platform);
             }
 
-            result.add(temp);
+            ret.add(temp);
 
         }
 
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, result));
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
+    }
+
+    @GetMapping("/average")
+    public ResponseEntity<CustomBody> findAvgViewerRanking(@RequestParam
+                                                           @Range(min = 0, max = 3) int date,
+                                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                                           @AuthenticationPrincipal Long memberId){
+
+        if(memberId == null){
+            memberId = -1L;
+        }
+
+        List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0), memberId);
+
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
+    }
+
+    @GetMapping("/topview")
+    public ResponseEntity<CustomBody> findTopViewerRanking(@RequestParam
+                                                           @Range(min = 0, max = 3) int date,
+                                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                                           @AuthenticationPrincipal Long memberId){
+
+        if(memberId == null){
+            memberId = -1L;
+        }
+
+        List<FindTopViewerRankingResDto> ret = rankingUsecase.findTopViewerRanking(date, platform.charAt(0), memberId);
+
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
     }
 
 }

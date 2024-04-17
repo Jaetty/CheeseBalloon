@@ -46,6 +46,8 @@ dependencies {
 	//구글 토큰 복호화용 Jwt
 	implementation 'org.springframework.security:spring-security-oauth2-jose'
 
+	// 유효성 검사 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 
 }
