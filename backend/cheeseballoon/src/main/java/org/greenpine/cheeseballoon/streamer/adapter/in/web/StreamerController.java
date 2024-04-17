@@ -8,6 +8,7 @@ import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.application.port.out.message.StreamerResMsg;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,9 +27,13 @@ public class StreamerController {
     final private StreamerUsecase streamerUsecase;
 
     @GetMapping("")
-    public ResponseEntity<CustomBody> streamerDetail(@RequestParam Long streamerId){
+    public ResponseEntity<CustomBody> streamerDetail(@RequestParam Long streamerId, @AuthenticationPrincipal Long memberId){
 
-        FindStreamerDetailResDto ret = streamerUsecase.streamerDetail(streamerId);
+        if(memberId == null){
+            memberId = -1L;
+        }
+
+        FindStreamerDetailResDto ret = streamerUsecase.streamerDetail(streamerId, memberId);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
     }
@@ -42,9 +47,13 @@ public class StreamerController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<CustomBody> searchStreamer(@RequestParam String query){
+    public ResponseEntity<CustomBody> searchStreamer(@RequestParam String query, @AuthenticationPrincipal Long memberId){
 
-        List<FindSearchStreamerResDtoInterface> ret = streamerUsecase.searchStreamer(query);
+        if(memberId == null){
+            memberId = -1L;
+        }
+
+        List<FindSearchStreamerResDtoInterface> ret = streamerUsecase.searchStreamer(query, memberId);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
 
