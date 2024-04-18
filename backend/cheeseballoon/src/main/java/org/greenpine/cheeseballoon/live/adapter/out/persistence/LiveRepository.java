@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.live.adapter.out.persistence;
 
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankResDtoInterface;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
 import org.springframework.data.domain.Page;
@@ -83,5 +84,23 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "(SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
             "ON ranksql.streamer_id = b.streamer_id", nativeQuery = true)
     List<FindTopViewerRankResDtoInterface> findTopViewerRankingByPlatform(String beforeDay, String today, char platform, Long memberId);
+
+    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY r.follower DESC, r.name ASC) AS rank, case when b.bookmark_id IS NOT NULL then 'TRUE' ELSE 'FALSE' END AS bookmark, r.streamer_id AS streamerId, r.name, r.profile_url AS profileUrl, r.platform, r.follower\n" +
+            "FROM (SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
+            "right outer JOIN (SELECT s.streamer_id, s.name, s.profile_url, s.platform, sl.follower FROM streamers  AS s,\n" +
+            "(SELECT streamer_id, follower FROM streamer_logs WHERE reg_dt BETWEEN :beforeDay AND :today GROUP BY streamer_id ORDER BY follower DESC) AS sl\n" +
+            "WHERE sl.streamer_id = s.streamer_id LIMIT 300) AS r\n" +
+            "ON b.streamer_id = r.streamer_id\n" +
+            "ORDER BY r.follower DESC", nativeQuery = true)
+    List<FindFollowerRankResDtoInterface> findFollowerRanking(String beforeDay, String today, Long memberId);
+
+    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY r.follower DESC, r.name ASC) AS rank, case when b.bookmark_id IS NOT NULL then 'TRUE' ELSE 'FALSE' END AS bookmark, r.streamer_id AS streamerId, r.name, r.profile_url AS profileUrl, r.platform, r.follower\n" +
+            "FROM (SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
+            "right outer JOIN (SELECT s.streamer_id, s.name, s.profile_url, s.platform, sl.follower FROM streamers  AS s,\n" +
+            "(SELECT streamer_id, follower FROM streamer_logs WHERE reg_dt BETWEEN :beforeDay AND :today GROUP BY streamer_id ORDER BY follower DESC) AS sl\n" +
+            "WHERE sl.streamer_id = s.streamer_id AND s.platform = :platform LIMIT 300) AS r\n" +
+            "ON b.streamer_id = r.streamer_id\n" +
+            "ORDER BY r.follower DESC", nativeQuery = true)
+    List<FindFollowerRankResDtoInterface> findFollowerRankingByPlatform(String beforeDay, String today, char platform, Long memberId);
 
 }
