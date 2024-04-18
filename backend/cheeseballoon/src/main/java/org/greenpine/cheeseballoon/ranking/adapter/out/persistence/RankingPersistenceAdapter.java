@@ -5,7 +5,7 @@ import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.ranking.application.port.in.dto.FindFollowRankingReqDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankResDtoInterface;
-import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowRankingResDto;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.domain.DateValue;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerRepository;
@@ -22,7 +22,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     final private DateValue dateValue;
 
     @Override
-    public List<FindFollowRankingResDto> findFollowRanking(FindFollowRankingReqDto reqDto) {
+    public List<FindFollowerRankingResDto> findFollowRanking(FindFollowRankingReqDto reqDto) {
         return null;
     }
 
