@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.coyote.BadRequestException;
+import org.greenpine.cheeseballoon.global.token.JwtUtil;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.GetAccessTokenResDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.GoogleUserInfoResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.KakaoUserInfoResDto;
@@ -37,8 +39,16 @@ public class OauthService {
     @Value("${oauth2.kakao.rest-api-key}")
     private String KAKAO_RESTAPI_KEY;
 
+    private final JwtUtil jwtUtil;
 
-    public UserInfoDto getGoogleUserInfo(String accessCode) throws JsonProcessingException, BadRequestException {//
+    public GetAccessTokenResDto getNewAccessToken(Long memberId){
+        String accessToken = jwtUtil.createAccessToken(memberId);
+        return GetAccessTokenResDto.builder()
+                .accessToken(accessToken)
+                .build();
+    }
+
+    public UserInfoDto getGoogleUserInfo(String accessCode) throws JsonProcessingException, BadRequestException {
         RestTemplate restTemplate=new RestTemplate();
         Map<String, String> params = new HashMap<>();
 
@@ -51,7 +61,7 @@ public class OauthService {
         ResponseEntity<String> responseEntity=restTemplate.postForEntity(GOOGLE_TOKEN_URL, params,String.class);
 
         if(responseEntity.getStatusCode() == HttpStatus.OK){
-            System.out.println(responseEntity.getBody());
+            //System.out.println(responseEntity.getBody());
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
             String accessToken = (String) jsonMap.get("access_token");
@@ -67,19 +77,13 @@ public class OauthService {
         String apiUrl = GOOGLE_USER_API + accessToken;
         // RestTemplate 생성
         RestTemplate restTemplate = new RestTemplate();
-
-        /*정보 출력용
-         ResponseEntity<String> responseEntity2 = restTemplate.getForEntity(apiUrl, String.class);
-         String userInfo = responseEntity2.getBody();
-         System.out.println(userInfo);*/
-
         // 사용자 정보 요청 및 응답 받기
         ResponseEntity<GoogleUserInfoResDto> responseEntity = restTemplate.getForEntity(apiUrl, GoogleUserInfoResDto.class);
 
         // 응답 데이터 확인
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             GoogleUserInfoResDto googleUserInfo = responseEntity.getBody();
-            System.out.println(googleUserInfo);
+            //System.out.println(googleUserInfo);
             return UserInfoDto.builder()
                     .email(googleUserInfo.getEmail())
                     .name(googleUserInfo.getName())
@@ -118,14 +122,14 @@ public class OauthService {
                 String.class // 요청 시 반환되는 데이터 타입
         );
 
-        System.out.println(responseEntity.getBody());
+        //System.out.println(responseEntity.getBody());
         if(responseEntity.getStatusCode() == HttpStatus.OK){
             //System.out.println(responseEntity.getBody());
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
             String accessToken = (String) jsonMap.get("access_token");
             //System.out.println(accessToken);
-            requestKakaoUserInfo(accessToken);
+            return requestKakaoUserInfo(accessToken);
         }
         return null;
     }
@@ -148,10 +152,10 @@ public class OauthService {
             String responseBody = response.getBody();
             //System.out.println(responseBody);
             ObjectMapper objectMapper = new ObjectMapper();
-            KakaoUserInfoResDto kakaoUserInfo = objectMapper.readValue(response.getBody(), KakaoUserInfoResDto.class);
-            System.out.println("id: " + kakaoUserInfo.getId());
-            System.out.println("nickname: " + kakaoUserInfo.getProperties().getNickname());
-            System.out.println("Thumbnail Image: " + kakaoUserInfo.getProperties().getProfileImage());
+            KakaoUserInfoResDto kakaoUserInfo = objectMapper.readValue(responseBody, KakaoUserInfoResDto.class);
+            //System.out.println("id: " + kakaoUserInfo.getId());
+            //System.out.println("nickname: " + kakaoUserInfo.getProperties().getNickname());
+            //System.out.println("Thumbnail Image: " + kakaoUserInfo.getProperties().getProfileImage());
             return UserInfoDto.builder()
                     .profileImgUrl(kakaoUserInfo.getProperties().getProfileImage())
                     .name(kakaoUserInfo.getProperties().getNickname())
