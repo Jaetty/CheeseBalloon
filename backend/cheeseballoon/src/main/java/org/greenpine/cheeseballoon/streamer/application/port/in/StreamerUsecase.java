@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface StreamerUsecase {
 
-    List<FindSearchStreamerResDtoInterface> searchStreamer(String query);
+    List<FindSearchStreamerResDtoInterface> searchStreamer(String query, long memberId);
 
-    FindStreamerDetailResDto streamerDetail(Long streamerId);
+    FindStreamerDetailResDto streamerDetail(Long streamerId, long memberId);
 
     FindStreamerDetailLiveResDto streamerDetailLive(Long streamerId);
 

@@ -9,14 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindFollowRankingResDto {
+public class FindFollowerRankingResDto {
 
     Long streamerId;
     String name;
     int rank;
     char platform;
     String profileUrl;
-    int followCnt;
+    int follower;
+    int rankDiff;
     int diff;
     boolean bookmark;
 
