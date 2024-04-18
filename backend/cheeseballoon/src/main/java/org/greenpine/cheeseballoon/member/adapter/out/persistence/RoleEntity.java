@@ -1,9 +1,6 @@
 package org.greenpine.cheeseballoon.member.adapter.out.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,7 +16,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor
 public class RoleEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
     private String role;
 }
