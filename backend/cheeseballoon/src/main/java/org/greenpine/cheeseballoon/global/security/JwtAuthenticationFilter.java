@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             //memberId 담고 인증 부여
             AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    memberId, null, AuthorityUtils.NO_AUTHORITIES); //권한은 빈권한 부여
+                    memberId, null, AuthorityUtils.NO_AUTHORITIES); //일단은 빈권한 부여 (List<GrantedAuthority> 타입으로 부여)
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
