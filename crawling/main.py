@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from config.database import engine, Base, get_db
 from businesses.streamers import StreamerBusiness
 from businesses.crawling import CrawlingBusiness
+from schedulers.crawlers import Scheduler
 from schemas.streamers import StreamerCreate, StreamerRead
 from models.streamer_logs import StreamerLog
 from schemas.streamer_logs import StreamerLogCreate, StreamerLogRead
@@ -40,6 +41,10 @@ async def create_streamer_log(streamer_log: StreamerLogCreate, db: Session = Dep
 @app.get("/crawling")
 async def start_crawling(db: Session = Depends(get_db)):
     return await CrawlingBusiness().crawling(db=db)
+
+@app.get("/scheduler")
+async def start_scheduler_crawling(db: Session = Depends(get_db)):
+    return Scheduler().start(db=db)
 
 @app.get("/soop")
 async def start_afreeca_crawling():
