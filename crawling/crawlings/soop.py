@@ -23,7 +23,7 @@ class Soop:
         chrome_options.add_argument("headless")  # 헤드리스 모드 활성화
         #chrome_options.add_argument("--disable-gpu")  # GPU 가속 비활성화 (일부 시스템에서 필요)
         chrome_options.add_argument("--no-sandbox")  # 샌드박스 비활성화
-        #chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 방지
+        chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 방지
         chrome_options.add_argument("--mute-audio")
 
         # # 시청자 수를 저장할 리스트 초기화
@@ -34,6 +34,7 @@ class Soop:
             service = ChromeService(executable_path=chrome_driver_path)
             # Selenium WebDriver를 초기화하고 ChromeDriverManager를 통해 ChromeDriver 설치
             driver = webdriver.Chrome(service=service, options=chrome_options)
+            # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
             # print("되라되라2")
             # 웹사이트 열기ㄴ
             driver.get('https://www.afreecatv.com/?hash=all')
