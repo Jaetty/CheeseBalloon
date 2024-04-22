@@ -5,7 +5,8 @@ import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.ranking.application.port.in.dto.FindFollowRankingReqDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankResDtoInterface;
-import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowRankingResDto;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankResDtoInterface;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.domain.DateValue;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerRepository;
@@ -20,11 +21,6 @@ public class RankingPersistenceAdapter implements RankingPort {
     final private StreamerRepository streamerRepository;
     final private LiveRepository liveRepository;
     final private DateValue dateValue;
-
-    @Override
-    public List<FindFollowRankingResDto> findFollowRanking(FindFollowRankingReqDto reqDto) {
-        return null;
-    }
 
     // 평균 시청자 수 db 값 가져오기
     @Override
@@ -63,6 +59,26 @@ public class RankingPersistenceAdapter implements RankingPort {
         else{
             ret[0] = liveRepository.findTopViewerRankingByPlatform(dates[0], dates[1], platform, memberId);
             ret[1] = liveRepository.findTopViewerRankingByPlatform(dates[2], dates[3], platform, memberId);
+        }
+
+        return ret;
+    }
+
+    @Override
+    public List<FindFollowerRankResDtoInterface>[] findFollowerRanking(int date, char platform, long memberId) {
+
+        String[] dates = dateValue.getSpecificPeriod(date);
+
+        List<FindFollowerRankResDtoInterface>[] ret = new List[2];
+
+        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
+        if(platform=='T'){
+            ret[0] = liveRepository.findFollowerRanking(dates[0], dates[1], memberId);
+            ret[1] = liveRepository.findFollowerRanking(dates[2], dates[3], memberId);
+        }
+        else{
+            ret[0] = liveRepository.findFollowerRankingByPlatform(dates[0], dates[1], platform, memberId);
+            ret[1] = liveRepository.findFollowerRankingByPlatform(dates[2], dates[3], platform, memberId);
         }
 
         return ret;
