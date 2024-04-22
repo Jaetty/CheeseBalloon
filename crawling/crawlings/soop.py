@@ -15,6 +15,7 @@ import re
 
 
 class Soop:
+    @property
     def soop(self):
         # ChromeDriver 경로 설정
         chrome_driver_path = '/usr/bin/chromedriver'  # ChromeDriver가 설치된 경로
@@ -61,19 +62,19 @@ class Soop:
             # # 각 파트너 항목에서 시청자 수 추출
             streamer_items = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
             index = 0
-            for item in streamer_items:
+            for item in streamer_items[0:1]:
                 index += 1
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
                 viewer_count = item.find_element(By.XPATH, ".//div[2]/div[1]/span/em")
                 count = 0
                 if viewer_count:
                     count = re.sub(r'\D', '', viewer_count.text.strip())
-                    print(str(index) + " " + count)
+                    # print(str(index) + " " + count)
                     if int(count) < 50:
                         break
 
                 # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
-                thumbnail = driver.find_element(By.CLASS_NAME, "thumbs-box")
+                thumbnail = item.find_element(By.CLASS_NAME, "thumbs-box")
 
                 live_url = thumbnail.find_element(By.TAG_NAME, "img")
                 streamer_thumbnail = live_url.get_attribute('src')
@@ -139,23 +140,33 @@ class Soop:
                 streamer_title = driver.find_element(By.CLASS_NAME, 'broadcast_title')
 
                 view = driver.find_element(By.CLASS_NAME, "detail_view")
-
                 detail_view = view.find_elements(By.TAG_NAME, "li")
+                # JavaScript 스크립트를 실행
+                script = """
+                var list = document.querySelector('.detail_view');  // 'detail_view' 클래스를 가진 첫 번째 ul 요소를 선택
+                var listItem = list.querySelectorAll('li')[1];      // 두 번째 li 요소를 선택 (0부터 시작하는 인덱스)
+                var span = listItem.querySelector('span');          // li 요소 내의 span 태그를 선택
+                span.style.display = 'block';                       // span의 display 속성을 'block'으로 설정
+                """
+                driver.execute_script(script)
+                print(detail_view[1].find_element(By.TAG_NAME, "span").text.strip())
+                # for v in detail_view:
+                #     print(v.find_element(By.TAG_NAME, "strong").text)
 
-                # streamer_start = detail_view[0].find_element(By.TAG_NAME, "span").text.strip()
-                #
+                streamer_start = detail_view[0].find_element(By.TAG_NAME, "span").text.strip()
+                print(streamer_start)
                 # if streamer_start:
                 #     start_dt = datetime.strptime(streamer_start, '%Y-%m-%d %H:%M:%S')
                 # else:
                 #     start_dt = datetime.today()
 
                 category = None
-                try:
-
-                    category = detail_view[1].find_element(By.TAG_NAME, "span").text.strip()
-                except NoSuchElementException:
-                    print("없다!")
-
+                # try:
+                    # category = detail_view[1].find_element(By.TAG_NAME, "span").text.strip()
+                    # print(category)
+                # except NoSuchElementException:
+                #     print("없다!")
+                print(category)
                 streamer_profile = driver.find_element(By.XPATH,
                                                        ".//*[@id='player_area']/div[2]/div[1]/a/img").get_attribute(
                     'src')
@@ -166,7 +177,7 @@ class Soop:
                 # print(streamer_channel)
                 # print(href_value)
                 # print(streamer_live_id)
-                # print(streamer_thumbnail)
+                print(streamer_thumbnail)
                 # print(category)
                 # print(streamer_title.text.strip())
                 # print(count)

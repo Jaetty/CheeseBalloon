@@ -63,6 +63,8 @@ class Chzzk:
         item_list = live_list['content']['data']
 
         for new_item in item_list:
+            if new_item['liveImageUrl'] is None:
+                continue
             streamer_info = StreamerInfo(
                 origin_id=str(new_item['channel']['channelId']),
                 name=str(new_item['channel']['channelName']),
@@ -87,7 +89,8 @@ class Chzzk:
             live_id = new_list['content']['page']['next']['liveId']
             streamer_item_list = new_list['content']['data']
             for new_item in streamer_item_list:
-
+                if new_item['liveImageUrl'] is None:
+                    continue
                 streamer_info = StreamerInfo(
                     origin_id=str(new_item['channel']['channelId']),
                     name=str(new_item['channel']['channelName']),
@@ -104,6 +107,7 @@ class Chzzk:
                 streamers_dict[streamer_info.live_origin_id] = streamer_info
 
         streamers_list = list(streamers_dict.values())
+        # print(tabulate(streamers_list, headers=["origin_id", "name", "profile_url", "channel_url", "platform", "stream_url", "live_origin_id", "thumbnail_url", "category", "title", "viewer_cnt"]))
         # print(streamers_list)
         return streamers_list
 
