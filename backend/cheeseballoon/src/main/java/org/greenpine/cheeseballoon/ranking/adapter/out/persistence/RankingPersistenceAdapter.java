@@ -68,7 +68,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     @Override
     public List<FindFollowerRankResDtoInterface>[] findFollowerRanking(int date, char platform, long memberId) {
 
-        LocalDateTime[] dates = dateValue.getPeriod(date);
+        LocalDateTime[] dates = dateValue.getSpecificPeriod(date);
 
         List<FindFollowerRankResDtoInterface>[] ret = new List[2];
 
