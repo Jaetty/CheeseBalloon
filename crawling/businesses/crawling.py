@@ -26,7 +26,7 @@ class CrawlingBusiness:
         print(datetime.datetime.now())
         try:
 
-            streamer_list = Soop().soop()
+            streamer_list = Soop().soop
             streamer_list.extend(await Chzzk().chzzk())
 
             # streamer_list = await Chzzk().chzzk()

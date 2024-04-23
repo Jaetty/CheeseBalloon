@@ -48,7 +48,7 @@ async def start_scheduler_crawling(db: Session = Depends(get_db)):
 
 @app.get("/soop")
 async def start_afreeca_crawling():
-    Soop().soop()
+    Soop().soop
     return {"soop":"good"}
 
 @app.get("/chzzk")
