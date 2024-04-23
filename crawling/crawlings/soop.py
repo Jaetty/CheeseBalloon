@@ -18,8 +18,9 @@ class Soop:
     @property
     def soop(self):
         # ChromeDriver 경로 설정
-        chrome_driver_path = '/usr/bin/chromedriver'  # ChromeDriver가 설치된 경로
+        #chrome_driver_path = '/usr/bin/chromedriver'  # ChromeDriver가 설치된 경로
         # Chrome 옵션 설정
+        print("아프리카 크롤링을 시작합니다.")
         chrome_options = Options()
         chrome_options.add_argument("headless")  # 헤드리스 모드 활성화
         chrome_options.add_argument("--disable-gpu")  # GPU 가속 비활성화 (일부 시스템에서 필요)
@@ -73,14 +74,31 @@ class Soop:
                     if int(count) < 50:
                         break
 
-                # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
-                thumbnail = item.find_element(By.CLASS_NAME, "thumbs-box")
+                # 썸네일 추출
+                streamer_thumbnail = None
+                try:
+                    thumbnail = item.find_element(By.CLASS_NAME, "thumbs-box")
+                    live_url = thumbnail.find_element(By.TAG_NAME, "img")
+                    streamer_thumbnail = live_url.get_attribute('src')
 
-                live_url = thumbnail.find_element(By.TAG_NAME, "img")
-                streamer_thumbnail = live_url.get_attribute('src')
+                except NoSuchElementException:
+                    print("썸네일 없다!")
+                # thumbnail = item.find_element(By.CLASS_NAME, "thumbs-box")
+                #
+                # live_url = thumbnail.find_element(By.TAG_NAME, "img")
+                # streamer_thumbnail = live_url.get_attribute('src')
 
-                streamer_url = item.find_element(By.CLASS_NAME, "thumb")
-                streamer_channel = streamer_url.get_attribute('href')
+                # 방송인 채널 추출
+                streamer_channel = None
+                try:
+                    streamer_url = item.find_element(By.CLASS_NAME, "thumb")
+                    streamer_channel = streamer_url.get_attribute('href')
+
+                except NoSuchElementException:
+                    print("방송인 채널 url 없다!!")
+
+                # streamer_url = item.find_element(By.CLASS_NAME, "thumb")
+                # streamer_channel = streamer_url.get_attribute('href')
 
                 click_streamer = item.find_element(By.CLASS_NAME, "thumbs-box")
 
@@ -189,4 +207,5 @@ class Soop:
             print(e)
 
         # print(streamer_list)
+        print("아프리카 크롤링을 끝냅니다.")
         return streamer_list

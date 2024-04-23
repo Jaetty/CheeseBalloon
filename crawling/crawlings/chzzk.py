@@ -53,7 +53,7 @@ class Chzzk:
             return res.json()
 
     async def chzzk(self):
-
+        print("치지직 크롤링을 시작합니다.")
         # StreamerInfo 객체 저장 딕셔너리 생성
         streamers_dict = {}
 
@@ -109,6 +109,7 @@ class Chzzk:
         streamers_list = list(streamers_dict.values())
         # print(tabulate(streamers_list, headers=["origin_id", "name", "profile_url", "channel_url", "platform", "stream_url", "live_origin_id", "thumbnail_url", "category", "title", "viewer_cnt"]))
         # print(streamers_list)
+        print("치지직 크롤링을 끝냅니다.")
         return streamers_list
 
     def chzzk_crawling(self, db: Session):
