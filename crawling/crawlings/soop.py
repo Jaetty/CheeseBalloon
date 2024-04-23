@@ -62,7 +62,7 @@ class Soop:
             # # 각 파트너 항목에서 시청자 수 추출
             streamer_items = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
             index = 0
-            for item in streamer_items[0:1]:
+            for item in streamer_items:
                 index += 1
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
                 viewer_count = item.find_element(By.XPATH, ".//div[2]/div[1]/span/em")
