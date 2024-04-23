@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -14,5 +15,7 @@ public interface StreamerLogRepository extends JpaRepository<StreamerLogEntity,L
             "AND (sl.streamer.streamerId, sl.regDt) IN " +
             "(SELECT sl2.streamer.streamerId, MAX(sl2.regDt) FROM StreamerLogEntity sl2 GROUP BY sl2.streamer.streamerId)")
     List<StreamerLogEntity> findStreamerLogEntitiesByNameSearch(List<Long> streamers);
+
+//    List<StreamerLogEntity> findStreamerLogEntitiesByRegDtBetweenAndStreamerOOrderByRegDtAsc(LocalDateTime start, LocalDateTime end, StreamerEntity streamer);
 
 }
