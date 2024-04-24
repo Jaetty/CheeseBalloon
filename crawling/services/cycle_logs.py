@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-
+import datetime
 from models.cycle_logs import CycleLog
 from schemas.cycle_logs import CycleLogCreate
 
@@ -10,6 +10,7 @@ class CycleLogService:
         db_cycle_log = CycleLog(
             afreeca_viewer_cnt=cycle_log.afreeca_viewer_cnt,
             chzzk_viewer_cnt=cycle_log.chzzk_viewer_cnt,
+            cycle_dt=datetime.datetime.now()
         )
         db.add(db_cycle_log)
         db.commit()
