@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
+import org.greenpine.cheeseballoon.member.application.port.in.AuthUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.MemberUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.ChangeNicknameReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.GetAccessTokenResDto;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final OauthService oauthService;
     private final MemberUsecase memberUsecase;
+    private final AuthUsecase authUsecase;
     @PostMapping("/login")
     public ResponseEntity<CustomBody> login(){
         log.info("login - Call");
@@ -43,7 +45,7 @@ public class MemberController {
         System.out.println(code);
         try{
             UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
-            LoginResDto resDto = memberUsecase.login(userInfoDto);
+            LoginResDto resDto = authUsecase.login(userInfoDto);
             return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
@@ -60,7 +62,7 @@ public class MemberController {
         System.out.println(code);
         try {
             UserInfoDto userInfoDto = oauthService.getKakaoUserInfo(code);
-            LoginResDto resDto = memberUsecase.login(userInfoDto);
+            LoginResDto resDto = authUsecase.login(userInfoDto);
             return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));

@@ -6,6 +6,5 @@ import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.springframework.dao.DuplicateKeyException;
 
 public interface MemberUsecase {
-    LoginResDto login(UserInfoDto dto);
     void changeNickname(Long memberId, ChangeNicknameReqDto dto);
 }

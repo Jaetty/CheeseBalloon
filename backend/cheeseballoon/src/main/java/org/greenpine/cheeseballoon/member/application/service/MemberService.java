@@ -3,6 +3,7 @@ package org.greenpine.cheeseballoon.member.application.service;
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.global.token.JwtUtil;
 import org.greenpine.cheeseballoon.member.adapter.out.persistence.MemberEntity;
+import org.greenpine.cheeseballoon.member.application.port.in.AuthUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.MemberUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.BookmarkUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.ViewLogUsecase;
@@ -19,7 +20,7 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService implements MemberUsecase, BookmarkUsecase, ViewLogUsecase {
+public class MemberService implements MemberUsecase, AuthUsecase {
     private final MemberPort memberPort;
     private final JwtUtil jwtUtil;
     @Override
