@@ -10,6 +10,10 @@ import java.util.List;
 @Repository
 public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
 
+
+    // 스트리머 PK 값으로 조회
+    StreamerEntity findByStreamerId(Long id);
+
     // 스트리머 이름으로 스트리머 정보 가져오기 -> isLive도 가져와야해서 join이 있음
     @Query(value = "SELECT case when b.bookmark_id IS NOT NULL then 'true' ELSE 'false' END AS bookmark, streamer.streamer_id AS streamerId, streamer.name, streamer.isLive, streamer.profile_url AS profileUrl, streamer.channel_url AS channelUrl, streamer.follower, streamer.platform  FROM\n" +
             "(SELECT * FROM bookmarks WHERE member_id = :memberId) AS b right outer JOIN\n" +
@@ -21,9 +25,6 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "WHERE NAME LIKE CONCAT('%', :query, '%') AND li.streamer_id = s.streamer_id) AS streamer\n" +
             "ON streamer.streamer_id = b.streamer_id", nativeQuery = true)
     List<FindSearchStreamerResDtoInterface> searchStreamerByName(String query, Long memberId);
-
-    // 스트리머 아이디로 스트리머 정보 가져오기
-    StreamerEntity findByStreamerId(Long id);
 
     // 스트리머 정보로 랭킹 값 가져오기
     @Query(value = "SELECT ranksql.rank\n" +
@@ -37,8 +38,5 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "LIMIT 300) AS ranksql\n" +
             "WHERE ranksql.streamer_id = :streamerId", nativeQuery = true)
     Integer getStreamerRank(Long streamerId, String beforeDay, String today);
-
-
-
 
 }
