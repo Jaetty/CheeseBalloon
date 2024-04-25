@@ -1,15 +1,15 @@
 package org.greenpine.cheeseballoon.streamer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDto;
+import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerLogEntity;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailLiveResDto;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,6 +49,20 @@ public class StreamerService implements StreamerUsecase {
 
 
         return result;
+    }
+
+    @Override
+    public List<FindStreamerFollowDto> streamerDetailFollower(Long streamerId, int date) {
+
+        List<StreamerLogEntity> list = streamerPort.streamerFollowerDetail(streamerId, date);
+
+        List<FindStreamerFollowDto> ret = new ArrayList<>();
+
+        for(int i=0; i<list.size(); i++){
+            ret.add(new FindStreamerFollowDto(list.get(i).getRegDt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), list.get(i).getFollower()));
+        }
+
+        return ret;
     }
 
 }

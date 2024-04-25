@@ -16,6 +16,6 @@ public interface StreamerLogRepository extends JpaRepository<StreamerLogEntity,L
             "(SELECT sl2.streamer.streamerId, MAX(sl2.regDt) FROM StreamerLogEntity sl2 GROUP BY sl2.streamer.streamerId)")
     List<StreamerLogEntity> findStreamerLogEntitiesByNameSearch(List<Long> streamers);
 
-//    List<StreamerLogEntity> findStreamerLogEntitiesByRegDtBetweenAndStreamerOOrderByRegDtAsc(LocalDateTime start, LocalDateTime end, StreamerEntity streamer);
+    List<StreamerLogEntity> findStreamerLogEntitiesByStreamerAndRegDtBetween(StreamerEntity streamer, LocalDateTime start, LocalDateTime end);
 
 }
