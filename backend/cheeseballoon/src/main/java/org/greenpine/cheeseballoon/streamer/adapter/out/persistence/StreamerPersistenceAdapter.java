@@ -114,17 +114,14 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     }
 
     @Override
-    public StreamerLogEntity streamerFollowerDetail(Long streamerId, int date) {
+    public List<StreamerLogEntity> streamerFollowerDetail(Long streamerId, int date) {
 
         StreamerEntity streamerEntity = streamerRepository.findByStreamerId(streamerId);
-
         LocalDateTime[] dates = dateValue.getPeriod(date);
 
+        List<StreamerLogEntity> ret = streamerLogRepository.findStreamerLogEntitiesByStreamerAndRegDtBetween(streamerEntity, dates[0], dates[1]);
 
-//        streamerLogRepository.findStreamerLogEntitiesByRegDtBetweenAndStreamerOOrderByRegDtAsc(,streamerEntity);
-
-
-        return null;
+        return ret;
     }
 
 
