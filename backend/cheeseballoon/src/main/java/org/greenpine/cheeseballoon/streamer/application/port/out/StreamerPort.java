@@ -15,6 +15,6 @@ public interface StreamerPort {
 
     StreamerLiveDomain streamerDetailLive(Long streamerId);
 
-    StreamerLogEntity streamerFollowerDetail(Long streamerId, int date);
+    List<StreamerLogEntity> streamerFollowerDetail(Long streamerId, int date);
 
 }

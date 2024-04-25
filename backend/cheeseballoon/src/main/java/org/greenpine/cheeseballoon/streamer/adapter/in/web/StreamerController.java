@@ -130,6 +130,7 @@ public class StreamerController {
     @GetMapping("/follow")
     public ResponseEntity<CustomBody> streamerFollowDetail(@RequestParam Long streamerId, int date){
 
+//        List<FindStreamerFollowDto> ret = streamerUsecase.streamerDetailFollower(streamerId, date);
 
         List<FindStreamerFollowDto> ret = new ArrayList<>();
         String val = "2024-03-1";
