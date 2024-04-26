@@ -3,6 +3,8 @@ package org.greenpine.cheeseballoon.member;
 import io.jsonwebtoken.Claims;
 import org.aspectj.lang.annotation.Before;
 import org.greenpine.cheeseballoon.global.token.JwtUtil;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.FindBookmarkReqDto;
+import org.greenpine.cheeseballoon.member.application.port.out.BookmarkPort;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MemberTests {
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private BookmarkPort bookmarkPort;
 
     @Test
     void checkToken() {
@@ -26,4 +31,6 @@ public class MemberTests {
         System.out.println("memberId : "+accessMemberId +" "+ refreshMemberId);
         assertEquals(accessMemberId, refreshMemberId);
     }
+
+
 }

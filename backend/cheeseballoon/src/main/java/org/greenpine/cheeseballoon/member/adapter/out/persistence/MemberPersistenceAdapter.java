@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberPersistenceAdapter implements MemberPort, BookmarkPort, ViewLogPort {
+public class MemberPersistenceAdapter implements MemberPort {
     private final MemberRepository memberRepository;
     @Override
     public MemberEntity findMember(UserInfoDto dto) {

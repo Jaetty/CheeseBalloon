@@ -27,4 +27,6 @@ public class BookmarkEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "streamer_id")
     private StreamerEntity streamer;
+
+    private Integer follower;
 }
