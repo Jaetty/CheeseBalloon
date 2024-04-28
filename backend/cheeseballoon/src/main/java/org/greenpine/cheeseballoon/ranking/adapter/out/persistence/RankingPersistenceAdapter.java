@@ -12,6 +12,7 @@ import org.greenpine.cheeseballoon.ranking.domain.DateValue;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -26,7 +27,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     @Override
     public List<FindAvgViewerRankResDtoInterface>[] findAvgViewerRanking(int date, char platform, long memberId) {
 
-        String[] dates = dateValue.getPeriod(date);
+        LocalDateTime[] dates = dateValue.getPeriod(date);
 
         List<FindAvgViewerRankResDtoInterface>[] ret = new List[2];
 
@@ -47,7 +48,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     @Override
     public List<FindTopViewerRankResDtoInterface>[] findTopViewerRanking(int date, char platform, long memberId) {
 
-        String[] dates = dateValue.getPeriod(date);
+        LocalDateTime[] dates = dateValue.getPeriod(date);
 
         List<FindTopViewerRankResDtoInterface>[] ret = new List[2];
 
@@ -67,7 +68,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     @Override
     public List<FindFollowerRankResDtoInterface>[] findFollowerRanking(int date, char platform, long memberId) {
 
-        String[] dates = dateValue.getSpecificPeriod(date);
+        LocalDateTime[] dates = dateValue.getSpecificPeriod(date);
 
         List<FindFollowerRankResDtoInterface>[] ret = new List[2];
 

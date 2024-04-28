@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 // 나중에 로그인 했을 때 member_id값을 토큰에서 가져와서 member_id 값에 맞게 조회하게 만들어야함.
@@ -35,7 +36,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "LEFT OUTER JOIN\n" +
             "(SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
             "ON ranksql.streamer_id = b.streamer_id", nativeQuery = true)
-    List<FindAvgViewerRankResDtoInterface> findAllAvgViewerRanking(String beforeDay, String today, Long memberId);
+    List<FindAvgViewerRankResDtoInterface> findAllAvgViewerRanking(LocalDateTime beforeDay, LocalDateTime today, Long memberId);
 
     // 특정 플랫폼에서 시청자 수 기준으로 가져오는 sql
     @Query(value = "SELECT ranksql.rank AS rank, ranksql.streamer_id AS streamerId, ranksql.name, ranksql.platform, ranksql.profile_url AS profileUrl, ranksql.viewer_cnt AS averageViewer, case when b.bookmark_id > 0 then 'TRUE' else 'FALSE' END AS bookmark\n" +
@@ -51,7 +52,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "LEFT OUTER JOIN\n" +
             "(SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
             "ON ranksql.streamer_id = b.streamer_id", nativeQuery = true)
-    List<FindAvgViewerRankResDtoInterface> findAvgViewerRankingByPlatform(String beforeDay, String today, char platform, Long memberId);
+    List<FindAvgViewerRankResDtoInterface> findAvgViewerRankingByPlatform(LocalDateTime beforeDay, LocalDateTime today, char platform, Long memberId);
 
     // 모든 플랫폼에서 가장 많은 시청자 수 순위로 가져오기
     @Query(value = "SELECT ranksql.rank AS rank, ranksql.streamer_id AS streamerId, ranksql.name, ranksql.platform, ranksql.profile_url AS profileUrl, ranksql.viewer_cnt AS topViewer, case when b.bookmark_id > 0 then 'TRUE' else 'FALSE' END AS bookmark\n" +
@@ -67,7 +68,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "LEFT OUTER JOIN\n" +
             "(SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
             "ON ranksql.streamer_id = b.streamer_id", nativeQuery = true)
-    List<FindTopViewerRankResDtoInterface> findAllTopViewerRanking(String beforeDay, String today, Long memberId);
+    List<FindTopViewerRankResDtoInterface> findAllTopViewerRanking(LocalDateTime beforeDay, LocalDateTime today, Long memberId);
 
     // 특정 플랫폼에서 가장 많은 시청자 수 기준으로 가져오는 sql
     @Query(value = "SELECT ranksql.rank AS rank, ranksql.streamer_id AS streamerId, ranksql.name, ranksql.platform, ranksql.profile_url AS profileUrl, ranksql.viewer_cnt AS topViewer, case when b.bookmark_id > 0 then 'TRUE' else 'FALSE' END AS bookmark\n" +
@@ -83,7 +84,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "LEFT OUTER JOIN\n" +
             "(SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
             "ON ranksql.streamer_id = b.streamer_id", nativeQuery = true)
-    List<FindTopViewerRankResDtoInterface> findTopViewerRankingByPlatform(String beforeDay, String today, char platform, Long memberId);
+    List<FindTopViewerRankResDtoInterface> findTopViewerRankingByPlatform(LocalDateTime beforeDay, LocalDateTime today, char platform, Long memberId);
 
     @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY r.follower DESC, r.name ASC) AS rank, case when b.bookmark_id IS NOT NULL then 'TRUE' ELSE 'FALSE' END AS bookmark, r.streamer_id AS streamerId, r.name, r.profile_url AS profileUrl, r.platform, r.follower\n" +
             "FROM (SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
@@ -92,7 +93,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "WHERE sl.streamer_id = s.streamer_id LIMIT 300) AS r\n" +
             "ON b.streamer_id = r.streamer_id\n" +
             "ORDER BY r.follower DESC", nativeQuery = true)
-    List<FindFollowerRankResDtoInterface> findFollowerRanking(String beforeDay, String today, Long memberId);
+    List<FindFollowerRankResDtoInterface> findFollowerRanking(LocalDateTime beforeDay, LocalDateTime today, Long memberId);
 
     @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY r.follower DESC, r.name ASC) AS rank, case when b.bookmark_id IS NOT NULL then 'TRUE' ELSE 'FALSE' END AS bookmark, r.streamer_id AS streamerId, r.name, r.profile_url AS profileUrl, r.platform, r.follower\n" +
             "FROM (SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
@@ -101,6 +102,6 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
             "WHERE sl.streamer_id = s.streamer_id AND s.platform = :platform LIMIT 300) AS r\n" +
             "ON b.streamer_id = r.streamer_id\n" +
             "ORDER BY r.follower DESC", nativeQuery = true)
-    List<FindFollowerRankResDtoInterface> findFollowerRankingByPlatform(String beforeDay, String today, char platform, Long memberId);
+    List<FindFollowerRankResDtoInterface> findFollowerRankingByPlatform(LocalDateTime beforeDay, LocalDateTime today, char platform, Long memberId);
 
 }

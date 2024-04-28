@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class SearchLivesResDto {
     Long streamId;
     Long liveId;
+    Long liveLogId;
     String name;
     String title;
     String thumbnailUrl;
