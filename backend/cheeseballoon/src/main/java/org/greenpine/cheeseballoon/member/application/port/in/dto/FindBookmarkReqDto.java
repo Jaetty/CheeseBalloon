@@ -11,6 +11,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FindBookmarkReqDto {
     private Long memberId;
-    private int limit;
-    private int offset;
 }

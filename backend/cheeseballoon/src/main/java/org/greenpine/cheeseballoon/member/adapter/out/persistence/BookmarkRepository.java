@@ -27,7 +27,9 @@ public interface BookmarkRepository  extends JpaRepository<BookmarkEntity,Long> 
             "ON streamers.streamer_id = max_live.streamer_id "+
             "LEFT JOIN lives ON lives.live_id = max_live.max_live_id "
             , nativeQuery = true)
-    public List<BookmarkWithFollower> findAllByMemberId(Long memberId);
+    List<BookmarkWithFollower> findAllByMemberId(Long memberId);
 
-    public BookmarkEntity findByMemberAndStreamer(MemberEntity member, StreamerEntity streamer);
+    BookmarkEntity findByMemberAndStreamer(MemberEntity member, StreamerEntity streamer);
+
+    int deleteByBookmarkIdAndMember(Long bookmarkId, MemberEntity member);
 }

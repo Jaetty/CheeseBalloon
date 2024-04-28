@@ -7,10 +7,10 @@ import org.apache.coyote.BadRequestException;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.member.application.port.in.AuthUsecase;
+import org.greenpine.cheeseballoon.member.application.port.in.BookmarkUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.MemberUsecase;
-import org.greenpine.cheeseballoon.member.application.port.in.dto.ChangeNicknameReqDto;
-import org.greenpine.cheeseballoon.member.application.port.in.dto.GetAccessTokenResDto;
-import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.*;
+import org.greenpine.cheeseballoon.member.application.port.out.dto.FindBookmarkResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.message.MemberResMsg;
 import org.greenpine.cheeseballoon.member.application.service.OauthService;
@@ -18,6 +18,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,6 +29,8 @@ public class MemberController {
     private final OauthService oauthService;
     private final MemberUsecase memberUsecase;
     private final AuthUsecase authUsecase;
+    private final BookmarkUsecase bookmarkUsecase;
+
     @PostMapping("/login")
     public ResponseEntity<CustomBody> login(){
         log.info("login - Call");
@@ -88,6 +92,33 @@ public class MemberController {
     public ResponseEntity<CustomBody> loginTest(@AuthenticationPrincipal Long memberId){
         log.info("loginTest - Call " + memberId);
 
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+    }
+
+    @GetMapping("/bookmark")
+    public ResponseEntity<CustomBody> findBookmark(@AuthenticationPrincipal Long memberId){
+        log.info("findBookmark - Call " + memberId);
+        List<FindBookmarkResDto> res = bookmarkUsecase.findBookmark(
+                FindBookmarkReqDto.builder()
+                .memberId(memberId)
+                .build()
+        );
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, res));
+    }
+
+    @PostMapping("/bookmark")
+    public ResponseEntity<CustomBody> addBookmark(@AuthenticationPrincipal Long memberId, @RequestBody AddBookmarkReqDto reqDto){
+        log.info("addBookmark - Call " + memberId);
+        reqDto.setMemberId(memberId);
+        bookmarkUsecase.addBookmark(reqDto);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+    }
+
+    @DeleteMapping("/bookmark")
+    public ResponseEntity<CustomBody> deleteBookmark(@AuthenticationPrincipal Long memberId, @RequestBody DeleteBookmarkReqDto reqDto){
+        log.info("deleteBookmark - Call " + memberId);
+        reqDto.setMemberId(memberId);
+        bookmarkUsecase.deleteBookmark(reqDto);
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
     }
 }

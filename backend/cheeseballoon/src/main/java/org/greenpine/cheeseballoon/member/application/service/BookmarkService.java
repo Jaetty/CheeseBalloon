@@ -22,8 +22,9 @@ public class BookmarkService implements BookmarkUsecase {
     }
 
     @Override
+    @Transactional
     public void deleteBookmark(DeleteBookmarkReqDto reqDto) {
-
+        bookmarkPort.deleteBookmark(reqDto);
     }
 
     @Override
