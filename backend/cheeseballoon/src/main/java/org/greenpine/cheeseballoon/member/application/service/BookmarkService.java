@@ -8,6 +8,7 @@ import org.greenpine.cheeseballoon.member.application.port.in.dto.FindBookmarkRe
 import org.greenpine.cheeseballoon.member.application.port.out.BookmarkPort;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.FindBookmarkResDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,8 +18,7 @@ public class BookmarkService implements BookmarkUsecase {
     private final BookmarkPort bookmarkPort;
     @Override
     public List<FindBookmarkResDto> findBookmark(FindBookmarkReqDto reqDto) {
-
-        return null;
+        return bookmarkPort.findBookmark(reqDto);
     }
 
     @Override
@@ -27,6 +27,7 @@ public class BookmarkService implements BookmarkUsecase {
     }
 
     @Override
+    @Transactional
     public void addBookmark(AddBookmarkReqDto reqDto) {
         bookmarkPort.addBookmark(reqDto);
     }

@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.member;
 
 import org.greenpine.cheeseballoon.member.application.port.in.dto.AddBookmarkReqDto;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.FindBookmarkReqDto;
 import org.greenpine.cheeseballoon.member.application.service.BookmarkService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,11 @@ public class BookmarkTests {
                 .streamerId(1L)
                 .build();
         bookmarkService.addBookmark(reqDto);
+    }
+
+    @Test
+    void findTest(){
+
+        System.out.println(bookmarkService.findBookmark(FindBookmarkReqDto.builder().memberId(1L).build()));
     }
 }

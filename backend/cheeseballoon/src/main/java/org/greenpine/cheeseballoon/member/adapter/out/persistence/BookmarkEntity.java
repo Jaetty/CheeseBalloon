@@ -1,5 +1,6 @@
 package org.greenpine.cheeseballoon.member.adapter.out.persistence;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
@@ -28,5 +29,4 @@ public class BookmarkEntity {
     @JoinColumn(name = "streamer_id")
     private StreamerEntity streamer;
 
-    private Integer follower;
 }
