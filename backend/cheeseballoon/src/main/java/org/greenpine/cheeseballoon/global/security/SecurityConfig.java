@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.global.token.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -38,11 +40,18 @@ public class SecurityConfig{
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize
                 //.requestMatchers().permitAll()
-                .requestMatchers("/member/login/*").permitAll()
+                .requestMatchers("/member/login/**").permitAll()
                 //.requestMatchers("/member/login/test").hasRole("admin") //role 체크
-                //모든 경로에 대한 인증처리는 Pass
-                .anyRequest().permitAll()
-        );
+                .anyRequest().permitAll() //모든 경로에 대한 인증처리는 Pass
+                //.anyRequest().authenticated() // 그 외의 요청은 모두 인증이 필요함
+
+        ).exceptionHandling(exceptionHandling -> exceptionHandling //인증안된 경우 응답 설정
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
+                )
+        )
+        ;
+
+
         return http.build();
     }
 }
