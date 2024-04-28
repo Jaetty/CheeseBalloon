@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Repository
 @RequiredArgsConstructor
 public class BookmarkPersistenceAdapter implements BookmarkPort {
@@ -20,18 +21,18 @@ public class BookmarkPersistenceAdapter implements BookmarkPort {
 
     @Override
     public List<FindBookmarkResDto> findBookmark(FindBookmarkReqDto reqDto) {
-//        MemberEntity member = MemberEntity.builder()
-//                .memberId(reqDto.getMemberId())
-//                .build();
-        //List<BookmarkEntity> bookmarkEntities = bookmarkRepository.findAllByMemberId(reqDto.getMemberId());
-//        List<FindBookmarkResDto> res = bookmarkEntities.stream()
-//                .map(entity -> FindBookmarkResDto.builder()
-//                        .bookmarkId(entity.getBookmarkId())
-//                        .flatform(entity.getStreamer().getPlatform())
-//                        .followerCnt(entity.getStreamer().)
-//                        .build())
-//                .collect(Collectors.toList());
-        return null;
+        List<BookmarkWithFollower> bookmarks = bookmarkRepository.findAllByMemberId(reqDto.getMemberId());
+        List<FindBookmarkResDto> res = bookmarks.stream().map(b -> FindBookmarkResDto.builder()
+                .bookmarkId(b.getBookmark_id())
+                .streamerId(b.getStreamer_id())
+                .name(b.getName())
+                .profileUrl(b.getProfile_img_url())
+                .followerCnt(b.getFollower())
+                .isLive(b.getIs_live())
+                .platform(b.getPlatform())
+                .build()
+        ).toList();
+        return res;
     }
 
     @Override
@@ -41,9 +42,15 @@ public class BookmarkPersistenceAdapter implements BookmarkPort {
 
     @Override
     public void addBookmark(AddBookmarkReqDto reqDto) {
+        MemberEntity member = MemberEntity.builder().memberId(reqDto.getMemberId()).build();
+        StreamerEntity streamer = StreamerEntity.builder().streamerId(reqDto.getStreamerId()).build();
+        if(bookmarkRepository.findByMemberAndStreamer(member, streamer)!=null) {
+            //System.out.println("중복");
+            return;
+        }
         bookmarkRepository.save(BookmarkEntity.builder()
-                        .streamer(StreamerEntity.builder().streamerId(reqDto.getStreamerId()).build())
-                        .member(MemberEntity.builder().memberId(reqDto.getMemberId()).build())
+                .streamer(streamer)
+                .member(member)
                 .build()
         );
     }

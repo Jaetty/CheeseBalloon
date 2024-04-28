@@ -13,7 +13,7 @@ public class FindBookmarkResDto {
     private Long bookmarkId;
     private Long streamerId;
     private String name;
-    private Character flatform;
+    private Character platform;
     private String profileUrl;
     private Integer followerCnt;
     private Boolean isLive;
