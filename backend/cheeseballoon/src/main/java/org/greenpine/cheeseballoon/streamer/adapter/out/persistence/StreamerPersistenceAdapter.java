@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveEntity;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveLogRepository;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
+import org.greenpine.cheeseballoon.ranking.domain.DateValue;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
@@ -24,6 +25,7 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     private final StreamerLogRepository streamerLogRepository;
     private final LiveRepository liveRepository;
     private final LiveLogRepository liveLogRepository;
+    final private DateValue dateValue;
 
     @Override
     public List<FindSearchStreamerResDtoInterface> searchStreamersByName(String query, long memberId) {
@@ -109,6 +111,20 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
 
 
         return liveDomain;
+    }
+
+    @Override
+    public StreamerLogEntity streamerFollowerDetail(Long streamerId, int date) {
+
+        StreamerEntity streamerEntity = streamerRepository.findByStreamerId(streamerId);
+
+        LocalDateTime[] dates = dateValue.getPeriod(date);
+
+
+//        streamerLogRepository.findStreamerLogEntitiesByRegDtBetweenAndStreamerOOrderByRegDtAsc(,streamerEntity);
+
+
+        return null;
     }
 
 

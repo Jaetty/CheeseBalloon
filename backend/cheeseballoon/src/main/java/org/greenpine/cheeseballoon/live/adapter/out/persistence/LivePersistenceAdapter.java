@@ -40,6 +40,7 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
             res.add(
                     FindLivesResDto.builder()
                             .liveId(live.getLiveId())
+                            .liveLogId(liveLog.getLiveLogId())
                             .streamId(streamer.getStreamerId())
                             .thumbnailUrl(live.getThumbnailUrl())
                             .profileUrl(streamer.getProfileUrl())
@@ -69,6 +70,7 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
             res.add(
                     FindLivesResDto.builder()
                             .liveId(live.getLiveId())
+                            .liveLogId(liveLog.getLiveLogId())
                             .streamId(streamer.getStreamerId())
                             .thumbnailUrl(live.getThumbnailUrl())
                             .profileUrl(streamer.getProfileUrl())
@@ -97,6 +99,7 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
             res.add(
                     SearchLivesResDto.builder()
                             .liveId(live.getLiveId())
+                            .liveLogId(liveLog.getLiveLogId())
                             .streamId(streamer.getStreamerId())
                             .thumbnailUrl(live.getThumbnailUrl())
                             .profileUrl(streamer.getProfileUrl())
