@@ -37,6 +37,9 @@ public class BookmarkPersistenceAdapter implements BookmarkPort {
 
     @Override
     public void deleteBookmark(DeleteBookmarkReqDto reqDto) {
+        MemberEntity member = MemberEntity.builder().memberId(reqDto.getMemberId()).build();
+        int delCnt = bookmarkRepository.deleteByBookmarkIdAndMember(reqDto.getBookmarkId(), member);
+        System.out.println(delCnt);
 
     }
 

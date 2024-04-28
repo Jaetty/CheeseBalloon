@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.member;
 
 import org.greenpine.cheeseballoon.member.application.port.in.dto.AddBookmarkReqDto;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.DeleteBookmarkReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.FindBookmarkReqDto;
 import org.greenpine.cheeseballoon.member.application.service.BookmarkService;
 import org.junit.jupiter.api.Test;
@@ -16,14 +17,18 @@ public class BookmarkTests {
     void addTest(){
         AddBookmarkReqDto reqDto = AddBookmarkReqDto.builder()
                 .memberId(1L)
-                .streamerId(1L)
+                .streamerId(10L)
                 .build();
         bookmarkService.addBookmark(reqDto);
     }
 
     @Test
     void findTest(){
-
         System.out.println(bookmarkService.findBookmark(FindBookmarkReqDto.builder().memberId(1L).build()));
+    }
+
+    @Test
+    void deleteTest(){
+        bookmarkService.deleteBookmark(DeleteBookmarkReqDto.builder().bookmarkId(1L).memberId(1L).build());
     }
 }
