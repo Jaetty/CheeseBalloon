@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
-#from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,6 +8,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 from schemas.streamer_info import StreamerInfo
 
+from typing import List
 from datetime import datetime
 import re
 # import os
@@ -99,6 +99,148 @@ class Soop:
 
                 # streamer_url = item.find_element(By.CLASS_NAME, "thumb")
                 # streamer_channel = streamer_url.get_attribute('href')
+
+                click_streamer = item.find_element(By.CLASS_NAME, "thumbs-box")
+
+                click_live = click_streamer.find_element(By.TAG_NAME, "a")
+
+                # <a> 태그의 href 속성 값을 가져옴
+                href_value = click_live.get_attribute('href')
+
+                pattern = re.compile(r'afreecatv.com/([^/]+)/(\d+)$')
+
+                # 패턴으로부터 해당 부분 찾기
+                match = pattern.search(href_value)
+
+                if match:
+                    streamer_id = match.group(1)  # 첫 번째 괄호에 해당하는 부분 (username)
+                    streamer_live_id = match.group(2)  # 두 번째 괄호에 해당하는 부분 (number)
+                else:
+                    streamer_id, streamer_live_id = None, None  # 패턴에 매칭되는 부분이 없을 경우
+
+                # 자바스크립트를 사용하여 새 탭에서 href URL 열기
+                driver.execute_script(f"window.open('{href_value}');")
+                # print(href_value)
+                # 새 탭으로 스위치
+                driver.switch_to.window(driver.window_handles[1])
+                driver.set_window_size(1920, 1080)
+                # 페이지 로드를 기다리기 위한 대기 시간 설정
+                driver.implicitly_wait(100)
+
+                try:
+                    live_btn = WebDriverWait(driver, 3).until(
+                        EC.visibility_of_element_located((By.XPATH, "//*[@id='stop_screen']/dl/dd[2]/a"))
+                    )
+                    # 버튼이 화면에 나타나면 클릭
+                    # print("방송 라이브 버튼을 클릭합니다.")
+                    live_btn.click()
+                except TimeoutException:
+                    # 버튼이 지정된 시간 내에 나타나지 않으면 실행을 계속
+                    print("클릭할 수 없습니다.")
+
+                try:
+                    WebDriverWait(driver, 5).until(
+                        lambda x: x.find_element(By.XPATH,
+                                                 "//*[@id='player_area']/div[2]/div[2]/ul/li[2]/span").get_attribute(
+                            'innerHTML').strip() != ""
+                    )
+                    # 버튼이 화면에 나타나면 클릭
+                    # print("모든 정보가 나타났습니다.")
+
+                except TimeoutException:
+                    print("새 탭을 닫습니다.")
+                    driver.close()  # 새 탭 닫기
+                    driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
+                    continue
+
+                # 스트리머 이름 //*[@id="player_area"]/div[2]/div[2]/div[1]
+                streamer_name = driver.find_element(By.CLASS_NAME, "nickname")
+
+                streamer_title = driver.find_element(By.CLASS_NAME, 'broadcast_title')
+
+                view = driver.find_element(By.CLASS_NAME, "detail_view")
+                detail_view = view.find_elements(By.TAG_NAME, "li")
+                category = None
+                try:
+                    category = detail_view[1].find_element(By.TAG_NAME, "span").text.strip()
+
+                except NoSuchElementException:
+                    print("없다!")
+
+                streamer_profile = driver.find_element(By.XPATH,
+                                                       ".//*[@id='player_area']/div[2]/div[1]/a/img").get_attribute(
+                    'src')
+
+                # print(streamer_id)
+                # print(streamer_name.text)
+                # print(streamer_profile)
+                # print(streamer_channel)
+                # print(href_value)
+                # print(streamer_live_id)
+                # print(streamer_thumbnail)
+                # print(category)
+                # print(streamer_title.text.strip())
+                # print(count)
+                streamer_info = StreamerInfo(
+                    origin_id=streamer_id,
+                    name=streamer_name.text,
+                    profile_url=streamer_profile,
+                    channel_url=streamer_channel,
+                    platform="S",
+                    stream_url=href_value,
+                    live_origin_id=streamer_live_id,
+                    thumbnail_url=streamer_thumbnail,
+                    category=category,
+                    title=streamer_title.text.strip(),
+                    viewer_cnt=count
+                )
+
+                driver.close()  # 새 탭 닫기
+                driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
+
+                streamer_list.append(streamer_info)
+
+            # 브라우저 종료
+            driver.quit()
+
+        except Exception as e:
+            print(e)
+
+        # print(streamer_list)
+        print("아프리카 크롤링을 끝냅니다.")
+        return streamer_list
+
+    @property
+    def soop_follower(self, streamers: List[StreamerInfo]):
+        # Chrome 옵션 설정
+        print("아프리카 크롤링을 시작합니다.")
+        chrome_options = Options()
+        chrome_options.add_argument("headless")  # 헤드리스 모드 활성화
+        chrome_options.add_argument("--disable-gpu")  # GPU 가속 비활성화 (일부 시스템에서 필요)
+        chrome_options.add_argument("--no-sandbox")  # 샌드박스 비활성화
+
+        # # 시청자 수를 저장할 리스트 초기화
+        streamer_follower_list = []
+        # print("되라되라")
+        try:
+            # WebDriver 서비스 설정
+            driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+            driver.set_window_size(1920, 1080)
+            # 웹사이트 열기
+            driver.get('https://www.afreecatv.com/')
+
+            # 페이지 로드를 기다리기 위한 대기 시간 설정
+            driver.implicitly_wait(3)
+
+            for name in streamers:
+                # 검색bar
+                search_bar = driver.find_element(By.XPATH, "//*[@id='szKeyword']")
+                search_bar.send_keys(name)
+                search_btn = driver.find_element(By.XPATH, "//*[@id='searchInputWrap']/button[2]")
+                search_btn.click()
+
+                # 페이지 로드를 기다리기 위한 대기 시간 설정
+                driver.implicitly_wait(3)
 
                 click_streamer = item.find_element(By.CLASS_NAME, "thumbs-box")
 

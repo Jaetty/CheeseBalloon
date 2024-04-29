@@ -92,3 +92,21 @@ class CrawlingBusiness:
 
         print(datetime.datetime.now())
         return {"result": "good"}
+
+    def follow_crawling(self, db: Session):
+        print(datetime.datetime.now())
+        try:
+            soop_streamers = StreamerService().get_streamers_per_platform(db=db, platform="S")
+
+            soop_list = [s.name for s in soop_streamers]
+            Soop().soop_follower(soop_list)
+            print(soop_streamers)
+
+            # print("스트리머 로그 데이터 넣기")
+            # StreamerLogService().create(db=db, follower=streamer_info.follower, streamer_id=streamer_id)
+
+        except Exception as e:
+            print(e)
+
+        print(datetime.datetime.now())
+        return {"result": "good"}

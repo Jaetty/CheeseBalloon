@@ -53,6 +53,11 @@ async def start_scheduler_crawling(db: Session = Depends(get_db)):
 async def cancel_scheduler_crawling():
     return Scheduler().cancel(scheduler=scheduler)
 
+@app.get("/soop_follower")
+def soop_follower_crawling(db: Session = Depends(get_db)):
+    return CrawlingBusiness().follow_crawling(db=db)
+
+
 @app.get("/soop")
 async def start_afreeca_crawling():
     Soop().soop

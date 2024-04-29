@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-
+from typing import List, Type
 from models.streamers import Streamer
-from schemas.streamers import StreamerCreate
+from schemas.streamers import StreamerCreate, StreamerRead
 
 
 class StreamerService:
@@ -31,3 +31,16 @@ class StreamerService:
             return streamer.streamer_id
         else:
             return None
+
+    def get_streamers_per_platform(self, db: Session, platform: str) -> List[StreamerRead]:
+        streamers = db.query(Streamer).filter(Streamer.platform == platform).all()
+        streamer_list = [StreamerRead(
+            streamer_id=streamer.streamer_id,
+            origin_id=streamer.origin_id,
+            name=streamer.name,
+            profile_url=streamer.profile_url,
+            channel_url=streamer.channel_url,
+            platform=streamer.platform
+            ) for streamer in streamers]
+
+        return streamer_list
