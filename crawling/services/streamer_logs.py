@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-
-from models.streamers import Streamer
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from models.streamer_logs import StreamerLog
 
 
@@ -9,7 +9,8 @@ class StreamerLogService:
 
         db_streamer_log = StreamerLog(
             streamer_id=streamer_id,
-            follower=follower
+            follower=follower,
+            reg_dt=datetime.now(ZoneInfo('Asia/Seoul'))
         )
         db.add(db_streamer_log)
         db.commit()

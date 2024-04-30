@@ -4,6 +4,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from schemas.streamer_info import StreamerInfo
+from schemas.streamer_logs import StreamerLogCreate
 from services.streamers import StreamerService
 from services.streamer_logs import StreamerLogService
 from services.categories import CategoryService
@@ -93,18 +94,22 @@ class CrawlingBusiness:
         print(datetime.datetime.now())
         return {"result": "good"}
 
-    def follow_crawling(self, db: Session):
+    async def follow_crawling(self, db: Session):
         print(datetime.datetime.now())
         try:
             soop_streamers = StreamerService().get_streamers_per_platform(db=db, platform="S")
+            chzzk_streamers = StreamerService().get_streamers_per_platform(db=db, platform="C")
+            soop_followers = Soop().soop_follower(streamers=soop_streamers)
+            chzzk_followers = await Chzzk().chzzk_follower(streamers=chzzk_streamers)
+            followers_list = []
+            followers_list.extend(soop_followers)
+            followers_list.extend(chzzk_followers)
+            # List[StreamerLogCreate] = soop_followers.extend(chzzk_followers)
 
-            soop_list = [s.name for s in soop_streamers]
-            Soop().soop_follower(soop_list)
-            print(soop_streamers)
-
-            # print("스트리머 로그 데이터 넣기")
-            # StreamerLogService().create(db=db, follower=streamer_info.follower, streamer_id=streamer_id)
-
+            for f in followers_list:
+                # print("넣을게")
+                StreamerLogService().create(db=db, follower=f.follower, streamer_id=f.streamer_id)
+            # print(chzzk_followers)
         except Exception as e:
             print(e)
 

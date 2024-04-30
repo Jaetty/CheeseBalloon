@@ -1,5 +1,6 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
+from apscheduler.triggers.cron import CronTrigger
 from fastapi import HTTPException
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -28,4 +29,18 @@ class Scheduler:
     def cancel(self, scheduler: AsyncIOScheduler):
         # 작업 취소
         scheduler.remove_job('crawling_start')
+        return {"result": "good"}
+
+    def follower_start(self, db: Session, scheduler: AsyncIOScheduler):
+        scheduler.add_job(
+            CrawlingBusiness().follow_crawling,
+            trigger=CronTrigger(hour=0, minute=0),
+            id='follower_start',
+            args=(db,)
+        )
+        return {"result": "good"}
+
+    def follower_cancel(self, scheduler: AsyncIOScheduler):
+        # 작업 취소
+        scheduler.remove_job('follower_start')
         return {"result": "good"}
