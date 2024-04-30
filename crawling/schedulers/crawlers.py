@@ -1,7 +1,7 @@
-# from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-# from apscheduler.jobstores.base import JobLookupError
+from apscheduler.triggers.cron import CronTrigger
+from fastapi import HTTPException
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from sqlalchemy.orm import Session
@@ -15,9 +15,8 @@ class Scheduler:
         print("크롤링을 완료헀습니다.")
         return {"result": "good"}
 
-    def start(self, db: Session):
-        scheduler = AsyncIOScheduler(timezone='Asia/Seoul')  # 백그라운드로 실행하기 위해 선언
-        scheduler.start()
+    def start(self, db: Session, scheduler: AsyncIOScheduler):
+
         # 즉시 실행하고, 그 후에 20분 간격으로 반복 실행
         scheduler.add_job(
             self.crawling,
@@ -25,4 +24,23 @@ class Scheduler:
             id='crawling_start',
             args=(db,)
         )
+        return {"result": "good"}
+
+    def cancel(self, scheduler: AsyncIOScheduler):
+        # 작업 취소
+        scheduler.remove_job('crawling_start')
+        return {"result": "good"}
+
+    def follower_start(self, db: Session, scheduler: AsyncIOScheduler):
+        scheduler.add_job(
+            CrawlingBusiness().follow_crawling,
+            trigger=CronTrigger(hour=0, minute=0),
+            id='follower_start',
+            args=(db,)
+        )
+        return {"result": "good"}
+
+    def follower_cancel(self, scheduler: AsyncIOScheduler):
+        # 작업 취소
+        scheduler.remove_job('follower_start')
         return {"result": "good"}
