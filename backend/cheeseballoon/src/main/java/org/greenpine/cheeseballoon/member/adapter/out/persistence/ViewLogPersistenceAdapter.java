@@ -30,7 +30,7 @@ public class ViewLogPersistenceAdapter implements ViewLogPort {
         LiveLogEntity liveLog = LiveLogEntity.builder().liveLogId(reqDto.getLiveLogId()).build();
         MemberEntity member = MemberEntity.builder().memberId(reqDto.getMemberId()).build();
         if(viewLogRepository.findByLiveAndLiveLogAndMember(live, liveLog, member) != null )return;
-        
+
         ViewLogEntity viewLog = ViewLogEntity.builder()
                 .live(live)
                 .liveLog(liveLog)

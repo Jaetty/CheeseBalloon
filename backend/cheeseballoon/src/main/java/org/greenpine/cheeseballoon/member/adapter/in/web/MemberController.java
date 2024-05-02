@@ -126,7 +126,7 @@ public class MemberController {
             bookmarkUsecase.deleteBookmark(reqDto);
             return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
         }catch (DuplicateKeyException e){
-            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.NOT_EXIST, null));
+            return ResponseEntity.ok(new CustomBody(StatusEnum.NOT_EXIST, MemberResMsg.NOT_EXIST, null));
         }
 
     }
@@ -152,7 +152,12 @@ public class MemberController {
     public ResponseEntity<CustomBody> deleteViewLog(@AuthenticationPrincipal Long memberId, @RequestBody DeleteViewLogReqDto reqDto){
         log.info("deleteViewLog - Call " + memberId);
         reqDto.setMemberId(memberId);
-        viewLogUsecase.deleteViewLog(reqDto);
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+        try {
+            viewLogUsecase.deleteViewLog(reqDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+        }catch (DuplicateKeyException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.NOT_EXIST, MemberResMsg.NOT_EXIST, null));
+        }
+
     }
 }
