@@ -19,8 +19,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 # app.include_router(users.router)
 
-scheduler = AsyncIOScheduler(timezone='Asia/Seoul')  # 백그라운드로 실행하기 위해 선언
-scheduler.start()
+# scheduler = AsyncIOScheduler(timezone='Asia/Seoul')  # 백그라운드로 실행하기 위해 선언
+# scheduler.start()
 
 @app.get("/")
 async def base_get_route():
@@ -47,19 +47,19 @@ async def start_crawling(db: Session = Depends(get_db)):
 
 @app.get("/scheduler")
 async def start_scheduler_crawling(db: Session = Depends(get_db)):
-    return Scheduler().start(db=db, scheduler=scheduler)
+    return Scheduler().start(db=db)
 
 @app.get("/cancel_scheduler")
 async def cancel_scheduler_crawling():
-    return Scheduler().cancel(scheduler=scheduler)
+    return Scheduler().cancel()
 
 @app.get("/follower_scheduler")
 async def start_scheduler_crawling(db: Session = Depends(get_db)):
-    return Scheduler().follower_start(db=db, scheduler=scheduler)
+    return Scheduler().follower_start(db=db)
 
 @app.get("/cancel_follower_scheduler")
 async def cancel_scheduler_crawling():
-    return Scheduler().follower_cancel(scheduler=scheduler)
+    return Scheduler().follower_cancel()
 
 
 
