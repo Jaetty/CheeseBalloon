@@ -31,5 +31,5 @@ public interface BookmarkRepository  extends JpaRepository<BookmarkEntity,Long> 
 
     BookmarkEntity findByMemberAndStreamer(MemberEntity member, StreamerEntity streamer);
 
-    int deleteByBookmarkIdAndMember(Long bookmarkId, MemberEntity member);
+    long deleteByBookmarkIdAndMember(Long bookmarkId, MemberEntity member);
 }

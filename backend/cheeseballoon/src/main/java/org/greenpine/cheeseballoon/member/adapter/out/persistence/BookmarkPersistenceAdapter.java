@@ -36,21 +36,18 @@ public class BookmarkPersistenceAdapter implements BookmarkPort {
     }
 
     @Override
-    public void deleteBookmark(DeleteBookmarkReqDto reqDto) {
+    public long deleteBookmark(DeleteBookmarkReqDto reqDto) {
         MemberEntity member = MemberEntity.builder().memberId(reqDto.getMemberId()).build();
-        int delCnt = bookmarkRepository.deleteByBookmarkIdAndMember(reqDto.getBookmarkId(), member);
-        System.out.println(delCnt);
-
+        return bookmarkRepository.deleteByBookmarkIdAndMember(reqDto.getBookmarkId(), member);
     }
 
     @Override
     public void addBookmark(AddBookmarkReqDto reqDto) {
         MemberEntity member = MemberEntity.builder().memberId(reqDto.getMemberId()).build();
         StreamerEntity streamer = StreamerEntity.builder().streamerId(reqDto.getStreamerId()).build();
-        if(bookmarkRepository.findByMemberAndStreamer(member, streamer)!=null) {
-            //System.out.println("중복");
+        if(bookmarkRepository.findByMemberAndStreamer(member, streamer)!=null)
             return;
-        }
+
         bookmarkRepository.save(BookmarkEntity.builder()
                 .streamer(streamer)
                 .member(member)
