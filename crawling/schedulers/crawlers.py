@@ -37,7 +37,7 @@ class Scheduler:
         Scheduler.main_scheduler.remove_job('crawling_start')
         return {"result": "good"}
 
-    def follower_start(self, db: Session, scheduler: AsyncIOScheduler):
+    def follower_start(self, db: Session):
         Scheduler.follower_scheduler.add_job(
             CrawlingBusiness().follow_crawling,
             trigger=CronTrigger(hour=0, minute=0),
@@ -46,7 +46,7 @@ class Scheduler:
         )
         return {"result": "good"}
 
-    def follower_cancel(self, scheduler: AsyncIOScheduler):
+    def follower_cancel(self):
         # 작업 취소
         Scheduler.follower_scheduler.remove_job('follower_start')
         return {"result": "good"}
