@@ -12,5 +12,5 @@ public interface ViewLogPort {
 
     void addViewLog(AddViewLogReqDto reqDto);
 
-    void deleteViewLog(DeleteViewLogReqDto reqDto);
+    long deleteViewLog(DeleteViewLogReqDto reqDto);
 }
