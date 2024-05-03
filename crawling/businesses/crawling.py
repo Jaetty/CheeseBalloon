@@ -26,10 +26,9 @@ class CrawlingBusiness:
     async def crawling(self, db: Session):
         print(datetime.datetime.now())
         try:
-
-            # streamer_list = Soop().soop
             streamer_list = []
             live_id_list = []
+            streamer_list.extend(Soop().soop())
             streamer_list.extend(await Chzzk().chzzk())
 
             # streamer_list = await Chzzk().chzzk()
