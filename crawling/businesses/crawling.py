@@ -27,7 +27,9 @@ class CrawlingBusiness:
         print(datetime.datetime.now())
         try:
 
-            streamer_list = Soop().soop
+            # streamer_list = Soop().soop
+            streamer_list = []
+            live_id_list = []
             streamer_list.extend(await Chzzk().chzzk())
 
             # streamer_list = await Chzzk().chzzk()
@@ -68,17 +70,20 @@ class CrawlingBusiness:
                 # 라이브가 없다면 라이브 추가하고 라이브 로그 넣기
                 # 이전 라이브 로그는 있었는데 현재 라이브 목록에는 없다면..? <- 끝나고 체크해야할듯..
                 # 라이브가 없다면 라이브 추가
-                if not LiveService().is_live(db=db, streamer_id=streamer_id, live_origin_id=streamer_info.live_origin_id):
+                if not LiveService().is_live(db=db, streamer_id=streamer_id,
+                                             live_origin_id=streamer_info.live_origin_id):
                     # print("라이브 데이터 넣기")
                     live = LiveCreate(
-                        streamer_id= streamer_id,
+                        streamer_id=streamer_id,
                         live_origin_id=streamer_info.live_origin_id,
-                        stream_url= streamer_info.stream_url,
-                        thumbnail_url= streamer_info.thumbnail_url,
-                        is_live= True
+                        stream_url=streamer_info.stream_url,
+                        thumbnail_url=streamer_info.thumbnail_url,
+                        is_live=True
                     )
                     LiveService().create(db=db, live=live)
-                live_id = LiveService().get_live(db=db, streamer_id=streamer_id, live_origin_id=streamer_info.live_origin_id)
+                live_id = LiveService().get_live(db=db, streamer_id=streamer_id,
+                                                 live_origin_id=streamer_info.live_origin_id)
+                live_id_list.append(live_id)
                 # print("라이브 로그 데이터 넣기")
                 live_log = LiveLogCreate(
                     live_id=live_id,
@@ -88,6 +93,12 @@ class CrawlingBusiness:
                     viewer_cnt=streamer_info.viewer_cnt
                 )
                 LiveLogService().create(db=db, live_log=live_log)
+
+            if cycle_id is not 0:
+                end_live_list = LiveLogService().get_end_live_id(db=db, cycle_log_id=cycle_id-1, live_list=live_id_list)
+                LiveService().update_is_live(db=db, live_list=end_live_list)
+                print("업데이트 완료")
+
         except Exception as e:
             print(e)
 
