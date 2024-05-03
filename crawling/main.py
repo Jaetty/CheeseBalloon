@@ -26,21 +26,6 @@ app = FastAPI()
 async def base_get_route():
     return {"message": "hello world"}
 
-@app.post("/streamers/", response_model=StreamerRead)
-async def create_streamer(streamer: StreamerCreate, db: Session = Depends(get_db)):
-    return StreamerBusiness().create(db=db, streamer=streamer)
-
-@app.post("/streamer_logs", response_model=StreamerLogRead)
-async def create_streamer_log(streamer_log: StreamerLogCreate, db: Session = Depends(get_db)):
-    db_streamer_log = StreamerLog(
-        streamer_id=streamer_log.streamer_id,
-        follower=streamer_log.follower,
-    )
-    db.add(db_streamer_log)
-    db.commit()
-    db.refresh(db_streamer_log)
-    return db_streamer_log
-
 @app.get("/crawling")
 async def start_crawling(db: Session = Depends(get_db)):
     return await CrawlingBusiness().crawling(db=db)
@@ -82,3 +67,8 @@ async def start_chzzk_crawling(db: Session = Depends(get_db)):
 async def start_chzzk_api():
     await Chzzk().chzzk()
     return {"chzzk": "good"}
+
+# @app.get("/soopapi")
+# async def soop_api():
+#     await Soop().follower()
+#     return {"message": "hello world"}

@@ -109,7 +109,7 @@ class CrawlingBusiness:
         try:
             soop_streamers = StreamerService().get_streamers_per_platform(db=db, platform="S")
             chzzk_streamers = StreamerService().get_streamers_per_platform(db=db, platform="C")
-            soop_followers = Soop().soop_follower(streamers=soop_streamers)
+            soop_followers = await Soop().soop_follower(streamers=soop_streamers)
             chzzk_followers = await Chzzk().chzzk_follower(streamers=chzzk_streamers)
             followers_list = []
             followers_list.extend(soop_followers)

@@ -1,37 +1,11 @@
 from typing import List
-
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from webdriver_manager.chrome import ChromeDriverManager
-from tabulate import tabulate
-
-from sqlalchemy.orm import Session
 from schemas.streamer_info import StreamerInfo
 from schemas.streamer_logs import StreamerLogCreate
-from services.streamers import StreamerService
-from services.streamer_logs import StreamerLogService
-from services.categories import CategoryService
-from schemas.streamers import StreamerCreate, StreamerRead
-from schemas.categories import CategoryCreate
-
-from datetime import datetime
-import time
-import re
+from schemas.streamers import StreamerRead
 
 import httpx
 
-
 class Chzzk:
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                      "Chrome/123.0.0.0 Safari/537.36"
-    }
-
     async def init_live(self):
         async with httpx.AsyncClient() as client:
             headers = {
