@@ -40,7 +40,7 @@ class Scheduler:
     def follower_start(self, db: Session):
         Scheduler.follower_scheduler.add_job(
             CrawlingBusiness().follow_crawling,
-            trigger=CronTrigger(hour=9, minute=20),
+            trigger=CronTrigger(hour=9, minute=30),
             id='follower_start',
             args=(db,)
         )
