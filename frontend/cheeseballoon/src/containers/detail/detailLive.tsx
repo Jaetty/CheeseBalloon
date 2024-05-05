@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import anya from "@/public/svgs/anya2.jpg"
+import anya from "@/public/svgs/anya2.jpg";
 import style from "./detailLive.module.scss";
 
 const API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
@@ -21,7 +21,6 @@ async function getData(streamerId: string) {
 
 export default function DetailLive() {
   const [liveData, setLiveData] = useState<liveDataType | null>(null);
-  const [isImgError, setIsImgError] = useState<boolean>(false)
   const { id } = useParams();
 
   useEffect(() => {
@@ -45,9 +44,11 @@ export default function DetailLive() {
               rel="noopener noreferrer"
             >
               <img
-                src={isImgError ? anya.src : liveData.thumbnailUrl}
+                src={liveData.thumbnailUrl}
                 alt="라이브"
-                onError={() => setIsImgError(true)}
+                onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                  e.currentTarget.src = anya.src;
+                }}
                 className={style.thumbnail}
               />
             </a>

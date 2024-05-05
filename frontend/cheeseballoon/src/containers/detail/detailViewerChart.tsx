@@ -16,14 +16,15 @@ type ViewerDataType = {
   maxDiff: number;
   avgViewer: number;
   avgDiff: number;
-  dailyAvgViewers: [date: string, viewer: number];
+  dailyAvgViewers: [date: string, viewer: number, maxViewer: number];
 };
 
 type DateArrayType = string[];
 type ViewerArrayType = number[];
-type dailyAvgViewersType = {
+type dailyViewersType = {
   date: string;
-  avgViewer: string;
+  viewer: number;
+  maxViewer: number;
 };
 
 const API_URL = process.env.NEXT_PUBLIC_VIEWER_API_URL;
@@ -33,7 +34,7 @@ async function getData(streamerId: string, date: string) {
   if (date) {
     res = await fetch(`${API_URL}streamerId=${streamerId}&date=${date}`);
   } else {
-    res = await fetch(`${API_URL}streamerId=${streamerId}&date=7`);
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=1`);
   }
 
   return res.json();
@@ -42,7 +43,8 @@ async function getData(streamerId: string, date: string) {
 export default function DetailViewerChart() {
   const { id, date } = useParams();
   const [viewerData, setViewerData] = useState<ViewerDataType | null>(null);
-  const [viewerArray, setViewerArray] = useState<ViewerArrayType>([1]);
+  const [avgViewerArray, setAvgViewerArray] = useState<ViewerArrayType>([1]);
+  const [maxViewerArray, setMaxViewerArray] = useState<ViewerArrayType>([1]);
   // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
   const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
 
@@ -50,9 +52,10 @@ export default function DetailViewerChart() {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data.dailyAvgViewers;
-      const dates = dailyData.map((item: dailyAvgViewersType) => item.date);
-      const viewers = dailyData.map((item: dailyAvgViewersType) =>
-        parseInt(item.avgViewer, 10)
+      const dates = dailyData.map((item: dailyViewersType) => item.date);
+      const avgViewers = dailyData.map((item: dailyViewersType) => item.viewer);
+      const maxViewers = dailyData.map(
+        (item: dailyViewersType) => item.maxViewer
       );
       const datesChange = dates.map((dateString: string) => {
         const parts = dateString.split("-");
@@ -64,7 +67,8 @@ export default function DetailViewerChart() {
         return `${year}.${month}.${day} (${dayOfWeek})`;
       });
       // setDateArray(dates);
-      setViewerArray(viewers);
+      setAvgViewerArray(avgViewers);
+      setMaxViewerArray(maxViewers);
       setDateXaxis(datesChange);
       setViewerData(responseData.data);
     };
@@ -147,9 +151,14 @@ export default function DetailViewerChart() {
 
     series: [
       {
+        name: "최고 시청자수",
+        type: "line",
+        data: maxViewerArray as number[],
+      },
+      {
         name: "평균 시청자수",
         type: "bar",
-        data: viewerArray as number[],
+        data: avgViewerArray as number[],
       },
     ],
   };
@@ -158,7 +167,7 @@ export default function DetailViewerChart() {
     <div className={style.wrapper}>
       <div className={style.container}>
         <ApexChart
-          type="bar"
+          type="line"
           options={chartData.options}
           series={chartData.series}
           height="auto"
