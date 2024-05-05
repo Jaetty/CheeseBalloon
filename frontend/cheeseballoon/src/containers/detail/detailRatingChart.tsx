@@ -107,7 +107,7 @@ export default function DetailRatingChart() {
         {
           min: 0,
           max: Math.max(Math.floor(Math.max(...ratingArray) * 1.5), 30),
-          tickAmount: 10,
+          tickAmount: 5,
           labels: {
             style: {
               colors: "white",
@@ -151,7 +151,7 @@ export default function DetailRatingChart() {
           type="line"
           options={chartData.options}
           series={chartData.series}
-          height="auto"
+          height="215%"
           width="100%"
         />
       </div>
