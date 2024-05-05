@@ -1,40 +1,49 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  gap: 2rem;
+}
+
 .container {
   background-color: #4e4e4e;
   border-radius: 20px;
-  padding: 4rem;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .viewer {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  margin-top: 3rem;
-  color: white;
+  display: grid;
   gap: 3rem;
+  color: white;
+  width: 100%;
+  align-content: center;
+  box-sizing: border-box;
 }
 
 .viewer-container {
   background-color: #4e4e4e;
   border-radius: 20px;
-  padding: 2rem;
-  width: 20%;
+  padding: 1rem;
+  box-sizing: border-box;
+  align-content: center;
+  text-align: center;
 }
 
 .viewer-title {
   color: white;
+  font-size: 1rem;
 }
 
 .viewer-cnt {
-  font-size: 3rem;
+  margin-top: 0.8rem;
+  font-size: 2rem;
   font-weight: bold;
   color: white;
 }
 
 .viewer-diff {
-  margin-top: 1rem;
-  font-size: 1rem;
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
   font-weight: bold;
 }
 

@@ -122,7 +122,7 @@ export default function DetailDurationChart() {
       },
       yaxis: [
         {
-          tickAmount: 10,
+          tickAmount: 5,
           labels: {
             style: {
               colors: "white",
@@ -176,7 +176,7 @@ export default function DetailDurationChart() {
           type="line"
           options={chartData.options}
           series={chartData.series}
-          height="auto"
+          height="325%"
           width="100%"
         />
       </div>

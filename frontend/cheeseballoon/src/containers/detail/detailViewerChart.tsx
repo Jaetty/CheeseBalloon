@@ -114,7 +114,7 @@ export default function DetailViewerChart() {
         },
       },
       yaxis: {
-        tickAmount: 10,
+        tickAmount: 5,
         labels: {
           style: {
             colors: "white",
@@ -170,7 +170,7 @@ export default function DetailViewerChart() {
           type="line"
           options={chartData.options}
           series={chartData.series}
-          height="auto"
+          height="170%"
           width="100%"
         />
       </div>

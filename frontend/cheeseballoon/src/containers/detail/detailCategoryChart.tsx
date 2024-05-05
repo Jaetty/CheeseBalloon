@@ -129,7 +129,7 @@ export default function DetailCategoryChart() {
           type="treemap"
           options={chartData.options}
           series={chartData.series}
-          height="auto"
+          height="265%"
           width="100%"
         />
       </div>
