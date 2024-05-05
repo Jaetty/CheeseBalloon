@@ -30,7 +30,6 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const query = searchParams.getAll("category");
-  const [streamImageError, setStreamImageError] = useState<boolean>(false);
   const [profileImageError, setProfileImageError] = useState<boolean>(false);
 
   const handleQuery = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -69,9 +68,11 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
     >
       <div className={style["first-container"]}>
         <img
-          src={streamImageError ? anya.src : liveinfo.thumbnailUrl}
+          src={liveinfo.thumbnailUrl}
           alt="썸네일"
-          onError={() => setStreamImageError(true)}
+          onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+            e.currentTarget.src = anya.src;
+          }}
           className={style.thumbnail}
         />
       </div>

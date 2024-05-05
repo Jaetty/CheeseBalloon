@@ -1,13 +1,15 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import style from "./detailSummaryContent.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-interface DetailSummaryContentData {
+interface SummaryContentData {
   avgViewer: number;
   viewerDiff: number;
   avgTime: number;
@@ -19,7 +21,7 @@ interface DetailSummaryContentData {
 }
 
 // 임시데이터
-const data: DetailSummaryContentData = {
+const data: SummaryContentData = {
   avgViewer: 8534,
   viewerDiff: 237,
   avgTime: 10.7,
@@ -29,6 +31,14 @@ const data: DetailSummaryContentData = {
   rating: 5.7,
   ratingDiff: 0.3,
 };
+
+const SUMMARY_API_URL = process.env.NEXT_PUBLIC_SUMMARY_API_URL;
+
+async function getData(streamerId: string) {
+  const res = await fetch(`${SUMMARY_API_URL}${streamerId}`);
+
+  return res.json();
+}
 
 const chartData = {
   options: {
@@ -94,7 +104,20 @@ const chartData = {
 };
 
 export default function DetailSummaryContent() {
-  // 개요
+  const [summaryData, setSummaryData] = useState<SummaryContentData | null>(
+    data
+  );
+  const { id } = useParams();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await getData(id.toString());
+  //     setSummaryData(data.data);
+  //   };
+
+  //   fetchData();
+  // }, [id]);
+
   const contentBox = (name: string, num: number, diff: number) => {
     let mod: string = "%";
     let updown: string = "상승";
@@ -152,7 +175,10 @@ export default function DetailSummaryContent() {
         ) : (
           <div>
             <div className={style["content-name"]}>{name}</div>
-            <div className={style["content-num"]}>{num.toLocaleString()}{mod}</div>
+            <div className={style["content-num"]}>
+              {num.toLocaleString()}
+              {mod}
+            </div>
             <div
               className={`${style["content-diff"]} ${diff >= 0 ? style.positive : style.negative}`}
             >
@@ -167,13 +193,27 @@ export default function DetailSummaryContent() {
 
   return (
     <div className={style.wrapper}>
-      <div className={style.container}>
-        {contentBox("평균 시청자수", data.avgViewer, data.viewerDiff)}
-        {contentBox("평균 방송시간", data.avgTime, data.timeDiff)}
-        {contentBox("팔로워", data.follow, data.followDiff)}
-        {contentBox("평균 시청률", data.rating, data.ratingDiff)}
-        {/* {contentBox("누적 방송시간", 123, 345)} */}
-      </div>
+      {summaryData && (
+        <div className={style.container}>
+          {contentBox(
+            "평균 시청자수",
+            summaryData.avgViewer,
+            summaryData.viewerDiff
+          )}
+          {contentBox(
+            "평균 방송시간",
+            summaryData.avgTime,
+            summaryData.timeDiff
+          )}
+          {contentBox("팔로워", summaryData.follow, summaryData.followDiff)}
+          {contentBox(
+            "평균 시청률",
+            summaryData.rating,
+            summaryData.ratingDiff
+          )}
+          {/* {contentBox("누적 방송시간", 123, 345)} */}
+        </div>
+      )}
     </div>
   );
 }

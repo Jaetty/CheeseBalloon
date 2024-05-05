@@ -30,7 +30,7 @@ async function getData(streamerId: string, date: string) {
   if (date) {
     res = await fetch(`${API_URL}streamerId=${streamerId}&date=${date}`);
   } else {
-    res = await fetch(`${API_URL}streamerId=${streamerId}&date=7`);
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=1`);
   }
 
   return res.json();
