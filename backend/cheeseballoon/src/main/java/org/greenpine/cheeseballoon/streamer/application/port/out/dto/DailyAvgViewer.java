@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class DailyAvgViewer {
 
     String date;
-    int avgViewer;
+    int viewer;
+    int maxViewer;
 
 }
