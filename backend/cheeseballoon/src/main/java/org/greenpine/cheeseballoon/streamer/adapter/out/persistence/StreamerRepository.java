@@ -1,14 +1,20 @@
 package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailiyViewerResDtoInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
+
+
+    // 스트리머 PK 값으로 조회
+    StreamerEntity findByStreamerId(Long id);
 
     // 스트리머 이름으로 스트리머 정보 가져오기 -> isLive도 가져와야해서 join이 있음
     @Query(value = "SELECT case when b.bookmark_id IS NOT NULL then 'true' ELSE 'false' END AS bookmark, streamer.streamer_id AS streamerId, streamer.name, streamer.isLive, streamer.profile_url AS profileUrl, streamer.channel_url AS channelUrl, streamer.follower, streamer.platform  FROM\n" +
@@ -21,9 +27,6 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "WHERE NAME LIKE CONCAT('%', :query, '%') AND li.streamer_id = s.streamer_id) AS streamer\n" +
             "ON streamer.streamer_id = b.streamer_id", nativeQuery = true)
     List<FindSearchStreamerResDtoInterface> searchStreamerByName(String query, Long memberId);
-
-    // 스트리머 아이디로 스트리머 정보 가져오기
-    StreamerEntity findByStreamerId(Long id);
 
     // 스트리머 정보로 랭킹 값 가져오기
     @Query(value = "SELECT ranksql.rank\n" +
@@ -38,7 +41,14 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "WHERE ranksql.streamer_id = :streamerId", nativeQuery = true)
     Integer getStreamerRank(Long streamerId, String beforeDay, String today);
 
-
+    @Query(value = "SELECT l.streamer_id, t.live_log_id, t.live_id, t.cycle_log_id, MAX(t.viewer_cnt) AS maxViewer, ROUND(AVG(t.viewer_cnt),0) AS viewer, t.date FROM lives AS l INNER JOIN \n" +
+            "(SELECT live_log_id, live_id, ll.cycle_log_id, viewer_cnt, date FROM live_logs AS ll \n" +
+            "inner JOIN (SELECT cycle_log_id, DATE_FORMAT(cycle_dt, '%Y-%m-%d')AS date \n" +
+            "FROM cycle_logs WHERE cycle_dt BETWEEN :beforeDay AND :today) AS c \n" +
+            "ON ll.cycle_log_id = c.cycle_log_id ORDER BY live_id) AS t \n" +
+            "ON l.live_id = t.live_id\n" +
+            "WHERE streamer_id = :streamerId GROUP BY streamer_id, date ORDER BY streamer_id", nativeQuery = true)
+    List<FindStreamerDailiyViewerResDtoInterface> getDailyViewer(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
 
 
 }

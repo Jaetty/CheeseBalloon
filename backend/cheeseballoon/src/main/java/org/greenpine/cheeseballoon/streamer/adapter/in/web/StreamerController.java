@@ -7,6 +7,7 @@ import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.application.port.out.message.StreamerResMsg;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +61,9 @@ public class StreamerController {
     }
 
     @GetMapping("/viewer")
-    public ResponseEntity<CustomBody> streamerViewerDetail(@RequestParam Long streamerId, int date){
+    public ResponseEntity<CustomBody> streamerViewerDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
+
+//        FindStreamerViewerDto ret = streamerUsecase.streamerDetailViewer(streamerId, date);
 
         FindStreamerViewerDto ret = FindStreamerViewerDto.builder()
                 .maxViewer(3000)
@@ -76,7 +79,9 @@ public class StreamerController {
 
         for(int i=0; i<7; i++){
 
-            list.add(DailyAvgViewer.builder().avgViewer(2800 + i).date(val + i).build());
+            int random = (int) (Math.random() * 150);
+
+            list.add(DailyAvgViewer.builder().viewer(2800 + i).date(val + i).maxViewer(3000 - random).build());
         }
 
         ret.setDailyAvgViewers(list);
@@ -130,6 +135,7 @@ public class StreamerController {
     @GetMapping("/follow")
     public ResponseEntity<CustomBody> streamerFollowDetail(@RequestParam Long streamerId, int date){
 
+//        List<FindStreamerFollowDto> ret = streamerUsecase.streamerDetailFollower(streamerId, date);
 
         List<FindStreamerFollowDto> ret = new ArrayList<>();
         String val = "2024-03-1";
