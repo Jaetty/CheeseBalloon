@@ -106,7 +106,7 @@ export default function DetailFollowerChart() {
       },
       yaxis: [
         {
-          tickAmount: 10,
+          tickAmount: 5,
           labels: {
             style: {
               colors: "white",
@@ -155,7 +155,7 @@ export default function DetailFollowerChart() {
         type="line"
         options={chartData.options}
         series={chartData.series}
-        height="auto"
+        height="265%"
         width="100%"
       />
     </div>
