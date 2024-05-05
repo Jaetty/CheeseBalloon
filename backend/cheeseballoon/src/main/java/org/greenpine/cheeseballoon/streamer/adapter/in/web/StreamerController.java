@@ -63,7 +63,28 @@ public class StreamerController {
     @GetMapping("/viewer")
     public ResponseEntity<CustomBody> streamerViewerDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
-        FindStreamerViewerDto ret = streamerUsecase.streamerDetailViewer(streamerId, date);
+//        FindStreamerViewerDto ret = streamerUsecase.streamerDetailViewer(streamerId, date);
+
+        FindStreamerViewerDto ret = FindStreamerViewerDto.builder()
+                .maxViewer(3000)
+                .maxDiff( date%2==0 ? 100 : -200 )
+                .avgViewer(2800)
+                .avgDiff(date%2==0 ? 30 : -20)
+                .dailyAvgViewers(null)
+                .build();
+
+        String val = "2024-03-1";
+
+        List<DailyAvgViewer> list = new ArrayList<>();
+
+        for(int i=0; i<7; i++){
+
+            int random = (int) (Math.random() * 150);
+
+            list.add(DailyAvgViewer.builder().viewer(2800 + i).date(val + i).maxViewer(3000 - random).build());
+        }
+
+        ret.setDailyAvgViewers(list);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
 
