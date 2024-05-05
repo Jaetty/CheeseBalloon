@@ -7,6 +7,7 @@ import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.ranking.domain.DateValue;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailiyViewerResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerDomain;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
@@ -120,6 +121,19 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
         LocalDateTime[] dates = dateValue.getPeriod(date);
 
         List<StreamerLogEntity> ret = streamerLogRepository.findStreamerLogEntitiesByStreamerAndRegDtBetween(streamerEntity, dates[0], dates[1]);
+
+        return ret;
+    }
+
+    @Override
+    public List<FindStreamerDailiyViewerResDtoInterface>[] streamerDetailViewer(Long streamerId, int date) {
+
+        List<FindStreamerDailiyViewerResDtoInterface>[] ret = new List[2];
+
+        LocalDateTime[] dates = dateValue.getPeriod(date);
+
+        ret[0] = streamerRepository.getDailyViewer(streamerId, dates[0], dates[1]);
+        ret[1] = streamerRepository.getDailyViewer(streamerId, dates[1], dates[2]);
 
         return ret;
     }

@@ -1,10 +1,12 @@
 package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailiyViewerResDtoInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -38,5 +40,15 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "LIMIT 300) AS ranksql\n" +
             "WHERE ranksql.streamer_id = :streamerId", nativeQuery = true)
     Integer getStreamerRank(Long streamerId, String beforeDay, String today);
+
+    @Query(value = "SELECT l.streamer_id, t.live_log_id, t.live_id, t.cycle_log_id, MAX(t.viewer_cnt) AS maxViewer, ROUND(AVG(t.viewer_cnt),0) AS viewer, t.date FROM lives AS l INNER JOIN \n" +
+            "(SELECT live_log_id, live_id, ll.cycle_log_id, viewer_cnt, date FROM live_logs AS ll \n" +
+            "inner JOIN (SELECT cycle_log_id, DATE_FORMAT(cycle_dt, '%Y-%m-%d')AS date \n" +
+            "FROM cycle_logs WHERE cycle_dt BETWEEN :beforeDay AND :today) AS c \n" +
+            "ON ll.cycle_log_id = c.cycle_log_id ORDER BY live_id) AS t \n" +
+            "ON l.live_id = t.live_id\n" +
+            "WHERE streamer_id = :streamerId GROUP BY streamer_id, date ORDER BY streamer_id", nativeQuery = true)
+    List<FindStreamerDailiyViewerResDtoInterface> getDailyViewer(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
+
 
 }

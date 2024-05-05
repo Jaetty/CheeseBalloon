@@ -6,6 +6,7 @@ import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
+import org.greenpine.cheeseballoon.streamer.domain.StreamerViewerDomain;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -63,6 +64,25 @@ public class StreamerService implements StreamerUsecase {
         }
 
         return ret;
+    }
+
+    @Override
+    public FindStreamerViewerDto streamerDetailViewer(Long streamerId, int date) {
+
+        List<FindStreamerDailiyViewerResDtoInterface>[] values = streamerPort.streamerDetailViewer(streamerId, date);
+
+        StreamerViewerDomain streamerViewerDomain = new StreamerViewerDomain();
+
+        List<DailyAvgViewer> dailyAvgViewer = streamerViewerDomain.getDailyViewer(values[0]);
+
+        Integer curr_max = streamerViewerDomain.getMaxValue(values[0]);
+        Integer before_max = streamerViewerDomain.getMaxValue(values[1]);
+        Integer curr_avg = streamerViewerDomain.getAverageValue(values[0]);
+        Integer before_avg = streamerViewerDomain.getAverageValue(values[1]);
+
+        FindStreamerViewerDto dto = new FindStreamerViewerDto(curr_max, curr_max - before_max, curr_avg, curr_avg - before_avg, dailyAvgViewer);
+
+        return dto;
     }
 
 }
