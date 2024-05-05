@@ -23,11 +23,11 @@ export default function DetailSelectDate() {
           handleChangeDate(e);
         }}
         className={style.button}
-        value={date || 7}
+        value={date || 1}
       >
-        <option value={7}>7일</option>
-        <option value={14}>14일</option>
-        <option value={30}>30일</option>
+        <option value={1}>7일</option>
+        <option value={2}>14일</option>
+        <option value={3}>30일</option>
       </select>
     </div>
   );
