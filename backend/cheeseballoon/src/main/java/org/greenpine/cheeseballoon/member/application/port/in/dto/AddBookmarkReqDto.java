@@ -1,4 +1,4 @@
-package org.greenpine.cheeseballoon.streamer.application.port.out.dto;
+package org.greenpine.cheeseballoon.member.application.port.in.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DailyAvgViewer {
-
-    String date;
-    int viewer;
-    int maxViewer;
-
+public class AddBookmarkReqDto {
+    private Long memberId;
+    private Long streamerId;
 }

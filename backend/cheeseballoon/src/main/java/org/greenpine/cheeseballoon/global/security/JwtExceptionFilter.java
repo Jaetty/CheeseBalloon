@@ -27,16 +27,16 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             chain.doFilter(req, res); // go to 'JwtAuthenticationFilter'
         } catch ( SignatureException e ) {
             //System.out.println(e);
-            ResponseEntity<CustomBody> responseEntity = new ResponseEntity<>(new CustomBody(StatusEnum.UNAUTHORIZED, "Invalid token", null), HttpStatus.UNAUTHORIZED);
+            CustomBody body = new CustomBody(StatusEnum.UNAUTHORIZED, "Invalid token", null);
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized 상태코드 설정
             res.setContentType(MediaType.APPLICATION_JSON_VALUE); // JSON 형식 응답 Content-Type 설정
-            res.getWriter().write(new ObjectMapper().writeValueAsString(responseEntity.getBody()));
+            res.getWriter().write(new ObjectMapper().writeValueAsString(body));
         }catch ( JwtException e){
             //System.out.println(e);
-            ResponseEntity<CustomBody> responseEntity = new ResponseEntity<>(new CustomBody(StatusEnum.UNAUTHORIZED, e.getMessage(), null), HttpStatus.UNAUTHORIZED);
+            CustomBody body =new CustomBody(StatusEnum.UNAUTHORIZED, e.getMessage(), null);
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             res.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            res.getWriter().write(new ObjectMapper().writeValueAsString(responseEntity.getBody()));
+            res.getWriter().write(new ObjectMapper().writeValueAsString(body));
         }
     }
 }

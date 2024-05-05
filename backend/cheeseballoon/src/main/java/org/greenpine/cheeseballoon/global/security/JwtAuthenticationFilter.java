@@ -29,23 +29,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, JwtException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String origin = httpRequest.getHeader("Origin");
-        System.out.println("Origin: " + origin);
         String token = resolveToken(request);
         if(token!=null){
-            System.out.println("token:"+token);
+            //System.out.println("token:"+token);
             Claims claims = jwtUtil.extractAllClaims(token);
             if(jwtUtil.isTokenExpired(claims)){
                 throw new JwtException("Token Expired");
             }
             Long memberId = jwtUtil.getUserId(claims);
+            //System.out.println("필터 memberId : " + memberId);
 
-
-            System.out.println("필터 memberId : " + memberId);
             //memberId 담고 인증 부여
             AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    memberId, null, AuthorityUtils.NO_AUTHORITIES);
+                    memberId, null, AuthorityUtils.NO_AUTHORITIES); //일단은 빈권한 부여 (List<GrantedAuthority> 타입으로 부여)
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
@@ -55,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(7); //Bearer제거
         }
         return null;
     }

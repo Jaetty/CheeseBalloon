@@ -9,6 +9,7 @@ import lombok.*;
 public class FindLivesResDto {
     Long streamId;
     Long liveId;
+    Long liveLogId;
     String name;
     String title;
     String thumbnailUrl;
