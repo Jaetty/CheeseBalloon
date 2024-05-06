@@ -41,8 +41,8 @@ export default function Recomend() {
       ))}
       {toggle2 && (
         <>
-          {hiddenData.map((item) => (
-            <div key={item}>
+          {hiddenData.map((item, index1) => (
+            <div key={index1}>
               <RecomendCard data={item} />
             </div>
           ))}

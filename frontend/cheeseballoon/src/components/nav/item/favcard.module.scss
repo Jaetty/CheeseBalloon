@@ -17,6 +17,7 @@
   display: flex;
   margin-bottom: 0.5rem;
   justify-content: center;
+  position: relative;
 }
 
 .closed_container:hover {
@@ -30,6 +31,16 @@
   border-radius: 3rem;
   overflow: hidden;
   border: 2px solid #ff5454;
+  background-color: white;
+  display: inline-block;
+}
+
+.off_image {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 3rem;
+  overflow: hidden;
+  border: 2px solid #676767;
   background-color: white;
   display: inline-block;
 }
@@ -68,7 +79,7 @@
 
 .subcontent {
   font-weight: 600;
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   line-height: 1rem;
   color: rgba(255, 255, 255, 0.7);
   letter-spacing: -0.5px;
@@ -87,14 +98,16 @@
 }
 
 .description_modal {
-  display: none; // 기본적으로 숨김
-  position: fixed; // 또는 absolute, 화면에 고정
+  display: none;
+  // position: fixed;
+  position: absolute;
+  top: 0;
   left: 60px;
-  width: 180px; // 원하는 너비
-  margin-left: 10px; // 패딩
-  background-color: rgb(65, 65, 65); // 배경색
+  width: 180px;
+  margin-left: 10px;
+  background-color: rgb(65, 65, 65);
   border-radius: 5px;
-  z-index: 1000; // 다른 요소 위에 표시
+  z-index: 1000;
 }
 
 .closed_container:hover .description_modal {
@@ -134,4 +147,18 @@
 .link {
   color: inherit;
   text-decoration: none;
+}
+
+.titledisc {
+  max-width: 88px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.closed_titledisc {
+  max-width: 110px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

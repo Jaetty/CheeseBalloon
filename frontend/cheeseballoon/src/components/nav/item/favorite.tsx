@@ -42,8 +42,8 @@ export default function Fav() {
             ))}
             {toggle1 && (
               <>
-                {hiddenData.map((item) => (
-                  <div key={item}>
+                {hiddenData.map((item, index1) => (
+                  <div key={index1}>
                     <FavCard data={item} />
                   </div>
                 ))}
@@ -87,8 +87,8 @@ export default function Fav() {
             ))}
             {toggle1 && (
               <>
-                {hiddenData.map((item) => (
-                  <div key={item}>
+                {hiddenData.map((item, index1) => (
+                  <div key={index1}>
                     <FavCard data={item} />
                   </div>
                 ))}
