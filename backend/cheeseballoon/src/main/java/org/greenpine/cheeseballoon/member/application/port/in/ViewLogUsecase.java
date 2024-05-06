@@ -8,7 +8,6 @@ import org.greenpine.cheeseballoon.member.application.port.out.dto.FindViewLogRe
 import java.util.List;
 
 public interface ViewLogUsecase {
-    //조회 추가 삭제
     List<FindViewLogResDto> findViewLog(FindViewLogReqDto reqDto);
 
     void addViewLog(AddViewLogReqDto reqDto);

@@ -10,7 +10,7 @@ import java.util.List;
 public interface BookmarkPort {
     List<FindBookmarkResDto> findBookmark(FindBookmarkReqDto reqDto);
 
-    void deleteBookmark(DeleteBookmarkReqDto reqDto);
+    long deleteBookmark(DeleteBookmarkReqDto reqDto);
 
     void addBookmark(AddBookmarkReqDto reqDto);
 }
