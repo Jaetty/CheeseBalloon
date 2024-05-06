@@ -1,11 +1,9 @@
-"use client";
-
 import styles from "src/components/nav/item/favcard.module.scss";
 import Image from "next/image";
 import chzzk from "public/svgs/chzzk.svg";
 import aflogo from "public/svgs/afreeca.svg";
-import useToggleState from "src/stores/store";
-import { useState } from "react";
+import { useToggleState } from "src/stores/store";
+import { useState, useRef, useLayoutEffect } from "react";
 import { LiveData } from "src/types/type";
 import Link from "next/link";
 
@@ -16,6 +14,18 @@ type Props = {
 export default function RecomendCard({ data }: Props) {
   const { value } = useToggleState();
   const [isHovered, setIsHovered] = useState(false);
+  const [modalStyle, setModalStyle] = useState({});
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (containerRef.current && isHovered) {
+      const { top, left } = containerRef.current.getBoundingClientRect();
+      setModalStyle({
+        top: `${top}px`,
+        left: `${left + 60}px`,
+      });
+    }
+  }, [isHovered]);
 
   return (
     <Link href={data?.streamUrl || ""} className={styles.link}>
@@ -54,6 +64,7 @@ export default function RecomendCard({ data }: Props) {
             className={styles.closed_container}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            ref={containerRef}
           >
             <div className={styles.on_image}>
               <Image
@@ -64,7 +75,7 @@ export default function RecomendCard({ data }: Props) {
               />
             </div>
             {isHovered && (
-              <div className={styles.description_modal}>
+              <div className={styles.description_modal} style={modalStyle}>
                 <div className={styles.modal_container}>
                   <div className={styles.content}>
                     <div className={styles.closed_titledisc}>{data?.name}</div>

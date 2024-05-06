@@ -2,7 +2,7 @@
 
 import OpenMenu from "src/components/nav/item/openIndex";
 import ClosedMenu from "src/components/nav/item/closedIndex";
-import useToggleState from "src/stores/store";
+import { useToggleState } from "src/stores/store";
 
 export default function Menu() {
   const { value } = useToggleState();

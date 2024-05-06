@@ -4,8 +4,8 @@ import styles from "src/components/nav/item/favcard.module.scss";
 import Image from "next/image";
 import chzzk from "public/svgs/chzzk.svg";
 import aflogo from "public/svgs/afreeca.svg";
-import useToggleState from "src/stores/store";
-import { useState } from "react";
+import { useToggleState } from "src/stores/store";
+import { useState, useRef, useLayoutEffect } from "react";
 import { LiveData } from "@/src/types/type";
 import Link from "next/link";
 
@@ -16,19 +16,25 @@ type Props = {
 export default function FavCard({ data }: Props) {
   const { value } = useToggleState();
   const [isHovered, setIsHovered] = useState(false);
+  const [modalStyle, setModalStyle] = useState({});
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (containerRef.current && isHovered) {
+      const { top, left } = containerRef.current.getBoundingClientRect();
+      setModalStyle({
+        top: `${top}px`,
+        left: `${left + 60}px`,
+      });
+    }
+  }, [isHovered]);
 
   return (
     <div>
       {value && (
         <div className={styles.open_container}>
           <div className={data?.streamUrl ? styles.on_image : styles.off_image}>
-            <Image
-              src={data?.profileUrl || ""}
-              alt=""
-              width={28}
-              height={28}
-              layout="fixed"
-            />
+            <Image src={data?.profileUrl || ""} alt="" width={28} height={28} />
           </div>
           <div>
             <div className={styles.content}>

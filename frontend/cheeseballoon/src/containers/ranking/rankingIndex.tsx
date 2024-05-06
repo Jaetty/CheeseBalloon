@@ -1,7 +1,7 @@
 "use client";
 
 import style from "src/containers/ranking/rankingIndex.module.scss";
-import DaySelect from "src/components/ranking/dayselect";
+import DaySelect from "@/src/components/ranking/dayselect";
 import PlatformSelect from "src/components/ranking/platformselect";
 import { useState, useEffect, useMemo } from "react";
 import RankingIndex from "src/components/ranking/rankingIndex";
