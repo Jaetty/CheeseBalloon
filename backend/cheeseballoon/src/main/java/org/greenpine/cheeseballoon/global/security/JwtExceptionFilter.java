@@ -19,7 +19,7 @@ import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.ResponseEntity;
 
 @Component
-public class JwtExceptionFilter extends OncePerRequestFilter {
+public class JwtExceptionFilter extends OncePerRequestFilter { //인증 에러 처리 필터
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
