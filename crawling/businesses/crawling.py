@@ -26,19 +26,21 @@ class CrawlingBusiness:
     async def crawling(self, db: Session):
         print(datetime.datetime.now())
         try:
-            streamer_list = []
+            streamers_list = []
             live_id_list = []
-            streamer_list.extend(Soop().soop())
-            streamer_list.extend(await Chzzk().chzzk())
-
+            # 아
+            streamers_list = Soop().soop()
+            # print("아")
+            streamers_list.extend(await Chzzk().chzzk())
+            # print("후")
             # streamer_list = await Chzzk().chzzk()
 
             cycle = CycleLogCreate(
-                afreeca_viewer_cnt=sum(item.viewer_cnt for item in streamer_list if item.platform == "S"),
-                chzzk_viewer_cnt=sum(item.viewer_cnt for item in streamer_list if item.platform == "C"),
+                afreeca_viewer_cnt=sum(item.viewer_cnt for item in streamers_list if item.platform == "S"),
+                chzzk_viewer_cnt=sum(item.viewer_cnt for item in streamers_list if item.platform == "C"),
             )
             cycle_id = CycleLogService().create(db=db, cycle_log=cycle).cycle_log_id
-            for streamer_info in streamer_list:
+            for streamer_info in streamers_list:
 
                 if streamer_info.category is not None:
                     if not CategoryService().is_category(db=db, category=streamer_info.category):
@@ -93,7 +95,7 @@ class CrawlingBusiness:
                 )
                 LiveLogService().create(db=db, live_log=live_log)
 
-            if cycle_id is not 0:
+            if cycle_id != 0:
                 end_live_list = LiveLogService().get_end_live_id(db=db, cycle_log_id=cycle_id-1, live_list=live_id_list)
                 LiveService().update_is_live(db=db, live_list=end_live_list)
                 print("업데이트 완료")

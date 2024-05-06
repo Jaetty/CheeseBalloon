@@ -32,7 +32,7 @@ class Soop:
             res = await client.get(f'https://bjapi.afreecatv.com/api/{origin_id}/station',
                                    headers=headers)
             return res.json()
-    @property
+
     def soop(self):
         # ChromeDriver 경로 설정
         # chrome_driver_path = '/usr/bin/chromedriver'  # ChromeDriver가 설치된 경로
@@ -225,6 +225,7 @@ class Soop:
 
         # print(streamer_list)
         print("아프리카 크롤링을 끝냅니다.")
+        # print("예이에에에ㅔ")
         return streamer_list
 
     async def soop_follower(self, streamers: List[StreamerRead]):
