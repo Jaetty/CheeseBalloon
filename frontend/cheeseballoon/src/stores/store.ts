@@ -1,17 +1,17 @@
 "use client";
 
-// src/stores/store.ts
-
 import { create } from "zustand";
-import { ToggleStateType } from "src/types/type";
+import {
+  ToggleStateType,
+  RecommendDataType,
+  LiveData,
+  FavDataType,
+} from "src/types/type";
 import { persist } from "zustand/middleware";
 
 const useToggleState = create(
   persist<ToggleStateType>(
     (set) => ({
-      // value: localStorage.getItem("toggle-state")
-      //  ? JSON.parse(localStorage.getItem("toggle-state")!)
-      //  : false,
       value: false,
       toggle: () => set((state) => ({ value: !state.value })),
     }),
@@ -21,4 +21,32 @@ const useToggleState = create(
   )
 );
 
-export default useToggleState;
+const RecommendState = create(
+  persist<RecommendDataType>(
+    (set) => ({
+      lastFetchTime: null,
+      data: [],
+      setData: (newData: LiveData[]) =>
+        set((state) => ({ ...state, data: newData })),
+      setLastFetchTime: (time: number) =>
+        set((state) => ({ ...state, lastFetchTime: time })),
+    }),
+    {
+      name: "recommend-state",
+    }
+  )
+);
+
+const FavState = create(
+  persist<FavDataType>(
+    (set) => ({
+      data: [],
+      setData: (newData: LiveData[]) =>
+        set((state) => ({ ...state, data: newData })),
+    }),
+    {
+      name: "fav-state",
+    }
+  )
+);
+export { useToggleState, RecommendState, FavState };
