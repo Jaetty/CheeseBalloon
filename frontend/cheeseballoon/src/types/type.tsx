@@ -17,40 +17,80 @@ export interface LiveData {
   channelUrl: string;
 }
 
+export interface FollowRankData {
+  streamerId: number;
+  name: string;
+  platform: string;
+  profileUrl: string;
+  follower: number;
+  rankDiff: number;
+  diff: number;
+  bookmark: boolean;
+}
+
+export interface AvgRankData {
+  streamerId: number;
+  name: string;
+  rank: number;
+  platform: string;
+  profileUrl: string;
+  averageViewer: number;
+  rankDiff: number;
+  diff: number;
+  bookmark: boolean;
+}
+
+export interface TopviewRankData {
+  streamerId: number;
+  name: string;
+  platform: string;
+  profileUrl: string;
+  topViewer: number;
+  rankDiff: number;
+  diff: number;
+  bookmark: boolean;
+}
+
+export interface TimeRankData {
+  streamerId: number;
+  name: string;
+  platform: string;
+  profileUrl: string;
+  totalTime: number;
+  rankDiff: number;
+  diff: number;
+  bookmark: boolean;
+}
+
+export interface RatingRankData {
+  streamerId: number;
+  name: string;
+  platform: string;
+  profileUrl: string;
+  rating: number;
+  rankDiff: number;
+  diff: number;
+  bookmark: boolean;
+}
+
+export interface LiveRankData {
+  streamerId: number;
+  name: string;
+  platform: string;
+  profileUrl: string;
+  bookmark: boolean;
+  rankDiff: number;
+}
 export interface RankingData {
   [title: string]: {
     status: string;
     message: string;
-    data: Array<{
-      streamId: number;
-      liveId: number;
-      name: string;
-      title: string;
-      thumbnailUrl: string;
-      platform: string;
-      profileUrl: string;
-      category: string;
-      viewerCnt: number;
-      streamUrl: string;
-      channelUrl: string;
-    }>;
+    data:
+      | FollowRankData[]
+      | AvgRankData[]
+      | TopviewRankData[]
+      | TimeRankData[]
+      | RatingRankData[]
+      | LiveRankData[];
   };
-}
-
-export interface SubRankingData {
-  status: string;
-  message: string;
-  data: Array<{
-    streamId: number;
-    liveId: number;
-    name: string;
-    title: string;
-    thumbnailUrl: string;
-    platform: string;
-    profileUrl: string;
-    category: string;
-    viewerCnt: number;
-    streamUrl: string;
-    channelUrl: string;
-  }>;
 }
