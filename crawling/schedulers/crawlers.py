@@ -26,6 +26,7 @@ class Scheduler:
         # 즉시 실행하고, 그 후에 20분 간격으로 반복 실행
         Scheduler.main_scheduler.add_job(
             self.crawling,
+            # trigger=IntervalTrigger(seconds=250),
             trigger=IntervalTrigger(seconds=1200, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
             id='crawling_start',
             args=(db,)
@@ -40,6 +41,8 @@ class Scheduler:
     def follower_start(self, db: Session):
         Scheduler.follower_scheduler.add_job(
             CrawlingBusiness().follow_crawling,
+            # trigger=IntervalTrigger(seconds=300),
+            # trigger=IntervalTrigger(seconds=600, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
             trigger=CronTrigger(hour=0, minute=0),
             id='follower_start',
             args=(db,)
