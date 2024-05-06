@@ -19,14 +19,15 @@ public class ViewLogService implements ViewLogUsecase {
     private final ViewLogPort viewLogPort;
 
     @Override
+    @Transactional
     public List<FindViewLogResDto> findViewLog(FindViewLogReqDto reqDto) {
-        return null;
+        return viewLogPort.findViewLog(reqDto);
     }
 
     @Override
     @Transactional
     public void addViewLog(AddViewLogReqDto reqDto) {
-
+        viewLogPort.addViewLog(reqDto);
     }
 
     @Override

@@ -137,7 +137,7 @@ public class MemberController {
         reqDto.setMemberId(memberId);
         System.out.println(reqDto.getStart());
         List<FindViewLogResDto> res = viewLogUsecase.findViewLog(reqDto);
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, res));
     }
 
     @PostMapping("/viewlog")

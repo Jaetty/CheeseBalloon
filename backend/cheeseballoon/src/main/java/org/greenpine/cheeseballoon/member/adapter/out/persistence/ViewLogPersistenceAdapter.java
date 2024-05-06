@@ -11,6 +11,8 @@ import org.greenpine.cheeseballoon.member.application.port.out.dto.FindViewLogRe
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -20,8 +22,21 @@ public class ViewLogPersistenceAdapter implements ViewLogPort {
 
     @Override
     public List<FindViewLogResDto> findViewLog(FindViewLogReqDto reqDto) {
+        Long memberId = reqDto.getMemberId();
+        LocalDateTime start = LocalDateTime.of(reqDto.getStart(), LocalTime.MIN);
+        LocalDateTime end = LocalDateTime.of(reqDto.getEnd(), LocalTime.MAX);
+        List<ViewLogWithStream> viewLogs = viewLogRepository.findByMemberAndDateTime(memberId, start, end);
 
-        return null;
+        return viewLogs.stream().map(v -> FindViewLogResDto.builder()
+                .viewLogId(v.getView_log_id())
+                .streamerId(v.getStreamer_id())
+                .name(v.getName())
+                .profileUrl(v.getProfile_url())
+                .title(v.getTitle())
+                .category(v.getCategory())
+                .regDt(v.getReg_dt())
+                .build()
+        ).toList();
     }
 
     @Override
