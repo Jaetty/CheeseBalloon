@@ -1,12 +1,9 @@
 .body {
-  /* 사이드메뉴(펼친) */
-
   position: fixed;
   overflow-y: auto;
   -ms-overflow-style: none;
   width: 220px;
   height: 100%;
-  margin-top: 60px;
   background: #1e1f27;
 }
 
