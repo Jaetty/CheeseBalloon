@@ -12,6 +12,16 @@ const nextConfig = {
         hostname: "nng-phinf.pstatic.net",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "res.afreecatv.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "ssl.pstatic.net",
+        port: "",
+      },
     ],
   },
 };

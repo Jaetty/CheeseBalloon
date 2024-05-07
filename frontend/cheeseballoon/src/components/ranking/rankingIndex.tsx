@@ -1,11 +1,24 @@
 import style from "src/components/ranking/rankingindex.module.scss";
 import Card from "src/components/ranking/rankingIndexCard";
 import Link from "next/link";
-import { LiveData } from "src/types/type";
+import {
+  FollowRankData,
+  AvgRankData,
+  TopviewRankData,
+  TimeRankData,
+  RatingRankData,
+  LiveRankData,
+} from "src/types/type";
 
 type Props = {
   title: string;
-  data: LiveData[];
+  data:
+    | FollowRankData[]
+    | AvgRankData[]
+    | TopviewRankData[]
+    | TimeRankData[]
+    | RatingRankData[]
+    | LiveRankData[];
 };
 
 export default function Rank({ title, data }: Props) {
@@ -24,14 +37,7 @@ export default function Rank({ title, data }: Props) {
       <div className={style.maintitle}>{title}</div>
       {data?.map((item, index) => (
         <div key={index} className={style.item}>
-          <Card
-            number={index + 1}
-            name={item.name}
-            profileUrl={item.profileUrl}
-            platform={item.platform}
-            id={item.streamId}
-            title={title}
-          />
+          <Card number={index + 1} item={item} title={title} />
         </div>
       ))}
       <div className={style.divisionline}></div>

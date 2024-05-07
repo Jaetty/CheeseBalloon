@@ -16,7 +16,7 @@ export default function Footer() {
           <Image src={githubmark} alt="" width={30} height={30} />
         </a>
         <a
-          href="mailto:asdf@asdff.com"
+          href="mailto:example1@example.com"
           target="_blank"
           rel="noreferrer"
           aria-label="이메일 링크"

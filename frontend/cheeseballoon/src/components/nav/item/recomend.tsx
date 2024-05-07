@@ -5,26 +5,45 @@ import RecomendCard from "src/components/nav/item/recomendCard";
 import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
 import { useState, useEffect } from "react";
-import useToggleState from "src/stores/store";
+import { useToggleState, RecommendState } from "src/stores/store";
 
 export default function Recomend() {
   const { value } = useToggleState();
-  const [data, setData] = useState([]);
+  const { data, setData, lastFetchTime, setLastFetchTime } = RecommendState();
   const [toggle2, setToggle] = useState(false);
+
   const switchToggle = () => {
     setToggle(!toggle2);
   };
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_LIVE_API}?offset=1&limit=15`
-      );
-      const responseData = await response.json();
-      setData(responseData.data);
+      const currentTime = new Date().getTime();
+      const localData = JSON.parse(
+        localStorage.getItem("recomend-state") ||
+          '{"state": {"data": [], "lastFetchTime": null}}'
+      ).state;
+
+      if (
+        !localData ||
+        !localData.data ||
+        !localData.lastFetchTime ||
+        currentTime - localData.lastFetchTime >= 600000
+      ) {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_LIVE_API}?offset=1&limit=15`
+        );
+        const responseData = await response.json();
+        const fetchedData = responseData.data;
+
+        setData(fetchedData);
+        setLastFetchTime(currentTime);
+      } else {
+        setData(localData.data);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [setData, setLastFetchTime]);
 
   const visibleData = data.slice(0, 5);
   const hiddenData = data.slice(5, 15);
@@ -41,8 +60,8 @@ export default function Recomend() {
       ))}
       {toggle2 && (
         <>
-          {hiddenData.map((item) => (
-            <div key={item}>
+          {hiddenData.map((item, index1) => (
+            <div key={index1}>
               <RecomendCard data={item} />
             </div>
           ))}

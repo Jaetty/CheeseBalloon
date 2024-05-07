@@ -1,7 +1,7 @@
 "use client";
 
 import style from "src/containers/ranking/rankingIndex.module.scss";
-import DaySelect from "src/components/ranking/dayselect";
+import DaySelect from "@/src/components/ranking/dayselect";
 import PlatformSelect from "src/components/ranking/platformselect";
 import { useState, useEffect, useMemo } from "react";
 import RankingIndex from "src/components/ranking/rankingIndex";
@@ -9,7 +9,7 @@ import { RankingData } from "src/types/type";
 
 export default function Ranking() {
   const [date, setDate] = useState(1);
-  const [platform, setPlatform] = useState("option1");
+  const [platform, setPlatform] = useState("T");
   const title = useMemo(
     () => [
       "팔로워 수",
@@ -30,13 +30,13 @@ export default function Ranking() {
     let url;
     switch (rankingTitle) {
       case "팔로워 수":
-        url = `${process.env.NEXT_PUBLIC_LIVE_API}?offset=1&limit=10&date=${selectedDate}&platform=${selectedPlatform}`;
+        url = `${process.env.NEXT_PUBLIC_FOLLOW_RANK}?date=${selectedDate}&platform=${selectedPlatform}`;
         break;
       case "평균 시청자 수":
-        url = `${process.env.NEXT_PUBLIC_LIVE_API}?offset=2&limit=10&date=${selectedDate}&platform=${selectedPlatform}`;
+        url = `${process.env.NEXT_PUBLIC_AVG_RANK}?date=${selectedDate}&platform=${selectedPlatform}`;
         break;
       case "최고 시청자 수":
-        url = `${process.env.NEXT_PUBLIC_LIVE_API}?offset=3&limit=10&date=${selectedDate}&platform=${selectedPlatform}`;
+        url = `${process.env.NEXT_PUBLIC_TOPVIEW_RANK}?date=${selectedDate}&platform=${selectedPlatform}`;
         break;
       case "총 방송시간":
         url = `${process.env.NEXT_PUBLIC_LIVE_API}?offset=4&limit=10&date=${selectedDate}&platform=${selectedPlatform}`;
@@ -71,7 +71,8 @@ export default function Ranking() {
     title.forEach((titleItem) => {
       fetchRankingData(titleItem, date, platform);
     });
-  }, [date, platform, title]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date, platform]);
 
   const chunkSize = 3;
   const chunks = [];
@@ -97,7 +98,7 @@ export default function Ranking() {
               <RankingIndex
                 key={titleItem}
                 title={titleItem}
-                data={rankingData[titleItem]?.data}
+                data={rankingData[titleItem]?.data.slice(0, 10)}
               />
             ))}
           </div>

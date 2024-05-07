@@ -4,7 +4,7 @@ import live from "public/svgs/live.svg";
 import ranking from "public/svgs/rank.svg";
 import Link from "next/link";
 import style from "src/components/nav/item/shorcut.module.scss";
-import useToggleState from "src/stores/store";
+import { useToggleState } from "src/stores/store";
 
 export default function Shortcut() {
   const { value } = useToggleState();

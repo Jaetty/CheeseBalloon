@@ -1,21 +1,72 @@
 "use client";
 
 import style from "src/containers/ranking/rankingIndex.module.scss";
-import DaySelect from "src/components/ranking/dayselect";
+import DaySelect from "@/src/components/ranking/dayselect";
 import PlatformSelect from "src/components/ranking/platformselect";
-import Subrank from "src/components/ranking/subrank";
-import SubrankAll from "src/components/ranking/subrankAll";
+import TopThreeRanking from "src/components/ranking/TopThreeRank";
+import RestRanking from "src/components/ranking/RestRanking";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { SubRankingData } from "src/types/type";
+import {
+  FollowRankData,
+  AvgRankData,
+  TopviewRankData,
+  TimeRankData,
+  RatingRankData,
+  LiveRankData,
+} from "src/types/type";
+
+type RankingData = {
+  streamerId: number;
+  profileUrl: string;
+  name: string;
+  platform: string;
+  diff: number;
+  value: string;
+};
+
+function transformFollowData(data: FollowRankData[]): RankingData[] {
+  return data.map((item) => ({
+    streamerId: item.streamerId,
+    profileUrl: item.profileUrl,
+    name: item.name,
+    platform: item.platform,
+    diff: item.diff,
+    value: `${item.follower.toLocaleString()} 명`,
+  }));
+}
+
+function transformTopviewData(data: TopviewRankData[]): RankingData[] {
+  return data.map((item) => ({
+    streamerId: item.streamerId,
+    profileUrl: item.profileUrl,
+    name: item.name,
+    platform: item.platform,
+    diff: item.diff,
+    value: `${item.topViewer.toLocaleString()} 명`,
+  }));
+}
+
+function transformAvgData(data: AvgRankData[]): RankingData[] {
+  return data.map((item) => ({
+    streamerId: item.streamerId,
+    profileUrl: item.profileUrl,
+    name: item.name,
+    platform: item.platform,
+    diff: item.diff,
+    value: `${item.averageViewer.toLocaleString()} 명`,
+  }));
+}
 
 export default function Ranking() {
   const [date, setDate] = useState(1);
-  const [platform, setPlatform] = useState("option1");
+  const [platform, setPlatform] = useState("T");
   const [num, setNum] = useState(1);
-  const [data, setData] = useState<SubRankingData>();
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<RankingData[] | undefined>();
   const [allDataLoaded, setAllDataLoaded] = useState(false);
+  const [subrankAllData, setSubRankAllData] = useState<
+    RankingData[] | undefined
+  >();
   const pathname = usePathname()?.split("/").pop() || "";
   const mapping: Record<string, string> = {
     follow: "팔로워 수",
@@ -27,13 +78,12 @@ export default function Ranking() {
   };
 
   const observer = useRef<IntersectionObserver | null>(null);
-  const subrankData = data && data.data?.slice(0, 3);
-  const subrankAllData = data && data.data?.slice(3);
+  const subrankData = data?.slice(0, 3);
 
   useEffect(() => {
     const handleObserver = (entities: IntersectionObserverEntry[]) => {
       const target = entities[0];
-      if (target.isIntersecting && !loading && !allDataLoaded) {
+      if (target.isIntersecting && !allDataLoaded) {
         setNum((prevNum) => prevNum + 1);
       }
     };
@@ -48,40 +98,58 @@ export default function Ranking() {
         observer.current.disconnect();
       }
     };
-  }, [subrankAllData, loading, allDataLoaded]);
+  }, [subrankAllData, allDataLoaded]);
 
   const fetchData = async () => {
-    setLoading(true);
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_LIVE_API}?offset=${num}&limit=15&date=${date}&platform=${platform}`
-    );
-    const newData = await response.json();
-    if (
-      newData.data.length === 0 ||
-      (data?.data.length && data.data.length >= 300)
-    ) {
-      setAllDataLoaded(true);
-    } else {
-      setData((prevData) => {
-        if (prevData) {
-          return {
-            ...prevData,
-            data: [...prevData.data, ...newData.data],
-          };
-        }
-        return {
-          data: newData.data,
-          status: newData.status,
-          message: newData.message,
-        };
-      });
+    let apiUrl;
+    switch (pathname) {
+      case "follow":
+        apiUrl = process.env.NEXT_PUBLIC_FOLLOW_RANK;
+        break;
+      case "average":
+        apiUrl = process.env.NEXT_PUBLIC_AVG_RANK;
+        break;
+      case "topview":
+        apiUrl = process.env.NEXT_PUBLIC_TOPVIEW_RANK;
+        break;
+      default:
+        apiUrl = process.env.NEXT_PUBLIC_AVG_RANK;
+        break;
     }
-    setLoading(false);
+    const response = await fetch(`${apiUrl}?date=${date}&platform=${platform}`);
+    const newData = await response.json();
+    let transformedData: RankingData[];
+    switch (pathname) {
+      case "follow":
+        transformedData = transformFollowData(newData.data);
+        break;
+      case "topview":
+        transformedData = transformTopviewData(newData.data);
+        break;
+      default:
+        transformedData = transformAvgData(newData.data);
+        break;
+    }
+
+    setData(transformedData);
+    setNum(1);
   };
 
   useEffect(() => {
     fetchData();
-  }, [date, platform, num]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date, platform]);
+
+  useEffect(() => {
+    if (num === 1 && data) {
+      setSubRankAllData(data?.slice(3, 15));
+    } else if (num > 1 && data) {
+      const maxDataLength = 300;
+      const newDataSliceEnd = Math.min(15 + num * 15, maxDataLength);
+      const newDataSlice = data?.slice(3, newDataSliceEnd);
+      setSubRankAllData(newDataSlice);
+    }
+  }, [num, data]);
 
   return (
     <div className={style.ranking}>
@@ -90,8 +158,8 @@ export default function Ranking() {
         <DaySelect setDate={setDate} />
         <PlatformSelect setPlatform={setPlatform} />
       </div>
-      <Subrank data={subrankData} title={mapping[pathname]} />
-      <SubrankAll data={subrankAllData} title={mapping[pathname]} />
+      <TopThreeRanking data={subrankData as RankingData[]} />
+      <RestRanking data={subrankAllData as RankingData[]} />
       {allDataLoaded && <p className={style.DataLoaded}></p>}
       <div id="bottom" style={{ height: "1px" }} />
     </div>

@@ -2,32 +2,41 @@
 
 import styles from "src/components/nav/item/favorite.module.scss";
 import FavCard from "src/components/nav/item/favcard";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
-import useToggleState from "src/stores/store";
+import { useToggleState, FavState } from "src/stores/store";
 import { useState, useEffect } from "react";
 
 export default function Fav() {
   const { value } = useToggleState();
-  const [data, setData] = useState([]);
+  const { data: favData, setData: setFavData } = FavState();
   const [toggle1, setToggle] = useState(false);
   const switchToggle = () => {
     setToggle(!toggle1);
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_LIVE_API}?offset=10&limit=20`
-      );
-      const responseData = await response.json();
-      setData(responseData.data);
-    };
 
-    fetchData();
+  const fetchData = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_LIVE_API}?offset=10&limit=20`
+    );
+    const responseData = await response.json();
+    setFavData(responseData.data);
+  };
+
+  useEffect(() => {
+    const localFavData = JSON.parse(
+      localStorage.getItem("fav-state") || '{"state": {"data": []}}'
+    ).state.data;
+    if (localFavData.length === 0) {
+      fetchData();
+    } else {
+      setFavData(localFavData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const visibleData = data.slice(0, 5);
-  const hiddenData = data.slice(5, 15);
+  const visibleData = favData.slice(0, 5);
+  const hiddenData = favData.slice(5, 15);
 
   return (
     <div>
@@ -42,8 +51,8 @@ export default function Fav() {
             ))}
             {toggle1 && (
               <>
-                {hiddenData.map((item) => (
-                  <div key={item}>
+                {hiddenData.map((item, index1) => (
+                  <div key={index1}>
                     <FavCard data={item} />
                   </div>
                 ))}
@@ -87,8 +96,8 @@ export default function Fav() {
             ))}
             {toggle1 && (
               <>
-                {hiddenData.map((item) => (
-                  <div key={item}>
+                {hiddenData.map((item, index1) => (
+                  <div key={index1}>
                     <FavCard data={item} />
                   </div>
                 ))}
