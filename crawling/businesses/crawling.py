@@ -55,6 +55,8 @@ class CrawlingBusiness:
 
                 if not StreamerService().is_streamer(db=db, origin_id=streamer_info.origin_id):
                     # print("스트리머 데이터 넣기")
+                    if streamer_info.profile_url is None:
+                        streamer_info.profile_url = "default"
                     streamer = StreamerCreate(
                         origin_id=streamer_info.origin_id,
                         name=streamer_info.name,
