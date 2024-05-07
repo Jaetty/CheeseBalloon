@@ -5,12 +5,22 @@ from schemas.streamers import StreamerRead
 
 import httpx
 
+
 class Chzzk:
     async def init_live(self):
         async with httpx.AsyncClient() as client:
             headers = {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                              "Chrome/123.0.0.0 Safari/537.36"
+                              "Chrome/123.0.0.0 Safari/537.36",
+                "Cookie": "NID_AUT=I58Oif+3Btp/hYwcTgTlJAXgMWfkYspueOc2OmZoHaEFtMBaD2xxzTpKAbTEngm/;" +
+                          "NID_SES=AAABtMwu8y9tY3HFKfSjls8xog+irUnRjolMWKVo1oBUxL/sBFwrJ1G8zP4cdS9Bp" +
+                          "oqQbAkZa84I7oaD4LnxM3re2P5m38r4KNgc5PmWzYxEqrpZy0Q5RJ+qR6mJaUErEdkXS6GQNZYMNSot" +
+                          "BIQeze0/dW9mB/rPEqQXqzmka9I8qb7gOBsTul1sEn+AGYxBvtPUZ37jQrH6HVmP7oNWbYfYgoW6JNZ8FZ" +
+                          "XgRICIws+7iAi2os4dny6FXO3epC/x+wc+haIlE+CMalMNSs4ZbfwK/4BzdWssbD9O8SOpxKCZAFrisgoWaj9" +
+                          "9ZwtCwd3m3P6hMl7mYQ004XhTUTIcY+1EWOwPNj+zay4AdE+GMNAmYCdmKCsUnUSLEIvVXHkhKWr9cz0w99J" +
+                          "suGliyG7ETAJsZSwF6pGncDsL608pw7o3/O7gzfK17hQLqAEpUpOdZ0EHoFPseMwUv6sUHwQuBqUTmHV9jqC" +
+                          "QZ3GpjQ9KefjgwlK3rDGbnAo8akseBS52QMh6eTBZTRpov05fkdpkgB0ItYMkp0ExpLzYWSxyfCd+aT0YlG2t" +
+                          "Hit2IgkWvyU4qCukdyEULnAaO/Z1Tg3mCu+emoU=;"
             }
             res = await client.get('https://api.chzzk.naver.com/service/v1/lives?size=50&sortType=POPULAR',
                                    headers=headers)
@@ -20,7 +30,16 @@ class Chzzk:
         async with httpx.AsyncClient() as client:
             headers = {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
-                              "Chrome/123.0.0.0 Safari/537.36"
+                              "Chrome/123.0.0.0 Safari/537.36",
+                "Cookie": "NID_AUT=I58Oif+3Btp/hYwcTgTlJAXgMWfkYspueOc2OmZoHaEFtMBaD2xxzTpKAbTEngm/;" +
+                          "NID_SES=AAABtMwu8y9tY3HFKfSjls8xog+irUnRjolMWKVo1oBUxL/sBFwrJ1G8zP4cdS9Bp" +
+                          "oqQbAkZa84I7oaD4LnxM3re2P5m38r4KNgc5PmWzYxEqrpZy0Q5RJ+qR6mJaUErEdkXS6GQNZYMNSot" +
+                          "BIQeze0/dW9mB/rPEqQXqzmka9I8qb7gOBsTul1sEn+AGYxBvtPUZ37jQrH6HVmP7oNWbYfYgoW6JNZ8FZ" +
+                          "XgRICIws+7iAi2os4dny6FXO3epC/x+wc+haIlE+CMalMNSs4ZbfwK/4BzdWssbD9O8SOpxKCZAFrisgoWaj9" +
+                          "9ZwtCwd3m3P6hMl7mYQ004XhTUTIcY+1EWOwPNj+zay4AdE+GMNAmYCdmKCsUnUSLEIvVXHkhKWr9cz0w99J" +
+                          "suGliyG7ETAJsZSwF6pGncDsL608pw7o3/O7gzfK17hQLqAEpUpOdZ0EHoFPseMwUv6sUHwQuBqUTmHV9jqC" +
+                          "QZ3GpjQ9KefjgwlK3rDGbnAo8akseBS52QMh6eTBZTRpov05fkdpkgB0ItYMkp0ExpLzYWSxyfCd+aT0YlG2t" +
+                          "Hit2IgkWvyU4qCukdyEULnAaO/Z1Tg3mCu+emoU=;"
             }
 
             res = await client.get(f'https://api.chzzk.naver.com/service/v1/lives?' +
@@ -96,7 +115,7 @@ class Chzzk:
 
         streamers_list = list(streamers_dict.values())
         # print(tabulate(streamers_list, headers=["origin_id", "name", "profile_url", "channel_url", "platform", "stream_url", "live_origin_id", "thumbnail_url", "category", "title", "viewer_cnt"]))
-        # print(streamers_list)
+        print(streamers_list)
         print("치지직 크롤링을 끝냅니다.")
         return streamers_list
 
