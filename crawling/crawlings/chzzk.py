@@ -115,7 +115,7 @@ class Chzzk:
 
         streamers_list = list(streamers_dict.values())
         # print(tabulate(streamers_list, headers=["origin_id", "name", "profile_url", "channel_url", "platform", "stream_url", "live_origin_id", "thumbnail_url", "category", "title", "viewer_cnt"]))
-        print(streamers_list)
+        # print(streamers_list)
         print("치지직 크롤링을 끝냅니다.")
         return streamers_list
 
