@@ -6,7 +6,7 @@ interface PlatformSelectProps {
 }
 
 export default function PlatformSelect({ setPlatform }: PlatformSelectProps) {
-  const [selectedOption, setSelectedOption] = useState("option1");
+  const [selectedOption, setSelectedOption] = useState("T");
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
@@ -20,9 +20,9 @@ export default function PlatformSelect({ setPlatform }: PlatformSelectProps) {
         onChange={handleSelectChange}
         className={style.platformselect}
       >
-        <option value="option1">전체 랭킹</option>
-        <option value="option2">아프리카TV 랭킹</option>
-        <option value="option3">치지직 랭킹</option>
+        <option value="T">전체 랭킹</option>
+        <option value="S">아프리카TV 랭킹</option>
+        <option value="C">치지직 랭킹</option>
       </select>
     </div>
   );
