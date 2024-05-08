@@ -24,7 +24,8 @@ from crawlings.chzzk import Chzzk
 
 class CrawlingBusiness:
     async def crawling(self, db: Session):
-        logger.info("크롤링 시작 : " + str(datetime.datetime.now()))
+        logger.info("크롤링 시작합니다.")
+        start_time = datetime.datetime.now()
         try:
             streamers_list = []
             live_id_list = []
@@ -103,12 +104,13 @@ class CrawlingBusiness:
 
         except Exception as e:
             logger.error(e)
-
-        logger.info("크롤링 완료 : " + str(datetime.datetime.now()))
+        end_time = datetime.datetime.now()
+        logger.info("크롤링 완료되었습니다. 소요 시간 : " + str(end_time - start_time))
         return {"result": "good"}
 
     async def follow_crawling(self, db: Session):
-        logger.info("팔로우 크롤링 시작 : " + str(datetime.datetime.now()))
+        logger.info("팔로우 크롤링 시작합니다.")
+        start_time = datetime.datetime.now()
         try:
             soop_streamers = StreamerService().get_streamers_per_platform(db=db, platform="S")
             chzzk_streamers = StreamerService().get_streamers_per_platform(db=db, platform="C")
@@ -125,6 +127,7 @@ class CrawlingBusiness:
             # print(chzzk_followers)
         except Exception as e:
             print(e)
+        end_time = datetime.datetime.now()
+        logger.info("팔로우 크롤링 완료되었습니다. 소요 시간 : " + str(end_time - start_time))
 
-        logger.info("팔로우 크롤링 완료 : " + str(datetime.datetime.now()))
         return {"result": "good"}
