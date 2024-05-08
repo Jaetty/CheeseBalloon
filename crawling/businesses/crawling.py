@@ -119,14 +119,12 @@ class CrawlingBusiness:
             followers_list = []
             followers_list.extend(soop_followers)
             followers_list.extend(chzzk_followers)
-            # List[StreamerLogCreate] = soop_followers.extend(chzzk_followers)
 
             for f in followers_list:
-                # print("넣을게")
                 StreamerLogService().create(db=db, follower=f.follower, streamer_id=f.streamer_id)
-            # print(chzzk_followers)
+
         except Exception as e:
-            print(e)
+            logger.info(e)
         end_time = datetime.datetime.now()
         logger.info("팔로우 크롤링 완료되었습니다. 소요 시간 : " + str(end_time - start_time))
 

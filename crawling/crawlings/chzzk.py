@@ -136,9 +136,8 @@ class Chzzk:
         streamer_follower_list = []
         logger.info("치지직 팔로우 크롤링 시작합니다.")
         for s in streamers:
+            # print(s.origin_id)
             res = await self.follower(s.origin_id)
-            # print(s.name)
-            # print("아싸" + str(res['content']['channelName']))
             follower_text = res['content']['followerCount']
             follower_cnt = int(follower_text)
 
