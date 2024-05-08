@@ -19,13 +19,10 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 # app.include_router(users.router)
 
-# scheduler = AsyncIOScheduler(timezone='Asia/Seoul')  # 백그라운드로 실행하기 위해 선언
-# scheduler.start()
-
-@app.on_event("startup")
-async def startup_scheduler(db: Session = Depends(get_db)):
-    Scheduler().start(db=db)
-    Scheduler().follower_start(db=db)
+# @app.on_event("startup")
+# async def startup_scheduler(db: Session = Depends(get_db)):
+#     Scheduler().start(db=db)
+#     Scheduler().follower_start(db=db)
 
 
 @app.get("/")

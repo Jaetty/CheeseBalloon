@@ -16,7 +16,8 @@ class Scheduler:
     follower_scheduler.start()
 
     async def crawling(self, db: Session):
-        return await CrawlingBusiness().crawling(db=db)
+        await CrawlingBusiness().crawling(db=db)
+        return {"crawling": "good"}
 
     def start(self, db: Session):
 

@@ -29,11 +29,8 @@ class CrawlingBusiness:
             streamers_list = []
             live_id_list = []
             # 아
-            streamers_list = Soop().soop()
-            # print("아")
+            streamers_list.extend(Soop().soop())
             streamers_list.extend(await Chzzk().chzzk())
-            # print("후")
-            # streamer_list = await Chzzk().chzzk()
 
             cycle = CycleLogCreate(
                 afreeca_viewer_cnt=sum(item.viewer_cnt for item in streamers_list if item.platform == "S"),
@@ -109,7 +106,7 @@ class CrawlingBusiness:
         return {"result": "good"}
 
     async def follow_crawling(self, db: Session):
-        logger.info("팔로우 크롤링 완료 : " + str(datetime.datetime.now()))
+        logger.info("팔로우 크롤링 시작 : " + str(datetime.datetime.now()))
         try:
             soop_streamers = StreamerService().get_streamers_per_platform(db=db, platform="S")
             chzzk_streamers = StreamerService().get_streamers_per_platform(db=db, platform="C")
