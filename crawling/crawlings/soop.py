@@ -8,10 +8,9 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 from schemas.streamer_info import StreamerInfo
 
+from loguru import logger
 from typing import List
-from datetime import datetime
 import re
-import urllib.parse
 
 from schemas.streamer_logs import StreamerLogCreate
 from schemas.streamers import StreamerRead
@@ -37,7 +36,7 @@ class Soop:
         # ChromeDriver 경로 설정
         # chrome_driver_path = '/usr/bin/chromedriver'  # ChromeDriver가 설치된 경로
         # Chrome 옵션 설정
-        print("아프리카 크롤링을 시작합니다.")
+        logger.info("아프리카 크롤링을 시작합니다.")
         chrome_options = Options()
         chrome_options.add_argument("headless")  # 헤드리스 모드 활성화
         chrome_options.add_argument("--disable-gpu")  # GPU 가속 비활성화 (일부 시스템에서 필요)
@@ -99,7 +98,7 @@ class Soop:
                     streamer_thumbnail = live_url.get_attribute('src')
 
                 except NoSuchElementException:
-                    print("썸네일 없다!")
+                    logger.info("썸네일 없다!")
                 # thumbnail = item.find_element(By.CLASS_NAME, "thumbs-box")
                 #
                 # live_url = thumbnail.find_element(By.TAG_NAME, "img")
@@ -112,7 +111,7 @@ class Soop:
                     streamer_channel = streamer_url.get_attribute('href')
 
                 except NoSuchElementException:
-                    print("방송인 채널 url 없다!!")
+                    logger.info("방송인 채널 url 없다!!")
 
                 # streamer_url = item.find_element(By.CLASS_NAME, "thumb")
                 # streamer_channel = streamer_url.get_attribute('href')
@@ -153,7 +152,7 @@ class Soop:
                     live_btn.click()
                 except TimeoutException:
                     # 버튼이 지정된 시간 내에 나타나지 않으면 실행을 계속
-                    print("클릭할 수 없습니다.")
+                    logger.info("클릭할 수 없습니다.")
 
                 try:
                     WebDriverWait(driver, 5).until(
@@ -165,7 +164,7 @@ class Soop:
                     # print("모든 정보가 나타났습니다.")
 
                 except TimeoutException:
-                    print("새 탭을 닫습니다.")
+                    logger.info("새 탭을 닫습니다.")
                     driver.close()  # 새 탭 닫기
                     driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
                     continue
@@ -182,7 +181,7 @@ class Soop:
                     category = detail_view[1].find_element(By.TAG_NAME, "span").text.strip()
 
                 except NoSuchElementException:
-                    print("없다!")
+                    logger.info("없다!")
 
                 streamer_profile = driver.find_element(By.XPATH,
                                                        ".//*[@id='player_area']/div[2]/div[1]/a/img").get_attribute(
@@ -221,21 +220,21 @@ class Soop:
             driver.quit()
 
         except Exception as e:
-            print(e)
+            logger.error(e)
 
         # print(streamer_list)
-        print("아프리카 크롤링을 끝냅니다.")
+        logger.info("아프리카 크롤링을 끝냅니다.")
         # print("예이에에에ㅔ")
         return streamer_list
 
     async def soop_follower(self, streamers: List[StreamerRead]):
 
         streamer_follower_list = []
-        print("아프리카 팔로우 크롤링 시작합니다.")
+        logger.info("아프리카 팔로우 크롤링 시작합니다.")
         for s in streamers:
             res = await self.follower(s.origin_id)
             if 'station' not in res:
-                print("밴 먹은 유저 입니다.")
+                logger.info("밴 먹은 유저 입니다.")
                 continue
             follower_text = res['station']['upd']['fan_cnt']
             follower_cnt = int(follower_text)
@@ -245,60 +244,6 @@ class Soop:
                 follower=follower_cnt
             ))
 
-        # Chrome 옵션 설정
-        # print("아프리카 팔로우 크롤링을 시작합니다.")
-        # chrome_options = Options()
-        # chrome_options.add_argument("headless")  # 헤드리스 모드 활성화
-        # chrome_options.add_argument("--disable-gpu")  # GPU 가속 비활성화 (일부 시스템에서 필요)
-        # chrome_options.add_argument("--no-sandbox")  # 샌드박스 비활성화
-        # # chrome_options.add_argument('--ignore-certificate-errors')  # 인증서 오류 무시
-        # # chrome_options.add_argument('--allow-running-insecure-content')  # 보안되지 않은 콘텐츠 허용
-        #
-        # # # 시청자 수를 저장할 리스트 초기화
-        # streamer_follower_list = []
-        # try:
-        #     # WebDriver 서비스 설정
-        #     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
-        #     driver.set_window_size(1920, 1080)
-        #     # 웹사이트 열기
-        #     driver.get('https://www.afreecatv.com/total_search.html?szSearchType=bj&szStype=di&szKeyword=&szVideoFileType=ALL&rs=1/')
-        #
-        #     # 페이지 로드를 기다리기 위한 대기 시간 설정
-        #     driver.implicitly_wait(3)
-        #
-        #     for s in streamers:
-        #         # 검색bar
-        #         search_bar = driver.find_element(By.XPATH, "//*[@id='szKeyword']")
-        #         search_bar.clear()
-        #         search_bar.send_keys(s.origin_id)
-        #
-        #         search_btn = driver.find_element(By.XPATH, "//*[@id='searchInputWrap']/button[2]")
-        #         search_btn.click()
-        #
-        #         # 페이지 로드를 기다리기 위한 대기 시간 설정
-        #         try:
-        #             # WebDriverWait(driver, 10).until(EC.url_contains(full_url))
-        #
-        #             follower_view = WebDriverWait(driver, 3).until(
-        #                 EC.visibility_of_element_located((By.XPATH, "//*[@id='profile_on']/div/div[2]/dl[1]/dd"))
-        #             )
-        #             follower_text = follower_view.text
-        #             follower_num = re.findall(r'\d+', follower_text)
-        #             follower_cnt = int(''.join(follower_num))
-        #             streamer_follower_list.append(StreamerLogCreate(
-        #                 streamer_id=s.streamer_id,
-        #                 follower=follower_cnt
-        #             ))
-        #         except TimeoutException:
-        #             # 버튼이 지정된 시간 내에 나타나지 않으면 실행을 계속
-        #             print(f'{s.name}의 팔로우 수가 뜨지 않습니다...')
-        #
-        #     # 브라우저 종료
-        #     driver.quit()
-        #
-        # except Exception as e:
-        #     print(e)
-
         # print(streamer_follower_list)
-        print("아프리카 팔로우 크롤링을 끝냅니다.")
+        logger.info("아프리카 팔로우 크롤링을 끝냅니다.")
         return streamer_follower_list

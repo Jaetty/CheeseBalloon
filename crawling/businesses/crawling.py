@@ -1,6 +1,6 @@
 import datetime
 from typing import List
-
+from loguru import logger
 from sqlalchemy.orm import Session
 
 from schemas.streamer_info import StreamerInfo
@@ -24,7 +24,7 @@ from crawlings.chzzk import Chzzk
 
 class CrawlingBusiness:
     async def crawling(self, db: Session):
-        print(datetime.datetime.now())
+        logger.info("크롤링 시작 : " + str(datetime.datetime.now()))
         try:
             streamers_list = []
             live_id_list = []
@@ -100,16 +100,16 @@ class CrawlingBusiness:
             if cycle_id != 0:
                 end_live_list = LiveLogService().get_end_live_id(db=db, cycle_log_id=cycle_id-1, live_list=live_id_list)
                 LiveService().update_is_live(db=db, live_list=end_live_list)
-                print("업데이트 완료")
+                logger.info("업데이트 완료")
 
         except Exception as e:
-            print(e)
+            logger.error(e)
 
-        print(datetime.datetime.now())
+        logger.info("크롤링 완료 : " + str(datetime.datetime.now()))
         return {"result": "good"}
 
     async def follow_crawling(self, db: Session):
-        print(datetime.datetime.now())
+        logger.info("팔로우 크롤링 완료 : " + str(datetime.datetime.now()))
         try:
             soop_streamers = StreamerService().get_streamers_per_platform(db=db, platform="S")
             chzzk_streamers = StreamerService().get_streamers_per_platform(db=db, platform="C")
@@ -127,5 +127,5 @@ class CrawlingBusiness:
         except Exception as e:
             print(e)
 
-        print(datetime.datetime.now())
+        logger.info("팔로우 크롤링 완료 : " + str(datetime.datetime.now()))
         return {"result": "good"}

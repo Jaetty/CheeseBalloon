@@ -2,7 +2,7 @@ from typing import List
 from schemas.streamer_info import StreamerInfo
 from schemas.streamer_logs import StreamerLogCreate
 from schemas.streamers import StreamerRead
-
+from loguru import logger
 import httpx
 
 
@@ -60,7 +60,7 @@ class Chzzk:
             return res.json()
 
     async def chzzk(self):
-        print("치지직 크롤링을 시작합니다.")
+        logger.info("치지직 크롤링을 시작합니다.")
         # StreamerInfo 객체 저장 딕셔너리 생성
         streamers_dict = {}
 
@@ -116,12 +116,12 @@ class Chzzk:
         streamers_list = list(streamers_dict.values())
         # print(tabulate(streamers_list, headers=["origin_id", "name", "profile_url", "channel_url", "platform", "stream_url", "live_origin_id", "thumbnail_url", "category", "title", "viewer_cnt"]))
         # print(streamers_list)
-        print("치지직 크롤링을 끝냅니다.")
+        logger.info("치지직 크롤링을 끝냅니다.")
         return streamers_list
 
     async def chzzk_follower(self, streamers: List[StreamerRead]):
         streamer_follower_list = []
-        print("치지직 팔로우 크롤링 시작합니다.")
+        logger.info("치지직 팔로우 크롤링 시작합니다.")
         for s in streamers:
             res = await self.follower(s.origin_id)
             # print(s.name)
@@ -133,6 +133,6 @@ class Chzzk:
                 streamer_id=s.streamer_id,
                 follower=follower_cnt
             ))
-        print("치지직 팔로우 크롤링 끝냅니다.")
+        logger.info("치지직 팔로우 크롤링 끝냅니다.")
         # print(streamer_follower_list)
         return streamer_follower_list
