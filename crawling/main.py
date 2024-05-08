@@ -1,26 +1,18 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
 from config.database import engine, Base, get_db
-from businesses.streamers import StreamerBusiness
 from businesses.crawling import CrawlingBusiness
 from schedulers.crawlers import Scheduler
-from schemas.streamers import StreamerCreate, StreamerRead
-from models.streamer_logs import StreamerLog
-from schemas.streamer_logs import StreamerLogCreate, StreamerLogRead
-from crawling import Crawling
 from crawlings.soop import Soop
 from crawlings.chzzk import Chzzk
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-# from controllers import users
-
 
 Base.metadata.create_all(bind=engine)
-
 app = FastAPI()
 # app.include_router(users.router)
 
 @app.on_event("startup")
-async def startup_scheduler(db: Session = Depends(get_db)):
+async def startup_scheduler():
+    db = next(get_db())
     Scheduler().start(db=db)
     Scheduler().follower_start(db=db)
 
