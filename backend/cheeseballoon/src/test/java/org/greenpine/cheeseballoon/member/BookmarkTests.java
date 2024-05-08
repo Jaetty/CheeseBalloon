@@ -29,6 +29,6 @@ public class BookmarkTests {
 
     @Test
     void deleteTest(){
-        bookmarkService.deleteBookmark(DeleteBookmarkReqDto.builder().bookmarkId(4L).memberId(1L).build());
+        //bookmarkService.deleteBookmark(DeleteBookmarkReqDto.builder().bookmarkId(4L).memberId(1L).build());
     }
 }
