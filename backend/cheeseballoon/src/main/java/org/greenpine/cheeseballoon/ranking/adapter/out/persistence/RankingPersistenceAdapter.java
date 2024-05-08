@@ -5,6 +5,7 @@ import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankResDtoInterface;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindRatingRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.domain.DateValue;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerRepository;
@@ -78,6 +79,26 @@ public class RankingPersistenceAdapter implements RankingPort {
         else{
             ret[0] = liveRepository.findFollowerRankingByPlatform(dates[0], dates[1], platform, memberId);
             ret[1] = liveRepository.findFollowerRankingByPlatform(dates[2], dates[3], platform, memberId);
+        }
+
+        return ret;
+    }
+
+    @Override
+    public List<FindRatingRankResDtoInterface>[] findRatingRanking(int date, char platform, long memberId) {
+
+        LocalDateTime[] dates = dateValue.getSpecificPeriod(date);
+
+        List<FindRatingRankResDtoInterface>[] ret = new List[2];
+
+        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
+        if(platform=='T'){
+            ret[0] = liveRepository.findRatingRanking(dates[0], dates[1], memberId);
+            ret[1] = liveRepository.findRatingRanking(dates[2], dates[3], memberId);
+        }
+        else{
+            ret[0] = liveRepository.findRatingRankingByPlatform(dates[0], dates[1], platform, memberId);
+            ret[1] = liveRepository.findRatingRankingByPlatform(dates[2], dates[3], platform, memberId);
         }
 
         return ret;
