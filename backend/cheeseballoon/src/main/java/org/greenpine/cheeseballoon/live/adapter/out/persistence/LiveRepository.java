@@ -71,7 +71,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
     List<FindTopViewerRankResDtoInterface> findTopViewerRankingByPlatform(LocalDateTime beforeDay, LocalDateTime today, char platform, Long memberId);
 
     // 팔로워 랭킹 조회
-    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY r.follower DESC, r.name ASC) AS rank, case when b.bookmark_id IS NOT NULL then 'TRUE' ELSE 'FALSE' END AS bookmark, r.streamer_id AS streamerId, r.name, r.profile_url AS profileUrl, r.platform, r.follower\n" +
+    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY r.follower DESC, r.name ASC) AS rank, case when b.bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark, r.streamer_id AS streamerId, r.name, r.profile_url AS profileUrl, r.platform, r.follower\n" +
             "FROM (SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
             "right outer JOIN (SELECT s.streamer_id, s.name, s.profile_url, s.platform, sl.follower FROM streamers  AS s,\n" +
             "(SELECT streamer_id, follower FROM streamer_logs WHERE reg_dt BETWEEN :beforeDay AND :today GROUP BY streamer_id ORDER BY follower DESC) AS sl\n" +
@@ -81,7 +81,7 @@ public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
     List<FindFollowerRankResDtoInterface> findFollowerRanking(LocalDateTime beforeDay, LocalDateTime today, Long memberId);
 
     // 팔로워 랭킹 플랫폼 포함 조회
-    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY r.follower DESC, r.name ASC) AS rank, case when b.bookmark_id IS NOT NULL then 'TRUE' ELSE 'FALSE' END AS bookmark, r.streamer_id AS streamerId, r.name, r.profile_url AS profileUrl, r.platform, r.follower\n" +
+    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY r.follower DESC, r.name ASC) AS rank, case when b.bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark, r.streamer_id AS streamerId, r.name, r.profile_url AS profileUrl, r.platform, r.follower\n" +
             "FROM (SELECT * FROM bookmarks WHERE member_id = :memberId) AS b\n" +
             "right outer JOIN (SELECT s.streamer_id, s.name, s.profile_url, s.platform, sl.follower FROM streamers  AS s,\n" +
             "(SELECT streamer_id, follower FROM streamer_logs WHERE reg_dt BETWEEN :beforeDay AND :today GROUP BY streamer_id ORDER BY follower DESC) AS sl\n" +
