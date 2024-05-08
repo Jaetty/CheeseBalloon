@@ -1,5 +1,6 @@
 package org.greenpine.cheeseballoon.member.application.port.in.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
