@@ -16,10 +16,7 @@ class Scheduler:
     follower_scheduler.start()
 
     async def crawling(self, db: Session):
-        print("크롤링을 시작합니다.")
-        await CrawlingBusiness().crawling(db=db)
-        print("크롤링을 완료헀습니다.")
-        return {"result": "good"}
+        return await CrawlingBusiness().crawling(db=db)
 
     def start(self, db: Session):
 
@@ -45,8 +42,9 @@ class Scheduler:
             CrawlingBusiness().follow_crawling,
             # trigger=IntervalTrigger(seconds=30),
             # trigger=IntervalTrigger(seconds=600, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
-            trigger=CronTrigger(hour=0, minute=0),
+            trigger=CronTrigger(hour=10, minute=0),
             misfire_grace_time=None,
+            max_instances=5,
             id='follower_start',
             args=(db,)
         )
