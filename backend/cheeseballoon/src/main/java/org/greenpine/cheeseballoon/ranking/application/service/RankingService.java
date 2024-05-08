@@ -21,6 +21,8 @@ public class RankingService implements RankingUsecase {
     private final RankingPort rankingPort;
     private final RankDiffDomain rankDiffDomain;
 
+    /* !!!!! 도메인 리펙토링이 필요함 !!!!! */
+
     // 평균 시청자 수 랭킹 DTO 리턴
     @Override
     public List<FindAvgViewerRankingResDto> findAvgViewerRanking(int date, char platform, long memberId) {
@@ -180,6 +182,68 @@ public class RankingService implements RankingUsecase {
         }
 
         for(FindFollowerRankingResDto val : ret){
+            val.setRankDiff(rank_diff.get(val.getStreamerId()));
+            val.setDiff(diff.get(val.getStreamerId()));
+        }
+
+
+        return ret;
+    }
+
+    // 시청률 랭킹 서비스
+    @Override
+    public List<FindRatingRankingResDto> findRatingRanking(int date, char platform, long memberId) {
+
+        List<FindRatingRankResDtoInterface>[] res = rankingPort.findRatingRanking(date, platform, memberId);
+
+        List<FindRatingRankingResDto> ret = new ArrayList<>();
+
+        Map<Long, Integer> rank_diff = new HashMap<>();
+        Map<Long, Double> diff = new HashMap<>();
+
+        // 특정 기간의 값을 기준으로 DTO를 세팅해줌
+        for(FindRatingRankResDtoInterface val : res[0]){
+
+            // hashmap에 각 스트리머의 고유 아이디 값과 랭킹 값을 기준으로 몇 위 상승했는지 넣어줌
+            // MAX_RANK의 값이 300이고 순위가 1등이면 랭킹 값은 300 + 1 - 1 = 300위 상승이라는 뜻
+            rank_diff.put(val.getStreamerId(), (MAX_RANK+1) - val.getRank());
+            diff.put(val.getStreamerId(), val.getRating());
+
+            ret.add(FindRatingRankingResDto.builder()
+                    .streamerId(val.getStreamerId())
+                    .name(val.getName())
+                    .rank(val.getRank())
+                    .platform(val.getPlatform())
+                    .profileUrl(val.getProfileUrl())
+                    .rating(val.getRating())
+                    .bookmark(val.getBookmark())
+                    .build());
+        }
+
+        // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
+        if(res[1]!=null){
+
+            for(FindRatingRankResDtoInterface val : res[1]){
+                // 이전 기간의 데이터가 있다면 수행
+                if(rank_diff.containsKey(val.getStreamerId())){
+                    long s_id = val.getStreamerId();
+                    int curr_rank = (MAX_RANK+1) - rank_diff.get(s_id);
+                    double view_diff = diff.get(s_id);
+
+                    if(val.getRank() >= curr_rank){
+                        rank_diff.put(s_id, val.getRank() - curr_rank);
+                    }else{
+                        rank_diff.put(s_id, -(curr_rank - val.getRank()));
+                    }
+
+                    // 시청자 diff 값 계산
+                    diff.put(s_id, view_diff >= val.getRating() ? Math.round(view_diff - val.getRating() * 100) / 100.0 : -Math.round((val.getRating() - view_diff)*100)/100.0);
+                }
+            }
+
+        }
+
+        for(FindRatingRankingResDto val : ret){
             val.setRankDiff(rank_diff.get(val.getStreamerId()));
             val.setDiff(diff.get(val.getStreamerId()));
         }

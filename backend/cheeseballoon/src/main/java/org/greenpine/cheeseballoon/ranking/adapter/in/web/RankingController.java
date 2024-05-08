@@ -9,6 +9,7 @@ import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankingResDto;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindRatingRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.message.RankingResMsg;
 import org.hibernate.validator.constraints.Range;
@@ -61,7 +62,7 @@ public class RankingController {
     }
 
     @GetMapping("/follow")
-    public ResponseEntity<CustomBody> test(@RequestParam
+    public ResponseEntity<CustomBody> findFollowerRanking(@RequestParam
                                            @Range(min = 0, max = 3) int date,
                                            @Pattern(regexp = "^[ASCT]") String platform,
                                            @AuthenticationPrincipal Long memberId){
@@ -108,6 +109,21 @@ public class RankingController {
         }
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, testData));
+    }
+
+    @GetMapping("/rating")
+    public ResponseEntity<CustomBody> findRatingRanking(@RequestParam
+                                           @Range(min = 0, max = 3) int date,
+                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                           @AuthenticationPrincipal Long memberId){
+
+        if(memberId == null){
+            memberId = -1L;
+        }
+
+        List<FindRatingRankingResDto> ret1 = rankingUsecase.findRatingRanking(date, platform.charAt(0), memberId);
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret1));
     }
 
 }
