@@ -9,12 +9,15 @@ import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.member.application.port.in.AuthUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.BookmarkUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.MemberUsecase;
+import org.greenpine.cheeseballoon.member.application.port.in.ViewLogUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.*;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.FindBookmarkResDto;
+import org.greenpine.cheeseballoon.member.application.port.out.dto.FindViewLogResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.message.MemberResMsg;
 import org.greenpine.cheeseballoon.member.application.service.OauthService;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +33,7 @@ public class MemberController {
     private final MemberUsecase memberUsecase;
     private final AuthUsecase authUsecase;
     private final BookmarkUsecase bookmarkUsecase;
+    private final ViewLogUsecase viewLogUsecase;
 
     @PostMapping("/login")
     public ResponseEntity<CustomBody> login(){
@@ -118,7 +122,42 @@ public class MemberController {
     public ResponseEntity<CustomBody> deleteBookmark(@AuthenticationPrincipal Long memberId, @RequestBody DeleteBookmarkReqDto reqDto){
         log.info("deleteBookmark - Call " + memberId);
         reqDto.setMemberId(memberId);
-        bookmarkUsecase.deleteBookmark(reqDto);
+        try{
+            bookmarkUsecase.deleteBookmark(reqDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+        }catch (DuplicateKeyException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.NOT_EXIST, MemberResMsg.NOT_EXIST, null));
+        }
+
+    }
+
+    @GetMapping("/viewlog")
+    public ResponseEntity<CustomBody> findViewLog(@AuthenticationPrincipal Long memberId, FindViewLogReqDto reqDto ){
+        log.info("findViewLog - Call " + memberId);
+        reqDto.setMemberId(memberId);
+        System.out.println(reqDto.getStart());
+        List<FindViewLogResDto> res = viewLogUsecase.findViewLog(reqDto);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, res));
+    }
+
+    @PostMapping("/viewlog")
+    public ResponseEntity<CustomBody> addViewLog(@AuthenticationPrincipal Long memberId, @RequestBody AddViewLogReqDto reqDto){
+        log.info("addViewLog - Call " + memberId);
+        reqDto.setMemberId(memberId);
+        viewLogUsecase.addViewLog(reqDto);
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+    }
+
+    @DeleteMapping("/viewlog")
+    public ResponseEntity<CustomBody> deleteViewLog(@AuthenticationPrincipal Long memberId, @RequestBody DeleteViewLogReqDto reqDto){
+        log.info("deleteViewLog - Call " + memberId);
+        reqDto.setMemberId(memberId);
+        try {
+            viewLogUsecase.deleteViewLog(reqDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+        }catch (DuplicateKeyException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.NOT_EXIST, MemberResMsg.NOT_EXIST, null));
+        }
+
     }
 }

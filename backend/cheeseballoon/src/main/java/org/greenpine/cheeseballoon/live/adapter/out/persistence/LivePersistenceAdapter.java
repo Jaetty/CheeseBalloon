@@ -24,96 +24,75 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
 
     private final LiveLogRepository liveLogRepository;
     private final CategoryRepository categoryRepository;
-    private final CycleLogRepository cycleLogRepository;
 
     @Override
     public List<FindLivesResDto> findLivesByCategory(FindLivesReqDto reqDto) {
         List<String> categoryStrs = reqDto.getCategories();
         int limit = reqDto.getLimit();
         int offset = reqDto.getOffset();
-        List<LiveLogEntity> liveLogList = liveLogRepository.findByCycleLogAndCategory(categoryStrs, limit, offset );
-        List<FindLivesResDto> res= new ArrayList<>();
-        for(LiveLogEntity liveLog : liveLogList){
-            CategoryEntity category = liveLog.getCategory();
-            LiveEntity live = liveLog.getLive();
-            StreamerEntity streamer = live.getStreamer();
-            res.add(
-                    FindLivesResDto.builder()
-                            .liveId(live.getLiveId())
-                            .liveLogId(liveLog.getLiveLogId())
-                            .streamId(streamer.getStreamerId())
-                            .thumbnailUrl(live.getThumbnailUrl())
-                            .profileUrl(streamer.getProfileUrl())
-                            .streamUrl(live.getStreamUrl())
-                            .channelUrl(streamer.getChannelUrl())
-                            .name(streamer.getName())
-                            .viewerCnt(liveLog.getViewerCnt())
-                            .platform(streamer.getPlatform())
-                            .category(category.getCategory())
-                            .title(liveLog.getTitle())
-                            .build()
-            );
-        }
-        return res;
+        List<LiveInfo> liveInfos = liveLogRepository.findByCycleLogAndCategory(categoryStrs,limit, offset);
+
+        return liveInfos.stream().map(li -> FindLivesResDto.builder()
+                .liveId(li.getLive_id())
+                .liveLogId(li.getLive_log_id())
+                .streamId(li.getStreamer_id())
+                .thumbnailUrl(li.getThumbnail_url())
+                .profileUrl(li.getProfile_url())
+                .streamUrl(li.getStream_url())
+                .channelUrl(li.getChannel_url())
+                .name(li.getName())
+                .viewerCnt(li.getViewer_cnt())
+                .platform(li.getPlatform())
+                .category(li.getCategory())
+                .title(li.getTitle())
+                .build()
+        ).toList();
     }
 
     @Override
     public List<FindLivesResDto> findLivesAll(FindLivesReqDto reqDto) {
         int limit = reqDto.getLimit();
         int offset = reqDto.getOffset();
-        List<LiveLogEntity> liveLogList = liveLogRepository.findByCycleLog(limit, offset);
-        List<FindLivesResDto> res= new ArrayList<>();
-        for(LiveLogEntity liveLog : liveLogList){
-            CategoryEntity category = liveLog.getCategory();
-            LiveEntity live = liveLog.getLive();
-            StreamerEntity streamer = live.getStreamer();
-            res.add(
-                    FindLivesResDto.builder()
-                            .liveId(live.getLiveId())
-                            .liveLogId(liveLog.getLiveLogId())
-                            .streamId(streamer.getStreamerId())
-                            .thumbnailUrl(live.getThumbnailUrl())
-                            .profileUrl(streamer.getProfileUrl())
-                            .streamUrl(live.getStreamUrl())
-                            .channelUrl(streamer.getChannelUrl())
-                            .name(streamer.getName())
-                            .viewerCnt(liveLog.getViewerCnt())
-                            .platform(streamer.getPlatform())
-                            .category(category.getCategory())
-                            .title(liveLog.getTitle())
-                            .build()
-            );
-        }
-        return res;
+        List<LiveInfo> liveInfos = liveLogRepository.findByCycleLog(limit, offset);
+
+        return liveInfos.stream().map(li -> FindLivesResDto.builder()
+                .liveId(li.getLive_id())
+                .liveLogId(li.getLive_log_id())
+                .streamId(li.getStreamer_id())
+                .thumbnailUrl(li.getThumbnail_url())
+                .profileUrl(li.getProfile_url())
+                .streamUrl(li.getStream_url())
+                .channelUrl(li.getChannel_url())
+                .name(li.getName())
+                .viewerCnt(li.getViewer_cnt())
+                .platform(li.getPlatform())
+                .category(li.getCategory())
+                .title(li.getTitle())
+                .build()
+        ).toList();
     }
 
     @Override
     public List<SearchLivesResDto> searchLives(SearchLivesReqDto reqDto) {
         String query = reqDto.getQuery();
-        List<LiveLogEntity> liveLogEntities = liveLogRepository.searchByTitle(query);
-        List<SearchLivesResDto> res = new ArrayList<>();
-        for(LiveLogEntity liveLog : liveLogEntities){
-            CategoryEntity category = liveLog.getCategory();
-            LiveEntity live = liveLog.getLive();
-            StreamerEntity streamer = live.getStreamer();
-            res.add(
-                    SearchLivesResDto.builder()
-                            .liveId(live.getLiveId())
-                            .liveLogId(liveLog.getLiveLogId())
-                            .streamId(streamer.getStreamerId())
-                            .thumbnailUrl(live.getThumbnailUrl())
-                            .profileUrl(streamer.getProfileUrl())
-                            .streamUrl(live.getStreamUrl())
-                            .channelUrl(streamer.getChannelUrl())
-                            .name(streamer.getName())
-                            .viewerCnt(liveLog.getViewerCnt())
-                            .platform(streamer.getPlatform())
-                            .category(category.getCategory())
-                            .title(liveLog.getTitle())
-                            .build()
-            );
-        }
-        return res;
+        List<LiveInfo> liveInfos = liveLogRepository.searchByTitle(query);
+
+        return liveInfos.stream().map(li -> SearchLivesResDto.builder()
+                .liveId(li.getLive_id())
+                .liveLogId(li.getLive_log_id())
+                .streamId(li.getStreamer_id())
+                .thumbnailUrl(li.getThumbnail_url())
+                .profileUrl(li.getProfile_url())
+                .streamUrl(li.getStream_url())
+                .channelUrl(li.getChannel_url())
+                .name(li.getName())
+                .viewerCnt(li.getViewer_cnt())
+                .platform(li.getPlatform())
+                .category(li.getCategory())
+                .title(li.getTitle())
+                .build()
+        ).toList();
+
     }
 
     @Override
