@@ -43,7 +43,7 @@ class Scheduler:
             CrawlingBusiness().follow_crawling,
             # trigger=IntervalTrigger(seconds=30),
             # trigger=IntervalTrigger(seconds=600, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
-            trigger=CronTrigger(hour=10, minute=0),
+            trigger=CronTrigger(hour=11, minute=20),
             misfire_grace_time=None,
             max_instances=5,
             id='follower_start',
