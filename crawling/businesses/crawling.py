@@ -29,8 +29,10 @@ class CrawlingBusiness:
             streamers_list = []
             live_id_list = []
             # 아
-            streamers_list.extend(Soop().soop())
+            streamers_list.extend(await Soop().soop())
             streamers_list.extend(await Chzzk().chzzk())
+
+            logger.info("데이터 입력이 시작됩니다.")
 
             cycle = CycleLogCreate(
                 afreeca_viewer_cnt=sum(item.viewer_cnt for item in streamers_list if item.platform == "S"),
@@ -38,15 +40,14 @@ class CrawlingBusiness:
             )
             cycle_id = CycleLogService().create(db=db, cycle_log=cycle).cycle_log_id
             for streamer_info in streamers_list:
-
                 if streamer_info.category is not None:
-                    if not CategoryService().is_category(db=db, category=streamer_info.category):
+                    category_id = CategoryService().is_category(db=db, category=streamer_info.category)
+                    if category_id is None:
                         # print("카테고리 데이터 넣기")
                         categories = CategoryCreate(
                             category=streamer_info.category
                         )
                         CategoryService().create(db=db, category=categories)
-                    category_id = CategoryService().get_category(db=db, category=streamer_info.category)
                 else:
                     category_id = None
 
@@ -93,8 +94,9 @@ class CrawlingBusiness:
                     viewer_cnt=streamer_info.viewer_cnt
                 )
                 LiveLogService().create(db=db, live_log=live_log)
-
-            if cycle_id != 0:
+            logger.info("데이터 입력이 종료됩니다.")
+            logger.info("라이브 상태를 업데이트 합니다.")
+            if cycle_id != 1:
                 end_live_list = LiveLogService().get_end_live_id(db=db, cycle_log_id=cycle_id-1, live_list=live_id_list)
                 LiveService().update_is_live(db=db, live_list=end_live_list)
                 logger.info("업데이트 완료")

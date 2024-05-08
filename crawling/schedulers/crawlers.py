@@ -25,7 +25,7 @@ class Scheduler:
         Scheduler.main_scheduler.add_job(
             self.crawling,
             # trigger=IntervalTrigger(seconds=20),
-            trigger=IntervalTrigger(seconds=1200, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
+            trigger=IntervalTrigger(seconds=300, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
             id='crawling_start',
             misfire_grace_time=None,
             max_instances=5,
@@ -43,7 +43,7 @@ class Scheduler:
             CrawlingBusiness().follow_crawling,
             # trigger=IntervalTrigger(seconds=30),
             # trigger=IntervalTrigger(seconds=600, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
-            trigger=CronTrigger(hour=11, minute=20),
+            trigger=CronTrigger(hour=14, minute=30),
             misfire_grace_time=None,
             max_instances=5,
             id='follower_start',

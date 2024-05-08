@@ -56,22 +56,22 @@ async def follower_crawling(db: Session = Depends(get_db)):
     return await CrawlingBusiness().follow_crawling(db=db)
 
 
-@app.get("/soop")
-async def start_afreeca_crawling():
-    Soop().soop
-    return {"soop":"good"}
-
-@app.get("/chzzk")
-async def start_chzzk_crawling(db: Session = Depends(get_db)):
-    Crawling().chzzk(db=db)
-    return {"chzzk":"good"}
+# @app.get("/soop")
+# async def start_afreeca_crawling():
+#     await Soop().soop()
+#     return {"soop":"good"}
+#
+# @app.get("/chzzk")
+# async def start_chzzk_crawling(db: Session = Depends(get_db)):
+#     Crawling().chzzk(db=db)
+#     return {"chzzk":"good"}
 
 @app.get("/chzzkapi")
 async def start_chzzk_api():
     await Chzzk().chzzk()
     return {"chzzk": "good"}
 
-# @app.get("/soopapi")
-# async def soop_api():
-#     await Soop().follower()
-#     return {"message": "hello world"}
+@app.get("/soopapi")
+async def soop_api():
+    await Soop().test_soop()
+    return {"message": "hello world"}
