@@ -19,10 +19,10 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 # app.include_router(users.router)
 
-# @app.on_event("startup")
-# async def startup_scheduler(db: Session = Depends(get_db)):
-#     Scheduler().start(db=db)
-#     Scheduler().follower_start(db=db)
+@app.on_event("startup")
+async def startup_scheduler(db: Session = Depends(get_db)):
+    Scheduler().start(db=db)
+    Scheduler().follower_start(db=db)
 
 
 @app.get("/")
