@@ -1,31 +1,31 @@
 package org.greenpine.cheeseballoon.streamer.domain;
 
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.DailyAvgViewer;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailiyViewerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailyViewerResDtoInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StreamerViewerDomain {
 
-    public Integer getMaxValue(List<FindStreamerDailiyViewerResDtoInterface> input){
+    public Integer getMaxValue(List<FindStreamerDailyViewerResDtoInterface> input){
         Integer max = 0;
         if(!input.isEmpty()){
-            for(FindStreamerDailiyViewerResDtoInterface var : input){
+            for(FindStreamerDailyViewerResDtoInterface var : input){
                 max = Math.max(max,var.getMaxViewer());
             }
         }
         return max;
     }
 
-    public Integer getAverageValue(List<FindStreamerDailiyViewerResDtoInterface> input){
+    public Integer getAverageValue(List<FindStreamerDailyViewerResDtoInterface> input){
 
 
         if(!input.isEmpty()){
             Integer sum = 0;
             int count = 0;
 
-            for(FindStreamerDailiyViewerResDtoInterface var : input){
+            for(FindStreamerDailyViewerResDtoInterface var : input){
                 sum += var.getViewer();
                 count++;
             }
@@ -36,12 +36,12 @@ public class StreamerViewerDomain {
         return 0;
     }
 
-    public List<DailyAvgViewer> getDailyViewer(List<FindStreamerDailiyViewerResDtoInterface> input){
+    public List<DailyAvgViewer> getDailyViewer(List<FindStreamerDailyViewerResDtoInterface> input){
 
         List<DailyAvgViewer> result = new ArrayList<>();
 
         if(!input.isEmpty()){
-            for(FindStreamerDailiyViewerResDtoInterface var : input){
+            for(FindStreamerDailyViewerResDtoInterface var : input){
                 DailyAvgViewer temp = new DailyAvgViewer();
                 temp.setViewer(var.getViewer());
                 temp.setDate(var.getDate());
