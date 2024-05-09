@@ -48,7 +48,7 @@ class Chzzk:
                                    headers=headers)
             return res.json()
 
-    async def follower(self, origin_id: str):
+    async def follower(self, streamers: list):
         async with httpx.AsyncClient() as client:
             headers = {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
@@ -63,10 +63,21 @@ class Chzzk:
                           "QZ3GpjQ9KefjgwlK3rDGbnAo8akseBS52QMh6eTBZTRpov05fkdpkgB0ItYMkp0ExpLzYWSxyfCd+aT0YlG2t" +
                           "Hit2IgkWvyU4qCukdyEULnAaO/Z1Tg3mCu+emoU=;"
             }
+            streamer_follower_list = []
+            for s in streamers:
+                # print(s.origin_id)
+                response = await client.get(f'https://api.chzzk.naver.com/service/v1/channels/{s.origin_id}',
+                                       headers=headers)
+                res = response.json()
+                follower_text = res['content']['followerCount']
+                follower_cnt = int(follower_text)
 
-            res = await client.get(f'https://api.chzzk.naver.com/service/v1/channels/{origin_id}',
-                                   headers=headers)
-            return res.json()
+                streamer_follower_list.append(StreamerLogCreate(
+                    streamer_id=s.streamer_id,
+                    follower=follower_cnt
+                ))
+
+        return streamer_follower_list
 
     async def chzzk(self):
         logger.info("치지직 크롤링을 시작합니다.")
@@ -133,18 +144,19 @@ class Chzzk:
         return streamers_list
 
     async def chzzk_follower(self, streamers: List[StreamerRead]):
-        streamer_follower_list = []
+        # streamer_follower_list = []
         logger.info("치지직 팔로우 크롤링 시작합니다.")
-        for s in streamers:
-            # print(s.origin_id)
-            res = await self.follower(s.origin_id)
-            follower_text = res['content']['followerCount']
-            follower_cnt = int(follower_text)
-
-            streamer_follower_list.append(StreamerLogCreate(
-                streamer_id=s.streamer_id,
-                follower=follower_cnt
-            ))
+        streamer_follower_list = await self.follower(streamers)
+        # for s in streamers:
+        #     # print(s.origin_id)
+        #     res = await self.follower(s.origin_id, streamers)
+        #     follower_text = res['content']['followerCount']
+        #     follower_cnt = int(follower_text)
+        #
+        #     streamer_follower_list.append(StreamerLogCreate(
+        #         streamer_id=s.streamer_id,
+        #         follower=follower_cnt
+        #     ))
         logger.info("치지직 팔로우 크롤링 끝냅니다.")
         # print(streamer_follower_list)
         return streamer_follower_list
