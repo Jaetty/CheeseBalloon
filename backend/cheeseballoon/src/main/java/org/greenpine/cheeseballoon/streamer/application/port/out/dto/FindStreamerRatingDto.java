@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class FindStreamerRatingDto {
-    Double avgRating;
+    Double totalRating;
+    Double platformRating;
     List<DailyRate> dailyRates;
 }
