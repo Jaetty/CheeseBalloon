@@ -39,7 +39,7 @@ class Scheduler:
         return {"result": "good"}
 
     def follower_start(self, db: Session):
-        Scheduler.follower_scheduler.add_job(
+        Scheduler.main_scheduler.add_job(
             CrawlingBusiness().follow_crawling,
             # trigger=IntervalTrigger(seconds=30),
             # trigger=IntervalTrigger(seconds=600, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
@@ -53,5 +53,5 @@ class Scheduler:
 
     def follower_cancel(self):
         # 작업 취소
-        Scheduler.follower_scheduler.remove_job('follower_start')
+        Scheduler.main_scheduler.remove_job('follower_start')
         return {"result": "good"}

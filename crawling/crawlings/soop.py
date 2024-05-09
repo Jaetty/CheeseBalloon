@@ -23,15 +23,31 @@ import json
 
 class Soop:
 
-    async def follower(self, origin_id: str):
+    async def follower(self, streamers: list):
         async with httpx.AsyncClient() as client:
             headers = {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
                               "Chrome/123.0.0.0 Safari/537.36"
             }
-            res = await client.get(f'https://bjapi.afreecatv.com/api/{origin_id}/station',
-                                   headers=headers)
-            return res.json()
+
+            streamer_follower_list = []
+            logger.info("아프리카 팔로우 크롤링 시작합니다.")
+            for s in streamers:
+                response = await client.get(f'https://bjapi.afreecatv.com/api/{s.origin_id}/station',
+                                            headers=headers)
+                res = response.json()
+                if 'station' not in res:
+                    logger.info("밴 먹은 유저 입니다.")
+                    continue
+                follower_text = res['station']['upd']['fan_cnt']
+                follower_cnt = int(follower_text)
+                # print(follower_cnt)
+                streamer_follower_list.append(StreamerLogCreate(
+                    streamer_id=s.streamer_id,
+                    follower=follower_cnt
+                ))
+
+            return streamer_follower_list
 
     async def init_live(self):
         async with httpx.AsyncClient() as client:
@@ -375,21 +391,20 @@ class Soop:
 
     async def soop_follower(self, streamers: List[StreamerRead]):
 
-        streamer_follower_list = []
         logger.info("아프리카 팔로우 크롤링 시작합니다.")
-        for s in streamers:
-            res = await self.follower(s.origin_id)
-            if 'station' not in res:
-                logger.info("밴 먹은 유저 입니다.")
-                continue
-            follower_text = res['station']['upd']['fan_cnt']
-            follower_cnt = int(follower_text)
-            # print(follower_cnt)
-            streamer_follower_list.append(StreamerLogCreate(
-                streamer_id=s.streamer_id,
-                follower=follower_cnt
-            ))
-
+        streamer_follower_list = await self.follower(streamers)
+        # for s in streamers:
+        #     res = await self.follower(s.origin_id)
+        #     if 'station' not in res:
+        #         logger.info("밴 먹은 유저 입니다.")
+        #         continue
+        #     follower_text = res['station']['upd']['fan_cnt']
+        #     follower_cnt = int(follower_text)
+        #     # print(follower_cnt)
+        #     streamer_follower_list.append(StreamerLogCreate(
+        #         streamer_id=s.streamer_id,
+        #         follower=follower_cnt
+        #     ))
         # print(streamer_follower_list)
         logger.info("아프리카 팔로우 크롤링을 끝냅니다.")
         return streamer_follower_list
