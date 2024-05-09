@@ -1,17 +1,14 @@
-package org.greenpine.cheeseballoon.ranking.domain;
+package org.greenpine.cheeseballoon.global.utils;
 
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
-@Component
-public class DateValue {
+public class DateCalculator {
 
-    public LocalDateTime[] getPeriod(int date){
+    public static LocalDateTime[] getPeriod(int date){
 
         LocalDateTime[] result = new LocalDateTime[4];
         int[] days = {0,7,14,30};
@@ -33,7 +30,7 @@ public class DateValue {
     }
 
     // 딱 한 날짜만을 가져오는 메소드
-    public LocalDateTime[] getSpecificPeriod(int date){
+    public static LocalDateTime[] getSpecificPeriod(int date){
 
         LocalDateTime[] result = new LocalDateTime[4];
         int[] days = {1,8,15,31};
