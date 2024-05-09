@@ -69,7 +69,7 @@ public class StreamerService implements StreamerUsecase {
     @Override
     public FindStreamerViewerDto streamerDetailViewer(Long streamerId, int date) {
 
-        List<FindStreamerDailiyViewerResDtoInterface>[] values = streamerPort.streamerDetailViewer(streamerId, date);
+        List<FindStreamerDailyViewerResDtoInterface>[] values = streamerPort.streamerDetailViewer(streamerId, date);
 
         StreamerViewerDomain streamerViewerDomain = new StreamerViewerDomain();
 

@@ -1,9 +1,6 @@
 package org.greenpine.cheeseballoon.streamer.application.port.out.dto;
 
-import java.time.LocalDate;
-import java.util.List;
-
-public interface FindStreamerDailiyViewerResDtoInterface {
+public interface FindStreamerDailyViewerResDtoInterface {
 
     String getDate();
     Integer getMaxViewer();

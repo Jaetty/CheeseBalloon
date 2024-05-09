@@ -7,7 +7,7 @@ import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.ranking.domain.DateValue;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailiyViewerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailyViewerResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerDomain;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
@@ -31,7 +31,7 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     @Override
     public List<FindSearchStreamerResDtoInterface> searchStreamersByName(String query, long memberId) {
 
-        List<FindSearchStreamerResDtoInterface> result = streamerRepository.searchStreamerByName(query, memberId);
+        List<FindSearchStreamerResDtoInterface> result = streamerRepository.findStreamerInfoByName(query, memberId);
 
         return result;
     }
@@ -52,12 +52,12 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
         String beforeDay = now.minus(7, ChronoUnit.DAYS).format(DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00"));
         String today = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 23:59:59"));
 
-        Integer currRank = streamerRepository.getStreamerRank(streamerId, beforeDay, today);
+        Integer currRank = streamerRepository.findStreamerRank(streamerId, beforeDay, today);
 
         beforeDay = before.minus(7, ChronoUnit.DAYS).format(DateTimeFormatter.ofPattern("yyyy-MM-dd 00:00:00"));
         today = before.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 23:59:59"));
 
-        Integer beforeRank = streamerRepository.getStreamerRank(streamerId, beforeDay, today);
+        Integer beforeRank = streamerRepository.findStreamerRank(streamerId, beforeDay, today);
 
         currRank = currRank == null ? 0 : currRank;
         beforeRank = beforeRank == null ? 0 : beforeRank;
@@ -126,14 +126,14 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     }
 
     @Override
-    public List<FindStreamerDailiyViewerResDtoInterface>[] streamerDetailViewer(Long streamerId, int date) {
+    public List<FindStreamerDailyViewerResDtoInterface>[] streamerDetailViewer(Long streamerId, int date) {
 
-        List<FindStreamerDailiyViewerResDtoInterface>[] ret = new List[2];
+        List<FindStreamerDailyViewerResDtoInterface>[] ret = new List[2];
 
         LocalDateTime[] dates = dateValue.getPeriod(date);
 
-        ret[0] = streamerRepository.getDailyViewer(streamerId, dates[0], dates[1]);
-        ret[1] = streamerRepository.getDailyViewer(streamerId, dates[1], dates[2]);
+        ret[0] = streamerRepository.findDailyViewer(streamerId, dates[0], dates[1]);
+        ret[1] = streamerRepository.findDailyViewer(streamerId, dates[1], dates[2]);
 
         return ret;
     }
