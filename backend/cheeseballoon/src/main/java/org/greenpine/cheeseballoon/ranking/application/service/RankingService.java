@@ -57,7 +57,7 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(res[1]!=null){
+        if(!res[1].isEmpty()){
 
             for(FindAvgViewerRankResDtoInterface val : res[1]){
 
@@ -114,7 +114,7 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(res[1]!=null){
+        if(!res[1].isEmpty()){
 
             for(FindTopViewerRankResDtoInterface val : res[1]){
                 // 이전 기간의 데이터가 있다면 수행
@@ -168,11 +168,9 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(res[1]!=null){
+        if(!res[1].isEmpty()){
 
             for(FindFollowerRankResDtoInterface val : res[1]){
-
-                System.out.println(val.getName() + " " + val.getRank() +" " + val.getStreamerId());
                 // 이전 기간의 데이터가 있다면
                 if(rank_diff.containsKey(val.getStreamerId())){
                     rankDiffDomain.rankDiffCalculate(val.getStreamerId(), val.getRank(), val.getFollower(), MAX_RANK, rank_diff, diff);
@@ -221,7 +219,7 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(res[1]!=null){
+        if(!res[1].isEmpty()){
 
             for(FindRatingRankResDtoInterface val : res[1]){
                 // 이전 기간의 데이터가 있다면 수행
