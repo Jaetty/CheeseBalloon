@@ -2,10 +2,8 @@ package org.greenpine.cheeseballoon.ranking.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
-import org.greenpine.cheeseballoon.ranking.application.port.in.dto.FindFollowRankingReqDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.*;
-import org.greenpine.cheeseballoon.ranking.domain.RankDiffDomain;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ public class RankingService implements RankingUsecase {
 
     private final Integer MAX_RANK = 300;
     private final RankingPort rankingPort;
-    private final RankDiffDomain rankDiffDomain;
 
     /* !!!!! 도메인 리펙토링이 필요함 !!!!! */
 
@@ -57,13 +54,13 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(res[1]!=null){
+        if(!res[1].isEmpty()){
 
             for(FindAvgViewerRankResDtoInterface val : res[1]){
 
                 // 이전 기간 데이터가 있다면
                 if(rank_diff.containsKey(val.getStreamerId())){
-                    rankDiffDomain.rankDiffCalculate(val.getStreamerId(), val.getRank(), val.getAverageViewer(), MAX_RANK, rank_diff, diff);
+                    rankDiffCalculate(val.getStreamerId(), val.getRank(), val.getAverageViewer(), MAX_RANK, rank_diff, diff);
                 }
             }
 
@@ -114,12 +111,12 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(res[1]!=null){
+        if(!res[1].isEmpty()){
 
             for(FindTopViewerRankResDtoInterface val : res[1]){
                 // 이전 기간의 데이터가 있다면 수행
                 if(rank_diff.containsKey(val.getStreamerId())){
-                    rankDiffDomain.rankDiffCalculate(val.getStreamerId(), val.getRank(), val.getTopViewer(), MAX_RANK, rank_diff, diff);
+                    rankDiffCalculate(val.getStreamerId(), val.getRank(), val.getTopViewer(), MAX_RANK, rank_diff, diff);
                 }
             }
 
@@ -168,14 +165,12 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(res[1]!=null){
+        if(!res[1].isEmpty()){
 
             for(FindFollowerRankResDtoInterface val : res[1]){
-
-                System.out.println(val.getName() + " " + val.getRank() +" " + val.getStreamerId());
                 // 이전 기간의 데이터가 있다면
                 if(rank_diff.containsKey(val.getStreamerId())){
-                    rankDiffDomain.rankDiffCalculate(val.getStreamerId(), val.getRank(), val.getFollower(), MAX_RANK, rank_diff, diff);
+                    rankDiffCalculate(val.getStreamerId(), val.getRank(), val.getFollower(), MAX_RANK, rank_diff, diff);
                 }
             }
 
@@ -221,7 +216,7 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(res[1]!=null){
+        if(!res[1].isEmpty()){
 
             for(FindRatingRankResDtoInterface val : res[1]){
                 // 이전 기간의 데이터가 있다면 수행
@@ -250,6 +245,24 @@ public class RankingService implements RankingUsecase {
 
 
         return ret;
+    }
+
+    public void rankDiffCalculate(long s_id, int before_rank, int before_value, int MAX_RANK, Map<Long, Integer> rank_diff ,Map<Long, Integer> diff){
+
+        // rank 변동 값 계산
+        // curr_rank는 순수하게 몇 등이었는지를 가져온다. 예를 들어 이번에 1등이면 301 - 300 = 1등
+        int curr_rank = (MAX_RANK+1) - rank_diff.get(s_id);
+        int view_diff = diff.get(s_id);
+
+        if(before_rank >= curr_rank){
+            rank_diff.put(s_id, before_rank - curr_rank);
+        }else{
+            rank_diff.put(s_id, -(curr_rank - before_rank));
+        }
+
+        // 시청자 diff 값 계산
+        diff.put(s_id, view_diff >= before_value ? view_diff - before_value : -(before_value - view_diff));
+
     }
 
 

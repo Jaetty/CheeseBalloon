@@ -1,7 +1,8 @@
 package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailiyViewerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailyViewerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerRatingResDtoInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,7 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "on s.streamer_id = sl.streamer_id, lives AS li\n" +
             "WHERE NAME LIKE CONCAT('%', :query, '%') AND li.streamer_id = s.streamer_id) AS streamer\n" +
             "ON streamer.streamer_id = b.streamer_id", nativeQuery = true)
-    List<FindSearchStreamerResDtoInterface> searchStreamerByName(String query, Long memberId);
+    List<FindSearchStreamerResDtoInterface> findStreamerInfoByName(String query, Long memberId);
 
     // 스트리머 정보로 랭킹 값 가져오기
     @Query(value = "SELECT ranksql.rank\n" +
@@ -39,7 +40,7 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "ORDER BY viewer_cnt DESC\n" +
             "LIMIT 300) AS ranksql\n" +
             "WHERE ranksql.streamer_id = :streamerId", nativeQuery = true)
-    Integer getStreamerRank(Long streamerId, String beforeDay, String today);
+    Integer findStreamerRank(Long streamerId, String beforeDay, String today);
 
     @Query(value = "SELECT l.streamer_id, t.live_log_id, t.live_id, t.cycle_log_id, MAX(t.viewer_cnt) AS maxViewer, ROUND(AVG(t.viewer_cnt),0) AS viewer, t.date FROM lives AS l INNER JOIN \n" +
             "(SELECT live_log_id, live_id, ll.cycle_log_id, viewer_cnt, date FROM live_logs AS ll \n" +
@@ -48,7 +49,15 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "ON ll.cycle_log_id = c.cycle_log_id ORDER BY live_id) AS t \n" +
             "ON l.live_id = t.live_id\n" +
             "WHERE streamer_id = :streamerId GROUP BY streamer_id, date ORDER BY streamer_id", nativeQuery = true)
-    List<FindStreamerDailiyViewerResDtoInterface> getDailyViewer(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
+    List<FindStreamerDailyViewerResDtoInterface> findDailyViewer(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
 
+    @Query(value = "SELECT DATE, ROUND(AVG(chzzkRating),2) AS chzzkRating, ROUND(AVG(afreecaRating),2) AS soopRating, ROUND(AVG(totalRating),2) AS totalRating FROM\n" +
+            "(SELECT l.streamer_id, l.live_id, viewer_cnt, cycle_log_id, afreeca_viewer_cnt, chzzk_viewer_cnt, cycle_dt AS `dateTime`, DATE_FORMAT(cycle_dt, '%Y-%m-%d') AS `date`, (viewer_cnt / afreeca_viewer_cnt)*100 AS afreecaRating, (viewer_cnt / chzzk_viewer_cnt)*100 AS chzzkRating, ( viewer_cnt / (afreeca_viewer_cnt + chzzk_viewer_cnt)) * 100 AS totalRating FROM lives AS l JOIN\n" +
+            "(SELECT ll.live_id, ll.viewer_cnt, ll.cycle_log_id, cycle.afreeca_viewer_cnt, chzzk_viewer_cnt, cycle.cycle_dt FROM live_logs AS ll \n" +
+            "JOIN (SELECT * FROM cycle_logs WHERE cycle_dt BETWEEN :beforeDay AND :today) AS cycle \n" +
+            "ON ll.cycle_log_id = cycle.cycle_log_id) AS result ON result.live_id = l.live_id\n" +
+            "WHERE streamer_id = :streamerId) AS ratings\n" +
+            "GROUP BY DATE", nativeQuery = true)
+    List<FindStreamerRatingResDtoInterface> findRatingInfo(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
 
 }
