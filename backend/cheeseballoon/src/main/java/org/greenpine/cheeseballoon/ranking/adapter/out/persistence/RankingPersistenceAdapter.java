@@ -7,7 +7,7 @@ import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewe
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindRatingRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankResDtoInterface;
-import org.greenpine.cheeseballoon.ranking.domain.DateValue;
+import org.greenpine.cheeseballoon.global.utils.DateCalculator;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,13 +20,12 @@ public class RankingPersistenceAdapter implements RankingPort {
 
     final private StreamerRepository streamerRepository;
     final private LiveRepository liveRepository;
-    final private DateValue dateValue;
 
     // 평균 시청자 수 db 값 가져오기
     @Override
     public List<FindAvgViewerRankResDtoInterface>[] findAvgViewerRanking(int date, char platform, long memberId) {
 
-        LocalDateTime[] dates = dateValue.getPeriod(date);
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
 
         List<FindAvgViewerRankResDtoInterface>[] ret = new List[2];
 
@@ -47,7 +46,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     @Override
     public List<FindTopViewerRankResDtoInterface>[] findTopViewerRanking(int date, char platform, long memberId) {
 
-        LocalDateTime[] dates = dateValue.getPeriod(date);
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
 
         List<FindTopViewerRankResDtoInterface>[] ret = new List[2];
 
@@ -67,7 +66,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     @Override
     public List<FindFollowerRankResDtoInterface>[] findFollowerRanking(int date, char platform, long memberId) {
 
-        LocalDateTime[] dates = dateValue.getSpecificPeriod(date);
+        LocalDateTime[] dates = DateCalculator.getSpecificPeriod(date);
 
         List<FindFollowerRankResDtoInterface>[] ret = new List[2];
 
@@ -87,7 +86,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     @Override
     public List<FindRatingRankResDtoInterface>[] findRatingRanking(int date, char platform, long memberId) {
 
-        LocalDateTime[] dates = dateValue.getSpecificPeriod(date);
+        LocalDateTime[] dates = DateCalculator.getSpecificPeriod(date);
 
         List<FindRatingRankResDtoInterface>[] ret = new List[2];
 
