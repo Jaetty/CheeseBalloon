@@ -1,14 +1,16 @@
 package org.greenpine.cheeseballoon.streamer.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.global.utils.DateCalculator;
+import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerLogEntity;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
-import org.greenpine.cheeseballoon.streamer.domain.StreamerViewerDomain;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +57,7 @@ public class StreamerService implements StreamerUsecase {
     @Override
     public List<FindStreamerFollowDto> streamerDetailFollower(Long streamerId, int date) {
 
-        List<StreamerLogEntity> list = streamerPort.streamerFollowerDetail(streamerId, date);
+        List<StreamerLogEntity> list = streamerPort.streamerDetailFollower(streamerId, date);
 
         List<FindStreamerFollowDto> ret = new ArrayList<>();
 
@@ -69,20 +71,96 @@ public class StreamerService implements StreamerUsecase {
     @Override
     public FindStreamerViewerDto streamerDetailViewer(Long streamerId, int date) {
 
-        List<FindStreamerDailiyViewerResDtoInterface>[] values = streamerPort.streamerDetailViewer(streamerId, date);
+        List<FindStreamerDailyViewerResDtoInterface>[] values = streamerPort.streamerDetailViewer(streamerId, date);
 
-        StreamerViewerDomain streamerViewerDomain = new StreamerViewerDomain();
+        List<DailyAvgViewer> dailyAvgViewer = new ArrayList<>();
 
-        List<DailyAvgViewer> dailyAvgViewer = streamerViewerDomain.getDailyViewer(values[0]);
+        int curr_max = 0;
+        int curr_avg = 0;
 
-        Integer curr_max = streamerViewerDomain.getMaxValue(values[0]);
-        Integer before_max = streamerViewerDomain.getMaxValue(values[1]);
-        Integer curr_avg = streamerViewerDomain.getAverageValue(values[0]);
-        Integer before_avg = streamerViewerDomain.getAverageValue(values[1]);
+        if(!values[0].isEmpty()){
+
+            int sum = 0;
+            int count = 0;
+
+            for(FindStreamerDailyViewerResDtoInterface var : values[0]){
+                DailyAvgViewer temp = new DailyAvgViewer();
+                temp.setViewer(var.getViewer());
+                temp.setDate(var.getDate());
+                temp.setMaxViewer(var.getMaxViewer());
+                dailyAvgViewer.add(temp);
+
+                curr_max = Math.max(curr_max,var.getMaxViewer());
+                sum += var.getViewer();
+                count++;
+            }
+            curr_avg = sum/count;
+        }
+
+        int before_max = 0;
+        int before_avg = 0;
+
+        if(!values[1].isEmpty()){
+
+            int sum = 0;
+            int count = 0;
+
+            for(FindStreamerDailyViewerResDtoInterface var : values[1]){
+
+                before_max = Math.max(before_max,var.getMaxViewer());
+                sum += var.getViewer();
+                count++;
+            }
+            before_avg = sum/count;
+        }
 
         FindStreamerViewerDto dto = new FindStreamerViewerDto(curr_max, curr_max - before_max, curr_avg, curr_avg - before_avg, dailyAvgViewer);
 
         return dto;
+    }
+
+    @Override
+    public FindStreamerRatingDto streamerDetailRating(Long streamerId, int date) {
+
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+
+        StreamerEntity streamerEntity = streamerPort.findByStreamerId(streamerId);
+        List<FindStreamerRatingResDtoInterface> list = streamerPort.streamerDetailRating(streamerId, dates[0], dates[1]);
+
+        if(list.isEmpty()){
+            return null;
+        }
+
+        List<DailyRate> dailyRates = new ArrayList<>();
+
+        double totalRating = 0, platformRating = 0;
+        int count = 0;
+
+        if(streamerEntity.getPlatform() == 'C'){
+
+            for(FindStreamerRatingResDtoInterface val : list){
+                dailyRates.add(new DailyRate(val.getTotalRating(), val.getChzzkRating(), val.getDate()));
+                totalRating += val.getTotalRating();
+                platformRating += val.getChzzkRating();
+                count++;
+            }
+
+        }
+        else{
+
+            for(FindStreamerRatingResDtoInterface val : list){
+                dailyRates.add(new DailyRate(val.getTotalRating(), val.getSoopRating(), val.getDate()));
+                totalRating += val.getTotalRating();
+                platformRating += val.getSoopRating();
+                count++;
+            }
+
+        }
+
+        totalRating = Math.round(totalRating/count * 100)/100.0;
+        platformRating = Math.round(platformRating/count * 100) / 100.0;
+
+        return FindStreamerRatingDto.builder().dailyRates(dailyRates).totalRating(totalRating).platformRating(platformRating).build();
     }
 
 }

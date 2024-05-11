@@ -91,7 +91,7 @@ public class StreamerController {
     }
 
     @GetMapping("/category")
-    public ResponseEntity<CustomBody> streamerCategoryDetail(@RequestParam Long streamerId, int date){
+    public ResponseEntity<CustomBody> streamerCategoryDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
         int totalTime = 3600*24*5;
 
@@ -111,7 +111,7 @@ public class StreamerController {
     }
 
     @GetMapping("/time")
-    public ResponseEntity<CustomBody> streamerTimeDetail(@RequestParam Long streamerId, int date){
+    public ResponseEntity<CustomBody> streamerTimeDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
         FindStreamerTimeDto ret = FindStreamerTimeDto.builder().timeDiff(date %2 == 0 ? 500 : -400).totalTime(3600*7).build();
 
@@ -133,7 +133,7 @@ public class StreamerController {
     }
 
     @GetMapping("/follow")
-    public ResponseEntity<CustomBody> streamerFollowDetail(@RequestParam Long streamerId, int date){
+    public ResponseEntity<CustomBody> streamerFollowDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
 //        List<FindStreamerFollowDto> ret = streamerUsecase.streamerDetailFollower(streamerId, date);
 
@@ -150,18 +150,21 @@ public class StreamerController {
     }
 
     @GetMapping("/rating")
-    public ResponseEntity<CustomBody> streamerRatingDetail(@RequestParam Long streamerId, int date){
+    public ResponseEntity<CustomBody> streamerRatingDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
-        FindStreamerRatingDto ret = FindStreamerRatingDto.builder().avgRating(10.24).build();
+//        FindStreamerRatingDto ret = streamerUsecase.streamerDetailRating(streamerId, date);
 
+        FindStreamerRatingDto ret = new FindStreamerRatingDto();
         String val = "2024-03-1";
         List<DailyRate> list = new ArrayList<>();
 
         for(int i=0; i<7; i++){
-            list.add(DailyRate.builder().rating(10.5 - i).date(val + i).build());
+            list.add(DailyRate.builder().total(7.5 - i/2).platform(10.5 - i/3).date(val + i).build());
         }
 
         ret.setDailyRates(list);
+        ret.setTotalRating(7.12);
+        ret.setPlatformRating(8.74);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
 
