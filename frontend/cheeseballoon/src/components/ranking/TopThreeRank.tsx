@@ -7,6 +7,7 @@ import second from "public/svgs/2nd.svg";
 import third from "public/svgs/3rd.svg";
 import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type RankingData = {
   streamerId: number;
@@ -24,6 +25,7 @@ type Props = {
 export default function TopThreeRanking({ data }: Props) {
   const reorderedData = data && [data[1], data[0], data[2]];
   const rankImages = [second, first, third];
+  const pathname = usePathname()?.split("/").pop() || "";
 
   return (
     <div className={style.wrapper}>
@@ -53,15 +55,34 @@ export default function TopThreeRanking({ data }: Props) {
             </div>
             <div className={style.info}>
               {item.value}{" "}
-              {item.diff > 0 && (
-                <span className={style.positive}>
-                  ( + {Math.abs(item.diff).toLocaleString()} )
-                </span>
-              )}
-              {item.diff < 0 && (
-                <span className={style.negative}>
-                  ( - {Math.abs(item.diff).toLocaleString()} )
-                </span>
+              {pathname === "rating" ? (
+                <>
+                  {item.diff > 0 && (
+                    <span className={style.positive}>
+                      (+ {Math.abs(item.diff).toFixed(2)})
+                    </span>
+                  )}
+                  {item.diff < 0 && (
+                    <span className={style.negative}>
+                      (- {Math.abs(item.diff).toFixed(2)})
+                    </span>
+                  )}
+                  {item.diff === 0 && <span className={style.zero}>( - )</span>}
+                </>
+              ) : (
+                <>
+                  {item.diff > 0 && (
+                    <span className={style.positive}>
+                      (+ {Math.abs(item.diff).toLocaleString()})
+                    </span>
+                  )}
+                  {item.diff < 0 && (
+                    <span className={style.negative}>
+                      (- {Math.abs(item.diff).toLocaleString()})
+                    </span>
+                  )}
+                  {item.diff === 0 && <span className={style.zero}>( - )</span>}
+                </>
               )}
               {item.diff === 0 && <span className={style.zero}>( - )</span>}
             </div>
