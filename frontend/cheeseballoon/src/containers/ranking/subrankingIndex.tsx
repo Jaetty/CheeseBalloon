@@ -58,6 +58,16 @@ function transformAvgData(data: AvgRankData[]): RankingData[] {
   }));
 }
 
+function transformRatingData(data: RatingRankData[]): RankingData[] {
+  return data.map((item) => ({
+    streamerId: item.streamerId,
+    profileUrl: item.profileUrl,
+    name: item.name,
+    platform: item.platform,
+    diff: item.diff,
+    value: `${item.rating.toFixed(2)} %`,
+  }));
+}
 export default function Ranking() {
   const [date, setDate] = useState(1);
   const [platform, setPlatform] = useState("T");
@@ -112,6 +122,9 @@ export default function Ranking() {
       case "topview":
         apiUrl = process.env.NEXT_PUBLIC_TOPVIEW_RANK;
         break;
+      case "rating":
+        apiUrl = process.env.NEXT_PUBLIC_RATING_RANK;
+        break;
       default:
         apiUrl = process.env.NEXT_PUBLIC_AVG_RANK;
         break;
@@ -125,6 +138,9 @@ export default function Ranking() {
         break;
       case "topview":
         transformedData = transformTopviewData(newData.data);
+        break;
+      case "rating":
+        transformedData = transformRatingData(newData.data);
         break;
       default:
         transformedData = transformAvgData(newData.data);

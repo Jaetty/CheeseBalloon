@@ -42,7 +42,7 @@ export default function Ranking() {
         url = `${process.env.NEXT_PUBLIC_LIVE_API}?offset=4&limit=10&date=${selectedDate}&platform=${selectedPlatform}`;
         break;
       case "시청률":
-        url = `${process.env.NEXT_PUBLIC_LIVE_API}?offset=5&limit=10&date=${selectedDate}&platform=${selectedPlatform}`;
+        url = `${process.env.NEXT_PUBLIC_RATING_RANK}?date=${selectedDate}&platform=${selectedPlatform}`;
         break;
       case "실시간 LIVE":
         url = `${process.env.NEXT_PUBLIC_LIVE_API}?offset=6&limit=10&date=${selectedDate}&platform=${selectedPlatform}`;
