@@ -50,6 +50,22 @@ public class MemberController {
     @GetMapping("/login/google")
     public ResponseEntity<CustomBody> loginGoogle(@RequestParam String code){
         log.info("login/google - Call");
+        return ResponseEntity.ok(null);
+        /*try{
+            UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
+            LoginResDto resDto = authUsecase.login(userInfoDto);
+
+        }catch (JsonProcessingException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
+        }catch (BadRequestException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
+        }*/
+
+    }
+
+    @GetMapping("/login/google/code")
+    public ResponseEntity<CustomBody> loginGoogleCode(@RequestParam String code){
+        log.info("loginGoogleCode - Call");
         System.out.println(code);
         try{
             UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
@@ -66,6 +82,22 @@ public class MemberController {
     @GetMapping("/login/kakao")
     public ResponseEntity<CustomBody> loginKakao(@RequestParam String code) {
         log.info("login/kakao - Call");
+        System.out.println(code);
+        return ResponseEntity.ok(null);
+        /*try {
+            UserInfoDto userInfoDto = oauthService.getKakaoUserInfo(code);
+            LoginResDto resDto = authUsecase.login(userInfoDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
+        }catch (JsonProcessingException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
+        }catch (BadRequestException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
+        }*/
+    }
+
+    @GetMapping("/login/kakao/code")
+    public ResponseEntity<CustomBody> loginKakaoCode(@RequestParam String code) {
+        log.info("loginKakaoCode - Call");
 
         System.out.println(code);
         try {
