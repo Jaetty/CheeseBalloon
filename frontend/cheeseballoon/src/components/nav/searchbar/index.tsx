@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import styles from "./searchIndex.module.scss";
 
 export default function Search() {
   const router = useRouter();
@@ -12,10 +13,10 @@ export default function Search() {
   };
 
   return (
-    <div className="search__input">
+    <div>
       <form onSubmit={handleSearch}>
-        <input type="text" name="query" placeholder="검색어를 입력하세요" />
-        <button type="submit">검색</button>
+        <input className={styles.search__input} type="text" name="query" />
+        {/* <button type="submit">검색</button> */}
       </form>
     </div>
   );

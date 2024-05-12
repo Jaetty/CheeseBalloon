@@ -3,10 +3,12 @@
 /* eslint-disable camelcase */
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import styles from "./searchresult.module.scss";
 import empty from "../../stores/Frame 114.png";
 import a_icon from "../../stores/afreeca_icon.png";
 import cnt from "../../stores/cnt_icon.png";
+import no_image from "../../stores/no_image.png";
 
 interface data_2 {
   data:
@@ -42,7 +44,9 @@ interface data_3 {
 
 export default function SearchResult() {
   const cheese_api = process.env.NEXT_PUBLIC_CHEESEBALLOON_API;
-  const [query, setQuery] = useState<string | null>(""); // query 상태를 설정
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query");
+
   const [searchStreamerResults, setSearchStreamerResults] = useState<data_3>({
     data: null,
   }); // 검색 결과 상태를 설정
@@ -51,12 +55,8 @@ export default function SearchResult() {
   }); // 검색 결과 상태를 설정
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const query_2 = urlSearchParams.get("query");
-    setQuery(query_2); // query 값을 상태로 설정
-
     // API 요청 함수 호출
-    fetch(`${cheese_api}/streamer/search?query=${query_2}`, {
+    fetch(`${cheese_api}/streamer/search?query=${query}`, {
       // mode: "no-cors",
     })
       .then((response) => response.json())
@@ -68,7 +68,7 @@ export default function SearchResult() {
     // });
 
     // API 요청 함수 호출
-    fetch(`${cheese_api}/live/search?query=${query_2}`, {
+    fetch(`${cheese_api}/live/search?query=${query}`, {
       // mode: "no-cors",
     })
       .then((response) => response.json())
@@ -78,10 +78,8 @@ export default function SearchResult() {
     // .catch((error) => {
     //   console.error("Error fetching search results:", error);
     // });
-  }, [cheese_api, query]); // 빈 배열을 의존성 배열로 지정하여 최초 한 번만 실행되도록 설정
+  }, [cheese_api, query]);
   // console.log(cheese_api);
-  console.log(searchStreamerResults);
-  console.log(searchLiveResults);
   return (
     <div className={styles.searchresult}>
       <div className={styles.top}>
@@ -93,7 +91,7 @@ export default function SearchResult() {
       </div>
       <div className={styles.streamer_title}>스트리머</div>
       <div className={styles.streamer_list}>
-        {searchStreamerResults.data &&
+        {searchStreamerResults.data ? (
           searchStreamerResults.data.map((streamer) => (
             <div key={streamer.streamerId} className={styles.streamer}>
               <div className={styles.streamer_thumbnail}>
@@ -122,20 +120,34 @@ export default function SearchResult() {
                 <img src={empty.src} alt="ss" />
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className={styles.no_data}>조회된 내역이 없습니다.</div>
+        )}
       </div>
       <div className={styles.live_list_title}>LIVE</div>
       <div className={styles.live_list}>
-        {searchLiveResults.data &&
+        {searchLiveResults.data ? (
           searchLiveResults.data.map((live) => (
             // eslint-disable-next-line react/jsx-key
             <div key={live.liveId} className={styles.live}>
-              <div className={styles.live_thumbnail}>
-                <img
-                  src="https://image.newsis.com/2024/03/03/NISI20240303_0001492267_web.jpg"
-                  alt="123"
-                />
-              </div>
+              <a
+                href={live.streamUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className={styles.live_thumbnail}>
+                  <img
+                    src={live.thumbnailUrl}
+                    alt="123"
+                    onError={(
+                      e: React.SyntheticEvent<HTMLImageElement, Event>
+                    ) => {
+                      e.currentTarget.src = no_image.src; // Set the source to the fallback image
+                    }}
+                  />
+                </div>
+              </a>
               <div className={styles.second_container}>
                 <div className={styles.platform_icon}>
                   {live.platform === "A" && (
@@ -164,7 +176,10 @@ export default function SearchResult() {
                 <div className={styles.viewer}>{live.viewerCnt}</div>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className={styles.no_data}>조회된 내역이 없습니다.</div>
+        )}
       </div>
     </div>
   );

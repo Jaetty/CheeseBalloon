@@ -51,11 +51,6 @@
 .ranking {
   padding-top: 2.76%;
 }
-
-.animation {
-  height: 30rem;
-}
-
 .title {
   font-size: 40px;
   font-family: "GmarketSans";
@@ -216,6 +211,113 @@
 .more {
   float: right;
 }
+
+.animation {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.animation_container {
+  top: -30px;
+  position: relative;
+}
+
+.rankbox {
+  position: relative;
+  height: 175px;
+  width: 550px;
+  background-color: #2b3b44;
+  border: 5px solid black;
+  overflow: hidden;
+  transform: translate(0%, 20%);
+  margin-bottom: 10px;
+}
+
+.playerimage {
+  position: absolute;
+  float: left;
+  width: 40%;
+  left: 0px;
+  bottom: 0px;
+  z-index: 2;
+  animation: slidingFadeIn 1s 1;
+}
+
+.teamlogo {
+  position: absolute;
+  float: left;
+  left: 140px;
+  top: 10px;
+  width: 20%;
+  z-index: 1;
+  animation: fadeIn 1s 1;
+}
+
+.playername {
+  position: absolute;
+  color: white;
+  font-family: Jakarta;
+  font-size: 3em;
+  font-style: italic;
+  text-align: center;
+  text-shadow:
+    -5px 0 black,
+    0 5px black,
+    5px 0 black,
+    0 -5px black;
+  z-index: 5;
+  right: 3%;
+  bottom: -15%;
+  animation: slidingFadeIn 1s 1;
+}
+
+.ranking {
+  font-family: Jakarta;
+  font-size: 20px;
+  position: relative;
+  text-align: center;
+  color: white;
+  animation: fadeIn 1.5s 1;
+}
+
+.rankingcontainer {
+  background-color: black;
+  border: 2px solid white;
+  border-top: 0px;
+  border-right: 0px;
+  position: relative;
+  height: 28%;
+  width: 12%;
+  float: right;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    visibility: hidden;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes slidingFadeIn {
+  0% {
+    transform: translateX(-50px);
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    transform: translateX(0px);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 @font-face {
   font-family: "GmarketSans";
   font-weight: 300;
