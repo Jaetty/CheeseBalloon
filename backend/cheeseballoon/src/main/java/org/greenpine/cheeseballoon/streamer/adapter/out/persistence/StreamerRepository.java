@@ -25,7 +25,7 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "\tFROM streamer_logs \n" +
             "\tWHERE (streamer_id, reg_dt) IN (SELECT streamer_id, max(reg_dt) AS reg_dt FROM streamer_logs GROUP BY streamer_id) ORDER BY reg_dt DESC) sl\n" +
             "on s.streamer_id = sl.streamer_id, lives AS li\n" +
-            "WHERE NAME LIKE CONCAT('%', :query, '%') AND li.streamer_id = s.streamer_id) AS streamer\n" +
+            "WHERE NAME LIKE CONCAT('%', :query, '%') AND li.streamer_id = s.streamer_id GROUP BY s.streamer_id) AS streamer\n" +
             "ON streamer.streamer_id = b.streamer_id", nativeQuery = true)
     List<FindSearchStreamerResDtoInterface> findStreamerInfoByName(String query, Long memberId);
 
