@@ -4,6 +4,7 @@ import aflogo from "public/svgs/afreeca.svg";
 import chzlogo from "public/svgs/chzzk.svg";
 import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type RankingData = {
   streamerId: number;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 export default function RestRanking({ data }: Props) {
+  const pathname = usePathname()?.split("/").pop() || "";
   return (
     <div className={style.container}>
       {data &&
@@ -47,17 +49,35 @@ export default function RestRanking({ data }: Props) {
             </div>
             <div className={style.info}>
               {item.value}{" "}
-              {item.diff > 0 && (
-                <span className={style.positive}>
-                  ( + {Math.abs(item.diff).toLocaleString()} )
-                </span>
+              {pathname === "rating" ? (
+                <>
+                  {item.diff > 0 && (
+                    <span className={style.positive}>
+                      (+ {Math.abs(item.diff).toFixed(2)})
+                    </span>
+                  )}
+                  {item.diff < 0 && (
+                    <span className={style.negative}>
+                      (- {Math.abs(item.diff).toFixed(2)})
+                    </span>
+                  )}
+                  {item.diff === 0 && <span className={style.zero}>( - )</span>}
+                </>
+              ) : (
+                <>
+                  {item.diff > 0 && (
+                    <span className={style.positive}>
+                      (+ {Math.abs(item.diff).toLocaleString()})
+                    </span>
+                  )}
+                  {item.diff < 0 && (
+                    <span className={style.negative}>
+                      (- {Math.abs(item.diff).toLocaleString()})
+                    </span>
+                  )}
+                  {item.diff === 0 && <span className={style.zero}>( - )</span>}
+                </>
               )}
-              {item.diff < 0 && (
-                <span className={style.negative}>
-                  ( - {Math.abs(item.diff).toLocaleString()} )
-                </span>
-              )}
-              {item.diff === 0 && <span className={style.zero}>( - )</span>}
             </div>
             <div className={style.fav}>
               <Image src={nofav} alt="" width={20} height={20} />
