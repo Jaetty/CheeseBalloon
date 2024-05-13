@@ -113,10 +113,13 @@ class Chzzk:
         for new_item in item_list:
             if new_item['liveImageUrl'] is None:
                 continue
+            profile = str(new_item['channel']['channelImageUrl'])
+            if not profile:
+                profile = "default"
             streamer_info = StreamerInfo(
                 origin_id=str(new_item['channel']['channelId']),
                 name=str(new_item['channel']['channelName']),
-                profile_url=str(new_item['channel']['channelImageUrl']),
+                profile_url=profile,
                 channel_url=f"https://chzzk.naver.com/{new_item['channel']['channelId']}",
                 platform="C",
                 stream_url=f"https://chzzk.naver.com/live/{new_item['channel']['channelId']}",
@@ -143,10 +146,13 @@ class Chzzk:
                 concurrent_user_count = int(new_item['concurrentUserCount'])
                 if concurrent_user_count < 20:
                     break
+                new_profile = str(new_item['channel']['channelImageUrl'])
+                if not new_profile:
+                    new_profile = "default"
                 streamer_info = StreamerInfo(
                     origin_id=str(new_item['channel']['channelId']),
                     name=str(new_item['channel']['channelName']),
-                    profile_url=str(new_item['channel']['channelImageUrl']),
+                    profile_url=new_profile,
                     channel_url=f"https://chzzk.naver.com/{new_item['channel']['channelId']}",
                     platform="C",
                     stream_url=f"https://chzzk.naver.com/live/{new_item['channel']['channelId']}",
