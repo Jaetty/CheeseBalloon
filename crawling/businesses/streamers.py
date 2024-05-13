@@ -19,10 +19,10 @@ class StreamerBusiness:
             return None
         streamer_profile = streamer.profile_url
         # 치지직인 경우
-        if streamer.platform is "C":
-            streamer_profile = Chzzk().chzzk_profile(streamer)
-        if streamer.platform is "S":
-            streamer_profile = Soop().soop_profile(streamer)
+        if streamer.platform == "C":
+            streamer_profile = await Chzzk().chzzk_profile(streamer)
+        elif streamer.platform == "S":
+            streamer_profile = await Soop().soop_profile(streamer)
 
         StreamerService().update_profile(db=db, streamer_id=streamer.streamer_id, profile_url=streamer_profile)
         return streamer_profile
