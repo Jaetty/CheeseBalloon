@@ -27,3 +27,7 @@ class StreamerUpdate(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class StreamerProfileUrl(BaseModel):
+    profile_url: str

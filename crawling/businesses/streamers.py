@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from services.streamers import StreamerService
-from schemas.streamers import StreamerCreate, StreamerUpdate
+from schemas.streamers import StreamerCreate, StreamerUpdate, StreamerProfileUrl
 from loguru import logger
 
 from crawlings.chzzk import Chzzk
@@ -25,4 +25,8 @@ class StreamerBusiness:
             streamer_profile = await Soop().soop_profile(streamer)
 
         StreamerService().update_profile(db=db, streamer_id=streamer.streamer_id, profile_url=streamer_profile)
-        return streamer_profile
+
+        ProfileURL = StreamerProfileUrl(
+            profile_url=streamer_profile
+        )
+        return ProfileURL
