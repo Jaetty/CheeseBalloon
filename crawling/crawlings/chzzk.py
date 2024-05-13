@@ -79,6 +79,27 @@ class Chzzk:
 
         return streamer_follower_list
 
+    async def streamer_info(self, origin_id: str):
+        async with httpx.AsyncClient() as client:
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
+                              "Chrome/123.0.0.0 Safari/537.36",
+                "Cookie": "NID_AUT=I58Oif+3Btp/hYwcTgTlJAXgMWfkYspueOc2OmZoHaEFtMBaD2xxzTpKAbTEngm/;" +
+                          "NID_SES=AAABtMwu8y9tY3HFKfSjls8xog+irUnRjolMWKVo1oBUxL/sBFwrJ1G8zP4cdS9Bp" +
+                          "oqQbAkZa84I7oaD4LnxM3re2P5m38r4KNgc5PmWzYxEqrpZy0Q5RJ+qR6mJaUErEdkXS6GQNZYMNSot" +
+                          "BIQeze0/dW9mB/rPEqQXqzmka9I8qb7gOBsTul1sEn+AGYxBvtPUZ37jQrH6HVmP7oNWbYfYgoW6JNZ8FZ" +
+                          "XgRICIws+7iAi2os4dny6FXO3epC/x+wc+haIlE+CMalMNSs4ZbfwK/4BzdWssbD9O8SOpxKCZAFrisgoWaj9" +
+                          "9ZwtCwd3m3P6hMl7mYQ004XhTUTIcY+1EWOwPNj+zay4AdE+GMNAmYCdmKCsUnUSLEIvVXHkhKWr9cz0w99J" +
+                          "suGliyG7ETAJsZSwF6pGncDsL608pw7o3/O7gzfK17hQLqAEpUpOdZ0EHoFPseMwUv6sUHwQuBqUTmHV9jqC" +
+                          "QZ3GpjQ9KefjgwlK3rDGbnAo8akseBS52QMh6eTBZTRpov05fkdpkgB0ItYMkp0ExpLzYWSxyfCd+aT0YlG2t" +
+                          "Hit2IgkWvyU4qCukdyEULnAaO/Z1Tg3mCu+emoU=;"
+            }
+            response = await client.get(f'https://api.chzzk.naver.com/service/v1/channels/{origin_id}',
+                                        headers=headers)
+
+            return response.json()
+
+
     async def chzzk(self):
         logger.info("치지직 크롤링을 시작합니다.")
         # StreamerInfo 객체 저장 딕셔너리 생성
@@ -160,3 +181,9 @@ class Chzzk:
         logger.info("치지직 팔로우 크롤링 끝냅니다.")
         # print(streamer_follower_list)
         return streamer_follower_list
+
+    async def chzzk_profile(self, streamer: StreamerRead):
+        res = await self.streamer_info(streamer.origin_id)
+        streamer_profile = res['content']['channelImageUrl']
+
+        return streamer_profile

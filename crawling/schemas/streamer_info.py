@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 
 class StreamerInfo(BaseModel):
-
     origin_id: str
     name: str
     profile_url: str
