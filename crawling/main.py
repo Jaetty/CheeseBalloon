@@ -74,7 +74,7 @@ async def start_chzzk_api():
 
 @app.get("/soopapi")
 async def soop_api():
-    await Soop().test_soop()
+    await Soop().soop()
     return {"message": "hello world"}
 
 
