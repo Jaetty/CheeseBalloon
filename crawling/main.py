@@ -14,11 +14,11 @@ app = FastAPI()
 
 # app.include_router(users.router)
 
-@app.on_event("startup")
-async def startup_scheduler():
-    db = next(get_db())
-    Scheduler().start(db=db)
-    Scheduler().follower_start(db=db)
+# @app.on_event("startup")
+# async def startup_scheduler():
+#     db = next(get_db())
+#     Scheduler().start(db=db)
+#     Scheduler().follower_start(db=db)
 
 
 @app.get("/")
@@ -81,4 +81,4 @@ async def soop_api():
 @app.post("/cl/profile/update")
 async def update_streamer_profile(streamer: StreamerUpdate, db: Session = Depends(get_db)):
     profile = await StreamerBusiness().update_profile(streamer=streamer, db=db)
-    return profile
+    return HTTPException(status_code=200, detail=profile)

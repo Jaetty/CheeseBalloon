@@ -14,9 +14,7 @@ class StreamerBusiness:
 
     async def update_profile(self, streamer: StreamerUpdate, db: Session):
         streamer = StreamerService().get_streamer_by_id(db=db, streamer_id=streamer.streamer_id)
-        if streamer is None:
-            logger.error("streamer가 없습니다.")
-            return None
+
         streamer_profile = streamer.profile_url
         # 치지직인 경우
         if streamer.platform == "C":
