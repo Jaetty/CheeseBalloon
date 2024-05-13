@@ -56,3 +56,10 @@
 .DataLoaded {
   margin-bottom: 3rem;
 }
+
+.empty {
+  height: 60vh;
+  overflow: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
