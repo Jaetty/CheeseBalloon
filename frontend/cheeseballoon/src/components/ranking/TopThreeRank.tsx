@@ -1,3 +1,5 @@
+"use client";
+
 import style from "src/components/ranking/TopThree.module.scss";
 import Image from "next/image";
 import aflogo from "public/svgs/afreeca.svg";
@@ -8,6 +10,8 @@ import third from "public/svgs/3rd.svg";
 import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import noimage from "public/svgs/blank_profile.png";
+import { useState } from "react";
 
 type RankingData = {
   streamerId: number;
@@ -26,7 +30,14 @@ export default function TopThreeRanking({ data }: Props) {
   const reorderedData = data && [data[1], data[0], data[2]];
   const rankImages = [second, first, third];
   const pathname = usePathname()?.split("/").pop() || "";
+  const [imageError, setImageError] = useState<Record<number, boolean>>({});
 
+  const handleImageError = (id: number) => {
+    setImageError((prev) => ({
+      ...prev,
+      [id]: true,
+    }));
+  };
   return (
     <div className={style.wrapper}>
       {reorderedData &&
@@ -34,7 +45,13 @@ export default function TopThreeRanking({ data }: Props) {
           <div key={index} className={style.box}>
             <div className={style.image}>
               <Link href={`/detail/${item.streamerId}`}>
-                <Image src={item.profileUrl} alt="" width={70} height={70} />
+                <Image
+                  src={imageError[item.streamerId] ? noimage : item.profileUrl}
+                  alt=""
+                  width={70}
+                  height={70}
+                  onError={() => handleImageError(item.streamerId)}
+                />
               </Link>
             </div>
             <div className={style.rankimage}>
@@ -54,37 +71,47 @@ export default function TopThreeRanking({ data }: Props) {
               )}
             </div>
             <div className={style.info}>
-              {item.value}{" "}
-              {pathname === "rating" ? (
-                <>
-                  {item.diff > 0 && (
-                    <span className={style.positive}>
-                      (+ {Math.abs(item.diff).toFixed(2)})
-                    </span>
-                  )}
-                  {item.diff < 0 && (
-                    <span className={style.negative}>
-                      (- {Math.abs(item.diff).toFixed(2)})
-                    </span>
-                  )}
-                  {item.diff === 0 && <span className={style.zero}>( - )</span>}
-                </>
+              {pathname === "live" ? (
+                <>{item.diff.toLocaleString()} 명</>
               ) : (
                 <>
-                  {item.diff > 0 && (
-                    <span className={style.positive}>
-                      (+ {Math.abs(item.diff).toLocaleString()})
-                    </span>
-                  )}
-                  {item.diff < 0 && (
-                    <span className={style.negative}>
-                      (- {Math.abs(item.diff).toLocaleString()})
-                    </span>
+                  {item.value}{" "}
+                  {pathname === "rating" ? (
+                    <>
+                      {item.diff > 0 && (
+                        <span className={style.positive}>
+                          (+ {Math.abs(item.diff).toFixed(2)})
+                        </span>
+                      )}
+                      {item.diff < 0 && (
+                        <span className={style.negative}>
+                          (- {Math.abs(item.diff).toFixed(2)})
+                        </span>
+                      )}
+                      {item.diff === 0 && (
+                        <span className={style.zero}>( - )</span>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {item.diff > 0 && (
+                        <span className={style.positive}>
+                          (+ {Math.abs(item.diff).toLocaleString()})
+                        </span>
+                      )}
+                      {item.diff < 0 && (
+                        <span className={style.negative}>
+                          (- {Math.abs(item.diff).toLocaleString()})
+                        </span>
+                      )}
+                      {item.diff === 0 && (
+                        <span className={style.zero}>( - )</span>
+                      )}
+                    </>
                   )}
                   {item.diff === 0 && <span className={style.zero}>( - )</span>}
                 </>
               )}
-              {item.diff === 0 && <span className={style.zero}>( - )</span>}
             </div>
           </div>
         ))}

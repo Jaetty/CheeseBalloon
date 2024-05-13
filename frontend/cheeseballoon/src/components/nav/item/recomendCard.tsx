@@ -5,6 +5,7 @@ import aflogo from "public/svgs/afreeca.svg";
 import { useToggleState } from "src/stores/store";
 import { useState, useRef, useLayoutEffect } from "react";
 import { LiveData } from "src/types/type";
+import noimage from "public/svgs/blank_profile.png";
 import Link from "next/link";
 
 type Props = {
@@ -16,6 +17,11 @@ export default function RecomendCard({ data }: Props) {
   const [isHovered, setIsHovered] = useState(false);
   const [modalStyle, setModalStyle] = useState({});
   const containerRef = useRef<HTMLDivElement>(null);
+  const [imageUrl, setImageUrl] = useState(data?.profileUrl || noimage);
+
+  const handleError = () => {
+    setImageUrl(noimage);
+  };
 
   useLayoutEffect(() => {
     if (containerRef.current && isHovered) {
@@ -34,10 +40,11 @@ export default function RecomendCard({ data }: Props) {
           <div className={styles.open_container}>
             <div className={styles.on_image}>
               <Image
-                src={data?.profileUrl || ""}
-                alt=""
+                src={imageUrl}
+                alt={data?.name || "Profile image"}
                 width={28}
                 height={28}
+                onError={handleError}
               />
             </div>
             <div>

@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "src/components/ranking/rankingIndexCard.module.scss";
 import Image from "next/legacy/image";
 import ArrowUp from "public/svgs/uparrow.png";
@@ -5,8 +7,8 @@ import ArrowDown from "public/svgs/downarrow.png";
 import aflogo from "public/svgs/afreeca.svg";
 import chzlogo from "public/svgs/chzzk.svg";
 import Link from "next/link";
-import blank from "public/svgs/blank_profile.png";
-
+import noimage from "public/svgs/blank_profile.png";
+import { useState } from "react";
 import {
   FollowRankData,
   AvgRankData,
@@ -36,12 +38,23 @@ export default function RankCard({ item, title, number }: Props) {
     logo = chzlogo;
   }
   const RenderRank = title !== "실시간 LIVE";
+  const [imageUrl, setImageUrl] = useState(item.profileUrl || noimage);
+
+  const handleError = () => {
+    setImageUrl(noimage);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.number}>{number}</div>
       <div className={styles.image}>
         <Link href={`/detail/${item.streamerId}`}>
-          <Image src={item.profileUrl} alt="" width={44} height={44} />
+          <Image
+            src={imageUrl}
+            alt=""
+            width={44}
+            height={44}
+            onError={handleError}
+          />
         </Link>
       </div>
       <div className={styles.name}>

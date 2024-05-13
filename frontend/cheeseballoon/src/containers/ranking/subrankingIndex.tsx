@@ -5,6 +5,7 @@ import DaySelect from "@/src/components/ranking/dayselect";
 import PlatformSelect from "src/components/ranking/platformselect";
 import TopThreeRanking from "src/components/ranking/TopThreeRank";
 import RestRanking from "src/components/ranking/RestRanking";
+import Loading from "src/app/loading";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import {
@@ -13,7 +14,7 @@ import {
   TopviewRankData,
   TimeRankData,
   RatingRankData,
-  LiveRankData,
+  LiveData,
 } from "src/types/type";
 
 type RankingData = {
@@ -23,6 +24,7 @@ type RankingData = {
   platform: string;
   diff: number;
   value: string;
+  value2?: string;
 };
 
 function transformFollowData(data: FollowRankData[]): RankingData[] {
@@ -68,12 +70,25 @@ function transformRatingData(data: RatingRankData[]): RankingData[] {
     value: `${item.rating.toFixed(2)} %`,
   }));
 }
+
+function transformLiveData(data: LiveData[]): RankingData[] {
+  return data.map((item) => ({
+    streamerId: item.streamId,
+    profileUrl: item.profileUrl,
+    name: item.name,
+    platform: item.platform,
+    diff: item.viewerCnt,
+    value: item.title,
+    value2: item.category,
+  }));
+}
 export default function Ranking() {
   const [date, setDate] = useState(1);
   const [platform, setPlatform] = useState("T");
   const [num, setNum] = useState(1);
   const [data, setData] = useState<RankingData[] | undefined>();
   const [allDataLoaded, setAllDataLoaded] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [subrankAllData, setSubRankAllData] = useState<
     RankingData[] | undefined
   >();
@@ -112,6 +127,7 @@ export default function Ranking() {
 
   const fetchData = async () => {
     let apiUrl;
+    let queryString = `date=${date}&platform=${platform}`;
     switch (pathname) {
       case "follow":
         apiUrl = process.env.NEXT_PUBLIC_FOLLOW_RANK;
@@ -125,11 +141,15 @@ export default function Ranking() {
       case "rating":
         apiUrl = process.env.NEXT_PUBLIC_RATING_RANK;
         break;
+      case "live":
+        apiUrl = process.env.NEXT_PUBLIC_LIVE_API;
+        queryString = `offset=1&limit=300&date=${date}&platform=${platform}`;
+        break;
       default:
         apiUrl = process.env.NEXT_PUBLIC_AVG_RANK;
         break;
     }
-    const response = await fetch(`${apiUrl}?date=${date}&platform=${platform}`);
+    const response = await fetch(`${apiUrl}?${queryString}`);
     const newData = await response.json();
     let transformedData: RankingData[];
     switch (pathname) {
@@ -142,6 +162,9 @@ export default function Ranking() {
       case "rating":
         transformedData = transformRatingData(newData.data);
         break;
+      case "live":
+        transformedData = transformLiveData(newData.data);
+        break;
       default:
         transformedData = transformAvgData(newData.data);
         break;
@@ -149,9 +172,11 @@ export default function Ranking() {
 
     setData(transformedData);
     setNum(1);
+    setLoading(false);
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, platform]);
@@ -167,13 +192,43 @@ export default function Ranking() {
     }
   }, [num, data]);
 
+  if (loading) {
+    return (
+      <>
+        <div className={style.ranking}>
+          <p className={style.title}>{mapping[pathname]}</p>
+          {pathname !== "live" ? (
+            <div className={style.detail_menu}>
+              <DaySelect setDate={setDate} />
+              <PlatformSelect setPlatform={setPlatform} />
+            </div>
+          ) : (
+            <>
+              <br></br>
+              <br></br>
+            </>
+          )}
+        </div>
+        <Loading />
+        <div className={style.empty}> </div>
+      </>
+    );
+  }
+
   return (
     <div className={style.ranking}>
       <p className={style.title}>{mapping[pathname]}</p>
-      <div className={style.detail_menu}>
-        <DaySelect setDate={setDate} />
-        <PlatformSelect setPlatform={setPlatform} />
-      </div>
+      {pathname !== "live" ? (
+        <div className={style.detail_menu}>
+          <DaySelect setDate={setDate} />
+          <PlatformSelect setPlatform={setPlatform} />
+        </div>
+      ) : (
+        <>
+          <br></br>
+          <br></br>
+        </>
+      )}
       <TopThreeRanking data={subrankData as RankingData[]} />
       <RestRanking data={subrankAllData as RankingData[]} />
       {allDataLoaded && <p className={style.DataLoaded}></p>}
