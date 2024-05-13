@@ -6,7 +6,8 @@ import chzzk from "public/svgs/chzzk.svg";
 import aflogo from "public/svgs/afreeca.svg";
 import { useToggleState } from "src/stores/store";
 import { useState, useRef, useLayoutEffect } from "react";
-import { LiveData } from "@/src/types/type";
+import { LiveData } from "src/types/type";
+import noimage from "public/svgs/blank_profile.png";
 import Link from "next/link";
 
 type Props = {
@@ -18,6 +19,11 @@ export default function FavCard({ data }: Props) {
   const [isHovered, setIsHovered] = useState(false);
   const [modalStyle, setModalStyle] = useState({});
   const containerRef = useRef<HTMLDivElement>(null);
+  const [imageUrl, setImageUrl] = useState(data?.profileUrl || noimage);
+
+  const handleError = () => {
+    setImageUrl(noimage);
+  };
 
   useLayoutEffect(() => {
     if (containerRef.current && isHovered) {
@@ -34,7 +40,13 @@ export default function FavCard({ data }: Props) {
       {value && (
         <div className={styles.open_container}>
           <div className={data?.streamUrl ? styles.on_image : styles.off_image}>
-            <Image src={data?.profileUrl || ""} alt="" width={28} height={28} />
+            <Image
+              src={imageUrl}
+              alt={data?.name || "Profile image"}
+              width={28}
+              height={28}
+              onError={handleError}
+            />
           </div>
           <div>
             <div className={styles.content}>
