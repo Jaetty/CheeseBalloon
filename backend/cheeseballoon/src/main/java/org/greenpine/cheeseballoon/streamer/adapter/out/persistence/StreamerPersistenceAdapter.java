@@ -6,10 +6,7 @@ import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveLogRepositor
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.global.utils.DateCalculator;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailyViewerResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerRatingResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerDomain;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
 import org.springframework.stereotype.Repository;
@@ -147,6 +144,11 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     public List<FindStreamerRatingResDtoInterface> streamerDetailRating(Long streamerId, LocalDateTime beforeDay, LocalDateTime today) {
 
         return streamerRepository.findRatingInfo(streamerId, beforeDay, today);
+    }
+
+    @Override
+    public List<FindStreamerCategoryResDtoInterface> streamerDetailCategory(Long streamerId, LocalDateTime beforeDay, LocalDateTime today) {
+        return streamerRepository.findCategoryInfo(streamerId, beforeDay, today);
     }
 
 
