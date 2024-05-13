@@ -93,18 +93,20 @@ public class StreamerController {
     @GetMapping("/category")
     public ResponseEntity<CustomBody> streamerCategoryDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
-        int totalTime = 3600*24*5;
+        FindStreamerCategoryDto ret = streamerUsecase.streamerDetailCategory(streamerId, date);
 
-        FindStreamerCategoryDto ret = FindStreamerCategoryDto.builder().totalTime(totalTime).build();
-
-        List<DailyCategory> list = new ArrayList<>();
-
-        for(int i=0; i<10; i++){
-
-            list.add(DailyCategory.builder().category("카테고리 id : "+i+1).time(totalTime/2).avgViewer(500 * (i+1)).build());
-        }
-
-        ret.setDailyCategories(list);
+//        int totalTime = 3600*24*5;
+//
+//        FindStreamerCategoryDto ret = FindStreamerCategoryDto.builder().totalTime(totalTime).build();
+//
+//        List<DailyCategory> list = new ArrayList<>();
+//
+//        for(int i=0; i<10; i++){
+//
+//            list.add(DailyCategory.builder().category("카테고리 id : "+i+1).time(totalTime/2).avgViewer(500 * (i+1)).build());
+//        }
+//
+//        ret.setDailyCategories(list);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
 

@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerCategoryResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailyViewerResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerRatingResDtoInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -59,5 +60,15 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "WHERE streamer_id = :streamerId) AS ratings\n" +
             "GROUP BY DATE", nativeQuery = true)
     List<FindStreamerRatingResDtoInterface> findRatingInfo(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
+
+    @Query(value = "SELECT COUNT(category) * 5 * 60 AS `time`, category, result.date, result.category_id AS categoryId, ROUND(AVG(result.viewer_cnt),0) AS avgViewer FROM categories JOIN\n" +
+            "(SELECT c.cycle_dt, c.date, r.live_log_id, r.live_id, r.cycle_log_id, r.category_id, r.title, r.viewer_cnt, r.streamer_id, r.stream_url, r.thumbnail_url, r.is_live, r.`name`, r.profile_url, r.channel_url, r.platform FROM\n" +
+            "(SELECT *, DATE(cycle_dt) AS date FROM cycle_logs WHERE cycle_dt BETWEEN :beforeDay AND :today) AS c JOIN\n" +
+            "(SELECT ll.live_log_id, ll.live_id, ll.cycle_log_id, ll.category_id, ll.title, ll.viewer_cnt, l.streamer_id, l.stream_url, l.thumbnail_url, l.is_live, s.`name`, s.profile_url, s.channel_url, s.platform FROM live_logs AS ll, lives AS l, streamers AS s WHERE s.streamer_id = :streamerId AND l.streamer_id = :streamerId AND ll.live_id = l.live_id) \n" +
+            "AS r ON r.cycle_log_id = c.cycle_log_id) AS result\n" +
+            "ON categories.category_id = result.category_id\n" +
+            "GROUP BY categoryId, `date`\n" +
+            "ORDER BY `date`", nativeQuery = true)
+    List<FindStreamerCategoryResDtoInterface> findCategoryInfo(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
 
 }

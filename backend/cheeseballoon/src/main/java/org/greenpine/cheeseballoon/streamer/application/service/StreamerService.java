@@ -163,4 +163,23 @@ public class StreamerService implements StreamerUsecase {
         return FindStreamerRatingDto.builder().dailyRates(dailyRates).totalRating(totalRating).platformRating(platformRating).build();
     }
 
+    @Override
+    public FindStreamerCategoryDto streamerDetailCategory(Long streamerId, int date) {
+
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+        List<FindStreamerCategoryResDtoInterface> list = streamerPort.streamerDetailCategory(streamerId, dates[0], dates[1]);
+        List<DailyCategory> dailyCategories = new ArrayList<>();
+
+        int totalTime = 0;
+
+        for(FindStreamerCategoryResDtoInterface val : list){
+
+            totalTime += val.getTime();
+            dailyCategories.add(DailyCategory.builder().date(val.getDate()).time(val.getTime()).category(val.getCategory()).avgViewer(val.getAvgViewer()).build());
+
+        }
+
+        return FindStreamerCategoryDto.builder().totalTime(totalTime).dailyCategories(dailyCategories).build();
+    }
+
 }
