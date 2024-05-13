@@ -10,6 +10,7 @@ import a_icon from "../../stores/afreeca_icon.png";
 import cnt from "../../stores/cnt_icon.png";
 import no_image from "../../stores/no_image.png";
 import no_image_profile from "../../stores/no_image_profile.png";
+import s_icon from "../../stores/soop_icon.png";
 
 interface data_2 {
   data:
@@ -70,6 +71,7 @@ export default function SearchResult() {
     fetch(`${cheese_api}/streamer/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
+        // console.log(data);
         setSearchStreamerResults(data);
       });
     fetch(`${cheese_api}/live/search?query=${query}`, {})
@@ -174,6 +176,10 @@ export default function SearchResult() {
                       src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
                       alt="Platform C"
                     />
+                  )}
+
+                  {live.platform === "S" && (
+                    <img src={s_icon.src} alt="Platform C" />
                   )}
                 </div>
                 <div className={styles.bj_name}>{live.name}</div>

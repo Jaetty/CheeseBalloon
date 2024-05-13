@@ -217,6 +217,9 @@
   width: 100%;
   padding-top: 2%;
   padding-bottom: 2%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .platform_icon {
@@ -231,8 +234,9 @@
 }
 
 .bj_name {
+  width: 100%;
   font-family: "GmarketSans";
-  font-size: 13px;
+  font-size: 10px;
   // font-weight: lighter;
   padding-left: 3%;
 }
