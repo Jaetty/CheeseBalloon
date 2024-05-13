@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
 from config.database import engine, Base, get_db
+from config.cors import add_cors
 from businesses.crawling import CrawlingBusiness
 from businesses.streamers import StreamerBusiness
 from schedulers.crawlers import Scheduler
@@ -10,6 +11,8 @@ from schemas.streamers import StreamerUpdate
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
+
+add_cors(app)
 
 
 # app.include_router(users.router)
