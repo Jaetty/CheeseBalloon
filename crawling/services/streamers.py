@@ -41,7 +41,7 @@ class StreamerService:
         else:
             return None
 
-    def get_streamer_by_id(self, db: Session, streamer_id: int) -> StreamerRead | None:
+    def get_streamer_by_id(self, db: Session, streamer_id: int) -> StreamerRead:
         streamer = db.query(Streamer).filter(Streamer.streamer_id == streamer_id).first()
         if streamer:
             streamer_read = StreamerRead(
@@ -54,7 +54,7 @@ class StreamerService:
             )
             return streamer_read
         else:
-            return None
+            raise HTTPException(status_code=500, detail="스트리머 없어")
 
     def get_streamers_per_platform(self, db: Session, platform: str) -> List[StreamerRead]:
         streamers = db.query(Streamer).filter(Streamer.platform == platform).all()
