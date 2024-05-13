@@ -3,10 +3,14 @@
 /* eslint-disable camelcase */
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import styles from "./searchresult.module.scss";
 import empty from "../../stores/Frame 114.png";
 import a_icon from "../../stores/afreeca_icon.png";
 import cnt from "../../stores/cnt_icon.png";
+import no_image from "../../stores/no_image.png";
+import no_image_profile from "../../stores/no_image_profile.png";
+import s_icon from "../../stores/soop_icon.png";
 
 interface data_2 {
   data:
@@ -34,7 +38,7 @@ interface data_3 {
         isLive: boolean;
         profileUrl: string;
         channelUrl: string;
-        followerCnt: number;
+        follower: number;
         platform: string;
       }[]
     | null;
@@ -42,44 +46,41 @@ interface data_3 {
 
 export default function SearchResult() {
   const cheese_api = process.env.NEXT_PUBLIC_CHEESEBALLOON_API;
-  const [query, setQuery] = useState<string | null>(""); // query 상태를 설정
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query");
+  const [visibleStreamerCount, setVisibleStreamerCount] = useState(12);
+  const [streamerIncrement, setStreamerIncrement] = useState(12);
+  const [visibleLiveCount, setVisibleLiveCount] = useState(12);
+  const [liveIncrement, setLiveIncrement] = useState(12);
+
   const [searchStreamerResults, setSearchStreamerResults] = useState<data_3>({
     data: null,
-  }); // 검색 결과 상태를 설정
+  });
   const [searchLiveResults, setSearchLiveResults] = useState<data_2>({
     data: null,
-  }); // 검색 결과 상태를 설정
+  });
+
+  const loadMoreStreamers = () => {
+    setVisibleStreamerCount((prevCount) => prevCount + streamerIncrement);
+  };
+  const loadMoreLives = () => {
+    setVisibleLiveCount((prevCount) => prevCount + liveIncrement);
+  };
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const query_2 = urlSearchParams.get("query");
-    setQuery(query_2); // query 값을 상태로 설정
-
-    // API 요청 함수 호출
-    fetch(`${cheese_api}/streamer/search?query=${query_2}`, {
-      // mode: "no-cors",
-    })
+    fetch(`${cheese_api}/streamer/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
-        setSearchStreamerResults(data); // 검색 결과를 상태로 설정
+        // console.log(data);
+        setSearchStreamerResults(data);
       });
-    // .catch((error) => {
-    //   console.error("Error fetching search results:", error);
-    // });
-
-    // API 요청 함수 호출
-    fetch(`${cheese_api}/live/search?query=${query_2}`, {
-      // mode: "no-cors",
-    })
+    fetch(`${cheese_api}/live/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
-        setSearchLiveResults(data); // 검색 결과를 상태로 설정
+        setSearchLiveResults(data);
       });
-    // .catch((error) => {
-    //   console.error("Error fetching search results:", error);
-    // });
-  }, [cheese_api, query]); // 빈 배열을 의존성 배열로 지정하여 최초 한 번만 실행되도록 설정
-  // console.log(cheese_api);
+  }, [cheese_api, query]);
+
   return (
     <div className={styles.searchresult}>
       <div className={styles.top}>
@@ -91,49 +92,80 @@ export default function SearchResult() {
       </div>
       <div className={styles.streamer_title}>스트리머</div>
       <div className={styles.streamer_list}>
-        {searchStreamerResults.data &&
-          searchStreamerResults.data.map((streamer) => (
-            <div key={streamer.streamerId} className={styles.streamer}>
-              <div className={styles.streamer_thumbnail}>
-                <img src={streamer.profileUrl} alt="" />
-              </div>
-              <div className={styles.streamer_info}>
-                <div className={styles.first_container}>
-                  <div className={styles.platform}>
-                    {streamer.platform === "A" && (
-                      <img src={a_icon.src} alt="Platform A" />
-                    )}
-                    {streamer.platform === "C" && (
-                      <img
-                        src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
-                        alt="Platform C"
-                      />
-                    )}
+        {searchStreamerResults.data ? (
+          searchStreamerResults.data
+            .slice(0, visibleStreamerCount)
+            .map((streamer) => (
+              <div key={streamer.streamerId} className={styles.streamer}>
+                <div className={styles.streamer_thumbnail}>
+                  <img
+                    src={streamer.profileUrl}
+                    alt=""
+                    onError={(
+                      e: React.SyntheticEvent<HTMLImageElement, Event>
+                    ) => {
+                      e.currentTarget.src = no_image.src; // Set the source to the fallback image
+                    }}
+                  />
+                </div>
+                <div className={styles.streamer_info}>
+                  <div className={styles.first_container}>
+                    <div className={styles.platform}>
+                      {streamer.platform === "A" && (
+                        <img src={a_icon.src} alt="Platform A" />
+                      )}
+                      {streamer.platform === "C" && (
+                        <img
+                          src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
+                          alt="Platform C"
+                        />
+                      )}
+                    </div>
+                    <div className={styles.streamer_name}>{streamer.name}</div>
                   </div>
-                  <div className={styles.streamer_name}>{streamer.name}</div>
+                  <div className={styles.followers}>
+                    팔로워 {streamer.follower}명
+                  </div>
                 </div>
-                <div className={styles.followers}>
-                  팔로워 {streamer.followerCnt}명
+                <div className={styles.favorites}>
+                  <img src={empty.src} alt="ss" />
                 </div>
               </div>
-              <div className={styles.favorites}>
-                <img src={empty.src} alt="ss" />
-              </div>
+            ))
+        ) : (
+          <div className={styles.no_data}>조회된 내역이 없습니다.</div>
+        )}
+        {searchStreamerResults.data &&
+          searchStreamerResults.data.length > visibleStreamerCount && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+            <div className={styles.more} onClick={loadMoreStreamers}>
+              <p>더보기 ▽</p>
             </div>
-          ))}
+          )}
       </div>
       <div className={styles.live_list_title}>LIVE</div>
       <div className={styles.live_list}>
-        {searchLiveResults.data &&
-          searchLiveResults.data.map((live) => (
+        {searchLiveResults.data ? (
+          searchLiveResults.data.slice(0, visibleLiveCount).map((live) => (
             // eslint-disable-next-line react/jsx-key
             <div key={live.liveId} className={styles.live}>
-              <div className={styles.live_thumbnail}>
-                <img
-                  src="https://image.newsis.com/2024/03/03/NISI20240303_0001492267_web.jpg"
-                  alt="123"
-                />
-              </div>
+              <a
+                href={live.streamUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className={styles.live_thumbnail}>
+                  <img
+                    src={live.thumbnailUrl}
+                    alt="123"
+                    onError={(
+                      e: React.SyntheticEvent<HTMLImageElement, Event>
+                    ) => {
+                      e.currentTarget.src = no_image.src; // Set the source to the fallback image
+                    }}
+                  />
+                </div>
+              </a>
               <div className={styles.second_container}>
                 <div className={styles.platform_icon}>
                   {live.platform === "A" && (
@@ -145,13 +177,25 @@ export default function SearchResult() {
                       alt="Platform C"
                     />
                   )}
+
+                  {live.platform === "S" && (
+                    <img src={s_icon.src} alt="Platform C" />
+                  )}
                 </div>
                 <div className={styles.bj_name}>{live.name}</div>
                 <div className={styles.category}>{live.category}</div>
               </div>
               <div className={styles.third_container}>
                 <div className={styles.bj_thumbnail}>
-                  <img src={live.profileUrl} alt="" />
+                  <img
+                    src={live.profileUrl}
+                    alt=""
+                    onError={(
+                      e: React.SyntheticEvent<HTMLImageElement, Event>
+                    ) => {
+                      e.currentTarget.src = no_image_profile.src; // Set the source to the fallback image
+                    }}
+                  />
                 </div>
                 <div className={styles.live_title}>{live.title}</div>
               </div>
@@ -162,7 +206,17 @@ export default function SearchResult() {
                 <div className={styles.viewer}>{live.viewerCnt}</div>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className={styles.no_data}>조회된 내역이 없습니다.</div>
+        )}
+        {searchLiveResults.data &&
+          searchLiveResults.data.length > visibleLiveCount && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+            <div className={styles.more} onClick={loadMoreLives}>
+              <p>더보기 ▽</p>
+            </div>
+          )}
       </div>
     </div>
   );

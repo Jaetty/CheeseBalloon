@@ -1,21 +1,22 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import styles from "./searchIndex.module.scss";
 
 export default function Search() {
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const query = e.currentTarget.query.value; // query를 현재 대상 요소에서 가져옴
+    const query = e.currentTarget.query.value;
     router.push(`/searchresult?query=${query}`);
   };
 
   return (
-    <div className="search__input">
+    <div>
       <form onSubmit={handleSearch}>
-        <input type="text" name="query" placeholder="검색어를 입력하세요" />
-        <button type="submit">검색</button>
+        <input className={styles.search__input} type="text" name="query" />
       </form>
     </div>
   );
