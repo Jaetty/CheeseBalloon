@@ -10,7 +10,6 @@ export default function Login() {
   const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_REST_API;
   const redirect_uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
   // oauth 요청 URL
-
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
   const handleLogin = () => {
     window.location.href = kakaoURL;

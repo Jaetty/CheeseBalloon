@@ -8,8 +8,9 @@ import styles from "src/styles/page.module.css";
 // eslint-disable-next-line camelcase
 import a_icon from "src/stores/afreeca_icon.png";
 import cnt from "src/stores/cnt_icon.png";
-import soop from "src/stores/soop_icon.jpg";
+import soop from "src/stores/soop_icon.png";
 import no_image from "src/stores/no_image.png";
+import no_image_profile from "src/stores/no_image_profile.png";
 
 interface live_data {
   data:
@@ -115,69 +116,68 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className={styles.live_main}>
-          <div className={styles.title}>
-            <p>LIVE 모아보기</p>
-          </div>
-          <div className={styles.more}>
-            <p>더보기</p>
-          </div>
-          <div className={styles.streaming_list}>
-            {liveData.data &&
-              liveData.data.map((live) => (
-                <div key={live.liveId} className={styles.live}>
-                  <a
-                    href={live.streamUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div className={styles.live_thumbnail}>
+        <div className={styles.title}>
+          <p>LIVE 모아보기</p>
+        </div>
+        <div className={styles.streaming_list}>
+          {liveData.data &&
+            liveData.data.map((live) => (
+              <div key={live.liveId} className={styles.live}>
+                <a
+                  href={live.streamUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className={styles.live_thumbnail}>
+                    <img
+                      src={live.thumbnailUrl}
+                      alt="123"
+                      onError={(
+                        e: React.SyntheticEvent<HTMLImageElement, Event>
+                      ) => {
+                        e.currentTarget.src = no_image.src; // Set the source to the fallback image
+                      }}
+                    />
+                  </div>
+                </a>
+                <div className={styles.second_container}>
+                  <div className={styles.platform_icon}>
+                    {live.platform === "A" && (
+                      <img src={a_icon.src} alt="Platform A" />
+                    )}
+                    {live.platform === "C" && (
                       <img
-                        src={live.thumbnailUrl}
-                        alt="123"
-                        onError={(
-                          e: React.SyntheticEvent<HTMLImageElement, Event>
-                        ) => {
-                          e.currentTarget.src = no_image.src; // Set the source to the fallback image
-                        }}
+                        src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
+                        alt="Platform C"
                       />
-                    </div>
-                  </a>
-                  <div className={styles.second_container}>
-                    <div className={styles.ff}>
-                      <div className={styles.platform_icon}>
-                        {live.platform === "A" && (
-                          <img src={a_icon.src} alt="Platform A" />
-                        )}
-                        {live.platform === "C" && (
-                          <img
-                            src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
-                            alt="Platform C"
-                          />
-                        )}
-                        {live.platform === "S" && (
-                          <img src={soop.src} alt="S" />
-                        )}
-                      </div>
-                      <div className={styles.bj_name}>{live.name}</div>
-                    </div>
-                    <div className={styles.category}>{live.category}</div>
+                    )}
+                    {live.platform === "S" && <img src={soop.src} alt="S" />}
                   </div>
-                  <div className={styles.third_container}>
-                    <div className={styles.bj_thumbnail}>
-                      <img src={live.profileUrl} alt="" />
-                    </div>
-                    <div className={styles.live_title}>{live.title}</div>
-                  </div>
-                  <div className={styles.cnt}>
-                    <div className={styles.cnt_icon}>
-                      <img src={cnt.src} alt="cnt" />
-                    </div>
-                    <div className={styles.viewer}>{live.viewerCnt}</div>
-                  </div>
+                  <div className={styles.bj_name}>{live.name}</div>
+                  <div className={styles.category}>{live.category}</div>
                 </div>
-              ))}
-          </div>
+                <div className={styles.third_container}>
+                  <div className={styles.bj_thumbnail}>
+                    <img
+                      src={live.profileUrl}
+                      alt=""
+                      onError={(
+                        e: React.SyntheticEvent<HTMLImageElement, Event>
+                      ) => {
+                        e.currentTarget.src = no_image_profile.src; // Set the source to the fallback image
+                      }}
+                    />
+                  </div>
+                  <div className={styles.live_title}>{live.title}</div>
+                </div>
+                <div className={styles.cnt}>
+                  <div className={styles.cnt_icon}>
+                    <img src={cnt.src} alt="cnt" />
+                  </div>
+                  <div className={styles.viewer}>{live.viewerCnt}</div>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </div>

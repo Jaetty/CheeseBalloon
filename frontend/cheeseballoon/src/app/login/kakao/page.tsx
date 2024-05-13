@@ -9,7 +9,7 @@ export default function KakaoRedirect() {
   const code = searchParams.get("code");
   const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 
-  console.log(code);
+  // console.log(code);
 
   useEffect(() => {
     fetch(`${redirectUri}/code?code=${code}`, {
@@ -21,9 +21,9 @@ export default function KakaoRedirect() {
         router.push("/");
       })
       .catch((error) => {
-        console.error("오류 발생", error); //
+        // console.error("오류 발생", error); //
       });
-  }, []);
+  }, [code, redirectUri, router]);
 
   return (
     <div>

@@ -1,7 +1,7 @@
 .searchresult {
   color: white;
   background-color: #1e1f27;
-  padding-top: 1.5625%;
+  // padding-top: 1.5625%;
   padding-left: 10.67708333333333%;
   padding-right: 10.67708333333333%;
   padding-bottom: 0%;
@@ -9,7 +9,7 @@
 }
 
 .top {
-  border-bottom: 1px solid #e4e4e4;
+  border-bottom: 1px solid rgba($color: #e4e4e4, $alpha: 0.5);
 }
 
 .title {
@@ -20,7 +20,6 @@
 }
 .sub_title {
   font-family: "GmarketSans";
-
   margin-top: 0%;
   color: #a8a8a8;
   font-weight: lighter;
@@ -42,23 +41,24 @@
 .streamer_list {
   display: flex;
   flex-direction: row;
-  /* padding: 1.8%; */
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  padding: 2%;
-  border-bottom: 1px solid #e4e4e4;
+  // justify-content: center;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  border-bottom: 1px solid rgba($color: #e4e4e4, $alpha: 0.5);
 }
 
 .streamer {
-  width: 27%;
+  width: 22%;
   height: 8%;
   display: flex;
   background-color: #3e3e3e;
-  border-radius: 8px;
   padding: 1%;
   margin-bottom: 2%;
   margin-right: 1%;
+  border-radius: 8px;
 }
 
 .streamer_thumbnail {
@@ -144,15 +144,15 @@
   justify-content: center;
 }
 
-.favorites > img {
-  // transform: translate(0, 35%);
-}
-
 .live_list {
   display: flex;
-  /* padding: 1.8%; */
+  flex-direction: row;
   flex-wrap: wrap;
-  // justify-content: space-between;
+  align-items: center;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  border-bottom: 1px solid rgba($color: #e4e4e4, $alpha: 0.5);
   font-family: "GmarketSans";
 }
 
@@ -160,8 +160,10 @@
   font-size: 18px;
   font-weight: bold;
   font-family: "GmarketSans";
+  display: flex;
   margin-top: 2%;
   padding-bottom: 2%;
+  justify-content: flex-start;
 }
 
 .more {
@@ -171,6 +173,7 @@
   width: 10%;
   font-size: 14px;
   font-weight: bold;
+  color: #e5e5e5;
   font-family: "GmarketSans";
   border: 2px solid #6c6c6c;
   border-radius: 55px;
@@ -182,20 +185,38 @@
 }
 
 .live {
-  /* width: calc(25% - 1.8%); */
+  font-family: "GmarketSans";
+  width: 2200px;
+  height: 250px;
+  display: flex;
   background-color: #3e3e3e;
   padding: 1%;
-  display: flex;
+  // flex-wrap: wrap;
   flex-direction: column;
+  margin-bottom: 2%;
+  margin-right: 3%;
+  border-radius: 8px;
+}
 
-  /* border: red 1px solid; */
-  margin-bottom: 1.8%;
-  /* width:200px; */
-  border-radius: 10%;
+.live_thumbnail {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* 내부 내용이 넘치는 경우 숨김 처리 */
 }
 
 .live_thumbnail > img {
+  display: block;
   width: 100%;
+  height: 100%;
+}
+
+.second_container {
+  display: flex;
+  align-items: center;
+  font-weight: 300;
+  width: 100%;
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
 
 .platform_icon {
@@ -205,56 +226,56 @@
 }
 
 .platform_icon > img {
-  border-radius: 10%;
+  border-radius: 8px;
   width: 24px;
 }
 
-.second_container {
-  display: flex;
-  flex-grow: 1; /* 부모 요소의 너비를 채우도록 함 */
-}
-
 .bj_name {
+  font-family: "GmarketSans";
   font-size: 13px;
+  // font-weight: lighter;
   padding-left: 3%;
-
-  top: 25%;
-  position: relative;
 }
 
 .category {
   font-size: 10px;
-  float: right;
-  padding-left: 8%;
-  top: 25%;
-  position: relative;
+  // font-weight: lighter;
+  margin-left: auto;
 }
 
 .third_container {
-  width: 100%;
-  /* border: solid 1px yellow; */
-  /* height: 12%; */
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  /* padding: 4px; */
+.bj_thumbnail {
+  width: 50px;
+  height: 50px;
+  // height: 100px;
+  overflow: hidden; /* 내부 내용이 넘치는 경우 숨김 처리 */
+  // border-radius: 100%;
 }
 
 .bj_thumbnail > img {
-  margin-top: 10%;
-  max-height: 100%; /* 이미지의 최대 높이를 부모 요소의 높이에 맞게 설정 */
-  max-width: 100%; /* 이미지의 최대 너비를 부모 요소의 너비에 맞게 설정 */
-  width: 50px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  // object-fit: cover;
 }
 
 .live_title {
-  margin-left: 3%;
-  padding-top: 5%;
-  font-size: 15px;
-  display: flex; /* 요소를 플렉스 박스로 설정하여 내부의 요소들을 정렬하기 쉽게 합니다. */
-  justify-content: center; /* 가로 중앙 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
-  height: 100%; /* 부모 요소인 third_container의 높이에 맞게 요소를 확장합니다. */
+  width: calc(100% - 50px);
+  height: 50px;
+  font-size: 13px;
+  font-weight: medium;
+  padding-left: 5%;
+  padding-right: 0;
+  padding-bottom: 1%;
+  align-items: flex-end;
 }
 
 .cnt {
@@ -272,16 +293,6 @@
 
 .viewer {
   opacity: 69%;
-  align-self: flex-start; /* 오른쪽 정렬 */
-}
-
-.live_title {
-  font: "GmarketSans";
-  font-size: 20px;
-  display: flex; /* 요소를 플렉스 박스로 설정하여 내부의 요소들을 정렬하기 쉽게 합니다. */
-  justify-content: center; /* 가로 중앙 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
-  height: 100%; /* 부모 요소인 third_container의 높이에 맞게 요소를 확장합니다. */
 }
 
 @media (max-width: 1200px) {

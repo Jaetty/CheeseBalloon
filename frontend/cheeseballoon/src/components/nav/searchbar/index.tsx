@@ -13,10 +13,6 @@ export default function Search() {
     router.push(`/searchresult?query=${query}`);
   };
 
-  useEffect(() => {
-    window.location.reload(); // 페이지 새로고침
-  }, [router.query.query]);
-
   return (
     <div>
       <form onSubmit={handleSearch}>
