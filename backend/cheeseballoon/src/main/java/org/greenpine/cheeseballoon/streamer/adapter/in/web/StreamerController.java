@@ -34,7 +34,17 @@ public class StreamerController {
             memberId = -1L;
         }
 
-        FindStreamerDetailResDto ret = streamerUsecase.streamerDetail(streamerId, memberId);
+        // FindStreamerDetailResDto ret = streamerUsecase.streamerDetail(streamerId, memberId);
+        FindStreamerDetailResDto ret = FindStreamerDetailResDto.builder()
+                .streamerId(285L)
+                .channelUrl("https://chzzk.naver.com/75cbf189b3bb8f9f687d2aca0d0a382b")
+                .platform('C')
+                .originId("75cbf189b3bb8f9f687d2aca0d0a382b")
+                .bookmark(true)
+                .rank(5)
+                .diff(2)
+                .profileUrl("https://nng-phinf.pstatic.net/MjAyMzEyMTVfMTgx/MDAxNzAyNjAxMjEyMTYw.Hw6vs76aI0L1zeu4fziwXDE35gidFriwTSgAjq7KWxUg.0V3KaKvctGKcVYa76UiDVTXMjXeUSuUezHX6nGU4y9kg.PNG/123.png?type=f120_120_na")
+                .name("한동숙").build();
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
     }
@@ -42,7 +52,8 @@ public class StreamerController {
     @GetMapping("/live")
     public ResponseEntity<CustomBody> streamerDetailLive(@RequestParam Long streamerId){
 
-        FindStreamerDetailLiveResDto ret = streamerUsecase.streamerDetailLive(streamerId);
+//        FindStreamerDetailLiveResDto ret = streamerUsecase.streamerDetailLive(streamerId);
+        FindStreamerDetailLiveResDto ret = FindStreamerDetailLiveResDto.builder().isLive(true).streamerUrl("https://chzzk.naver.com/live/75cbf189b3bb8f9f687d2aca0d0a382b").thumbnailUrl("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26464698/live/5885133/record/27970556/thumbnail/image_480.jpg").build();
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
     }
@@ -93,20 +104,21 @@ public class StreamerController {
     @GetMapping("/category")
     public ResponseEntity<CustomBody> streamerCategoryDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
-        FindStreamerCategoryDto ret = streamerUsecase.streamerDetailCategory(streamerId, date);
+//        FindStreamerCategoryDto ret = streamerUsecase.streamerDetailCategory(streamerId, date);
 
-//        int totalTime = 3600*24*5;
-//
-//        FindStreamerCategoryDto ret = FindStreamerCategoryDto.builder().totalTime(totalTime).build();
-//
-//        List<DailyCategory> list = new ArrayList<>();
-//
-//        for(int i=0; i<10; i++){
-//
-//            list.add(DailyCategory.builder().category("카테고리 id : "+i+1).time(totalTime/2).avgViewer(500 * (i+1)).build());
-//        }
-//
-//        ret.setDailyCategories(list);
+        int totalTime = 3600*24*5;
+
+        FindStreamerCategoryDto ret = FindStreamerCategoryDto.builder().totalTime(totalTime).build();
+
+        List<DailyCategory> list = new ArrayList<>();
+        String dateStr = "2024-05-0";
+
+        for(int i=0; i<7; i++){
+
+            list.add(DailyCategory.builder().date(dateStr+1+i).category("카테고리 id : "+i+1).time(totalTime/2).avgViewer(500 * (i+1)).build());
+        }
+
+        ret.setDailyCategories(list);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
 
