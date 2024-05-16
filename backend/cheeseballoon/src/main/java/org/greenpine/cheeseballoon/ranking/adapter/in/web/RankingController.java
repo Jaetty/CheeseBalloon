@@ -39,7 +39,24 @@ public class RankingController {
             memberId = -1L;
         }
 
-        List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0), memberId);
+        // List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0), memberId);
+        List<FindAvgViewerRankingResDto> ret = new ArrayList<>();
+
+        for(int i=1; i<=300; i++){
+
+            ret.add(FindAvgViewerRankingResDto
+                    .builder()
+                    .rank(i)
+                    .bookmark(i%2==0 ? true : false)
+                    .rankDiff((int)(Math.random()*100))
+                    .averageViewer(3000 - (int)(Math.random() * 10) - i * 10 )
+                    .diff((int)(Math.random()*600))
+                    .name("항상#킴성태")
+                    .profileUrl("https://stimg.afreecatv.com/LOGO/rr/rrvv17/rrvv17.jpg")
+                    .platform('S')
+                    .streamerId(8L)
+                    .build());
+        }
 
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
@@ -55,7 +72,24 @@ public class RankingController {
             memberId = -1L;
         }
 
-        List<FindTopViewerRankingResDto> ret = rankingUsecase.findTopViewerRanking(date, platform.charAt(0), memberId);
+//        List<FindTopViewerRankingResDto> ret = rankingUsecase.findTopViewerRanking(date, platform.charAt(0), memberId);
+        List<FindTopViewerRankingResDto> ret = new ArrayList<>();
+
+        for(int i=1; i<=300; i++){
+
+            ret.add(FindTopViewerRankingResDto
+                    .builder()
+                    .rank(i)
+                    .bookmark(i%2==0 ? true : false)
+                    .rankDiff((int)(Math.random()*100))
+                    .topViewer(5000 - (int)(Math.random() * 10) - i * 10 )
+                    .diff((int)(Math.random()*600))
+                    .name("항상#킴성태")
+                    .profileUrl("https://stimg.afreecatv.com/LOGO/rr/rrvv17/rrvv17.jpg")
+                    .platform('S')
+                    .streamerId(8L)
+                    .build());
+        }
 
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
@@ -72,7 +106,7 @@ public class RankingController {
         }
 
 
-        List<FindFollowerRankingResDto> ret1 = rankingUsecase.findFollowerRanking(date, platform.charAt(0), memberId);
+        // List<FindFollowerRankingResDto> ret1 = rankingUsecase.findFollowerRanking(date, platform.charAt(0), memberId);
         List<FindFollowerRankingResDto> testData = new ArrayList<>();
 
         Random random = new Random();
@@ -121,9 +155,26 @@ public class RankingController {
             memberId = -1L;
         }
 
-        List<FindRatingRankingResDto> ret1 = rankingUsecase.findRatingRanking(date, platform.charAt(0), memberId);
+        // List<FindRatingRankingResDto> ret = rankingUsecase.findRatingRanking(date, platform.charAt(0), memberId);
+        List<FindRatingRankingResDto> ret = new ArrayList<>();
 
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret1));
+        for(int i=1; i<=300; i++){
+
+            ret.add(FindRatingRankingResDto
+                    .builder()
+                    .rank(i)
+                    .bookmark(i%2==0 ? true : false)
+                    .rankDiff((int)(Math.random()*100))
+                    .rating(5000 - (int)(Math.random() * 10) - i * 10 )
+                    .diff((int)(Math.random()*600))
+                    .name("항상#킴성태")
+                    .profileUrl("https://stimg.afreecatv.com/LOGO/rr/rrvv17/rrvv17.jpg")
+                    .platform('S')
+                    .streamerId(8L)
+                    .build());
+        }
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
     }
 
 }
