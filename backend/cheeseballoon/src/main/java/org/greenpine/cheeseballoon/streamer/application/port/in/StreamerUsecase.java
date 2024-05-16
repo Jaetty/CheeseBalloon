@@ -17,5 +17,6 @@ public interface StreamerUsecase {
 
     FindStreamerViewerDto streamerDetailViewer(Long streamerId, int date);
     FindStreamerRatingDto streamerDetailRating(Long streamerId, int date);
+    FindStreamerCategoryDto streamerDetailCategory(Long streamerId, int date);
 
 }

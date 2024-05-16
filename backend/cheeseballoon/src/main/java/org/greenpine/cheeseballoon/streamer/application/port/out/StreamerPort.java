@@ -3,10 +3,7 @@ package org.greenpine.cheeseballoon.streamer.application.port.out;
 
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerLogEntity;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailyViewerResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDetailResDto;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerRatingResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
 
 import java.time.LocalDateTime;
@@ -26,5 +23,6 @@ public interface StreamerPort {
     List<FindStreamerDailyViewerResDtoInterface>[] streamerDetailViewer(Long streamerId, int date);
 
     List<FindStreamerRatingResDtoInterface> streamerDetailRating(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
+    List<FindStreamerCategoryResDtoInterface> streamerDetailCategory(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
 
 }
