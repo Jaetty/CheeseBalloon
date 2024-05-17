@@ -44,13 +44,14 @@
   position: absolute;
   top: 100%;
   width: 100%;
+  z-index: 999;
 }
 
 .dropdown {
   background-color: #4e4e4e;
   border-radius: 0.25rem;
   margin-top: 0;
-  max-height: 5rem;
+  max-height: 10rem;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: gray #4e4e4e;
@@ -63,7 +64,7 @@
   font-size: smaller;
   font-weight: bold;
   padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
+  padding-top: 0.5rem;
   padding-left: 2rem;
   border: 0;
   background-color: transparent;
@@ -71,16 +72,15 @@
   text-align: left;
   display: inline-flex;
   justify-content: flex-start;
+  align-content: center;
 }
 
 .dropdownItem:hover {
-  color: gray;
   background-color: darkcyan;
   cursor: pointer;
 }
 
 .hover {
-  color: gray;
   background-color: darkcyan;
   cursor: pointer;
 }

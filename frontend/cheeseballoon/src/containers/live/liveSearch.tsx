@@ -21,6 +21,8 @@ export default function LiveSearch() {
   const [searchResponse, setSearchResponse] = useState<searchType>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number>(0);
+  const [isKeyboardNavigation, setIsKeyboardNavigation] =
+    useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -28,13 +30,15 @@ export default function LiveSearch() {
   const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const selected = selectRef?.current?.querySelector(`.${style.hover}`);
-    if (selected) {
-      selected?.scrollIntoView({
-        block: "center",
-      });
+    if (isKeyboardNavigation) {
+      const selected = selectRef?.current?.querySelector(`.${style.hover}`);
+      if (selected) {
+        selected?.scrollIntoView({
+          block: "center",
+        });
+      }
     }
-  }, [selectedItemIndex]);
+  }, [selectedItemIndex, isKeyboardNavigation]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +58,7 @@ export default function LiveSearch() {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
     setSelectedItemIndex(0);
+    setIsKeyboardNavigation(false);
   };
 
   const handleQuery = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -74,9 +79,11 @@ export default function LiveSearch() {
     }
     setSearchInput("");
     setSelectedItemIndex(0);
+    setIsKeyboardNavigation(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setIsKeyboardNavigation(true);
     if (e.key === "ArrowUp") {
       e.preventDefault();
       setSelectedItemIndex((prevIndex) =>
@@ -100,6 +107,7 @@ export default function LiveSearch() {
         router.push(newPath);
         setSearchInput("");
         setSelectedItemIndex(0);
+        setIsKeyboardNavigation(false);
       }
     }
   };
@@ -134,6 +142,10 @@ export default function LiveSearch() {
                     className={`${style.dropdownItem} ${selectedItemIndex === index ? style.hover : null}`}
                     onClick={(e) => {
                       handleQuery(e);
+                    }}
+                    onMouseEnter={() => {
+                      setSelectedItemIndex(index);
+                      setIsKeyboardNavigation(false);
                     }}
                   >
                     {item}
