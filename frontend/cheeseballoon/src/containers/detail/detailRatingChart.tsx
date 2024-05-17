@@ -12,15 +12,17 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 type AlignType = "center";
 
 type RatingDataType = {
-  avgRating: number;
-  dailyRates: [date: string, rating: number];
+  totalRating: number;
+  platformRating: number;
+  dailyRates: [total: number, platform: number, date: string];
 };
 
 type DateArrayType = string[];
 type RatingArrayType = number[];
 type DailyRatingType = {
+  total: number;
+  platform: number;
   date: string;
-  rating: string;
 };
 
 const API_URL = process.env.NEXT_PUBLIC_RATING_API_URL;
@@ -39,7 +41,11 @@ async function getData(streamerId: string, date: string) {
 export default function DetailRatingChart() {
   const { id, date } = useParams();
   const [ratingData, setRatingData] = useState<RatingDataType | null>(null);
-  const [ratingArray, setRatingArray] = useState<RatingArrayType>([1]);
+  const [totalRatingArray, setTotalRatingArray] = useState<RatingArrayType>([
+    1,
+  ]);
+  const [platformRatingArray, setplatformRatingArray] =
+    useState<RatingArrayType>([1]);
   const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
 
   useEffect(() => {
@@ -47,8 +53,9 @@ export default function DetailRatingChart() {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data.dailyRates;
       const dates = dailyData.map((item: DailyRatingType) => item.date);
-      const ratings = dailyData.map((item: DailyRatingType) =>
-        parseInt(item.rating, 10)
+      const totalRatings = dailyData.map((item: DailyRatingType) => item.total);
+      const platformRatings = dailyData.map(
+        (item: DailyRatingType) => item.platform
       );
       const datesChange = dates.map((dateString: string) => {
         const parts = dateString.split("-");
@@ -59,7 +66,8 @@ export default function DetailRatingChart() {
         });
         return `${year}.${month}.${day} (${dayOfWeek})`;
       });
-      setRatingArray(ratings);
+      setTotalRatingArray(totalRatings);
+      setplatformRatingArray(platformRatings);
       setDateXaxis(datesChange);
       setRatingData(responseData.data);
     };
@@ -91,8 +99,15 @@ export default function DetailRatingChart() {
           },
         },
       },
+      colors: ['#77B6EA', '#F8DB46'],
       markers: {
         size: 3,
+      },
+      legend: {
+        show: true,
+        labels: {
+          colors: "white",
+        },
       },
       xaxis: {
         categories: dateXaxis,
@@ -106,7 +121,7 @@ export default function DetailRatingChart() {
       yaxis: [
         {
           min: 0,
-          max: Math.max(Math.floor(Math.max(...ratingArray) * 1.5), 30),
+          max: Math.max(Math.floor(Math.max(...platformRatingArray) * 1.5), 30),
           tickAmount: 5,
           labels: {
             style: {
@@ -132,14 +147,18 @@ export default function DetailRatingChart() {
           },
         },
       },
-      colors: ["#F0BD53"],
     },
 
     series: [
       {
-        name: "시청률",
+        name: "플랫폼 시청률",
         type: "line",
-        data: ratingArray as number[],
+        data: platformRatingArray as number[],
+      },
+      {
+        name: "통합 시청률",
+        type: "line",
+        data: totalRatingArray as number[],
       },
     ],
   };
@@ -158,14 +177,16 @@ export default function DetailRatingChart() {
       {ratingData && (
         <div className={style.rating}>
           <div className={style["rating-container"]}>
-            <div className={style["rating-title"]}>최고 시청률</div>
+            <div className={style["rating-title"]}>플랫폼 시청률</div>
             <div className={style["rating-cnt"]}>
-              {Math.max(...ratingArray)}%
+              {ratingData.platformRating.toFixed(1)}%
             </div>
           </div>
           <div className={style["rating-container"]}>
-            <div className={style["rating-title"]}>평균 시청률</div>
-            <div className={style["rating-cnt"]}>{ratingData.avgRating}%</div>
+            <div className={style["rating-title"]}>통합 시청률</div>
+            <div className={style["rating-cnt"]}>
+              {ratingData.totalRating.toFixed(1)}%
+            </div>
           </div>
         </div>
       )}
