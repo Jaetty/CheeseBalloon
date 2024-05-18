@@ -29,15 +29,8 @@ public class RankingPersistenceAdapter implements RankingPort {
 
         List<FindAvgViewerRankResDtoInterface>[] ret = new List[2];
 
-        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
-        if(platform=='T'){
-            ret[0] = liveRepository.findAllAvgViewerRanking(dates[0], dates[1], memberId);
-            ret[1] = liveRepository.findAllAvgViewerRanking(dates[2], dates[3], memberId);
-        }
-        else{
-            ret[0] = liveRepository.findAvgViewerRankingByPlatform(dates[0], dates[1], platform, memberId);
-            ret[1] = liveRepository.findAvgViewerRankingByPlatform(dates[2], dates[3], platform, memberId);
-        }
+        ret[0] = liveRepository.findAllAvgViewerRanking(dates[0], dates[1], platform, memberId);
+        ret[1] = liveRepository.findAllAvgViewerRanking(dates[2], dates[3], platform, memberId);
 
         return ret;
     }
@@ -50,15 +43,8 @@ public class RankingPersistenceAdapter implements RankingPort {
 
         List<FindTopViewerRankResDtoInterface>[] ret = new List[2];
 
-        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
-        if(platform=='T'){
-            ret[0] = liveRepository.findAllTopViewerRanking(dates[0], dates[1], memberId);
-            ret[1] = liveRepository.findAllTopViewerRanking(dates[2], dates[3], memberId);
-        }
-        else{
-            ret[0] = liveRepository.findTopViewerRankingByPlatform(dates[0], dates[1], platform, memberId);
-            ret[1] = liveRepository.findTopViewerRankingByPlatform(dates[2], dates[3], platform, memberId);
-        }
+        ret[0] = liveRepository.findAllTopViewerRanking(dates[0], dates[1], platform, memberId);
+        ret[1] = liveRepository.findAllTopViewerRanking(dates[2], dates[3], platform, memberId);
 
         return ret;
     }
@@ -71,14 +57,8 @@ public class RankingPersistenceAdapter implements RankingPort {
         List<FindFollowerRankResDtoInterface>[] ret = new List[2];
 
         // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
-        if(platform=='T'){
-            ret[0] = liveRepository.findFollowerRanking(dates[0], dates[1], memberId);
-            ret[1] = liveRepository.findFollowerRanking(dates[2], dates[3], memberId);
-        }
-        else{
-            ret[0] = liveRepository.findFollowerRankingByPlatform(dates[0], dates[1], platform, memberId);
-            ret[1] = liveRepository.findFollowerRankingByPlatform(dates[2], dates[3], platform, memberId);
-        }
+        ret[0] = liveRepository.findFollowerRanking(dates[0], dates[1], platform, memberId);
+        ret[1] = liveRepository.findFollowerRanking(dates[2], dates[3], platform, memberId);
 
         return ret;
     }
@@ -90,15 +70,8 @@ public class RankingPersistenceAdapter implements RankingPort {
 
         List<FindRatingRankResDtoInterface>[] ret = new List[2];
 
-        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
-        if(platform=='T'){
-            ret[0] = liveRepository.findRatingRanking(dates[0], dates[1], memberId);
-            ret[1] = liveRepository.findRatingRanking(dates[2], dates[3], memberId);
-        }
-        else{
-            ret[0] = liveRepository.findRatingRankingByPlatform(dates[0], dates[1], platform, memberId);
-            ret[1] = liveRepository.findRatingRankingByPlatform(dates[2], dates[3], platform, memberId);
-        }
+        ret[0] = liveRepository.findRatingRanking(dates[0], dates[1], platform, memberId);
+        ret[1] = liveRepository.findRatingRanking(dates[2], dates[3], platform, memberId);
 
         return ret;
     }
