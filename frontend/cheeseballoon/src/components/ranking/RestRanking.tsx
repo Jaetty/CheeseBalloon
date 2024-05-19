@@ -24,16 +24,33 @@ type Props = {
   data: RankingData[] | undefined;
 };
 
+function noop() {}
 export default function RestRanking({ data }: Props) {
   const pathname = usePathname()?.split("/").pop() || "";
-  const [imageError, setImageError] = useState<Record<number, boolean>>({});
+  const [updatedUrls, setUpdatedUrls] = useState<Record<number, string>>({});
 
-  const handleImageError = (id: number) => {
-    setImageError((prev) => ({
-      ...prev,
-      [id]: true,
-    }));
+  const handleImageError = async (id: number) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ streamer_id: id }),
+      });
+      const datas = await response.json(); // JSON 형태로 응답을 파싱
+      const newProfileUrl = datas.detail.profile_url; // detail 객체 내의 profile_url을 참조
+      if (newProfileUrl) {
+        setUpdatedUrls((prev) => ({
+          ...prev,
+          [id]: newProfileUrl, // 받아온 URL로 상태 업데이트
+        }));
+      }
+    } catch (error) {
+      noop();
+    }
   };
+
   return (
     <div className={style.container}>
       {data &&
@@ -47,9 +64,10 @@ export default function RestRanking({ data }: Props) {
                     <Link href={`/detail/${item.streamerId}`}>
                       <Image
                         src={
-                          imageError[item.streamerId]
+                          item.profileUrl === "default" ||
+                          item.profileUrl === "None"
                             ? noimage
-                            : item.profileUrl
+                            : updatedUrls[item.streamerId] || item.profileUrl
                         }
                         alt=""
                         width={48}
@@ -90,9 +108,10 @@ export default function RestRanking({ data }: Props) {
                     <Link href={`/detail/${item.streamerId}`}>
                       <Image
                         src={
-                          imageError[item.streamerId]
+                          item.profileUrl === "default" ||
+                          item.profileUrl === "None"
                             ? noimage
-                            : item.profileUrl
+                            : updatedUrls[item.streamerId] || item.profileUrl
                         }
                         alt=""
                         width={48}

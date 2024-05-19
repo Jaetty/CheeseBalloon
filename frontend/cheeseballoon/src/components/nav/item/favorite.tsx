@@ -17,7 +17,7 @@ export default function Fav() {
 
   const fetchData = async () => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_LIVE_API}?offset=10&limit=20`
+      `${process.env.NEXT_PUBLIC_LIVE_API}?offset=1&limit=20`
     );
     const responseData = await response.json();
     setFavData(responseData.data);
