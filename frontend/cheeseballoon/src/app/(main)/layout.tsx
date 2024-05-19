@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "src/styles/globals.css";
-import Nav from "src/components/nav/index";
 import Footer from "src/components/footer";
 import { PaddingProvider } from "src/lib/PaddingContext";
 import { MenuProvider } from "src/lib/MenuContext";
@@ -14,19 +13,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <Nav />
-        <div className="flex-container">
-          <div className="children">{children}</div>
+    <>
+      <MenuProvider></MenuProvider>
+      <PaddingProvider>
+        <div className="children">
+          {children}
+          <Footer />
         </div>
-      </body>
-    </html>
+      </PaddingProvider>
+    </>
   );
 }

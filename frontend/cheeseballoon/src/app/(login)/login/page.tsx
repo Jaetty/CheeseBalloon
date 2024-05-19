@@ -3,8 +3,8 @@
 /* eslint-disable camelcase */
 
 import kakao_login from "src/stores/kakao_login_large_narrow.png";
-import logo from "../../../public/svgs/logo.png";
-import styles from "./page.module.scss";
+import logo from "public/svgs/logo.png";
+import styles from "src/app/(login)/login/page.module.scss";
 
 export default function Login() {
   const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_REST_API;
@@ -29,7 +29,11 @@ export default function Login() {
         </div>
         <div className={styles.social_login}>
           <div className={styles.sub}>소셜 로그인</div>
-          <div className={styles.login_button} onClick={handleLogin}>
+          <div
+            className={styles.login_button}
+            onClick={handleLogin}
+            role="presentation"
+          >
             <img className={styles.login_img} src={kakao_login.src} alt="ss" />
           </div>
         </div>

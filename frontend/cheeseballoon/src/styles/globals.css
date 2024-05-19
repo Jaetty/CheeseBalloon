@@ -1,7 +1,6 @@
 .children {
   flex-grow: 1;
   overflow: auto;
-  margin-top: 60px;
 }
 html,
 body {

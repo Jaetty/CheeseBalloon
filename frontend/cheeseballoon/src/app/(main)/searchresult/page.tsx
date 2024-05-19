@@ -4,13 +4,13 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import styles from "./searchresult.module.scss";
-import empty from "../../stores/Frame 114.png";
-import a_icon from "../../stores/afreeca_icon.png";
-import cnt from "../../stores/cnt_icon.png";
-import no_image from "../../stores/no_image.png";
-import no_image_profile from "../../stores/no_image_profile.png";
-import s_icon from "../../stores/soop_icon.png";
+import styles from "src/app/(main)/searchresult/searchresult.module.scss";
+import empty from "src/stores/Frame 114.png";
+import a_icon from "src/stores/afreeca_icon.png";
+import cnt from "src/stores/cnt_icon.png";
+import no_image from "src/stores/no_image.png";
+import no_image_profile from "src/stores/no_image_profile.png";
+import s_icon from "src/stores/soop_icon.png";
 
 interface data_2 {
   data:

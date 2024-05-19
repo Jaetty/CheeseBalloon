@@ -1,6 +1,6 @@
-import DetailViewer from "@/src/containers/detail/detailViewer";
-import DetailSelectDate from "@/src/containers/detail/detailSelectDate";
-import style from "./page.module.scss"
+import DetailViewer from "src/containers/detail/detailViewer";
+import DetailSelectDate from "src/containers/detail/detailSelectDate";
+import style from "src/app/(main)/detail/[id]/page.module.scss";
 
 export default function DetailPage() {
   return (

@@ -17,7 +17,6 @@ export default function KakaoRedirect() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         router.push("/");
       })
       .catch((error) => {
