@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import "src/styles/globals.css";
 import Nav from "src/components/nav/index";
-import Footer from "src/components/footer";
-import { PaddingProvider } from "src/lib/PaddingContext";
-import { MenuProvider } from "src/lib/MenuContext";
 
 export const metadata: Metadata = {
   title: "CheeseBalloon",

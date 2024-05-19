@@ -1,4 +1,4 @@
-import DetailSelectedContent from "src/containers/detail/detailSelectedContent";
+import DetailSelectedContent from "src/containers/detail/DetailSelectedContent";
 
 export default function CategoryPage() {
   return (

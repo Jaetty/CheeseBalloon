@@ -1,8 +1,8 @@
-import Menubutton from "src/components/nav/menubutton";
+import Menubutton from "src/components/nav/MenuButton";
 import styles from "src/components/nav/index.module.scss";
 import Searchbar from "src/components/nav/searchbar/index";
-import IsLogin from "src/components/nav/isLogin/index";
-import MainLogo from "src/components/nav/mainlogo";
+import IsLogin from "src/components/nav/islogin/index";
+import MainLogo from "src/components/nav/MainLogo";
 
 export default function Nav() {
   return (
