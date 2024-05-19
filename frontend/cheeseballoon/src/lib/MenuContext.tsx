@@ -18,7 +18,6 @@ export function MenuProvider() {
       <div style={{ marginTop: "60px" }}>
         {value ? <OpenMenu /> : <ClosedMenu />}
       </div>
-      ;
     </MenuContext.Provider>
   );
 }
