@@ -1,5 +1,5 @@
-import DetailProfileContent from "./detailProfileContent";
-import style from "./detailProfile.module.scss"
+import DetailProfileContent from "./tmpdetailProfileContent";
+import style from "./tmpdetailProfile.module.scss";
 
 export default function DetailProfile() {
   return (

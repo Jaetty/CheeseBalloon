@@ -1,7 +1,7 @@
 "use client";
 
-import styles from "src/components/nav/item/recomend.module.scss";
-import RecomendCard from "src/components/nav/item/recomendCard";
+import styles from "src/components/nav/item/tmprecomend.module.scss";
+import RecomendCard from "src/components/nav/item/tmprecomendCard";
 import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
 import { useState, useEffect } from "react";

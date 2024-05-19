@@ -1,4 +1,4 @@
-import DetailCalendarChart from "./detailCalendarChart";
+import DetailCalendarChart from "./tmpdetailCalendarChart";
 
 export default function DetailCalendar() {
   return (

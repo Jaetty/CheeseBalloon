@@ -1,4 +1,4 @@
-import DetailFollowerChart from "./detailFollowerChart";
+import DetailFollowerChart from "./tmpdetailFollowerChart";
 
 export default function DetailFollower() {
   return (

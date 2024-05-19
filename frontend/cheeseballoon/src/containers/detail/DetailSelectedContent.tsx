@@ -2,14 +2,14 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import DetailViewer from "@/src/containers/detail/detailViewer";
-import DetailCategory from "./detailCategory";
-import DetailDuration from "./detailDuration";
-import DetailRating from "./detailRating";
-import DetailFollower from "./detailFollower";
-import DetailCalendar from "./detailCalendar";
-import DetailSelectDate from "./detailSelectDate";
-import style from "./detailSelectedContent.module.scss";
+import DetailViewer from "@/src/containers/detail/tmpdetailViewer";
+import DetailCategory from "./tmpdetailCategory";
+import DetailDuration from "./tmpdetailDuration";
+import DetailRating from "./tmpdetailRating";
+import DetailFollower from "./tmpdetailFollower";
+import DetailCalendar from "./tmpdetailCalendar";
+import DetailSelectDate from "./tmpdetailSelectDate";
+import style from "./tmpdetailSelectedContent.module.scss";
 
 export default function DetailSelectedContent() {
   const { category } = useParams();
@@ -48,7 +48,9 @@ export default function DetailSelectedContent() {
       <div className={style.date}>
         <DetailSelectDate />
       </div>
-      <div className={`${isRendered? style.rendered : null}`}>{selectedContent()}</div>
+      <div className={`${isRendered ? style.rendered : null}`}>
+        {selectedContent()}
+      </div>
     </div>
   );
 }

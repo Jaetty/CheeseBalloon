@@ -1,7 +1,7 @@
 "use client";
 
-import DetailSelectButton from "./detailSelectButton";
-import style from "./detailSelect.module.scss";
+import DetailSelectButton from "./tmpdetailSelectButton";
+import style from "./tmpdetailSelect.module.scss";
 
 export default function DetailSelect() {
   return (

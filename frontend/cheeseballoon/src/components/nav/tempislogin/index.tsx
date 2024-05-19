@@ -1,7 +1,7 @@
 "use client";
 
 import userfill from "public/svgs/userfill.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MouseEvent } from "react";
 

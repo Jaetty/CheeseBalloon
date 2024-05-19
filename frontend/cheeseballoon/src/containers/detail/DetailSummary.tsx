@@ -1,4 +1,4 @@
-import DetailSummaryContent from "./detailSummaryContent";
+import DetailSummaryContent from "./tmpdetailSummaryContent";
 
 export default function DetailSummary() {
   return (

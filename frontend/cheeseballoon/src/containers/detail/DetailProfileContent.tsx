@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import afreeca from "../../../public/svgs/afreeca.svg"
-import chzzk from "../../../public/svgs/chzzk.svg"
-import style from "./detailProfileContent.module.scss";
+import afreeca from "../../../public/svgs/afreeca.svg";
+import chzzk from "../../../public/svgs/chzzk.svg";
+import style from "./tmpdetailProfileContent.module.scss";
 
 interface StreamerDataType {
   streamId: number;
@@ -96,11 +96,7 @@ export default function DetailProfileContent() {
         <div>
           <div className={style["logo-and-name"]}>
             {streamerData.platform === "C" ? (
-              <img
-                className={style["platform-logo"]}
-                src={chzzk.src}
-                alt=""
-              />
+              <img className={style["platform-logo"]} src={chzzk.src} alt="" />
             ) : (
               <img
                 className={style["platform-logo"]}

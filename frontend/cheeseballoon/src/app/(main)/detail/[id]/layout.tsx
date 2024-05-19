@@ -1,7 +1,7 @@
-import DetailLive from "src/containers/detail/detailLive";
-import DetailProfile from "src/containers/detail/detailProfile";
-import DetailSummary from "src/containers/detail/detailSummary";
-import DetailSelect from "src/containers/detail/detailSelect";
+import DetailLive from "src/containers/detail/tmpdetailLive";
+import DetailProfile from "src/containers/detail/tmpdetailProfile";
+import DetailSummary from "src/containers/detail/tmpdetailSummary";
+import DetailSelect from "src/containers/detail/tmpdetailSelect";
 import style from "src/app/(main)/detail/[id]/layout.module.scss";
 
 export default function DetailLayout({

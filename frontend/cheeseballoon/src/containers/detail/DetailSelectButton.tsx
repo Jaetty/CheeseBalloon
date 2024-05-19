@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import style from "./detailSelectButton.module.scss";
+import style from "./tmpdetailSelectButton.module.scss";
 
 export default function DetailSelectButton() {
   const { id, category } = useParams();
@@ -77,7 +77,7 @@ export default function DetailSelectButton() {
       >
         팔로워
       </button>
-{/* 
+      {/* 
       <button
         onClick={() => {
           handleSelectContent("calendar");

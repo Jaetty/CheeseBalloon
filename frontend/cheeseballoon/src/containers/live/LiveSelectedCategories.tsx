@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import style from "./liveSelectedCategories.module.scss";
+import style from "./tmpliveSelectedCategories.module.scss";
 
 export default function LiveSelectedCategories() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 "use client";
 
-import Subranking from "src/containers/ranking/subrankingIndex";
+import Subranking from "src/containers/ranking/tmpsubrankingIndex";
 
 export default function SubrankingPage() {
   return (

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import anya from "@/public/svgs/anya2.jpg";
-import style from "./detailLive.module.scss";
+import style from "./tmpdetailLive.module.scss";
 
 const API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
 

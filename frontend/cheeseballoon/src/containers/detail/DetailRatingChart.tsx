@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import style from "./detailRatingChart.module.scss";
+import style from "./tmpdetailRatingChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -99,7 +99,7 @@ export default function DetailRatingChart() {
           },
         },
       },
-      colors: ['#77B6EA', '#F8DB46'],
+      colors: ["#77B6EA", "#F8DB46"],
       markers: {
         size: 3,
       },

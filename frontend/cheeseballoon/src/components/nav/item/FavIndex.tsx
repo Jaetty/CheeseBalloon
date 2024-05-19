@@ -1,7 +1,7 @@
 "use client";
 
-import styles from "src/components/nav/item/favorite.module.scss";
-import FavCard from "src/components/nav/item/favcard";
+import styles from "src/components/nav/item/tmpfavorite.module.scss";
+import FavCard from "src/components/nav/item/tmpfavcard";
 import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
 import { useToggleState, FavState } from "src/stores/store";

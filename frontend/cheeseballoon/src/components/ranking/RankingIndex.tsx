@@ -1,5 +1,5 @@
-import style from "src/components/ranking/rankingindex.module.scss";
-import Card from "src/components/ranking/rankingIndexCard";
+import style from "src/components/ranking/tmprankingindex.module.scss";
+import Card from "src/components/ranking/tmprankingIndexCard";
 import Link from "next/link";
 import {
   FollowRankData,

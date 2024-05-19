@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import style from "./livePopularCategories.module.scss";
+import style from "./tmplivePopularCategories.module.scss";
 
 const API_URL = process.env.NEXT_PUBLIC_HOT_CATEGORY_API_URL;
 

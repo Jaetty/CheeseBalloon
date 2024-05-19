@@ -1,4 +1,4 @@
-import DetailDurationChart from "./detailDurationChart";
+import DetailDurationChart from "./tmpdetailDurationChart";
 
 export default function DetailDuration() {
   return (

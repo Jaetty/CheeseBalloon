@@ -7,7 +7,7 @@ import chzzkIcon from "public/svgs/chzzk.svg";
 import afreecaIcon from "public/svgs/afreeca.svg";
 import anya from "public/svgs/anya.jpg";
 import blankProfile from "public/svgs/blank_profile.png";
-import style from "./liveCard.module.scss";
+import style from "./tmpliveCard.module.scss";
 
 interface LiveInfo {
   liveinfo: {

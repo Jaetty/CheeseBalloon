@@ -1,4 +1,4 @@
-import DetailViewerChart from "./detailViewerChart";
+import DetailViewerChart from "./tmpdetailViewerChart";
 
 export default function DetailViewer() {
   return (

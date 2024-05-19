@@ -1,7 +1,7 @@
 "use client";
 
 import CalendarHeatmap from "react-calendar-heatmap";
-import style from "./detailChart.module.scss";
+import style from "./tmpdetailChart.module.scss";
 
 export default function DetailCalendarChart() {
   return (
