@@ -3,7 +3,7 @@ import notice from "public/svgs/notice.svg";
 import live from "public/svgs/live.svg";
 import ranking from "public/svgs/rank.svg";
 import Link from "next/link";
-import style from "src/components/nav/item/tmpshorcut.module.scss";
+import style from "src/components/nav/item/ShortCut.module.scss";
 import { useToggleState } from "src/stores/store";
 
 export default function Shortcut() {

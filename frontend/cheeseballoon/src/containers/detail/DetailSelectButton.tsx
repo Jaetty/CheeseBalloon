@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import style from "./tmpdetailSelectButton.module.scss";
+import style from "src/containers/detail/DetailSelectButton.module.scss";
 
 export default function DetailSelectButton() {
   const { id, category } = useParams();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import style from "./tmpdetailSelectDate.module.scss";
+import style from "src/containers/detail/DetailSelectDate.module.scss";
 
 export default function DetailSelectDate() {
   const { id, category, date } = useParams();

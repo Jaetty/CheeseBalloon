@@ -1,5 +1,5 @@
 import { useState } from "react";
-import style from "src/components/ranking/tmpselect.module.scss";
+import style from "src/components/ranking/CommonSelect.module.scss";
 
 interface PlatformSelectProps {
   setPlatform: (platform: string) => void;

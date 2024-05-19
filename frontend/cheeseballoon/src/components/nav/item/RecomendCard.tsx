@@ -1,4 +1,4 @@
-import styles from "src/components/nav/item/tmpfavcard.module.scss";
+import styles from "src/components/nav/item/FavCard.module.scss";
 import Image from "next/image";
 import chzzk from "public/svgs/chzzk.svg";
 import aflogo from "public/svgs/afreeca.svg";

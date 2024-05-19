@@ -1,10 +1,10 @@
 "use client";
 
-import style from "src/containers/ranking/tmprankingIndex.module.scss";
-import DaySelect from "@/src/components/tmpranking/dayselect";
-import PlatformSelect from "src/components/ranking/tmpplatformselect";
+import style from "src/containers/ranking/RankingIndex.module.scss";
+import DaySelect from "src/components/ranking/DaySelect";
+import PlatformSelect from "src/components/ranking/PlatformSelect";
 import { useState, useEffect, useMemo } from "react";
-import RankingIndex from "src/components/ranking/tmprankingIndex";
+import RankingIndex from "src/components/ranking/RankingIndex";
 import { RankingData } from "src/types/type";
 import Loading from "src/app/loading";
 

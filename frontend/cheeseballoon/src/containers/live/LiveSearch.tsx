@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import style from "./tmpliveSearch.module.scss";
-import searchIcon from "../../stores/search_glass.png";
+import style from "src/containers/live/LiveSearch.module.scss";
+import searchIcon from "src/stores/search_glass.png";
 
 const API_URL = process.env.NEXT_PUBLIC_LIVE_CATEGORY_API_URL;
 
@@ -115,7 +115,7 @@ export default function LiveSearch() {
   return (
     <div className={style.container}>
       <div className={style.icon}>
-        <Image src={searchIcon} alt="" />
+        <Image src={searchIcon} alt="" width={15} height={15} />
       </div>
       <input
         type="search"

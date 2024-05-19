@@ -8,7 +8,7 @@ export default function Footer() {
     <div className={styles.container}>
       <div className={styles.contactLinks}>
         <a
-          href="https://github.com/Ha-Yuseong/CheeseBalloon"
+          href="https://github.com/Jaetty/CheeseBalloon"
           target="_blank"
           rel="noreferrer"
           aria-label="Github 링크"

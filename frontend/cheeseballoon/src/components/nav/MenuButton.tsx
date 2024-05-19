@@ -1,7 +1,7 @@
 "use client";
 
 import { useToggleState } from "src/stores/store";
-import styles1 from "src/components/nav/tmpmenubutton.module.scss";
+import styles1 from "src/components/nav/MenuButton.module.scss";
 import Image from "next/image";
 import menu from "public/svgs/big.png";
 

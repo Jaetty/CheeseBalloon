@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "src/components/ranking/tmprankingIndexCard.module.scss";
+import styles from "src/components/ranking/RankingIndexCard.module.scss";
 import Image from "next/image";
 import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";

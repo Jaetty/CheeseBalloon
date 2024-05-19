@@ -1,4 +1,4 @@
-import Ranking from "src/containers/ranking/tmprankingIndex";
+import Ranking from "src/containers/ranking/RankingIndex";
 
 export default function RankingPage() {
   return (

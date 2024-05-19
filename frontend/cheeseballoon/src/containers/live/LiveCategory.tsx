@@ -1,7 +1,7 @@
-import LivePopularCategories from "./tmplivePopularCategories";
-import LiveSelectedCategories from "./tmpliveSelectedCategories";
-import LiveSearch from "./tmpliveSearch";
-import style from "./tmpliveCategory.module.scss";
+import LivePopularCategories from "src/containers/live/LivePopularCategories";
+import LiveSelectedCategories from "src/containers/live/LiveSelectedCategories";
+import LiveSearch from "src/containers/live/LiveSearch";
+import style from "src/containers/live/LiveCategory.module.scss";
 
 export default function LiveCategory() {
   return (

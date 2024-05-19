@@ -1,4 +1,4 @@
-import DetailCategoryChart from "./tmpdetailCategoryChart";
+import DetailCategoryChart from "src/containers/detail/DetailCategoryChart";
 
 export default function DetailCategory() {
   return (

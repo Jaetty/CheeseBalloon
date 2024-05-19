@@ -1,6 +1,6 @@
-import LiveHeader from "src/containers/live/tmpliveHeader";
-import LiveList from "src/containers/live/tmpliveList";
-import LiveCategory from "src/containers/live/tmpliveCategory";
+import LiveHeader from "src/containers/live/LiveHeader";
+import LiveList from "src/containers/live/LiveList";
+import LiveCategory from "src/containers/live/LiveCategory";
 import style from "src/app/(main)/live/page.module.scss";
 
 export default function LivePage() {

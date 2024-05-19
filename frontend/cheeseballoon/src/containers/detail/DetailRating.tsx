@@ -1,4 +1,4 @@
-import DetailRatingChart from "./tmpdetailRatingChart";
+import DetailRatingChart from "src/containers/detail/DetailRatingChart";
 
 export default function DetailRating() {
   return (

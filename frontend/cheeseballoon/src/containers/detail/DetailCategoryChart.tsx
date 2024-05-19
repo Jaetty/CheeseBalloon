@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import style from "./tmpdetailCategoryChart.module.scss";
+import style from "src/containers/detail/DetailCategoryChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,

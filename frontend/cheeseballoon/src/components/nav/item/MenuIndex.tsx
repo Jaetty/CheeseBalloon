@@ -1,11 +1,10 @@
 "use client";
 
-import OpenMenu from "src/components/nav/item/tmpopenIndex";
-import ClosedMenu from "src/components/nav/item/tmpclosedIndex";
+import OpenMenu from "src/components/nav/item/OpenIndex";
+import ClosedMenu from "src/components/nav/item/ClosedIndex";
 import { useToggleState } from "src/stores/store";
 
 export default function Menu() {
   const { value } = useToggleState();
-  if (window.location.pathname === "/login") return null;
   return <div>{value ? <OpenMenu /> : <ClosedMenu />}</div>;
 }

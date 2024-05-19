@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import afreeca from "../../../public/svgs/afreeca.svg";
-import chzzk from "../../../public/svgs/chzzk.svg";
-import style from "./tmpdetailProfileContent.module.scss";
+import afreeca from "public/svgs/afreeca.svg";
+import chzzk from "public/svgs/chzzk.svg";
+import style from "src/containers/detail/DetailProfileContent.module.scss";
 
 interface StreamerDataType {
   streamId: number;

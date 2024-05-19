@@ -1,4 +1,4 @@
-import style from "./tmpliveHeader.module.scss";
+import style from "src/containers/live/LiveHeader.module.scss";
 
 export default function LiveHeader() {
   return (

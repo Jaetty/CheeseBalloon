@@ -1,8 +1,8 @@
 "use client";
 
-import style from "src/containers/ranking/tmprankingIndex.module.scss";
-import DaySelect from "@/src/components/ranking/tmpdayselect";
-import PlatformSelect from "src/components/ranking/tmpplatformselect";
+import style from "src/containers/ranking/RankingIndex.module.scss";
+import DaySelect from "src/components/ranking/DaySelect";
+import PlatformSelect from "src/components/ranking/PlatformSelect";
 import TopThreeRanking from "src/components/ranking/TopThreeRank";
 import RestRanking from "src/components/ranking/RestRanking";
 import Loading from "src/app/loading";
