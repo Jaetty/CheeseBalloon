@@ -1,4 +1,4 @@
-package org.greenpine.cheeseballoon.streamer.application.port.out.dto;
+package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
 import java.math.BigInteger;
 
