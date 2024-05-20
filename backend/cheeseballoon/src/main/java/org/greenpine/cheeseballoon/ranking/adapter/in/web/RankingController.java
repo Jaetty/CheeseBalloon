@@ -2,6 +2,7 @@ package org.greenpine.cheeseballoon.ranking.adapter.in.web;
 
 
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
@@ -32,8 +33,11 @@ public class RankingController {
     @GetMapping("/average")
     public ResponseEntity<CustomBody> findAvgViewerRanking(@RequestParam
                                                            @Range(min = 0, max = 3) int date,
-                                                           @Pattern(regexp = "^[SCT]") String platform,
+                                                           @Pattern(regexp = "^[SCT]") @Size(min = 1, max = 1) String platform,
                                                            @AuthenticationPrincipal Long memberId){
+
+        String a = "%";
+        System.out.println(a.charAt(0));
 
         if(memberId == null){
             memberId = -1L;
@@ -69,7 +73,7 @@ public class RankingController {
     @GetMapping("/topview")
     public ResponseEntity<CustomBody> findTopViewerRanking(@RequestParam
                                                            @Range(min = 0, max = 3) int date,
-                                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                                           @Pattern(regexp = "^[SCT]") @Size(min = 1, max = 1) String platform,
                                                            @AuthenticationPrincipal Long memberId){
 
         if(memberId == null){
@@ -106,7 +110,7 @@ public class RankingController {
     @GetMapping("/follow")
     public ResponseEntity<CustomBody> findFollowerRanking(@RequestParam
                                            @Range(min = 0, max = 3) int date,
-                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                           @Pattern(regexp = "^[ASCT]") @Size(min = 1, max = 1) String platform,
                                            @AuthenticationPrincipal Long memberId){
 
         if(memberId == null){
@@ -160,7 +164,7 @@ public class RankingController {
     @GetMapping("/rating")
     public ResponseEntity<CustomBody> findRatingRanking(@RequestParam
                                            @Range(min = 0, max = 3) int date,
-                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                           @Pattern(regexp = "^[ASCT]") @Size(min = 1, max = 1) String platform,
                                            @AuthenticationPrincipal Long memberId){
 
         if(memberId == null){

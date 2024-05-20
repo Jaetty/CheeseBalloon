@@ -1,11 +1,13 @@
 package org.greenpine.cheeseballoon.ranking.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.global.utils.DateCalculator;
 import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +26,10 @@ public class RankingService implements RankingUsecase {
     @Override
     public List<FindAvgViewerRankingResDto> findAvgViewerRanking(int date, char platform, long memberId) {
 
-        List<FindAvgViewerRankResDtoInterface>[] res = rankingPort.findAvgViewerRanking(date, platform, memberId);
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+
+        List<FindAvgViewerRankResDtoInterface> curr = rankingPort.findAvgViewerRanking(dates[0], dates[1], platform, memberId);
+        List<FindAvgViewerRankResDtoInterface> before = rankingPort.findAvgViewerRanking(dates[2], dates[3], platform, memberId);
 
         // diff 값의 경우 O(N) 만큼 상수를 제외하지 않는다면 정확히 O(3 * MAX_RANK)만큼의 수행시간을 가짐
         // 우선 Repository에서 특정 기간의 값(res[0])과 그 전 기간의 값(res[1])을 가져옴
@@ -35,7 +40,7 @@ public class RankingService implements RankingUsecase {
         Map<Long, Integer> diff = new HashMap<>();
 
         // 특정 기간의 값을 기준으로 DTO를 세팅해줌
-        for(FindAvgViewerRankResDtoInterface val : res[0]){
+        for(FindAvgViewerRankResDtoInterface val : curr){
 
             // hashmap에 각 스트리머의 고유 아이디 값과 랭킹 값을 기준으로 몇 위 상승했는지 넣어줌
             // MAX_RANK의 값이 300이고 순위가 1등이면 랭킹 값은 300 + 1 - 1 = 300위 상승이라는 뜻
@@ -54,9 +59,9 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(!res[1].isEmpty()){
+        if(!before.isEmpty()){
 
-            for(FindAvgViewerRankResDtoInterface val : res[1]){
+            for(FindAvgViewerRankResDtoInterface val : before){
 
                 // 이전 기간 데이터가 있다면
                 if(rank_diff.containsKey(val.getStreamerId())){
@@ -81,7 +86,10 @@ public class RankingService implements RankingUsecase {
     @Override
     public List<FindTopViewerRankingResDto> findTopViewerRanking(int date, char platform, long memberId) {
 
-        List<FindTopViewerRankResDtoInterface>[] res = rankingPort.findTopViewerRanking(date, platform, memberId);
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+
+        List<FindTopViewerRankResDtoInterface> curr = rankingPort.findTopViewerRanking(dates[0], dates[1], platform, memberId);
+        List<FindTopViewerRankResDtoInterface> before = rankingPort.findTopViewerRanking(dates[2], dates[3], platform, memberId);
 
         // diff 값의 경우 O(N) 만큼 상수를 제외하지 않는다면 정확히 O(3 * MAX_RANK)만큼의 수행시간을 가짐
         // 우선 Repository에서 특정 기간의 값(res[0])과 그 전 기간의 값(res[1])을 가져옴
@@ -92,7 +100,7 @@ public class RankingService implements RankingUsecase {
         Map<Long, Integer> diff = new HashMap<>();
 
         // 특정 기간의 값을 기준으로 DTO를 세팅해줌
-        for(FindTopViewerRankResDtoInterface val : res[0]){
+        for(FindTopViewerRankResDtoInterface val : curr){
 
             // hashmap에 각 스트리머의 고유 아이디 값과 랭킹 값을 기준으로 몇 위 상승했는지 넣어줌
             // MAX_RANK의 값이 300이고 순위가 1등이면 랭킹 값은 300 + 1 - 1 = 300위 상승이라는 뜻
@@ -111,9 +119,9 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(!res[1].isEmpty()){
+        if(!before.isEmpty()){
 
-            for(FindTopViewerRankResDtoInterface val : res[1]){
+            for(FindTopViewerRankResDtoInterface val : before){
                 // 이전 기간의 데이터가 있다면 수행
                 if(rank_diff.containsKey(val.getStreamerId())){
                     rankDiffCalculate(val.getStreamerId(), val.getRank(), val.getTopViewer(), MAX_RANK, rank_diff, diff);
@@ -135,7 +143,10 @@ public class RankingService implements RankingUsecase {
     @Override
     public List<FindFollowerRankingResDto> findFollowerRanking(int date, char platform, long memberId) {
 
-        List<FindFollowerRankResDtoInterface>[] res = rankingPort.findFollowerRanking(date, platform, memberId);
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+
+        List<FindFollowerRankResDtoInterface> curr = rankingPort.findFollowerRanking(dates[0], dates[1], platform, memberId);
+        List<FindFollowerRankResDtoInterface> before = rankingPort.findFollowerRanking(dates[2], dates[3], platform, memberId);
 
         // diff 값의 경우 O(N) 만큼 상수를 제외하지 않는다면 정확히 O(3 * MAX_RANK)만큼의 수행시간을 가짐
         // 우선 Repository에서 특정 기간의 값(res[0])과 그 전 기간의 값(res[1])을 가져옴
@@ -146,7 +157,7 @@ public class RankingService implements RankingUsecase {
         Map<Long, Integer> diff = new HashMap<>();
 
         // 특정 기간의 값을 기준으로 DTO를 세팅해줌
-        for(FindFollowerRankResDtoInterface val : res[0]){
+        for(FindFollowerRankResDtoInterface val : curr){
 
             // hashmap에 각 스트리머의 고유 아이디 값과 랭킹 값을 기준으로 몇 위 상승했는지 넣어줌
             // MAX_RANK의 값이 300이고 순위가 1등이면 랭킹 값은 300 + 1 - 1 = 300위 상승이라는 뜻
@@ -165,9 +176,9 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(!res[1].isEmpty()){
+        if(!before.isEmpty()){
 
-            for(FindFollowerRankResDtoInterface val : res[1]){
+            for(FindFollowerRankResDtoInterface val : before){
                 // 이전 기간의 데이터가 있다면
                 if(rank_diff.containsKey(val.getStreamerId())){
                     rankDiffCalculate(val.getStreamerId(), val.getRank(), val.getFollower(), MAX_RANK, rank_diff, diff);
@@ -189,7 +200,10 @@ public class RankingService implements RankingUsecase {
     @Override
     public List<FindRatingRankingResDto> findRatingRanking(int date, char platform, long memberId) {
 
-        List<FindRatingRankResDtoInterface>[] res = rankingPort.findRatingRanking(date, platform, memberId);
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+
+        List<FindRatingRankResDtoInterface> curr = rankingPort.findRatingRanking(dates[0], dates[1], platform, memberId);
+        List<FindRatingRankResDtoInterface> before = rankingPort.findRatingRanking(dates[0], dates[1], platform, memberId);
 
         List<FindRatingRankingResDto> ret = new ArrayList<>();
 
@@ -197,7 +211,7 @@ public class RankingService implements RankingUsecase {
         Map<Long, Double> diff = new HashMap<>();
 
         // 특정 기간의 값을 기준으로 DTO를 세팅해줌
-        for(FindRatingRankResDtoInterface val : res[0]){
+        for(FindRatingRankResDtoInterface val : curr){
 
             // hashmap에 각 스트리머의 고유 아이디 값과 랭킹 값을 기준으로 몇 위 상승했는지 넣어줌
             // MAX_RANK의 값이 300이고 순위가 1등이면 랭킹 값은 300 + 1 - 1 = 300위 상승이라는 뜻
@@ -216,9 +230,9 @@ public class RankingService implements RankingUsecase {
         }
 
         // 이전 기간 데이터가 없을 수 있음, 데이터가 있을 때만 수행
-        if(!res[1].isEmpty()){
+        if(!before.isEmpty()){
 
-            for(FindRatingRankResDtoInterface val : res[1]){
+            for(FindRatingRankResDtoInterface val : before){
                 // 이전 기간의 데이터가 있다면 수행
                 if(rank_diff.containsKey(val.getStreamerId())){
                     long s_id = val.getStreamerId();
