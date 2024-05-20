@@ -1,7 +1,9 @@
 package org.greenpine.cheeseballoon.ranking.application.port.out;
 
-import org.greenpine.cheeseballoon.ranking.application.port.in.dto.FindFollowRankingReqDto;
-import org.greenpine.cheeseballoon.ranking.application.port.out.dto.*;
+import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.FindAvgViewerRankResDtoInterface;
+import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.FindFollowerRankResDtoInterface;
+import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.FindRatingRankResDtoInterface;
+import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.FindTopViewerRankResDtoInterface;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.streamer.application.port.in;
 
 
+import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.FindSearchStreamerResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 
 import java.util.List;
