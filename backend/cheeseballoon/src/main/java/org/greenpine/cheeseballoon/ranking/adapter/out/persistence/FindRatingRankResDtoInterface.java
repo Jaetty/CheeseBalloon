@@ -1,13 +1,13 @@
-package org.greenpine.cheeseballoon.ranking.application.port.out.dto;
+package org.greenpine.cheeseballoon.ranking.adapter.out.persistence;
 
-public interface FindTopViewerRankResDtoInterface {
+public interface FindRatingRankResDtoInterface {
 
     Integer getRank();
     Long getStreamerId();
     String getName();
     Character getPlatform();
     String getProfileUrl();
-    Integer getTopViewer();
+    Double getRating();
     Boolean getBookmark();
 
 }
