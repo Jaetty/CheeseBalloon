@@ -2,6 +2,7 @@ package org.greenpine.cheeseballoon.ranking.adapter.in.web;
 
 
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
@@ -32,14 +33,21 @@ public class RankingController {
     @GetMapping("/average")
     public ResponseEntity<CustomBody> findAvgViewerRanking(@RequestParam
                                                            @Range(min = 0, max = 3) int date,
-                                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                                           @Pattern(regexp = "^[SCT]") @Size(min = 1, max = 1) String platform,
                                                            @AuthenticationPrincipal Long memberId){
+
+        String a = "%";
+        System.out.println(a.charAt(0));
 
         if(memberId == null){
             memberId = -1L;
         }
 
-        // List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0), memberId);
+        if(platform.charAt(0)=='T'){
+            platform = "%";
+        }
+
+//        List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0), memberId);
         List<FindAvgViewerRankingResDto> ret = new ArrayList<>();
 
         for(int i=1; i<=300; i++){
@@ -65,11 +73,15 @@ public class RankingController {
     @GetMapping("/topview")
     public ResponseEntity<CustomBody> findTopViewerRanking(@RequestParam
                                                            @Range(min = 0, max = 3) int date,
-                                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                                           @Pattern(regexp = "^[SCT]") @Size(min = 1, max = 1) String platform,
                                                            @AuthenticationPrincipal Long memberId){
 
         if(memberId == null){
             memberId = -1L;
+        }
+
+        if(platform.charAt(0)=='T'){
+            platform = "%";
         }
 
 //        List<FindTopViewerRankingResDto> ret = rankingUsecase.findTopViewerRanking(date, platform.charAt(0), memberId);
@@ -98,16 +110,20 @@ public class RankingController {
     @GetMapping("/follow")
     public ResponseEntity<CustomBody> findFollowerRanking(@RequestParam
                                            @Range(min = 0, max = 3) int date,
-                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                           @Pattern(regexp = "^[ASCT]") @Size(min = 1, max = 1) String platform,
                                            @AuthenticationPrincipal Long memberId){
 
         if(memberId == null){
             memberId = -1L;
         }
 
+        if(platform.charAt(0)=='T'){
+            platform = "%";
+        }
 
-        // List<FindFollowerRankingResDto> ret1 = rankingUsecase.findFollowerRanking(date, platform.charAt(0), memberId);
-        List<FindFollowerRankingResDto> testData = new ArrayList<>();
+
+//        List<FindFollowerRankingResDto> ret = rankingUsecase.findFollowerRanking(date, platform.charAt(0), memberId);
+        List<FindFollowerRankingResDto> ret = new ArrayList<>();
 
         Random random = new Random();
 
@@ -138,24 +154,28 @@ public class RankingController {
                 temp.setPlatform(platform.charAt(0));
             }
 
-            testData.add(temp);
+            ret.add(temp);
 
         }
 
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, testData));
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, ret));
     }
 
     @GetMapping("/rating")
     public ResponseEntity<CustomBody> findRatingRanking(@RequestParam
                                            @Range(min = 0, max = 3) int date,
-                                           @Pattern(regexp = "^[ASCT]") String platform,
+                                           @Pattern(regexp = "^[ASCT]") @Size(min = 1, max = 1) String platform,
                                            @AuthenticationPrincipal Long memberId){
 
         if(memberId == null){
             memberId = -1L;
         }
 
-        // List<FindRatingRankingResDto> ret = rankingUsecase.findRatingRanking(date, platform.charAt(0), memberId);
+        if(platform.charAt(0)=='T'){
+            platform = "%";
+        }
+
+//        List<FindRatingRankingResDto> ret = rankingUsecase.findRatingRanking(date, platform.charAt(0), memberId);
         List<FindRatingRankingResDto> ret = new ArrayList<>();
 
         for(int i=1; i<=300; i++){

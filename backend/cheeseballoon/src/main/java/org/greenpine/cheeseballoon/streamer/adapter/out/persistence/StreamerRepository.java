@@ -1,9 +1,5 @@
 package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindSearchStreamerResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerCategoryResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerDailyViewerResDtoInterface;
-import org.greenpine.cheeseballoon.streamer.application.port.out.dto.FindStreamerRatingResDtoInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
