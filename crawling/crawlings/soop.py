@@ -1,3 +1,5 @@
+import datetime
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
@@ -170,6 +172,7 @@ class Soop:
                 platform="S",
                 stream_url=f"https://play.afreecatv.com/{new_item['user_id']}/{new_item['broad_no']}",
                 live_origin_id=int(new_item['broad_no']),
+                live_start=datetime.datetime.strptime(new_item['broad_start'], '%Y-%m-%d %H:%M:%S'),
                 thumbnail_url=str(new_item['broad_thumb']),
                 category=str(map_category[new_item['broad_cate_no']]),
                 title=str(new_item['broad_title']),
@@ -195,6 +198,7 @@ class Soop:
                     platform="S",
                     stream_url=f"https://play.afreecatv.com/{new_item['user_id']}/{new_item['broad_no']}",
                     live_origin_id=int(new_item['broad_no']),
+                    live_start=datetime.datetime.strptime(new_item['broad_start'], '%Y-%m-%d %H:%M:%S'),
                     thumbnail_url=str(new_item['broad_thumb']),
                     category=str(map_category[new_item['broad_cate_no']]),
                     title=str(new_item['broad_title']),

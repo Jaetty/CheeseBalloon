@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 class StreamerInfo(BaseModel):
@@ -8,6 +10,7 @@ class StreamerInfo(BaseModel):
     platform: str
     stream_url: str
     live_origin_id: int
+    live_start: datetime
     thumbnail_url: str
     category: str | None = None
     title: str | None = None
