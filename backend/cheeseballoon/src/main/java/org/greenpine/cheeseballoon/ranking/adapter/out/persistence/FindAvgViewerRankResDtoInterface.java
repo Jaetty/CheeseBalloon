@@ -5,7 +5,7 @@ public interface FindAvgViewerRankResDtoInterface {
     Integer getRank();
     Long getStreamerId();
     String getName();
-    Character getPlatform();
+    String getPlatform();
     String getProfileUrl();
     Integer getAverageViewer();
     Boolean getBookmark();

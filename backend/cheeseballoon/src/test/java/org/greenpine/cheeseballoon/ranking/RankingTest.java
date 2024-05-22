@@ -24,7 +24,7 @@ public class RankingTest {
 
         LocalDateTime[] dates = DateCalculator.getPeriod(1);
 
-        List<FindRatingRankResDtoInterface> testData = liveRepository.findRatingRanking(dates[0], dates[1],'%', -1L);
+        List<FindRatingRankResDtoInterface> testData = liveRepository.findRatingRanking(dates[0], dates[1],"%", -1L);
 
         StringBuilder sb = new StringBuilder();
 
@@ -40,7 +40,7 @@ public class RankingTest {
     void avgViewerTest(){
         LocalDateTime[] dates = DateCalculator.getPeriod(1);
 
-        List<FindAvgViewerRankResDtoInterface> testData = liveRepository.findAllAvgViewerRanking(dates[0], dates[1],'%', -1L);
+        List<FindAvgViewerRankResDtoInterface> testData = liveRepository.findAllAvgViewerRanking(dates[0], dates[1],"%", -1L);
 
         StringBuilder sb = new StringBuilder();
 
@@ -56,7 +56,7 @@ public class RankingTest {
     void topViewerTest(){
         LocalDateTime[] dates = DateCalculator.getPeriod(1);
 
-        List<FindTopViewerRankResDtoInterface> testData = liveRepository.findAllTopViewerRanking(dates[0], dates[1],'%', -1L);
+        List<FindTopViewerRankResDtoInterface> testData = liveRepository.findAllTopViewerRanking(dates[0], dates[1],"%", -1L);
 
         StringBuilder sb = new StringBuilder();
 
@@ -72,7 +72,7 @@ public class RankingTest {
     void followerTest(){
         LocalDateTime[] dates = DateCalculator.getPeriod(1);
 
-        List<FindFollowerRankResDtoInterface> testData = liveRepository.findFollowerRanking(dates[0], dates[1],'%', -1L);
+        List<FindFollowerRankResDtoInterface> testData = liveRepository.findFollowerRanking(dates[0], dates[1],"%", -1L);
 
         StringBuilder sb = new StringBuilder();
 
