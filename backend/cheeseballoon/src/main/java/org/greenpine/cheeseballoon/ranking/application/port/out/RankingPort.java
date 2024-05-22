@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface RankingPort {
 
-    List<FindAvgViewerRankResDtoInterface> findAvgViewerRanking(LocalDateTime startDate, LocalDateTime endDate, char platform, long memberId);
-    List<FindTopViewerRankResDtoInterface> findTopViewerRanking(LocalDateTime startDate, LocalDateTime endDate, char platform, long memberId);
-    List<FindFollowerRankResDtoInterface> findFollowerRanking(LocalDateTime startDate, LocalDateTime endDate, char platform, long memberId);
-    List<FindRatingRankResDtoInterface> findRatingRanking(LocalDateTime startDate, LocalDateTime endDate, char platform, long memberId);
+    List<FindAvgViewerRankResDtoInterface> findAvgViewerRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, long memberId);
+    List<FindTopViewerRankResDtoInterface> findTopViewerRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, long memberId);
+    List<FindFollowerRankResDtoInterface> findFollowerRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, long memberId);
+    List<FindRatingRankResDtoInterface> findRatingRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, long memberId);
 }

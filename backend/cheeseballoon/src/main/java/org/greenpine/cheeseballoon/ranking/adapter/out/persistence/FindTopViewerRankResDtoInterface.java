@@ -5,7 +5,7 @@ public interface FindTopViewerRankResDtoInterface {
     Integer getRank();
     Long getStreamerId();
     String getName();
-    Character getPlatform();
+    String getPlatform();
     String getProfileUrl();
     Integer getTopViewer();
     Boolean getBookmark();

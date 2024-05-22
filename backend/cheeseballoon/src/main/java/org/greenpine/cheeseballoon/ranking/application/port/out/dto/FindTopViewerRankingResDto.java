@@ -14,7 +14,7 @@ public class FindTopViewerRankingResDto {
     Long streamerId;
     String name;
     int rank;
-    char platform;
+    String platform;
     String profileUrl;
     int topViewer;
     int rankDiff;

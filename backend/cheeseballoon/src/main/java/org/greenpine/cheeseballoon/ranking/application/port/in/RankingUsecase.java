@@ -5,11 +5,12 @@ import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollower
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindRatingRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankingResDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RankingUsecase {
-    List<FindAvgViewerRankingResDto> findAvgViewerRanking(int date, char platform, long memberId);
-    List<FindTopViewerRankingResDto> findTopViewerRanking(int date, char platform, long memberId);
-    List<FindFollowerRankingResDto> findFollowerRanking(int date, char platform, long memberId);
-    List<FindRatingRankingResDto> findRatingRanking(int date, char platform, long memberId);
+    List<FindAvgViewerRankingResDto> findAvgViewerRanking(LocalDateTime[] dates, String platform, long memberId);
+    List<FindTopViewerRankingResDto> findTopViewerRanking(LocalDateTime[] dates, String platform, long memberId);
+    List<FindFollowerRankingResDto> findFollowerRanking(LocalDateTime[] dates, String platform, long memberId);
+    List<FindRatingRankingResDto> findRatingRanking(LocalDateTime[] dates, String platform, long memberId);
 }
