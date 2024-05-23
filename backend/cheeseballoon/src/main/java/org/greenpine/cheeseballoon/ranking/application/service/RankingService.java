@@ -1,12 +1,8 @@
 package org.greenpine.cheeseballoon.ranking.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.greenpine.cheeseballoon.global.utils.DateCalculator;
+import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.*;
 import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
-import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.FindAvgViewerRankResDtoInterface;
-import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.FindFollowerRankResDtoInterface;
-import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.FindRatingRankResDtoInterface;
-import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.FindTopViewerRankResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.*;
 import org.springframework.stereotype.Service;
@@ -28,9 +24,7 @@ public class RankingService implements RankingUsecase {
 
     // 평균 시청자 수 랭킹 DTO 리턴
     @Override
-    public List<FindAvgViewerRankingResDto> findAvgViewerRanking(int date, char platform, long memberId) {
-
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+    public List<FindAvgViewerRankingResDto> findAvgViewerRanking(LocalDateTime[] dates, String platform, long memberId) {
 
         List<FindAvgViewerRankResDtoInterface> curr = rankingPort.findAvgViewerRanking(dates[0], dates[1], platform, memberId);
         List<FindAvgViewerRankResDtoInterface> before = rankingPort.findAvgViewerRanking(dates[2], dates[3], platform, memberId);
@@ -75,12 +69,12 @@ public class RankingService implements RankingUsecase {
 
         }
 
-
         for(FindAvgViewerRankingResDto val : ret){
             val.setRankDiff(rank_diff.get(val.getStreamerId()));
             val.setDiff(diff.get(val.getStreamerId()));
         }
 
+        RedisAvgViewerRankingEntity dao = new RedisAvgViewerRankingEntity("avg1", ret);
 
         return ret;
     }
@@ -88,9 +82,7 @@ public class RankingService implements RankingUsecase {
 
     // 최대 시청자 수 랭킹 DTO 리턴
     @Override
-    public List<FindTopViewerRankingResDto> findTopViewerRanking(int date, char platform, long memberId) {
-
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+    public List<FindTopViewerRankingResDto> findTopViewerRanking(LocalDateTime[] dates, String platform, long memberId) {
 
         List<FindTopViewerRankResDtoInterface> curr = rankingPort.findTopViewerRanking(dates[0], dates[1], platform, memberId);
         List<FindTopViewerRankResDtoInterface> before = rankingPort.findTopViewerRanking(dates[2], dates[3], platform, memberId);
@@ -145,9 +137,7 @@ public class RankingService implements RankingUsecase {
 
     // 팔로워 랭킹
     @Override
-    public List<FindFollowerRankingResDto> findFollowerRanking(int date, char platform, long memberId) {
-
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+    public List<FindFollowerRankingResDto> findFollowerRanking(LocalDateTime[] dates, String platform, long memberId) {
 
         List<FindFollowerRankResDtoInterface> curr = rankingPort.findFollowerRanking(dates[0], dates[1], platform, memberId);
         List<FindFollowerRankResDtoInterface> before = rankingPort.findFollowerRanking(dates[2], dates[3], platform, memberId);
@@ -202,9 +192,7 @@ public class RankingService implements RankingUsecase {
 
     // 시청률 랭킹 서비스
     @Override
-    public List<FindRatingRankingResDto> findRatingRanking(int date, char platform, long memberId) {
-
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+    public List<FindRatingRankingResDto> findRatingRanking(LocalDateTime[] dates, String platform, long memberId) {
 
         List<FindRatingRankResDtoInterface> curr = rankingPort.findRatingRanking(dates[0], dates[1], platform, memberId);
         List<FindRatingRankResDtoInterface> before = rankingPort.findRatingRanking(dates[0], dates[1], platform, memberId);
@@ -265,7 +253,7 @@ public class RankingService implements RankingUsecase {
         return ret;
     }
 
-    public void rankDiffCalculate(long s_id, int before_rank, int before_value, int MAX_RANK, Map<Long, Integer> rank_diff ,Map<Long, Integer> diff){
+    private void rankDiffCalculate(long s_id, int before_rank, int before_value, int MAX_RANK, Map<Long, Integer> rank_diff ,Map<Long, Integer> diff){
 
         // rank 변동 값 계산
         // curr_rank는 순수하게 몇 등이었는지를 가져온다. 예를 들어 이번에 1등이면 301 - 300 = 1등

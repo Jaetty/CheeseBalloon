@@ -14,7 +14,7 @@ public class FindFollowerRankingResDto {
     Long streamerId;
     String name;
     int rank;
-    char platform;
+    String platform;
     String profileUrl;
     int follower;
     int rankDiff;

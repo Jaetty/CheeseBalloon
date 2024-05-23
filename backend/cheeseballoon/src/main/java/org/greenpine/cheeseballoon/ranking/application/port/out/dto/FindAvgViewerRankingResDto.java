@@ -14,7 +14,7 @@ public class FindAvgViewerRankingResDto {
     Long streamerId;
     String name;
     int rank;
-    char platform;
+    String platform;
     String profileUrl;
     int averageViewer;
     int rankDiff;
