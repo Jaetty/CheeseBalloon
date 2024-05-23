@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
+import org.greenpine.cheeseballoon.global.utils.DateCalculator;
 import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankingResDto;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -47,7 +49,9 @@ public class RankingController {
             platform = "%";
         }
 
-//        List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(date, platform.charAt(0), memberId);
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+
+//        List<FindAvgViewerRankingResDto> ret = rankingUsecase.findAvgViewerRanking(dates, platform, memberId);
         List<FindAvgViewerRankingResDto> ret = new ArrayList<>();
 
         for(int i=1; i<=300; i++){
@@ -61,7 +65,7 @@ public class RankingController {
                     .diff((int)(Math.random()*600))
                     .name("항상#킴성태")
                     .profileUrl("https://stimg.afreecatv.com/LOGO/rr/rrvv17/rrvv17.jpg")
-                    .platform('S')
+                    .platform("S")
                     .streamerId(8L)
                     .build());
         }
@@ -84,7 +88,9 @@ public class RankingController {
             platform = "%";
         }
 
-//        List<FindTopViewerRankingResDto> ret = rankingUsecase.findTopViewerRanking(date, platform.charAt(0), memberId);
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+
+//        List<FindTopViewerRankingResDto> ret = rankingUsecase.findTopViewerRanking(dates, platform, memberId);
         List<FindTopViewerRankingResDto> ret = new ArrayList<>();
 
         for(int i=1; i<=300; i++){
@@ -98,7 +104,7 @@ public class RankingController {
                     .diff((int)(Math.random()*600))
                     .name("항상#킴성태")
                     .profileUrl("https://stimg.afreecatv.com/LOGO/rr/rrvv17/rrvv17.jpg")
-                    .platform('S')
+                    .platform("S")
                     .streamerId(8L)
                     .build());
         }
@@ -121,8 +127,9 @@ public class RankingController {
             platform = "%";
         }
 
+        LocalDateTime[] dates = DateCalculator.getSpecificPeriod(date);
 
-//        List<FindFollowerRankingResDto> ret = rankingUsecase.findFollowerRanking(date, platform.charAt(0), memberId);
+//        List<FindFollowerRankingResDto> ret = rankingUsecase.findFollowerRanking(dates, platform, memberId);
         List<FindFollowerRankingResDto> ret = new ArrayList<>();
 
         Random random = new Random();
@@ -134,7 +141,7 @@ public class RankingController {
                     .streamerId((long) i)
                     .name( i%3==0 ? "최대한 긴 글자의 방송인" : "방송인")
                     .rank(i+1)
-                    .platform('A')
+                    .platform("A")
                     .profileUrl("https://nng-phinf.pstatic.net/MjAyMzEyMTlfMzYg/MDAxNzAyOTcwODY1OTUy.1hHkqzH-zyEhyW2EJNfj1q6r7XTDeQNNqL_owQQ6AFwg.mCjDaHbdF0jjfhB2PvFuFJLxL9jQ-PV0oSLLDRXoGLUg.GIF/popHEAD.gif?type=f120_120_na")
                     .follower(45000-i)
                     .diff(0)
@@ -145,13 +152,6 @@ public class RankingController {
                 // 등락 랜덤 처음은 무조건 0
                 if(i%3==0) temp.setDiff(random.nextInt(100) * -1);
                 else temp.setDiff(random.nextInt(100));
-            }
-
-            if(platform.charAt(0)=='T'){
-                if(i%2==0) temp.setPlatform('C');
-            }
-            else{
-                temp.setPlatform(platform.charAt(0));
             }
 
             ret.add(temp);
@@ -175,7 +175,8 @@ public class RankingController {
             platform = "%";
         }
 
-//        List<FindRatingRankingResDto> ret = rankingUsecase.findRatingRanking(date, platform.charAt(0), memberId);
+        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+//        List<FindRatingRankingResDto> ret = rankingUsecase.findRatingRanking(dates, platform, memberId);
         List<FindRatingRankingResDto> ret = new ArrayList<>();
 
         for(int i=1; i<=300; i++){
@@ -189,7 +190,7 @@ public class RankingController {
                     .diff((int)(Math.random()*600))
                     .name("항상#킴성태")
                     .profileUrl("https://stimg.afreecatv.com/LOGO/rr/rrvv17/rrvv17.jpg")
-                    .platform('S')
+                    .platform("S")
                     .streamerId(8L)
                     .build());
         }

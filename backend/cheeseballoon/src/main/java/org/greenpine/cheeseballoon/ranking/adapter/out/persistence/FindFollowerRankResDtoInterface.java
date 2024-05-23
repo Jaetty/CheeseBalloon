@@ -5,7 +5,7 @@ public interface FindFollowerRankResDtoInterface {
     Integer getRank();
     Long getStreamerId();
     String getName();
-    Character getPlatform();
+    String getPlatform();
     String getProfileUrl();
     Integer getFollower();
     Boolean getBookmark();

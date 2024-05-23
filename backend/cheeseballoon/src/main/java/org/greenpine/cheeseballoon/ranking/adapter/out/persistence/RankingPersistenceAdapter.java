@@ -16,7 +16,7 @@ public class RankingPersistenceAdapter implements RankingPort {
 
     // 평균 시청자 수 db 값 가져오기
     @Override
-    public List<FindAvgViewerRankResDtoInterface> findAvgViewerRanking(LocalDateTime startDate, LocalDateTime endDate, char platform, long memberId) {
+    public List<FindAvgViewerRankResDtoInterface> findAvgViewerRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, long memberId) {
 
         List<FindAvgViewerRankResDtoInterface> ret = liveRepository.findAllAvgViewerRanking(startDate, endDate, platform, memberId);
         return ret;
@@ -24,7 +24,7 @@ public class RankingPersistenceAdapter implements RankingPort {
 
     // 최대 시청자 수 db 값 가져오기
     @Override
-    public List<FindTopViewerRankResDtoInterface> findTopViewerRanking(LocalDateTime startDate, LocalDateTime endDate, char platform, long memberId) {
+    public List<FindTopViewerRankResDtoInterface> findTopViewerRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, long memberId) {
 
         List<FindTopViewerRankResDtoInterface> ret = liveRepository.findAllTopViewerRanking(startDate, endDate, platform, memberId);
 
@@ -32,7 +32,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     }
 
     @Override
-    public List<FindFollowerRankResDtoInterface> findFollowerRanking(LocalDateTime startDate, LocalDateTime endDate, char platform, long memberId) {
+    public List<FindFollowerRankResDtoInterface> findFollowerRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, long memberId) {
 
         List<FindFollowerRankResDtoInterface> ret = liveRepository.findFollowerRanking(startDate, endDate, platform, memberId);
 
@@ -40,7 +40,7 @@ public class RankingPersistenceAdapter implements RankingPort {
     }
 
     @Override
-    public List<FindRatingRankResDtoInterface> findRatingRanking(LocalDateTime startDate, LocalDateTime endDate, char platform, long memberId) {
+    public List<FindRatingRankResDtoInterface> findRatingRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, long memberId) {
 
         List<FindRatingRankResDtoInterface> ret = liveRepository.findRatingRanking(startDate, endDate, platform, memberId);
         return ret;

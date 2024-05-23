@@ -1,5 +1,6 @@
 package org.greenpine.cheeseballoon.ranking.service;
 
+import org.greenpine.cheeseballoon.global.utils.DateCalculator;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankingResDto;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindRatingRankingResDto;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -19,7 +21,9 @@ public class RankingServiceTest {
 
     @Test
     void ratingTest(){
-        List<FindRatingRankingResDto> testData = rankingService.findRatingRanking(1,'%', -1);
+
+        LocalDateTime[] dates = DateCalculator.getPeriod(1);
+        List<FindRatingRankingResDto> testData = rankingService.findRatingRanking(dates,"%", -1);
 
         StringBuilder sb = new StringBuilder();
 
@@ -33,7 +37,8 @@ public class RankingServiceTest {
 
     @Test
     void avgViewerTest(){
-        List<FindAvgViewerRankingResDto> testData = rankingService.findAvgViewerRanking(1,'%', -1);
+        LocalDateTime[] dates = DateCalculator.getPeriod(1);
+        List<FindAvgViewerRankingResDto> testData = rankingService.findAvgViewerRanking(dates,"%", -1);
 
         StringBuilder sb = new StringBuilder();
 
@@ -47,7 +52,8 @@ public class RankingServiceTest {
 
     @Test
     void topViewerTest(){
-        List<FindTopViewerRankingResDto> testData = rankingService.findTopViewerRanking(1,'%', -1);
+        LocalDateTime[] dates = DateCalculator.getPeriod(1);
+        List<FindTopViewerRankingResDto> testData = rankingService.findTopViewerRanking(dates,"%", -1);
 
         StringBuilder sb = new StringBuilder();
 
@@ -61,7 +67,8 @@ public class RankingServiceTest {
 
     @Test
     void followerTest(){
-        List<FindFollowerRankingResDto> testData = rankingService.findFollowerRanking(1,'%', -1);
+        LocalDateTime[] dates = DateCalculator.getSpecificPeriod(1);
+        List<FindFollowerRankingResDto> testData = rankingService.findFollowerRanking(dates,"%", -1);
 
         StringBuilder sb = new StringBuilder();
 
