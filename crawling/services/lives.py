@@ -13,7 +13,8 @@ class LiveService:
             live_origin_id=live.live_origin_id,
             stream_url=live.stream_url,
             thumbnail_url=live.thumbnail_url,
-            is_live= live.is_live
+            live_start_date=live.live_start_date,
+            is_live=live.is_live
         )
         db.add(db_live)
         db.commit()

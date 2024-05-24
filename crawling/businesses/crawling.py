@@ -78,6 +78,7 @@ class CrawlingBusiness:
                         live_origin_id=streamer_info.live_origin_id,
                         stream_url=streamer_info.stream_url,
                         thumbnail_url=streamer_info.thumbnail_url,
+                        live_start_date=streamer_info.live_start,
                         is_live=True
                     )
                     LiveService().create(db=db, live=live)

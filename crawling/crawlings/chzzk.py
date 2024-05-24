@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from schemas.streamer_info import StreamerInfo
 from schemas.streamer_logs import StreamerLogCreate
@@ -67,7 +68,7 @@ class Chzzk:
             for s in streamers:
                 # print(s.origin_id)
                 response = await client.get(f'https://api.chzzk.naver.com/service/v1/channels/{s.origin_id}',
-                                       headers=headers)
+                                            headers=headers)
                 res = response.json()
                 follower_text = res['content']['followerCount']
                 follower_cnt = int(follower_text)
@@ -99,7 +100,6 @@ class Chzzk:
 
             return response.json()
 
-
     async def chzzk(self):
         logger.info("치지직 크롤링을 시작합니다.")
         # StreamerInfo 객체 저장 딕셔너리 생성
@@ -124,6 +124,7 @@ class Chzzk:
                 platform="C",
                 stream_url=f"https://chzzk.naver.com/live/{new_item['channel']['channelId']}",
                 live_origin_id=int(new_item['liveId']),
+                live_start=datetime.strptime(new_item['openDate'], '%Y-%m-%d %H:%M:%S'),
                 thumbnail_url=str(new_item['liveImageUrl']).format(type=480),
                 category=str(new_item['liveCategoryValue']),
                 title=str(new_item['liveTitle']),
@@ -157,6 +158,7 @@ class Chzzk:
                     platform="C",
                     stream_url=f"https://chzzk.naver.com/live/{new_item['channel']['channelId']}",
                     live_origin_id=int(new_item['liveId']),
+                    live_start=datetime.strptime(new_item['openDate'], '%Y-%m-%d %H:%M:%S'),
                     thumbnail_url=str(new_item['liveImageUrl']).format(type=480),
                     category=str(new_item['liveCategoryValue']),
                     title=str(new_item['liveTitle']),
@@ -166,7 +168,7 @@ class Chzzk:
 
         streamers_list = list(streamers_dict.values())
         # print(tabulate(streamers_list, headers=["origin_id", "name", "profile_url", "channel_url", "platform", "stream_url", "live_origin_id", "thumbnail_url", "category", "title", "viewer_cnt"]))
-        # print(streamers_list)
+        print(streamers_list)
         logger.info("치지직 크롤링을 끝냅니다.")
         return streamers_list
 
@@ -174,16 +176,6 @@ class Chzzk:
         # streamer_follower_list = []
         logger.info("치지직 팔로우 크롤링 시작합니다.")
         streamer_follower_list = await self.follower(streamers)
-        # for s in streamers:
-        #     # print(s.origin_id)
-        #     res = await self.follower(s.origin_id, streamers)
-        #     follower_text = res['content']['followerCount']
-        #     follower_cnt = int(follower_text)
-        #
-        #     streamer_follower_list.append(StreamerLogCreate(
-        #         streamer_id=s.streamer_id,
-        #         follower=follower_cnt
-        #     ))
         logger.info("치지직 팔로우 크롤링 끝냅니다.")
         # print(streamer_follower_list)
         return streamer_follower_list
@@ -191,5 +183,4 @@ class Chzzk:
     async def chzzk_profile(self, streamer: StreamerRead):
         res = await self.streamer_info(streamer.origin_id)
         streamer_profile = res['content']['channelImageUrl']
-
         return streamer_profile
