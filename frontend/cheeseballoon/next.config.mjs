@@ -22,6 +22,11 @@ const nextConfig = {
         hostname: "ssl.pstatic.net",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "profile.img.afreecatv.com",
+        port: "",
+      },
     ],
   },
   async redirects() {
