@@ -34,7 +34,7 @@ export default function RecomendCard({ data }: Props) {
   }, [isHovered]);
 
   return (
-    <Link href={data?.streamUrl || ""} className={styles.link}>
+    <Link href={data?.streamUrl || ""} className={styles.link} target="_blank">
       <div>
         {value && (
           <div className={styles.open_container}>

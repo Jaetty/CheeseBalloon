@@ -56,9 +56,9 @@ export interface TimeRankData {
   name: string;
   platform: string;
   profileUrl: string;
-  totalTime: number;
+  totalAirTime: string;
+  diff: string;
   rankDiff: number;
-  diff: number;
   bookmark: boolean;
 }
 

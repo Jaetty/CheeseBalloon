@@ -41,7 +41,7 @@ export default function Ranking() {
         url = `${process.env.NEXT_PUBLIC_TOPVIEW_RANK}?date=${selectedDate}&platform=${selectedPlatform}`;
         break;
       case "총 방송시간":
-        url = `${process.env.NEXT_PUBLIC_LIVE_API}?offset=4&limit=10&date=${selectedDate}&platform=${selectedPlatform}`;
+        url = `${process.env.NEXT_PUBLIC_TIME_RANK}?date=${selectedDate}&platform=${selectedPlatform}`;
         break;
       case "시청률":
         url = `${process.env.NEXT_PUBLIC_RATING_RANK}?date=${selectedDate}&platform=${selectedPlatform}`;

@@ -23,6 +23,7 @@ type RankingData = {
   name: string;
   platform: string;
   diff: number;
+  rankDiff?: number;
   value: string;
   value2?: string;
 };
@@ -34,6 +35,7 @@ function transformFollowData(data: FollowRankData[]): RankingData[] {
     name: item.name,
     platform: item.platform,
     diff: item.diff,
+    rankDiff: item.rankDiff,
     value: `${item.follower.toLocaleString()} 명`,
   }));
 }
@@ -45,6 +47,7 @@ function transformTopviewData(data: TopviewRankData[]): RankingData[] {
     name: item.name,
     platform: item.platform,
     diff: item.diff,
+    rankDiff: item.rankDiff,
     value: `${item.topViewer.toLocaleString()} 명`,
   }));
 }
@@ -56,7 +59,30 @@ function transformAvgData(data: AvgRankData[]): RankingData[] {
     name: item.name,
     platform: item.platform,
     diff: item.diff,
+    rankDiff: item.rankDiff,
     value: `${item.averageViewer.toLocaleString()} 명`,
+  }));
+}
+
+function timeConvert(timeString: string): number {
+  const isNegative = timeString.startsWith("-");
+  const [hr, min, sec] = timeString.replace("-", "").split(":");
+  let result = parseInt(hr + min + sec, 10);
+  if (isNegative) {
+    result *= -1;
+  }
+  return result;
+}
+
+function transformTimeData(data: TimeRankData[]): RankingData[] {
+  return data.map((item) => ({
+    streamerId: item.streamerId,
+    profileUrl: item.profileUrl,
+    name: item.name,
+    platform: item.platform,
+    diff: timeConvert(item.diff),
+    rankDiff: item.rankDiff,
+    value: `${item.totalAirTime.substring(0, 2)}h ${item.totalAirTime.substring(3, 5)}m`,
   }));
 }
 
@@ -67,6 +93,7 @@ function transformRatingData(data: RatingRankData[]): RankingData[] {
     name: item.name,
     platform: item.platform,
     diff: item.diff,
+    rankDiff: item.rankDiff,
     value: `${item.rating.toFixed(2)} %`,
   }));
 }
@@ -138,6 +165,9 @@ export default function Ranking() {
       case "topview":
         apiUrl = process.env.NEXT_PUBLIC_TOPVIEW_RANK;
         break;
+      case "time":
+        apiUrl = process.env.NEXT_PUBLIC_TIME_RANK;
+        break;
       case "rating":
         apiUrl = process.env.NEXT_PUBLIC_RATING_RANK;
         break;
@@ -158,6 +188,9 @@ export default function Ranking() {
         break;
       case "topview":
         transformedData = transformTopviewData(newData.data);
+        break;
+      case "time":
+        transformedData = transformTimeData(newData.data);
         break;
       case "rating":
         transformedData = transformRatingData(newData.data);

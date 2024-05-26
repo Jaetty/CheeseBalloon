@@ -161,3 +161,14 @@
   max-height: 20px;
   cursor: pointer;
 }
+
+.rank {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  font-size: 0.8rem;
+  gap: 0.3rem;
+  vertical-align: bottom;
+  line-height: 0.8;
+  text-align: right;
+}
