@@ -12,6 +12,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import noimage from "public/svgs/blank_profile.png";
 import { useState } from "react";
+import ArrowUp from "public/svgs/uparrow.png";
+import ArrowDown from "public/svgs/downarrow.png";
 
 type RankingData = {
   streamerId: number;
@@ -19,7 +21,9 @@ type RankingData = {
   name: string;
   platform: string;
   diff: number;
+  rankDiff?: number;
   value: string;
+  value2?: string;
 };
 
 type Props = {
@@ -70,13 +74,38 @@ export default function TopThreeRanking({ data }: Props) {
                 <Image src={chzlogo} alt="" width={14} height={14} />
               )}
             </div>
+            {item.rankDiff !== undefined && (
+              <div className={style.rank}>
+                {item.rankDiff > 0 && (
+                  <>
+                    <Image src={ArrowUp} alt="" width={7} height={12} />
+                    <span>{Math.abs(item.rankDiff)}</span>
+                  </>
+                )}
+                {item.rankDiff < 0 && (
+                  <>
+                    <Image src={ArrowDown} alt="" width={7} height={12} />
+                    <span>{Math.abs(item.rankDiff)}</span>
+                  </>
+                )}
+                {item.rankDiff === 0 && (
+                  <div className={style.mainzero}>( - )</div>
+                )}
+              </div>
+            )}
             <div className={style.info}>
               {pathname === "live" ? (
-                <>{item.diff.toLocaleString()} 명</>
+                <>
+                  {/* <div className={style.content}>
+                    <div>{item.value2}</div> */}
+                  {item.diff.toLocaleString()} 명
+                  {/* </div>
+                  <div>{item.value}</div> */}
+                </>
               ) : (
                 <>
                   {item.value}{" "}
-                  {pathname === "rating" ? (
+                  {pathname === "rating" && (
                     <>
                       {item.diff > 0 && (
                         <span className={style.positive}>
@@ -92,7 +121,29 @@ export default function TopThreeRanking({ data }: Props) {
                         <span className={style.zero}>( - )</span>
                       )}
                     </>
-                  ) : (
+                  )}
+                  {pathname === "time" && (
+                    <>
+                      {item.diff > 0 && (
+                        <span className={style.positive}>
+                          (+{" "}
+                          {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
+                          )
+                        </span>
+                      )}
+                      {item.diff < 0 && (
+                        <span className={style.negative}>
+                          (-{" "}
+                          {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
+                          )
+                        </span>
+                      )}
+                      {item.diff === 0 && (
+                        <span className={style.zero}>( - )</span>
+                      )}
+                    </>
+                  )}{" "}
+                  {pathname !== "rating" && pathname !== "time" && (
                     <>
                       {item.diff > 0 && (
                         <span className={style.positive}>

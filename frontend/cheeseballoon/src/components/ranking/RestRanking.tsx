@@ -8,7 +8,9 @@ import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import noimage from "public/svgs/blank_profile.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import ArrowUp from "public/svgs/uparrow.png";
+import ArrowDown from "public/svgs/downarrow.png";
 
 type RankingData = {
   streamerId: number;
@@ -16,6 +18,7 @@ type RankingData = {
   name: string;
   platform: string;
   diff: number;
+  rankDiff?: number;
   value: string;
   value2?: string;
 };
@@ -25,9 +28,33 @@ type Props = {
 };
 
 function noop() {}
+
+const fixProfileUrl = (url: string) => {
+  if (url === "default" || url === "None") {
+    return noimage.src;
+  }
+  if (url.startsWith("//")) {
+    return `https:${url}`;
+  }
+  return url;
+};
+
 export default function RestRanking({ data }: Props) {
   const pathname = usePathname()?.split("/").pop() || "";
   const [updatedUrls, setUpdatedUrls] = useState<Record<number, string>>({});
+
+  useEffect(() => {
+    if (data) {
+      const initialUrls = data.reduce(
+        (acc, item) => {
+          acc[item.streamerId] = fixProfileUrl(item.profileUrl);
+          return acc;
+        },
+        {} as Record<number, string>
+      );
+      setUpdatedUrls(initialUrls);
+    }
+  }, [data]);
 
   const handleImageError = async (id: number) => {
     try {
@@ -38,12 +65,12 @@ export default function RestRanking({ data }: Props) {
         },
         body: JSON.stringify({ streamer_id: id }),
       });
-      const datas = await response.json(); // JSON 형태로 응답을 파싱
-      const newProfileUrl = datas.detail.profile_url; // detail 객체 내의 profile_url을 참조
+      const datas = await response.json();
+      const newProfileUrl = datas.detail.profile_url;
       if (newProfileUrl) {
         setUpdatedUrls((prev) => ({
           ...prev,
-          [id]: newProfileUrl, // 받아온 URL로 상태 업데이트
+          [id]: fixProfileUrl(newProfileUrl),
         }));
       }
     } catch (error) {
@@ -63,12 +90,7 @@ export default function RestRanking({ data }: Props) {
                   <div className={style.image}>
                     <Link href={`/detail/${item.streamerId}`}>
                       <Image
-                        src={
-                          item.profileUrl === "default" ||
-                          item.profileUrl === "None"
-                            ? noimage
-                            : updatedUrls[item.streamerId] || item.profileUrl
-                        }
+                        src={updatedUrls[item.streamerId] || noimage.src}
                         alt=""
                         width={48}
                         height={48}
@@ -107,12 +129,7 @@ export default function RestRanking({ data }: Props) {
                   <div className={style.image}>
                     <Link href={`/detail/${item.streamerId}`}>
                       <Image
-                        src={
-                          item.profileUrl === "default" ||
-                          item.profileUrl === "None"
-                            ? noimage
-                            : updatedUrls[item.streamerId] || item.profileUrl
-                        }
+                        src={updatedUrls[item.streamerId] || noimage.src}
                         alt=""
                         width={48}
                         height={48}
@@ -133,10 +150,29 @@ export default function RestRanking({ data }: Props) {
                       <Image src={chzlogo} alt="" width={14} height={14} />
                     )}
                   </div>
+                  {item.rankDiff !== undefined && (
+                    <div className={style.rank}>
+                      {item.rankDiff > 0 && (
+                        <>
+                          <Image src={ArrowUp} alt="" width={7} height={12} />
+                          <span>{Math.abs(item.rankDiff)}</span>
+                        </>
+                      )}
+                      {item.rankDiff < 0 && (
+                        <>
+                          <Image src={ArrowDown} alt="" width={7} height={12} />
+                          <span>{Math.abs(item.rankDiff)}</span>
+                        </>
+                      )}
+                      {item.rankDiff === 0 && (
+                        <div className={style.zero}>( - )</div>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className={style.info}>
                   {item.value}{" "}
-                  {pathname === "rating" ? (
+                  {pathname === "rating" && (
                     <>
                       {item.diff > 0 && (
                         <span className={style.positive}>
@@ -152,7 +188,29 @@ export default function RestRanking({ data }: Props) {
                         <span className={style.zero}>( - )</span>
                       )}
                     </>
-                  ) : (
+                  )}
+                  {pathname === "time" && (
+                    <>
+                      {item.diff > 0 && (
+                        <span className={style.positive}>
+                          (+{" "}
+                          {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
+                          )
+                        </span>
+                      )}
+                      {item.diff < 0 && (
+                        <span className={style.negative}>
+                          (-{" "}
+                          {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
+                          )
+                        </span>
+                      )}
+                      {item.diff === 0 && (
+                        <span className={style.zero}>( - )</span>
+                      )}
+                    </>
+                  )}{" "}
+                  {pathname !== "rating" && pathname !== "time" && (
                     <>
                       {item.diff > 0 && (
                         <span className={style.positive}>
