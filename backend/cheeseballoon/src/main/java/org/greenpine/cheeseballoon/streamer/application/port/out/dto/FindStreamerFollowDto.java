@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class FindStreamerFollowDto {
     String date;
-    int follower;
+    Integer follower;
 }
