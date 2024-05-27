@@ -18,7 +18,5 @@ public class FindStreamerDetailResDto {
     String channelUrl;
     Boolean bookmark;
     char platform;
-    Integer rank;
-    Integer diff;
 
 }
