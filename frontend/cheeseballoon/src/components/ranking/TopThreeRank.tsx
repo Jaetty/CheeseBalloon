@@ -11,7 +11,7 @@ import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import noimage from "public/svgs/blank_profile.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
 
@@ -30,18 +30,59 @@ type Props = {
   data: RankingData[] | undefined;
 };
 
+function noop() {}
+
+const fixProfileUrl = (url: string) => {
+  if (url === "default" || url === "None") {
+    return noimage.src;
+  }
+  if (url.startsWith("//")) {
+    return `https:${url}`;
+  }
+  return url;
+};
+
 export default function TopThreeRanking({ data }: Props) {
   const reorderedData = data && [data[1], data[0], data[2]];
   const rankImages = [second, first, third];
   const pathname = usePathname()?.split("/").pop() || "";
-  const [imageError, setImageError] = useState<Record<number, boolean>>({});
+  const [updatedUrls, setUpdatedUrls] = useState<Record<number, string>>({});
 
-  const handleImageError = (id: number) => {
-    setImageError((prev) => ({
-      ...prev,
-      [id]: true,
-    }));
+  const handleImageError = async (id: number) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ streamer_id: id }),
+      });
+      const datas = await response.json();
+      const newProfileUrl = datas.detail.profile_url;
+      if (newProfileUrl) {
+        setUpdatedUrls((prev) => ({
+          ...prev,
+          [id]: fixProfileUrl(newProfileUrl),
+        }));
+      }
+    } catch (error) {
+      noop();
+    }
   };
+
+  useEffect(() => {
+    if (data) {
+      const initialUrls = data.reduce(
+        (acc, item) => {
+          acc[item.streamerId] = fixProfileUrl(item.profileUrl);
+          return acc;
+        },
+        {} as Record<number, string>
+      );
+      setUpdatedUrls(initialUrls);
+    }
+  }, [data]);
+
   return (
     <div className={style.wrapper}>
       {reorderedData &&
@@ -50,7 +91,7 @@ export default function TopThreeRanking({ data }: Props) {
             <div className={style.image}>
               <Link href={`/detail/${item.streamerId}`}>
                 <Image
-                  src={imageError[item.streamerId] ? noimage : item.profileUrl}
+                  src={updatedUrls[item.streamerId] || noimage.src}
                   alt=""
                   width={70}
                   height={70}

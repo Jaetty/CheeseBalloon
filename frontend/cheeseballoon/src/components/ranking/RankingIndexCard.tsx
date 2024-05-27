@@ -8,7 +8,7 @@ import aflogo from "public/svgs/afreeca.svg";
 import chzlogo from "public/svgs/chzzk.svg";
 import Link from "next/link";
 import noimage from "public/svgs/blank_profile.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FollowRankData,
   AvgRankData,
@@ -30,6 +30,18 @@ type Props = {
   number: number;
 };
 
+function noop() {}
+
+const fixProfileUrl = (url: string) => {
+  if (url === "default" || url === "None") {
+    return noimage.src;
+  }
+  if (url.startsWith("//")) {
+    return `https:${url}`;
+  }
+  return url;
+};
+
 export default function RankCard({ item, title, number }: Props) {
   let logo = null;
   if (item.platform === "A" || item.platform === "S") {
@@ -38,22 +50,46 @@ export default function RankCard({ item, title, number }: Props) {
     logo = chzlogo;
   }
   const RenderRank = title !== "실시간 LIVE";
-  const [imageUrl, setImageUrl] = useState(item.profileUrl || noimage);
+  const [profileUrl, setProfileUrl] = useState<string>("");
 
-  const handleError = () => {
-    setImageUrl(noimage);
+  const handleImageError = async (id: number) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ streamer_id: id }),
+      });
+      const datas = await response.json();
+      const newProfileUrl = datas.detail.profile_url;
+      if (newProfileUrl) {
+        setProfileUrl(fixProfileUrl(newProfileUrl));
+      }
+    } catch (error) {
+      noop();
+    }
   };
+
+  useEffect(() => {
+    if (item) {
+      setProfileUrl(fixProfileUrl(item.profileUrl));
+    }
+  }, [item]);
+
   return (
     <div className={styles.container}>
       <div className={styles.number}>{number}</div>
       <div className={styles.image}>
         <Link href={`/detail/${item.streamerId}`}>
           <Image
-            src={imageUrl}
+            src={profileUrl || noimage.src}
             alt=""
             width={44}
             height={44}
-            onError={handleError}
+            onError={() => {
+              handleImageError(item.streamerId);
+            }}
           />
         </Link>
       </div>
