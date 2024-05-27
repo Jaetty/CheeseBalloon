@@ -1,7 +1,6 @@
 package org.greenpine.cheeseballoon.streamer.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.greenpine.cheeseballoon.global.utils.DateCalculator;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.*;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
@@ -30,11 +29,46 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerDetailResDto streamerDetail(Long streamerId, long memberId) {
+    public FindStreamerSummaryResDto streamerDetailSummary(Long streamerId, String[] dtCodes, LocalDateTime[] specificDates) {
 
-        FindStreamerDetailResDto ret = streamerPort.streamerDetail(streamerId, memberId);
+        FindSummaryRankResDtoInterface curr = streamerPort.streamerDetailSummary(streamerId, dtCodes[0], specificDates[0], specificDates[1]);
+        FindSummaryRankResDtoInterface before = streamerPort.streamerDetailSummary(streamerId, dtCodes[1], specificDates[2], specificDates[3]);
+
+        FindStreamerSummaryResDto ret = new FindStreamerSummaryResDto(0,0,0,0,0,0,0,0,0D,0D);
+
+        if(curr != null){
+            ret.setRank(curr.getRank());
+            ret.setDiff(curr.getRank());
+            ret.setAvgViewer(curr.getAverageViewer());
+            ret.setViewerDiff(curr.getAverageViewer());
+            ret.setFollow(curr.getFollower());
+            ret.setFollowDiff(curr.getFollower());
+            ret.setRating(curr.getRating());
+            ret.setRatingDiff(curr.getRating());
+            ret.setTotalAirTime(curr.getTotalAirTime());
+            ret.setTotalAirTime(curr.getTotalAirTime());
+        }
+
+        if(before != null){
+
+            Double rating_diff = Math.round( (ret.getRating() - before.getRating()) *100 ) / 100.0;
+
+            ret.setDiff( ret.getRank() -before.getRank());
+            ret.setTimeDiff(ret.getTotalAirTime() - before.getTotalAirTime());
+            ret.setViewerDiff(ret.getAvgViewer() - before.getAverageViewer());
+            ret.setRatingDiff(rating_diff);
+            ret.setFollowDiff(ret.getFollow() - before.getFollower());
+        }
 
         return ret;
+    }
+
+    @Override
+    public FindStreamerDetailResDto streamerDetail(Long streamerId, long memberId) {
+
+        FindStreamerDetailResDto streamerEntity = streamerPort.streamerDetail(streamerId, memberId);
+
+        return streamerEntity;
     }
 
     @Override
@@ -54,9 +88,9 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public List<FindStreamerFollowDto> streamerDetailFollower(Long streamerId, int date) {
+    public List<FindStreamerFollowDto> streamerDetailFollower(Long streamerId, LocalDateTime[] dates) {
 
-        List<StreamerLogEntity> list = streamerPort.streamerDetailFollower(streamerId, date);
+        List<StreamerLogEntity> list = streamerPort.streamerDetailFollower(streamerId, dates[0], dates[1]);
 
         List<FindStreamerFollowDto> ret = new ArrayList<>();
 
@@ -68,21 +102,22 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerViewerDto streamerDetailViewer(Long streamerId, int date) {
+    public FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDateTime[] dates) {
 
-        List<FindStreamerDailyViewerResDtoInterface>[] values = streamerPort.streamerDetailViewer(streamerId, date);
+        List<FindStreamerDailyViewerResDtoInterface> curr = streamerPort.streamerDetailViewer(streamerId, dates[0], dates[1]);
+        List<FindStreamerDailyViewerResDtoInterface> before = streamerPort.streamerDetailViewer(streamerId, dates[2], dates[3]);
 
         List<DailyAvgViewer> dailyAvgViewer = new ArrayList<>();
 
         int curr_max = 0;
         int curr_avg = 0;
 
-        if(!values[0].isEmpty()){
+        if(!curr.isEmpty()){
 
             int sum = 0;
             int count = 0;
 
-            for(FindStreamerDailyViewerResDtoInterface var : values[0]){
+            for(FindStreamerDailyViewerResDtoInterface var : curr){
                 DailyAvgViewer temp = new DailyAvgViewer();
                 temp.setViewer(var.getViewer());
                 temp.setDate(var.getDate());
@@ -99,12 +134,12 @@ public class StreamerService implements StreamerUsecase {
         int before_max = 0;
         int before_avg = 0;
 
-        if(!values[1].isEmpty()){
+        if(!before.isEmpty()){
 
             int sum = 0;
             int count = 0;
 
-            for(FindStreamerDailyViewerResDtoInterface var : values[1]){
+            for(FindStreamerDailyViewerResDtoInterface var : before){
 
                 before_max = Math.max(before_max,var.getMaxViewer());
                 sum += var.getViewer();
@@ -119,9 +154,7 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerRatingDto streamerDetailRating(Long streamerId, int date) {
-
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+    public FindStreamerRatingDto streamerDetailRating(Long streamerId, LocalDateTime[] dates) {
 
         StreamerEntity streamerEntity = streamerPort.findByStreamerId(streamerId);
         List<FindStreamerRatingResDtoInterface> list = streamerPort.streamerDetailRating(streamerId, dates[0], dates[1]);
@@ -163,9 +196,8 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerCategoryDto streamerDetailCategory(Long streamerId, int date) {
+    public FindStreamerCategoryDto streamerDetailCategory(Long streamerId, LocalDateTime[] dates) {
 
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
         List<FindStreamerCategoryResDtoInterface> list = streamerPort.streamerDetailCategory(streamerId, dates[0], dates[1]);
         List<DailyCategory> dailyCategories = new ArrayList<>();
 
@@ -179,6 +211,37 @@ public class StreamerService implements StreamerUsecase {
         }
 
         return FindStreamerCategoryDto.builder().totalTime(totalTime).dailyCategories(dailyCategories).build();
+    }
+
+    @Override
+    public FindStreamerTimeDto streamerDetailTime(Long streamerId, String[] dtCodes, LocalDateTime[] dates, LocalDateTime[] specificDates) {
+
+        List<FindTimeDetailResDtoInterface> timeResult = streamerPort.streamerDetailTime(streamerId, dates[0], dates[1]);
+
+        List<DailyTime> dailyTimes = new ArrayList<>();
+
+        for(FindTimeDetailResDtoInterface val : timeResult){
+            dailyTimes.add( DailyTime.builder()
+                    .date(val.getDate())
+                    .totalAirtime(val.getTotalAirTime())
+                    .build());
+        }
+
+        FindSummaryRankResDtoInterface curr = streamerPort.streamerDetailSummary(streamerId, dtCodes[0], specificDates[0], specificDates[1]);
+        FindSummaryRankResDtoInterface before = streamerPort.streamerDetailSummary(streamerId, dtCodes[1], specificDates[2], specificDates[3]);
+
+        FindStreamerTimeDto ret = new FindStreamerTimeDto(0,0,dailyTimes);
+
+        if(curr != null){
+            ret.setTotalTime(curr.getTotalAirTime());
+            ret.setTimeDiff(curr.getTotalAirTime());
+        }
+
+        if(before != null){
+            ret.setTimeDiff(ret.getTotalTime() - before.getTotalAirTime());
+        }
+
+        return ret;
     }
 
 }
