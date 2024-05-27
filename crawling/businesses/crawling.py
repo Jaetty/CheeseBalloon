@@ -121,6 +121,10 @@ class CrawlingBusiness:
 
             for f in followers_list:
                 StreamerLogService().create(db=db, follower=f.follower, streamer_id=f.streamer_id)
+                if f.profile_url is not None:
+                    StreamerService().update_profile(db=db, streamer_id=f.streamer_id, profile_url=f.profile_url)
+                if f.name is not None:
+                    StreamerService().update_name(db=db, streamer_id=f.streamer_id, name=f.name)
 
         except Exception as e:
             logger.info(e)

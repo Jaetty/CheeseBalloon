@@ -2,6 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+
 class StreamerInfo(BaseModel):
     origin_id: str
     name: str
@@ -15,3 +16,10 @@ class StreamerInfo(BaseModel):
     category: str | None = None
     title: str | None = None
     viewer_cnt: int
+
+
+class StreamerInfoUpdate(BaseModel):
+    streamer_id: int
+    profile_url: str | None
+    name: str | None
+    follower: int
