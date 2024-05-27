@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class DailyTime {
 
     String date;
-    int time;
+    Integer totalAirtime;
 
 }
