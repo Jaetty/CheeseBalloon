@@ -5,6 +5,7 @@ import Image from "next/image";
 import aflogo from "public/svgs/afreeca.svg";
 import chzlogo from "public/svgs/chzzk.svg";
 import nofav from "public/svgs/nofav.svg";
+import fav from "public/svgs/fav.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import noimage from "public/svgs/blank_profile.png";
@@ -20,7 +21,9 @@ type RankingData = {
   diff: number;
   rankDiff?: number;
   value: string;
-  value2?: string;
+  category?: string;
+  streamUrl?: string;
+  bookmark?: boolean;
 };
 
 type Props = {
@@ -42,6 +45,7 @@ const fixProfileUrl = (url: string) => {
 export default function RestRanking({ data }: Props) {
   const pathname = usePathname()?.split("/").pop() || "";
   const [updatedUrls, setUpdatedUrls] = useState<Record<number, string>>({});
+  const [bookmarks, setBookmarks] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     if (data) {
@@ -53,6 +57,15 @@ export default function RestRanking({ data }: Props) {
         {} as Record<number, string>
       );
       setUpdatedUrls(initialUrls);
+
+      const initialBookmarks = data.reduce(
+        (acc, item) => {
+          acc[item.streamerId] = item.bookmark || false;
+          return acc;
+        },
+        {} as Record<number, boolean>
+      );
+      setBookmarks(initialBookmarks);
     }
   }, [data]);
 
@@ -76,6 +89,13 @@ export default function RestRanking({ data }: Props) {
     } catch (error) {
       noop();
     }
+  };
+
+  const toggleBookmark = (id: number) => {
+    setBookmarks((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   return (
@@ -114,13 +134,29 @@ export default function RestRanking({ data }: Props) {
                     </span>
                   </div>
                 </div>
-                <div className={style.livetitleinfo}>{item.value}</div>
-                <div className={style.livesubinfo}>{item.value2}</div>
+
+                <div className={style.livetitleinfo}>
+                  <Link
+                    href={item.streamUrl || ""}
+                    className={style.link}
+                    target="_blank"
+                  >
+                    {item.value}
+                  </Link>
+                </div>
+                <div className={style.livesubinfo}>{item.category}</div>
                 <div className={style.liveinfo}>
                   {item.diff.toLocaleString()} 명
                 </div>
                 <div className={style.livefav}>
-                  <Image src={nofav} alt="" width={20} height={20} />
+                  <Image
+                    src={bookmarks[item.streamerId] ? fav : nofav}
+                    alt=""
+                    width={20}
+                    height={20}
+                    onClick={() => toggleBookmark(item.streamerId)}
+                    role="presentation"
+                  />
                 </div>
               </>
             ) : (
@@ -229,7 +265,14 @@ export default function RestRanking({ data }: Props) {
                   )}
                 </div>
                 <div className={style.fav}>
-                  <Image src={nofav} alt="" width={20} height={20} />
+                  <Image
+                    src={bookmarks[item.streamerId] ? fav : nofav}
+                    alt=""
+                    width={20}
+                    height={20}
+                    onClick={() => toggleBookmark(item.streamerId)}
+                    role="presentation"
+                  />
                 </div>
               </>
             )}

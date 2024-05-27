@@ -7,6 +7,7 @@ import chzlogo from "public/svgs/chzzk.svg";
 import first from "public/svgs/1st.svg";
 import second from "public/svgs/2nd.svg";
 import third from "public/svgs/3rd.svg";
+import fav from "public/svgs/fav.svg";
 import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,6 +25,7 @@ type RankingData = {
   rankDiff?: number;
   value: string;
   value2?: string;
+  bookmark?: boolean;
 };
 
 type Props = {
@@ -47,6 +49,7 @@ export default function TopThreeRanking({ data }: Props) {
   const rankImages = [second, first, third];
   const pathname = usePathname()?.split("/").pop() || "";
   const [updatedUrls, setUpdatedUrls] = useState<Record<number, string>>({});
+  const [bookmarks, setBookmarks] = useState<Record<number, boolean>>({});
 
   const handleImageError = async (id: number) => {
     try {
@@ -80,8 +83,24 @@ export default function TopThreeRanking({ data }: Props) {
         {} as Record<number, string>
       );
       setUpdatedUrls(initialUrls);
+
+      const initialBookmarks = data.reduce(
+        (acc, item) => {
+          acc[item.streamerId] = item.bookmark || false;
+          return acc;
+        },
+        {} as Record<number, boolean>
+      );
+      setBookmarks(initialBookmarks);
     }
   }, [data]);
+
+  const toggleBookmark = (id: number) => {
+    setBookmarks((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   return (
     <div className={style.wrapper}>
@@ -103,7 +122,14 @@ export default function TopThreeRanking({ data }: Props) {
               <Image src={rankImages[index]} alt="" width={28} height={28} />
             </div>
             <div className={style.favimage}>
-              <Image src={nofav} alt="" width={20} height={20} />
+              <Image
+                src={bookmarks[item.streamerId] ? fav : nofav}
+                alt=""
+                width={20}
+                height={20}
+                onClick={() => toggleBookmark(item.streamerId)}
+                role="presentation"
+              />
             </div>
             <div className={style.name}>
               <Link href={`/detail/${item.streamerId}`} className={style.link}>

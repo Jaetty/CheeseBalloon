@@ -10,9 +10,11 @@ export default function DetailNoticeIndex() {
           치즈벌룬의 업데이트 및 다양한 소식을 알려드립니다.
         </div>
       </div>
-      <Link href="/notice" className={styles.cardlink}>
-        <div className={styles.linkto}>◀️ 전체 목록</div>
-      </Link>
+      <div className={styles.linkto}>
+        <Link href="/notice" className={styles.cardlink}>
+          ◀️ 전체 목록
+        </Link>
+      </div>
       <div className={styles.titlebox}>
         <div className={styles.wrap}>
           <div className={styles.date}>2024/05/20</div>
