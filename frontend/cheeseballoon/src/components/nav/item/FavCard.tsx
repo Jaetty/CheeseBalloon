@@ -5,7 +5,7 @@ import Image from "next/image";
 import chzzk from "public/svgs/chzzk.svg";
 import aflogo from "public/svgs/afreeca.svg";
 import { useToggleState } from "src/stores/store";
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { LiveData } from "src/types/type";
 import noimage from "public/svgs/blank_profile.png";
 import Link from "next/link";
@@ -14,16 +14,49 @@ type Props = {
   data: LiveData | undefined;
 };
 
+function noop() {}
+
+const fixProfileUrl = (url: string) => {
+  if (url === "default" || url === "None") {
+    return noimage.src;
+  }
+  if (url.startsWith("//")) {
+    return `https:${url}`;
+  }
+  return url;
+};
+
 export default function FavCard({ data }: Props) {
   const { value } = useToggleState();
   const [isHovered, setIsHovered] = useState(false);
   const [modalStyle, setModalStyle] = useState({});
   const containerRef = useRef<HTMLDivElement>(null);
-  const [imageUrl, setImageUrl] = useState(data?.profileUrl || noimage);
+  const [profileUrl, setProfileUrl] = useState<string>("");
 
-  const handleError = () => {
-    setImageUrl(noimage);
+  const handleImageError = async (id: number) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ streamer_id: id }),
+      });
+      const datas = await response.json();
+      const newProfileUrl = datas.detail.profile_url;
+      if (newProfileUrl) {
+        setProfileUrl(fixProfileUrl(newProfileUrl));
+      }
+    } catch (error) {
+      noop();
+    }
   };
+
+  useEffect(() => {
+    if (data) {
+      setProfileUrl(fixProfileUrl(data.profileUrl));
+    }
+  }, [data]);
 
   useLayoutEffect(() => {
     if (containerRef.current && isHovered) {
@@ -41,11 +74,15 @@ export default function FavCard({ data }: Props) {
         <div className={styles.open_container}>
           <div className={data?.streamUrl ? styles.on_image : styles.off_image}>
             <Image
-              src={imageUrl}
-              alt={data?.name || "Profile image"}
+              src={profileUrl || noimage.src}
+              alt=""
               width={28}
               height={28}
-              onError={handleError}
+              onError={() => {
+                if (data?.streamId !== undefined) {
+                  handleImageError(data.streamId);
+                }
+              }}
             />
           </div>
           <div>
@@ -74,7 +111,17 @@ export default function FavCard({ data }: Props) {
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className={data?.streamUrl ? styles.on_image : styles.off_image}>
-            <Image src={data?.profileUrl || ""} alt="" width={28} height={28} />
+            <Image
+              src={profileUrl || noimage.src}
+              alt=""
+              width={32}
+              height={32}
+              onError={() => {
+                if (data?.streamId !== undefined) {
+                  handleImageError(data.streamId);
+                }
+              }}
+            />
           </div>
           {isHovered && (
             <div className={styles.description_modal}>
