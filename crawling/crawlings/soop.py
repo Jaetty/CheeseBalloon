@@ -7,7 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
-from schemas.streamer_info import StreamerInfo
+from schemas.streamer_info import StreamerInfo, StreamerInfoUpdate
 
 from loguru import logger
 from typing import List
@@ -44,8 +44,19 @@ class Soop:
                 follower_text = res['station']['upd']['fan_cnt']
                 follower_cnt = int(follower_text)
                 # print(follower_cnt)
-                streamer_follower_list.append(StreamerLogCreate(
+
+                streamer_profile = f'https:{res['profile_image']}'
+                if s.profile_url == streamer_profile:
+                    streamer_profile = None
+
+                streamer_name = res['station']['user_nick']
+                if s.name == streamer_name:
+                    streamer_name = None
+
+                streamer_follower_list.append(StreamerInfoUpdate(
                     streamer_id=s.streamer_id,
+                    profile_url=streamer_profile,
+                    name=streamer_name,
                     follower=follower_cnt
                 ))
 
@@ -165,8 +176,8 @@ class Soop:
             streamer_info = StreamerInfo(
                 origin_id=str(new_item['user_id']),
                 name=str(new_item['user_nick']),
-                profile_url=f"https://stimg.afreecatv.com/LOGO/{new_item['user_id'][0:2]}/{new_item['user_id']}" +
-                            f"/m/{new_item['user_id']}.webp",
+                profile_url=f"https://profile.img.afreecatv.com/LOGO/{new_item['user_id'][0:2]}/{new_item['user_id']}" +
+                            f"/{new_item['user_id']}.jpg",
                 channel_url=f"https://play.afreecatv.com/{new_item['user_id']}",
                 platform="S",
                 stream_url=f"https://play.afreecatv.com/{new_item['user_id']}/{new_item['broad_no']}",

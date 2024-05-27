@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import List
-from schemas.streamer_info import StreamerInfo
-from schemas.streamer_logs import StreamerLogCreate
+from schemas.streamer_info import StreamerInfo, StreamerInfoUpdate
 from schemas.streamers import StreamerRead
 from loguru import logger
 import httpx
@@ -73,8 +72,18 @@ class Chzzk:
                 follower_text = res['content']['followerCount']
                 follower_cnt = int(follower_text)
 
-                streamer_follower_list.append(StreamerLogCreate(
+                streamer_profile = res['content']['channelImageUrl']
+                if s.profile_url == streamer_profile:
+                    streamer_profile = None
+
+                streamer_name = res['content']['channelName']
+                if s.name == streamer_name:
+                    streamer_name = None
+
+                streamer_follower_list.append(StreamerInfoUpdate(
                     streamer_id=s.streamer_id,
+                    profile_url=streamer_profile,
+                    name=streamer_name,
                     follower=follower_cnt
                 ))
 
@@ -114,7 +123,7 @@ class Chzzk:
             if new_item['liveImageUrl'] is None:
                 continue
             profile = str(new_item['channel']['channelImageUrl'])
-            if not profile:
+            if profile is None:
                 profile = "default"
             streamer_info = StreamerInfo(
                 origin_id=str(new_item['channel']['channelId']),

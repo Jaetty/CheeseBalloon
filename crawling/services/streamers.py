@@ -1,8 +1,9 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from typing import List, Type
+from typing import List
 from models.streamers import Streamer
 from schemas.streamers import StreamerCreate, StreamerRead
+from loguru import logger
 
 
 class StreamerService:
@@ -20,11 +21,23 @@ class StreamerService:
         return db_streamer
 
     def update_profile(self, db: Session, streamer_id: int, profile_url: str):
+        logger.info("프로필을 수정합니다.")
         streamer = db.query(Streamer).filter(Streamer.streamer_id == streamer_id).first()
         if not streamer:
             raise HTTPException(status_code=500, detail="응 없어")
         streamer.profile_url = profile_url
         db.commit()
+        logger.info("프로필을 수정 완료.")
+        return streamer
+
+    def update_name(self, db: Session, streamer_id: int, name: str):
+        logger.info("닉네임을 수정합니다.")
+        streamer = db.query(Streamer).filter(Streamer.streamer_id == streamer_id).first()
+        if not streamer:
+            raise HTTPException(status_code=500, detail="응 없어")
+        streamer.name = name
+        db.commit()
+        logger.info("닉네임을 수정 완료.")
         return streamer
 
     def is_streamer(self, db: Session, origin_id: str) -> bool:
