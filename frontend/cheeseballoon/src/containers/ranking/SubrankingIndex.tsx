@@ -25,7 +25,9 @@ type RankingData = {
   diff: number;
   rankDiff?: number;
   value: string;
-  value2?: string;
+  category?: string;
+  streamUrl?: string;
+  bookmark?: boolean;
 };
 
 function transformFollowData(data: FollowRankData[]): RankingData[] {
@@ -37,6 +39,7 @@ function transformFollowData(data: FollowRankData[]): RankingData[] {
     diff: item.diff,
     rankDiff: item.rankDiff,
     value: `${item.follower.toLocaleString()} 명`,
+    bookmark: item.bookmark,
   }));
 }
 
@@ -49,6 +52,7 @@ function transformTopviewData(data: TopviewRankData[]): RankingData[] {
     diff: item.diff,
     rankDiff: item.rankDiff,
     value: `${item.topViewer.toLocaleString()} 명`,
+    bookmark: item.bookmark,
   }));
 }
 
@@ -61,6 +65,7 @@ function transformAvgData(data: AvgRankData[]): RankingData[] {
     diff: item.diff,
     rankDiff: item.rankDiff,
     value: `${item.averageViewer.toLocaleString()} 명`,
+    bookmark: item.bookmark,
   }));
 }
 
@@ -83,6 +88,7 @@ function transformTimeData(data: TimeRankData[]): RankingData[] {
     diff: timeConvert(item.diff),
     rankDiff: item.rankDiff,
     value: `${item.totalAirTime.substring(0, 2)}h ${item.totalAirTime.substring(3, 5)}m`,
+    bookmark: item.bookmark,
   }));
 }
 
@@ -95,6 +101,7 @@ function transformRatingData(data: RatingRankData[]): RankingData[] {
     diff: item.diff,
     rankDiff: item.rankDiff,
     value: `${item.rating.toFixed(2)} %`,
+    bookmark: item.bookmark,
   }));
 }
 
@@ -106,7 +113,8 @@ function transformLiveData(data: LiveData[]): RankingData[] {
     platform: item.platform,
     diff: item.viewerCnt,
     value: item.title,
-    value2: item.category,
+    category: item.category,
+    streamUrl: item.streamUrl,
   }));
 }
 export default function Ranking() {
