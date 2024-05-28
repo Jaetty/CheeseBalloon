@@ -25,7 +25,7 @@ public class DateCalculator {
     public static LocalDateTime[] getPeriod(int date){
 
         LocalDateTime[] result = new LocalDateTime[4];
-        int[] days = {0,7,14,30};
+        int[] days = {0,6,13,29};
 
         // 데이터는 어제 날짜까지 있으니 어제를 시작점으로 한다.
         LocalDate now = LocalDate.now().minusDays (1);
