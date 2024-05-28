@@ -53,7 +53,7 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
                 .name(dto.getName())
                 .originId(dto.getOriginId())
                 .profileUrl(dto.getProfileUrl())
-                .channelUrl(dto.channelUrl())
+                .channelUrl(dto.getChannelUrl())
                 .bookmark(dto.getBookmark())
                 .platform(dto.getPlatform())
                 .build();
