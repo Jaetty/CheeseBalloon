@@ -6,7 +6,7 @@ public interface FindStreamerDetailResDtoInterface {
     String getName();
     String getOriginId();
     String getProfileUrl();
-    String channelUrl();
+    String getChannelUrl();
     Boolean getBookmark();
     Character getPlatform();
 
