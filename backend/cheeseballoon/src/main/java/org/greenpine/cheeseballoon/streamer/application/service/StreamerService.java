@@ -223,7 +223,7 @@ public class StreamerService implements StreamerUsecase {
         for(FindTimeDetailResDtoInterface val : timeResult){
             dailyTimes.add( DailyTime.builder()
                     .date(val.getDate())
-                    .totalAirtime(val.getTotalAirTime())
+                    .totalAirTime(val.getTotalAirTime())
                     .build());
         }
 
