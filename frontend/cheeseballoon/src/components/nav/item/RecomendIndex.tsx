@@ -74,8 +74,7 @@ export default function Recomend() {
           onKeyDown={switchToggle}
           role="presentation"
         >
-          {value && "더보기"}
-          <Image src={arrow} alt="" />
+          {value && "더보기"}&nbsp; <Image src={arrow} alt="" />
         </div>
       )}
       {toggle2 && (

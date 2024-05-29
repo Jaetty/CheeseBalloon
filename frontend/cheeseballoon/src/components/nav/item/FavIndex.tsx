@@ -65,8 +65,7 @@ export default function Fav() {
                 onKeyDown={switchToggle}
                 role="presentation"
               >
-                더보기
-                <Image src={arrow} alt="" />
+                더보기&nbsp; <Image src={arrow} alt="" />
               </div>
             )}
             {toggle1 && (
