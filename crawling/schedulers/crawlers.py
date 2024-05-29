@@ -24,11 +24,12 @@ class Scheduler:
         # 즉시 실행하고, 그 후에 20분 간격으로 반복 실행
         Scheduler.main_scheduler.add_job(
             self.crawling,
-            # trigger=IntervalTrigger(seconds=20),
-            trigger=IntervalTrigger(seconds=300, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
+            trigger=CronTrigger(minute='*/5'),
+            # trigger=IntervalTrigger(seconds=300, start_date=datetime.now(ZoneInfo('Asia/Seoul'))),
             id='crawling_start',
             misfire_grace_time=None,
             max_instances=5,
+            replace_existing=True,
             args=(db,)
         )
         return {"result": "good"}

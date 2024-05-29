@@ -45,7 +45,7 @@ class Soop:
                 follower_cnt = int(follower_text)
                 # print(follower_cnt)
 
-                streamer_profile = f'https:{res['profile_image']}'
+                streamer_profile = f'https:{res["profile_image"]}'
                 if s.profile_url == streamer_profile:
                     streamer_profile = None
 
@@ -216,7 +216,7 @@ class Soop:
                 )
                 streamer_list.append(streamer_info)
 
-        print(streamer_list)
+        # print(streamer_list)
         logger.info("아프리카 크롤링을 종료합니다.")
         return streamer_list
 
