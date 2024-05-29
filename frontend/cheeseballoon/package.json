@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/third-parties": "^14.2.3",
     "@types/js-cookie": "^3.0.6",
     "@types/react-calendar-heatmap": "^1.6.7",
     "apexcharts": "^3.47.0",
