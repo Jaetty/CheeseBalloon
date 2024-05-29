@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "src/styles/globals.css";
 import Nav from "src/components/nav/index";
-import { GoogleTagManager } from "@next/third-parties/google";
+import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "CheeseBalloon",
@@ -23,6 +23,7 @@ export default function RootLayout({
       <body>
         <Nav />
         <div className="flex-container">
+          <GoogleAnalytics gaId="G-F2SWLBDJYR" />
           <div className="children">{children}</div>
         </div>
       </body>
