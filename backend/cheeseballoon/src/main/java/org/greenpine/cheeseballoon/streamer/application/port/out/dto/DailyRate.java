@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DailyRate {
 
+    String date;
     double total;
     double platform;
-    String date;
 
 }
