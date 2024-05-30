@@ -57,8 +57,39 @@ public class RankingPersistenceAdapter implements RankingPort {
 
     @Override
     public List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform) {
+        List<FindLiveRankingInterface> entities=null;
+        if(memberId==null){
+            if(platform==null)
+                entities = statisticsRepository.findLiveRanking();
+            else
+                entities = statisticsRepository.findLiveRankingWithPlatform(platform);
 
-        return null;
+        }else{
+            if(platform==null)
+                entities = statisticsRepository.findLiveRankingWithMemberId(memberId);
+            else
+                entities = statisticsRepository.findLiveRankingWithMemberIdAndPlatform(memberId,platform);
+        }
+//        for(FindLiveRankingInterface e : entities){
+//            System.out.println(e.getLive_id() + " " + e.getName());
+//        }
+        return entities.stream().map(en -> FindLiveRankingResDto.builder()
+                .streamerId(en.getStreamer_id())
+                .liveId(en.getLive_id())
+                .name(en.getName())
+                .liveLogId(en.getLive_log_id())
+                .title(en.getTitle())
+                .profileUrl(en.getProfile_url())
+                .streamUrl(en.getStream_url())
+                .thumbnailUrl(en.getThumbnail_url())
+                .viewerCnt(en.getViewer_cnt())
+                .channelUrl(en.getChannel_url())
+                .platform(en.getPlatform())
+                .category(en.getCategory())
+                .bookmark(en.getBookmark() != null && en.getBookmark() == 1)
+                .build()
+        ).toList();
+
     }
 
 

@@ -45,5 +45,54 @@ public interface StatisticsRepository extends JpaRepository<StatisticsEntity, Lo
             "JOIN streamer_logs ON statistic.streamerId = streamer_logs.streamer_id AND streamer_logs.reg_dt BETWEEN :startDate AND :endDate AND streamer_id = :streamerId", nativeQuery = true)
     FindSummaryRankResDtoInterface findRankingByDtCodeAndStreamerIdAndDates(String dtCode, Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
 
-
+    @Query(value = "SELECT l.*, ll.* , s.*, c.category, " +
+            "false AS bookmark "+
+            "FROM lives l " +
+            "LEFT JOIN live_logs AS ll ON l.live_id = ll.live_id " +
+            "LEFT JOIN categories AS c ON ll.category_id = c.category_id " +
+            "LEFT JOIN streamers AS s ON l.streamer_id = s.streamer_id " +
+            "WHERE cycle_log_id = (SELECT cycle_log_id FROM cycle_logs ORDER BY cycle_log_id DESC LIMIT 1) " +
+            "ORDER BY ll.viewer_cnt DESC "
+            , nativeQuery = true)
+    List<FindLiveRankingInterface> findLiveRanking();
+    @Query(value = "SELECT l.*, ll.* , s.*, c.category, " +
+            "false AS bookmark "+
+            "FROM lives l " +
+            "LEFT JOIN live_logs AS ll ON l.live_id = ll.live_id " +
+            "LEFT JOIN categories AS c ON ll.category_id = c.category_id " +
+            "LEFT JOIN streamers AS s ON l.streamer_id = s.streamer_id " +
+            "WHERE cycle_log_id = (SELECT cycle_log_id FROM cycle_logs ORDER BY cycle_log_id DESC LIMIT 1) " +
+            "AND platform = :platform " +
+            "ORDER BY ll.viewer_cnt DESC"
+            , nativeQuery = true)
+    List<FindLiveRankingInterface> findLiveRankingWithPlatform(Character platform);
+    @Query(value = "SELECT l.*, ll.* , s.*, c.category, " +
+            "CASE " +
+            "WHEN b.streamer_id IS NOT NULL THEN true " +
+            "ELSE false " +
+            "END AS bookmark " +
+            "FROM lives l " +
+            "LEFT JOIN live_logs AS ll ON l.live_id = ll.live_id " +
+            "LEFT JOIN categories AS c ON ll.category_id = c.category_id " +
+            "LEFT JOIN streamers AS s ON l.streamer_id = s.streamer_id " +
+            "LEFT JOIN bookmarks AS b ON s.streamer_id = b.streamer_id AND b.member_id = :memberId " +
+            "WHERE cycle_log_id = (SELECT cycle_log_id FROM cycle_logs ORDER BY cycle_log_id DESC LIMIT 1) " +
+            "ORDER BY ll.viewer_cnt DESC"
+            , nativeQuery = true)
+    List<FindLiveRankingInterface> findLiveRankingWithMemberId(Long memberId);
+    @Query(value = "SELECT l.*, ll.* , s.*, c.category, " +
+            "CASE " +
+            "WHEN b.streamer_id IS NOT NULL THEN true " +
+            "ELSE false " +
+            "END AS bookmark " +
+            "FROM lives l " +
+            "LEFT JOIN live_logs AS ll ON l.live_id = ll.live_id " +
+            "LEFT JOIN categories AS c ON ll.category_id = c.category_id " +
+            "LEFT JOIN streamers AS s ON l.streamer_id = s.streamer_id " +
+            "LEFT JOIN bookmarks AS b ON s.streamer_id = b.streamer_id AND b.member_id = :memberId " +
+            "WHERE cycle_log_id = (SELECT cycle_log_id FROM cycle_logs ORDER BY cycle_log_id DESC LIMIT 1) " +
+            "AND platform = :platform " +
+            "ORDER BY ll.viewer_cnt DESC"
+            , nativeQuery = true)
+    List<FindLiveRankingInterface> findLiveRankingWithMemberIdAndPlatform(Long memberId, Character platform);
 }

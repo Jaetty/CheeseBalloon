@@ -91,4 +91,12 @@ public class RankingServiceTest {
 
     }
 
+    @Test
+    void findLiveRanking(){
+        Long memberId = 1L;
+        Character platform=null;
+        List<FindLiveRankingResDto> res = rankingService.findLiveRanking(memberId,platform);
+        System.out.println(res);
+    }
+
 }

@@ -1,17 +1,17 @@
 package org.greenpine.cheeseballoon.ranking.adapter.out.persistence;
 
 public interface FindLiveRankingInterface {
-    Long getStreamId();
-    Long getLiveId();
-    Long getLiveLogId();
+    Long getStreamer_id();
+    Long getLive_id();
+    Long getLive_log_id();
     String getName();
     String getTitle();
-    String getThumbnailUrl();
+    String getThumbnail_url();
     char getPlatform();
-    String getProfileUrl();
+    String getProfile_url();
     String getCategory();
-    int getViewerCnt();
-    String getStreamUrl();
-    String getChannelUrl();
-    Boolean getBookmark();
+    int getViewer_cnt();
+    String getStream_url();
+    String getChannel_url();
+    Integer getBookmark();
 }
