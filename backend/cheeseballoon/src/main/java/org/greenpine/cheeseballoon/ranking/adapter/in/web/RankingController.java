@@ -230,8 +230,8 @@ public class RankingController {
 
     @GetMapping("/live")
     public ResponseEntity<CustomBody> findLiveRanking(@AuthenticationPrincipal Long memberId, @RequestParam Character platform){
-        rankingUsecase.findLiveRanking(memberId, platform);
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, null));
+        List<FindLiveRankingResDto> res = rankingUsecase.findLiveRanking(memberId, platform);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, RankingResMsg.SUCCESS, res));
     }
 }
 
