@@ -4,11 +4,14 @@ import org.greenpine.cheeseballoon.global.utils.DateCalculator;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.StatisticsRepository;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.*;
+import org.greenpine.cheeseballoon.streamer.application.port.out.dto.DailyAvgViewer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -64,8 +67,22 @@ public class StreamerTest {
         System.out.println(LocalDateTime.now());
 
         List<FindStreamerDailyViewerResDtoInterface> ret = streamerRepository.findDailyViewer(streamer_id, dates[0], dates[1]);
+        List<DailyAvgViewer> dailyAvgViewer = new ArrayList<>();
+
+        for(LocalDate s = dates[0].toLocalDate(); !s.isEqual(dates[1].toLocalDate()); s = s.plusDays(1)){
+            dailyAvgViewer.add(new DailyAvgViewer(s.toString(),0,0));
+        }
+        int index = 0;
 
         for(FindStreamerDailyViewerResDtoInterface val : ret){
+            while (index < dailyAvgViewer.size()){
+                if(dailyAvgViewer.get(index).getDate().toString().equals(val.getDate())){
+                    dailyAvgViewer.get(index).setViewer(val.getViewer());
+                    dailyAvgViewer.get(index++).setMaxViewer(val.getMaxViewer());
+                    break;
+                }
+                index++;
+            }
             System.out.println("값 : " + val.getMaxViewer() + " " + val.getViewer() + " date : " + val.getDate());
         }
 
