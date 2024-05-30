@@ -56,7 +56,7 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "(SELECT ll.live_log_id, ll.live_id, ll.cycle_log_id, ll.category_id, ll.title, ll.viewer_cnt, l.streamer_id, l.stream_url, l.thumbnail_url, l.is_live, s.`name`, s.profile_url, s.channel_url, s.platform FROM live_logs AS ll, lives AS l, streamers AS s WHERE s.streamer_id = :streamerId AND l.streamer_id = :streamerId AND ll.live_id = l.live_id) \n" +
             "AS r ON r.cycle_log_id = c.cycle_log_id) AS result\n" +
             "ON categories.category_id = result.category_id\n" +
-            "GROUP BY categoryId, `date`\n" +
+            "GROUP BY categoryId \n" +
             "ORDER BY `date`", nativeQuery = true)
     List<FindStreamerCategoryResDtoInterface> findCategoryInfo(Long streamerId, LocalDateTime beforeDay, LocalDateTime today);
 
