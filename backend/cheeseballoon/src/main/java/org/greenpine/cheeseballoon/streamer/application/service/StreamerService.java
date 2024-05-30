@@ -8,6 +8,7 @@ import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -109,6 +110,11 @@ public class StreamerService implements StreamerUsecase {
 
         List<DailyAvgViewer> dailyAvgViewer = new ArrayList<>();
 
+        for(LocalDate date = dates[0].toLocalDate(); !date.isAfter(dates[1].toLocalDate()); date = date.plusDays(1)){
+            dailyAvgViewer.add(new DailyAvgViewer(date.toString(),0,0));
+        }
+
+        int index = 0;
         int curr_max = 0;
         int curr_avg = 0;
 
@@ -118,12 +124,12 @@ public class StreamerService implements StreamerUsecase {
             int count = 0;
 
             for(FindStreamerDailyViewerResDtoInterface var : curr){
-                DailyAvgViewer temp = new DailyAvgViewer();
-                temp.setViewer(var.getViewer());
-                temp.setDate(var.getDate());
-                temp.setMaxViewer(var.getMaxViewer());
-                dailyAvgViewer.add(temp);
-
+                while ( index < dailyAvgViewer.size() && !dailyAvgViewer.get(index).getDate().equals(var.getDate()) ){
+                    index++;
+                }
+                if(index>=dailyAvgViewer.size()) break;
+                dailyAvgViewer.get(index).setMaxViewer(var.getMaxViewer());
+                dailyAvgViewer.get(index).setViewer(var.getViewer());
                 curr_max = Math.max(curr_max,var.getMaxViewer());
                 sum += var.getViewer();
                 count++;
@@ -158,20 +164,29 @@ public class StreamerService implements StreamerUsecase {
 
         StreamerEntity streamerEntity = streamerPort.findByStreamerId(streamerId);
         List<FindStreamerRatingResDtoInterface> list = streamerPort.streamerDetailRating(streamerId, dates[0], dates[1]);
-
-        if(list.isEmpty()){
-            return null;
-        }
-
         List<DailyRate> dailyRates = new ArrayList<>();
 
+        for(LocalDate date = dates[0].toLocalDate(); !date.isAfter(dates[1].toLocalDate()); date = date.plusDays(1)){
+            dailyRates.add(new DailyRate(date.toString(),0.00,0.00));
+        }
+
+        if(list.isEmpty()){
+            return FindStreamerRatingDto.builder().dailyRates(dailyRates).totalRating(0.00).platformRating(0.00).build();
+        }
+
         double totalRating = 0, platformRating = 0;
-        int count = 0;
+        int count = 0, index = 0;
 
         if(streamerEntity.getPlatform() == 'C'){
 
             for(FindStreamerRatingResDtoInterface val : list){
-                dailyRates.add(new DailyRate(val.getTotalRating(), val.getChzzkRating(), val.getDate()));
+                while ( index < dailyRates.size() && !dailyRates.get(index).getDate().equals(val.getDate()) ){
+                    index++;
+                }
+                if(index>=dailyRates.size()) break;
+                dailyRates.get(index).setTotal(val.getTotalRating());
+                dailyRates.get(index).setPlatform(val.getChzzkRating());
+
                 totalRating += val.getTotalRating();
                 platformRating += val.getChzzkRating();
                 count++;
@@ -181,7 +196,13 @@ public class StreamerService implements StreamerUsecase {
         else{
 
             for(FindStreamerRatingResDtoInterface val : list){
-                dailyRates.add(new DailyRate(val.getTotalRating(), val.getSoopRating(), val.getDate()));
+                while ( index < dailyRates.size() && !dailyRates.get(index).getDate().equals(val.getDate()) ){
+                    index++;
+                }
+                if(index>=dailyRates.size()) break;
+                dailyRates.get(index).setTotal(val.getTotalRating());
+                dailyRates.get(index).setPlatform(val.getSoopRating());
+
                 totalRating += val.getTotalRating();
                 platformRating += val.getSoopRating();
                 count++;
@@ -219,12 +240,19 @@ public class StreamerService implements StreamerUsecase {
         List<FindTimeDetailResDtoInterface> timeResult = streamerPort.streamerDetailTime(streamerId, dates[0], dates[1]);
 
         List<DailyTime> dailyTimes = new ArrayList<>();
+        int index = 0;
+
+        for(LocalDate date = dates[0].toLocalDate(); !date.isAfter(dates[1].toLocalDate()); date = date.plusDays(1)){
+            dailyTimes.add(new DailyTime(date.toString(),0));
+        }
 
         for(FindTimeDetailResDtoInterface val : timeResult){
-            dailyTimes.add( DailyTime.builder()
-                    .date(val.getDate())
-                    .totalAirTime(val.getTotalAirTime())
-                    .build());
+            while ( index < dailyTimes.size() && !dailyTimes.get(index).getDate().equals(val.getDate()) ){
+                index++;
+            }
+            if(index >= dailyTimes.size()) break;
+            dailyTimes.get(index).setDate(val.getDate());
+            dailyTimes.get(index).setTotalAirTime(val.getTotalAirTime());
         }
 
         FindSummaryRankResDtoInterface curr = streamerPort.streamerDetailSummary(streamerId, dtCodes[0], specificDates[0], specificDates[1]);
