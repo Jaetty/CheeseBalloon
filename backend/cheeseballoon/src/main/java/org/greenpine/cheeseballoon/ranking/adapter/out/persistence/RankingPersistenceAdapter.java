@@ -2,6 +2,7 @@ package org.greenpine.cheeseballoon.ranking.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindLiveRankingResDto;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerLogRepository;
 import org.springframework.stereotype.Repository;
 
@@ -52,6 +53,12 @@ public class RankingPersistenceAdapter implements RankingPort {
 
         List<FindTotalAirTimeRankResDtoInterface> ret = statisticsRepository.findTotalAirTimeRanking(dtCode, platform, memberId);
         return ret;
+    }
+
+    @Override
+    public List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform) {
+
+        return null;
     }
 
 

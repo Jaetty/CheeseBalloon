@@ -314,6 +314,12 @@ public class RankingService implements RankingUsecase {
         return ret;
     }
 
+    @Override
+    public List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform) {
+        rankingPort.findLiveRanking(memberId, platform);
+        return null;
+    }
+
     private String getTime(Integer time){
 
         if (time == null){
