@@ -4,21 +4,22 @@ import live from "public/svgs/live.svg";
 import ranking from "public/svgs/rank.svg";
 import Link from "next/link";
 import style from "src/components/nav/item/ShortCut.module.scss";
-import { useToggleState } from "src/stores/store";
 
-export default function Shortcut() {
-  const { value } = useToggleState();
+interface ValueProps {
+  value: boolean;
+}
 
+export default function Shortcut({ value }: ValueProps) {
   return (
     <div>
       {value && (
-        <div>
+        <div className={style.fontname}>
           <div className={style.open_description}>바로가기</div>
           <li className={style.open_listItem}>
             <Link href="/notice" className={style.open_linkdeco}>
               <div className={style.open_navPill}>
                 <Image src={notice} alt="" width={20} height={20} />
-                <div className={style.open_linkdeco}>공지사항</div>
+                <div className={style.open_linkdeco1}>공지사항</div>
               </div>
             </Link>
           </li>
@@ -26,7 +27,7 @@ export default function Shortcut() {
             <Link href="/ranking" className={style.open_linkdeco}>
               <div className={style.open_navPill}>
                 <Image src={ranking} alt="" width={20} height={20} />
-                <div className={style.open_linkdeco}>방송 랭킹</div>
+                <div className={style.open_linkdeco2}>방송 랭킹</div>
               </div>
             </Link>
           </li>
@@ -41,7 +42,7 @@ export default function Shortcut() {
         </div>
       )}
       {!value && (
-        <div>
+        <div className={style.fontname}>
           <div className={style.closed_description}>바로가기</div>
           <li className={style.closed_listItem}>
             <Link href="/notice" className={style.closed_linkdeco}>

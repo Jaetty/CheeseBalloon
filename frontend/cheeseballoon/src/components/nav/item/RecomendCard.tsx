@@ -93,9 +93,7 @@ export default function RecomendCard({ data }: Props) {
                   <Image src={chzzk} alt="" width={14} height={14} />
                 )}
               </div>
-              <div className={styles.subcontent}>
-                {data?.category || "리그 오브 레전드"}
-              </div>
+              <div className={styles.subcontent}>{data?.category}</div>
             </div>
 
             <div className={styles.viewer}>
@@ -138,9 +136,7 @@ export default function RecomendCard({ data }: Props) {
                     {data?.viewerCnt.toLocaleString()}
                   </div>
                 </div>
-                <div className={styles.modal_subcontent}>
-                  {data?.category || "리그 오브 레전드"}
-                </div>
+                <div className={styles.modal_subcontent}>{data?.category}</div>
               </div>
             )}
           </div>
