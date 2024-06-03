@@ -82,6 +82,10 @@ class CrawlingBusiness:
                         is_live=True
                     )
                     LiveService().create(db=db, live=live)
+                else:
+                    LiveService().update_is_live_true(db=db, streamer_id=streamer_id,
+                                                      live_origin_id=streamer_info.live_origin_id)
+
                 live_id = LiveService().get_live(db=db, streamer_id=streamer_id,
                                                  live_origin_id=streamer_info.live_origin_id)
                 live_id_list.append(live_id)
@@ -98,7 +102,7 @@ class CrawlingBusiness:
             logger.info("라이브 상태를 업데이트 합니다.")
             if cycle_id != 1:
                 end_live_list = LiveLogService().get_end_live_id(db=db, cycle_log_id=cycle_id-1, live_list=live_id_list)
-                LiveService().update_is_live(db=db, live_list=end_live_list)
+                LiveService().update_is_live(db=db, live_list=end_live_list, status=False)
                 logger.info("업데이트 완료")
 
         except Exception as e:
