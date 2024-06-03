@@ -21,10 +21,16 @@ class LiveService:
         db.refresh(db_live)
         return db_live
 
-    def update_is_live(self, db: Session, live_list: List[int]):
+    def update_is_live_false(self, db: Session, live_list: List[int]):
         db.query(Live).filter(
             Live.live_id.in_(live_list)
         ).update({Live.is_live: False})
+        db.commit()
+
+    def update_is_live_true(self, db: Session, streamer_id: int, live_origin_id: int):
+        db.query(Live).filter(
+            and_(Live.streamer_id == streamer_id, Live.live_origin_id == live_origin_id)
+        ).update({Live.is_live: True})
         db.commit()
 
     def is_live(self, db: Session, streamer_id: int, live_origin_id: int) -> bool:
