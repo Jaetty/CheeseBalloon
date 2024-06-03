@@ -3,6 +3,7 @@ import "src/styles/globals.css";
 import Footer from "src/components/footer";
 import { PaddingProvider } from "src/lib/PaddingContext";
 import { MenuProvider } from "src/lib/MenuContext";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "CheeseBalloon",
@@ -18,15 +19,16 @@ export default function MainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const toggleValue = cookieStore.get("toggle")?.value === "true";
   return (
-    <>
-      <MenuProvider></MenuProvider>
+    <MenuProvider initialToggleValue={toggleValue}>
       <PaddingProvider>
         <div className="children">
           {children}
           <Footer />
         </div>
       </PaddingProvider>
-    </>
+    </MenuProvider>
   );
 }

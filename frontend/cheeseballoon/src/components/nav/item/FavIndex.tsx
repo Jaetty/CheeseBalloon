@@ -4,11 +4,14 @@ import styles from "src/components/nav/item/FavIndex.module.scss";
 import FavCard from "src/components/nav/item/FavCard";
 import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
-import { useToggleState, FavState } from "src/stores/store";
+import { FavState } from "src/stores/store";
 import { useState, useEffect } from "react";
 
-export default function Fav() {
-  const { value } = useToggleState();
+interface ValueProps {
+  value: boolean;
+}
+
+export default function Fav({ value }: ValueProps) {
   const { data: favData, setData: setFavData } = FavState();
   const [toggle1, setToggle] = useState(false);
   const switchToggle = () => {

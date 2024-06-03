@@ -4,11 +4,12 @@ import live from "public/svgs/live.svg";
 import ranking from "public/svgs/rank.svg";
 import Link from "next/link";
 import style from "src/components/nav/item/ShortCut.module.scss";
-import { useToggleState } from "src/stores/store";
 
-export default function Shortcut() {
-  const { value } = useToggleState();
+interface ValueProps {
+  value: boolean;
+}
 
+export default function Shortcut({ value }: ValueProps) {
   return (
     <div>
       {value && (
