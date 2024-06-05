@@ -31,9 +31,10 @@ public class JwtUtil {
         this.refreshTokenExpTime = refreshTokenExpTime;
     }
 
-    public String createAccessToken(Long memberId){
+    public String createAccessToken(Long memberId, String role){
         Claims claims = Jwts.claims();
         claims.put("memberId", memberId);
+        claims.put("role", role);
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + accessTokenExpTime);
         return Jwts.builder()
@@ -44,9 +45,10 @@ public class JwtUtil {
                 .compact();
 
     }
-    public String createRefreshToken(Long memberId){
+    public String createRefreshToken(Long memberId, String role){
         Claims claims = Jwts.claims();
         claims.put("memberId", memberId);
+        claims.put("role", role);
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + refreshTokenExpTime);
 
@@ -68,6 +70,8 @@ public class JwtUtil {
     public Long getUserId(Claims claims){
         return claims.get("memberId", Long.class);
     }
+
+    public String getRole(Claims claims) {return  claims.get("role", String.class);}
 
     public Boolean isTokenExpired(Claims claims) {
         Date expirationDate = claims.getExpiration();

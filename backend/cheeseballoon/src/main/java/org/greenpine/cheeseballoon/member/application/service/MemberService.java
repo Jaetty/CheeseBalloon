@@ -37,8 +37,8 @@ public class MemberService implements MemberUsecase, AuthUsecase {
             member = memberPort.register(dto); //회원가입
 
         }
-        String accessToken = jwtUtil.createAccessToken(member.getMemberId());
-        String refreshToken = jwtUtil.createRefreshToken(member.getMemberId());
+        String accessToken = jwtUtil.createAccessToken(member.getMemberId(), member.getRole().getRole());
+        String refreshToken = jwtUtil.createRefreshToken(member.getMemberId(), member.getRole().getRole());
         return LoginResDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
