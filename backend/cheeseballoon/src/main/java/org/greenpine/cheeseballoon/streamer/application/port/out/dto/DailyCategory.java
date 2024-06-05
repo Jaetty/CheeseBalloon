@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DailyCategory {
 
+    String date;
     String category;
     int time;
     int avgViewer;

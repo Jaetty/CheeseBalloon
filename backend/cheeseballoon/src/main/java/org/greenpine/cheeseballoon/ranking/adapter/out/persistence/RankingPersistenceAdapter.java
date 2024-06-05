@@ -1,14 +1,9 @@
 package org.greenpine.cheeseballoon.ranking.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
-import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
-import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindAvgViewerRankResDtoInterface;
-import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindFollowerRankResDtoInterface;
-import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindRatingRankResDtoInterface;
-import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindTopViewerRankResDtoInterface;
-import org.greenpine.cheeseballoon.global.utils.DateCalculator;
-import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerRepository;
+import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindLiveRankingResDto;
+import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerLogRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -18,89 +13,83 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RankingPersistenceAdapter implements RankingPort {
 
-    final private StreamerRepository streamerRepository;
-    final private LiveRepository liveRepository;
+    final private StatisticsRepository statisticsRepository;
+    final private StreamerLogRepository streamerLogRepository;
 
     // 평균 시청자 수 db 값 가져오기
     @Override
-    public List<FindAvgViewerRankResDtoInterface>[] findAvgViewerRanking(int date, char platform, long memberId) {
+    public List<FindAvgViewerRankResDtoInterface> findAvgViewerRanking(String dtCode, String platform, long memberId) {
 
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
-
-        List<FindAvgViewerRankResDtoInterface>[] ret = new List[2];
-
-        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
-        if(platform=='T'){
-            ret[0] = liveRepository.findAllAvgViewerRanking(dates[0], dates[1], memberId);
-            ret[1] = liveRepository.findAllAvgViewerRanking(dates[2], dates[3], memberId);
-        }
-        else{
-            ret[0] = liveRepository.findAvgViewerRankingByPlatform(dates[0], dates[1], platform, memberId);
-            ret[1] = liveRepository.findAvgViewerRankingByPlatform(dates[2], dates[3], platform, memberId);
-        }
-
+        List<FindAvgViewerRankResDtoInterface> ret = statisticsRepository.findAverageViewerRanking(dtCode, platform, memberId);
         return ret;
     }
 
     // 최대 시청자 수 db 값 가져오기
     @Override
-    public List<FindTopViewerRankResDtoInterface>[] findTopViewerRanking(int date, char platform, long memberId) {
+    public List<FindTopViewerRankResDtoInterface> findTopViewerRanking(String dtCode, String platform, long memberId) {
 
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
-
-        List<FindTopViewerRankResDtoInterface>[] ret = new List[2];
-
-        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
-        if(platform=='T'){
-            ret[0] = liveRepository.findAllTopViewerRanking(dates[0], dates[1], memberId);
-            ret[1] = liveRepository.findAllTopViewerRanking(dates[2], dates[3], memberId);
-        }
-        else{
-            ret[0] = liveRepository.findTopViewerRankingByPlatform(dates[0], dates[1], platform, memberId);
-            ret[1] = liveRepository.findTopViewerRankingByPlatform(dates[2], dates[3], platform, memberId);
-        }
+        List<FindTopViewerRankResDtoInterface> ret = statisticsRepository.findTopViewerRanking(dtCode, platform, memberId);
 
         return ret;
     }
 
     @Override
-    public List<FindFollowerRankResDtoInterface>[] findFollowerRanking(int date, char platform, long memberId) {
+    public List<FindFollowerRankResDtoInterface> findFollowerRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, long memberId) {
 
-        LocalDateTime[] dates = DateCalculator.getSpecificPeriod(date);
-
-        List<FindFollowerRankResDtoInterface>[] ret = new List[2];
-
-        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
-        if(platform=='T'){
-            ret[0] = liveRepository.findFollowerRanking(dates[0], dates[1], memberId);
-            ret[1] = liveRepository.findFollowerRanking(dates[2], dates[3], memberId);
-        }
-        else{
-            ret[0] = liveRepository.findFollowerRankingByPlatform(dates[0], dates[1], platform, memberId);
-            ret[1] = liveRepository.findFollowerRankingByPlatform(dates[2], dates[3], platform, memberId);
-        }
+        List<FindFollowerRankResDtoInterface> ret = streamerLogRepository.findFollowerRanking(startDate, endDate, platform, memberId);
 
         return ret;
     }
 
     @Override
-    public List<FindRatingRankResDtoInterface>[] findRatingRanking(int date, char platform, long memberId) {
+    public List<FindRatingRankResDtoInterface> findRatingRanking(String dtCode, String platform, long memberId) {
 
-        LocalDateTime[] dates = DateCalculator.getSpecificPeriod(date);
-
-        List<FindRatingRankResDtoInterface>[] ret = new List[2];
-
-        // T는 전체 가져오기 T외의 값은 해당 플랫폼에 대해서만 가져오기
-        if(platform=='T'){
-            ret[0] = liveRepository.findRatingRanking(dates[0], dates[1], memberId);
-            ret[1] = liveRepository.findRatingRanking(dates[2], dates[3], memberId);
-        }
-        else{
-            ret[0] = liveRepository.findRatingRankingByPlatform(dates[0], dates[1], platform, memberId);
-            ret[1] = liveRepository.findRatingRankingByPlatform(dates[2], dates[3], platform, memberId);
-        }
-
+        List<FindRatingRankResDtoInterface> ret = statisticsRepository.findRatingRanking(dtCode, platform, memberId);
         return ret;
+    }
+
+    @Override
+    public List<FindTotalAirTimeRankResDtoInterface> findTotalAirTimeRanking(String dtCode, String platform, long memberId) {
+
+        List<FindTotalAirTimeRankResDtoInterface> ret = statisticsRepository.findTotalAirTimeRanking(dtCode, platform, memberId);
+        return ret;
+    }
+
+    @Override
+    public List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform) {
+        List<FindLiveRankingInterface> entities=null;
+        if(memberId==null){
+            if(platform==null)
+                entities = statisticsRepository.findLiveRanking();
+            else
+                entities = statisticsRepository.findLiveRankingWithPlatform(platform);
+
+        }else{
+            if(platform==null)
+                entities = statisticsRepository.findLiveRankingWithMemberId(memberId);
+            else
+                entities = statisticsRepository.findLiveRankingWithMemberIdAndPlatform(memberId,platform);
+        }
+//        for(FindLiveRankingInterface e : entities){
+//            System.out.println(e.getLive_id() + " " + e.getName());
+//        }
+        return entities.stream().map(en -> FindLiveRankingResDto.builder()
+                .streamerId(en.getStreamer_id())
+                .liveId(en.getLive_id())
+                .name(en.getName())
+                .liveLogId(en.getLive_log_id())
+                .title(en.getTitle())
+                .profileUrl(en.getProfile_url())
+                .streamUrl(en.getStream_url())
+                .thumbnailUrl(en.getThumbnail_url())
+                .viewerCnt(en.getViewer_cnt())
+                .channelUrl(en.getChannel_url())
+                .platform(en.getPlatform())
+                .category(en.getCategory())
+                .bookmark(en.getBookmark() != null && en.getBookmark() == 1)
+                .build()
+        ).toList();
+
     }
 
 

@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class FindLivesResDto {
-    Long streamId;
+    Long streamerId;
     Long liveId;
     Long liveLogId;
     String name;
