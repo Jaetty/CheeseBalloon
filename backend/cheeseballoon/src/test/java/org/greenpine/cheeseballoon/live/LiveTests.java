@@ -67,28 +67,28 @@ public class LiveTests {
 
     @Test
     public void CategoryTaskTest(){
-        String[] chosungs = {"ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ" , "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"};
-        List<CategoryEntity> entities = categoryRepository.findAllByChosungIsNull();
-        for(CategoryEntity entity : entities){
-            System.out.println(entity.getCategory());
-            String word = entity.getCategory();
-            String categoryChosung ="";
-            for(int i=0; i<word.length(); i++) {
-                char cha = word.charAt(i);
-                if (cha < 0xAC00) {
-                    categoryChosung += cha;
-                    continue;
-                }
-                int uniBase = cha - 44032;
-
-                char chosung = (char) (uniBase / 28 / 21);
-                //char jungsung = (char) (uniBase / 28 % 21);
-                //char jongsung = (char) (uniBase % 28);
-
-                categoryChosung += chosungs[chosung];
-            }
-            System.out.println(categoryChosung);
-        }
+//        String[] chosungs = {"ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ" , "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"};
+//        List<CategoryEntity> entities = categoryRepository.findAllByChosungIsNull();
+//        for(CategoryEntity entity : entities){
+//            System.out.println(entity.getCategory());
+//            String word = entity.getCategory();
+//            String categoryChosung ="";
+//            for(int i=0; i<word.length(); i++) {
+//                char cha = word.charAt(i);
+//                if (cha < 0xAC00) {
+//                    categoryChosung += cha;
+//                    continue;
+//                }
+//                int uniBase = cha - 44032;
+//
+//                char chosung = (char) (uniBase / 28 / 21);
+//                //char jungsung = (char) (uniBase / 28 % 21);
+//                //char jongsung = (char) (uniBase % 28);
+//
+//                categoryChosung += chosungs[chosung];
+//            }
+//            System.out.println(categoryChosung);
+//        }
     }
 
     @Test

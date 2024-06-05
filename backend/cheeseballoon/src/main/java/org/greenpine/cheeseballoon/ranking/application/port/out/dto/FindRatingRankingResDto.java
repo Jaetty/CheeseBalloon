@@ -14,7 +14,7 @@ public class FindRatingRankingResDto {
     Long streamerId;
     String name;
     int rank;
-    char platform;
+    String platform;
     String profileUrl;
     double rating;
     int rankDiff;

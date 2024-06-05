@@ -9,16 +9,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindTopViewerRankingResDto {
+public class FindTotalAirTimeRankingResDto {
 
     Long streamerId;
     String name;
     int rank;
     String platform;
     String profileUrl;
-    int topViewer;
+    String totalAirTime;
     int rankDiff;
-    int diff;
+    String diff;
     boolean bookmark;
 
 }

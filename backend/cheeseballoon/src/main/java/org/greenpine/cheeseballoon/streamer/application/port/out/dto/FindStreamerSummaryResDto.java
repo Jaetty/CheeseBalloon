@@ -5,13 +5,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
 @AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class DailyTime {
+@Builder
+public class FindStreamerSummaryResDto {
 
-    String date;
+    Integer rank;
+    Integer diff;
+    Integer avgViewer;
+    Integer viewerDiff;
     Integer totalAirTime;
+    Integer timeDiff;
+    Integer follow;
+    Integer followDiff;
+    Double rating;
+    Double ratingDiff;
 
 }
