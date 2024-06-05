@@ -93,6 +93,7 @@ public class MemberController {
     @GetMapping("/login/kakao")
     public ResponseEntity<CustomBody> loginKakao(@RequestParam String code) {
         log.info("login/kakao - Call");
+        System.out.println(code);
         return ResponseEntity.ok(null);
         /*try {
             UserInfoDto userInfoDto = oauthService.getKakaoUserInfo(code);
