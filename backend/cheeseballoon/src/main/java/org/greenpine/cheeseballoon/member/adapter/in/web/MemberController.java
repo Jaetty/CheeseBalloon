@@ -52,8 +52,9 @@ public class MemberController {
         List<GrantedAuthority> authorities = authentication.getAuthorities().stream()
                 .map(authority -> (GrantedAuthority) authority)
                 .toList();
-        System.out.println(authorities.get(0).toString());
-        GetAccessTokenResDto resDto = oauthService.getNewAccessToken(memberId, "!");
+        String role = authorities.get(0).toString();
+        System.out.println(role);
+        GetAccessTokenResDto resDto = oauthService.getNewAccessToken(memberId, role);
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
     }
 
