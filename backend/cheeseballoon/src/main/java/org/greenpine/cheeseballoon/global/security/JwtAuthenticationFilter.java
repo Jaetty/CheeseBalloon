@@ -24,6 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.security.SignatureException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     List<GrantedAuthority> userAuth = Collections.singletonList(new SimpleGrantedAuthority("USER"));
+    List<GrantedAuthority> managerAuth = Arrays.asList(
+            new SimpleGrantedAuthority("MANAGER"),
+            new SimpleGrantedAuthority("USER")
+    );
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, JwtException {
         String token = resolveToken(request);
@@ -42,11 +47,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 throw new JwtException("Token Expired");
             }
             Long memberId = jwtUtil.getUserId(claims);
-            //System.out.println("필터 memberId : " + memberId);
-
+            String role = jwtUtil.getRole(claims);
+            System.out.println("필터 memberId : " + memberId +" "+role);
+            List<GrantedAuthority> auth;
+            if(role.equals("MANAGER")) auth = managerAuth;
+            else auth = userAuth;
             //memberId 담고 user권한 부여
             AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    memberId, null, userAuth);
+                    memberId, null, auth);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
