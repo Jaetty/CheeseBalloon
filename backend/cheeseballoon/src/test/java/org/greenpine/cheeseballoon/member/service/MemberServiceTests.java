@@ -3,6 +3,7 @@ package org.greenpine.cheeseballoon.member.service;
 import org.greenpine.cheeseballoon.global.token.JwtUtil;
 import org.greenpine.cheeseballoon.member.adapter.out.persistence.MemberEntity;
 import org.greenpine.cheeseballoon.member.adapter.out.persistence.MemberRepository;
+import org.greenpine.cheeseballoon.member.adapter.out.persistence.RoleEntity;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.MemberPort;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
@@ -53,6 +54,7 @@ public class MemberServiceTests {
                 .platform('C')
                 .originId("123123")
                 .nickname(name)
+                .role(RoleEntity.builder().roleId(1L).role("MANAGER").build())
                 .build();
         given(memberPort.findMember(any())).willReturn(null);
         given(memberPort.findByNickname(name)).willReturn(null);
