@@ -11,4 +11,5 @@ public interface RankingUsecase {
     List<FindFollowerRankingResDto> findFollowerRanking(LocalDateTime[] dates, String platform, long memberId);
     List<FindRatingRankingResDto> findRatingRanking(String[] dtCodes, String platform, long memberId);
     List<FindTotalAirTimeRankingResDto> findTotalAirTimeRanking(String[] dtCodes, String platform, long memberId);
+    List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform);
 }
