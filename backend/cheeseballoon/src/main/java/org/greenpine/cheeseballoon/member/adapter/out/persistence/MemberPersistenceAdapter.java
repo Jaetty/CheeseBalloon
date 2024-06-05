@@ -30,7 +30,7 @@ public class MemberPersistenceAdapter implements MemberPort {
     @Override
     public MemberEntity register(UserInfoDto dto) {
         RoleEntity role = RoleEntity.builder()
-                .roleId(1l)
+                .roleId(2l)
                 .build();
         MemberEntity member = MemberEntity.builder()
                 .email(dto.getEmail())
