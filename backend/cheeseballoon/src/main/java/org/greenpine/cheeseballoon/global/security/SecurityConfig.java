@@ -15,7 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -43,8 +43,10 @@ public class SecurityConfig{
 
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/member/bookmark/**", "/member/viewlog/**").hasAnyAuthority("USER")
+                .requestMatchers(HttpMethod.GET, "/notice/**").permitAll() //GET허용
+                .requestMatchers("/notice/**").hasAnyAuthority("MANAGER")
                 .requestMatchers("/member/login/**").permitAll()
+                .requestMatchers("/member/bookmark/**", "/member/viewlog/**").hasAnyAuthority("USER")
                 //.requestMatchers("/member/login/test").hasRole("admin") //role 체크
                 .anyRequest().permitAll() //모든 경로에 대한 인증처리는 Pass
                 //.anyRequest().authenticated() // 그 외의 요청은 모두 인증이 필요함
