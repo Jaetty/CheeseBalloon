@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"file"})
 public class RegisterNoticeImgReqDto {
     MultipartFile file;
 }
