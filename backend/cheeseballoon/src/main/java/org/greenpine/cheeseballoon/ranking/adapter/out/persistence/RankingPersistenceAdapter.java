@@ -59,13 +59,13 @@ public class RankingPersistenceAdapter implements RankingPort {
     public List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform) {
         List<FindLiveRankingInterface> entities=null;
         if(memberId==null){
-            if(platform==null)
+            if(platform=='T')
                 entities = statisticsRepository.findLiveRanking();
             else
                 entities = statisticsRepository.findLiveRankingWithPlatform(platform);
 
         }else{
-            if(platform==null)
+            if(platform=='T')
                 entities = statisticsRepository.findLiveRankingWithMemberId(memberId);
             else
                 entities = statisticsRepository.findLiveRankingWithMemberIdAndPlatform(memberId,platform);
