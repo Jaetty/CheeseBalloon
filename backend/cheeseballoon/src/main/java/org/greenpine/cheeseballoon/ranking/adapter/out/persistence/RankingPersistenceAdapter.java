@@ -65,7 +65,7 @@ public class RankingPersistenceAdapter implements RankingPort {
                 entities = statisticsRepository.findLiveRankingWithPlatform(platform);
 
         }else{
-            if(platform=='TV')
+            if(platform=='T')
                 entities = statisticsRepository.findLiveRankingWithMemberId(memberId);
             else
                 entities = statisticsRepository.findLiveRankingWithMemberIdAndPlatform(memberId,platform);
