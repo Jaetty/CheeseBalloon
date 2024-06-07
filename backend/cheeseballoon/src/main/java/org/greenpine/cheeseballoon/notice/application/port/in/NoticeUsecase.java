@@ -14,7 +14,7 @@ public interface NoticeUsecase {
 
     RegisterNoticeImgResDto registerNoticeImg(MultipartFile file) throws Exception;
 
-    void deleteNoticeImg(DeleteNoticeImgReqDto reqDto);
+    void deleteNoticeImg(DeleteNoticeImgReqDto reqDto) throws Exception;
 
     void registerNotice(Long memberId, RegisterNoticeReqDto reqDto);
 

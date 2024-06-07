@@ -1,14 +1,13 @@
 package org.greenpine.cheeseballoon.global.minio;
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.global.exception.NotFindException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -38,5 +37,25 @@ public class MinioManager {
         minioClient.putObject(putObjectArgs);
 
         return minioUrl+"/"+bucketName+"/"+uniqueFilename;
+    }
+
+    public void deleteFile(String imgUrl) throws Exception {
+        String[] imgUrlList = imgUrl.split("/");
+        String bucketName = imgUrlList[imgUrlList.length-2];
+        String objectName = imgUrlList[imgUrlList.length-1];
+
+        try{
+            minioClient.statObject( //존재하는지 확인
+                    StatObjectArgs.builder().bucket(bucketName).object(objectName).build());
+        }catch ( Exception e ){
+            throw new NotFindException();
+        }
+
+        RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder()
+                .bucket(bucketName)
+                .object(objectName)
+                .build();
+
+        minioClient.removeObject(removeObjectArgs);
     }
 }
