@@ -51,8 +51,18 @@ public class NoticeController {
     @DeleteMapping("/img")
     public ResponseEntity<CustomBody> deleteNoticeImg(@RequestBody DeleteNoticeImgReqDto reqDto) {
         log.info("deleteNoticeImg - Call");
-        noticeUsecase.deleteNoticeImg(reqDto);
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, NoticeResMsg.SUCCESS, null));
+        try {
+            noticeUsecase.deleteNoticeImg(reqDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, NoticeResMsg.SUCCESS, null));
+
+        }catch ( NotFindException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, NoticeResMsg.NOT_EXIST, null));
+        }
+        catch ( Exception e ){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, NoticeResMsg.INTERNAL_SERVER_ERROR, null));
+        }
+
+
     }
 
     @PostMapping("")

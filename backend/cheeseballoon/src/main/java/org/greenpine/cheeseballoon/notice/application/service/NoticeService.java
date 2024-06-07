@@ -41,8 +41,8 @@ public class NoticeService implements NoticeUsecase {
     }
 
     @Override
-    public void deleteNoticeImg(DeleteNoticeImgReqDto reqDto) {
-
+    public void deleteNoticeImg(DeleteNoticeImgReqDto reqDto) throws Exception {
+        minioManager.deleteFile(reqDto.getImgUrl());
     }
 
     @Override

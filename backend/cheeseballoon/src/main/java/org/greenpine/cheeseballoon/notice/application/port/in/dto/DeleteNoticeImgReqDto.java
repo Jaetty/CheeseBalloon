@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeleteNoticeImgReqDto {
-    String name;
+    String imgUrl;
 }
