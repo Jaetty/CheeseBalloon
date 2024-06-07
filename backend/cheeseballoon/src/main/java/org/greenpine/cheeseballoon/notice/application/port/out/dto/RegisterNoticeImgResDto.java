@@ -1,4 +1,4 @@
-package org.greenpine.cheeseballoon.notice.application.port.in.dto;
+package org.greenpine.cheeseballoon.notice.application.port.out.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddNoticeReqDto {
-    String content;
-    String title;
-    String thumbnail;
+@Builder
+public class RegisterNoticeImgResDto {
+    String imgUrl;
 }
