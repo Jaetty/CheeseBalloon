@@ -16,8 +16,9 @@ class LiveLogService:
             viewer_cnt=live_log.viewer_cnt
         )
         db.add(db_live_log)
-        db.commit()
-        db.refresh(db_live_log)
+        # db.commit()
+        # db.refresh(db_live_log)
+        db.flush()
         return db_live_log
 
     def get_end_live_id(self, db: Session, cycle_log_id: int, live_list: List[int]):

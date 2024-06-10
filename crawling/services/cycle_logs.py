@@ -14,7 +14,8 @@ class CycleLogService:
             cycle_dt=datetime.now(ZoneInfo('Asia/Seoul'))
         )
         db.add(db_cycle_log)
-        db.commit()
-        db.refresh(db_cycle_log)
+        # db.commit()
+        # db.refresh(db_cycle_log)
+        db.flush()
         return db_cycle_log
 

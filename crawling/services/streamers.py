@@ -16,8 +16,9 @@ class StreamerService:
             platform=streamer.platform
         )
         db.add(db_streamer)
-        db.commit()
-        db.refresh(db_streamer)
+        # db.commit()
+        # db.refresh(db_streamer)
+        db.flush()
         return db_streamer
 
     def update_profile(self, db: Session, streamer_id: int, profile_url: str):

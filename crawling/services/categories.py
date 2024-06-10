@@ -9,8 +9,9 @@ class CategoryService:
             category=category.category
         )
         db.add(db_category)
-        db.commit()
-        db.refresh(db_category)
+        # db.commit()
+        # db.refresh(db_category)
+        db.flush()
         return db_category
 
     # def is_category(self, db: Session, category: str) -> bool:

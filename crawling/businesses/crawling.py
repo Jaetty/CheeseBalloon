@@ -1,5 +1,7 @@
 import datetime
 from typing import List
+
+from fastapi import HTTPException
 from loguru import logger
 from sqlalchemy.orm import Session
 
@@ -41,6 +43,7 @@ class CrawlingBusiness:
             )
             cycle_id = CycleLogService().create(db=db, cycle_log=cycle).cycle_log_id
             for streamer_info in streamers_list:
+                # 한줄로 줄여보기.
                 if streamer_info.category is not None:
                     category_id = CategoryService().is_category(db=db, category=streamer_info.category)
                     if category_id is None:
@@ -68,7 +71,6 @@ class CrawlingBusiness:
 
                 # 라이브가 있다면 라이브 로그 넣기
                 # 라이브가 없다면 라이브 추가하고 라이브 로그 넣기
-                # 이전 라이브 로그는 있었는데 현재 라이브 목록에는 없다면..? <- 끝나고 체크해야할듯..
                 # 라이브가 없다면 라이브 추가
                 if not LiveService().is_live(db=db, streamer_id=streamer_id,
                                              live_origin_id=streamer_info.live_origin_id):
@@ -102,11 +104,17 @@ class CrawlingBusiness:
             logger.info("라이브 상태를 업데이트 합니다.")
             if cycle_id != 1:
                 end_live_list = LiveLogService().get_end_live_id(db=db, cycle_log_id=cycle_id-1, live_list=live_id_list)
-                LiveService().update_is_live(db=db, live_list=end_live_list, status=False)
+                LiveService().update_is_live_false(db=db, live_list=end_live_list)
                 logger.info("업데이트 완료")
 
+            db.commit()
+
         except Exception as e:
+            # 오류 발생시 롤백
+            db.rollback()
             logger.error(e)
+            raise HTTPException(status_code=400, detail=str(e))
+
         end_time = datetime.datetime.now()
         logger.info("크롤링 완료되었습니다. 소요 시간 : " + str(end_time - start_time))
         return {"result": "good"}
