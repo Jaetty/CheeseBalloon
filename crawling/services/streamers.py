@@ -27,7 +27,7 @@ class StreamerService:
         if not streamer:
             raise HTTPException(status_code=500, detail="응 없어")
         streamer.profile_url = profile_url
-        db.commit()
+        # db.commit()
         logger.info("프로필을 수정 완료.")
         return streamer
 
@@ -37,7 +37,7 @@ class StreamerService:
         if not streamer:
             raise HTTPException(status_code=500, detail="응 없어")
         streamer.name = name
-        db.commit()
+        # db.commit()
         logger.info("닉네임을 수정 완료.")
         return streamer
 

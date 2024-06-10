@@ -13,7 +13,8 @@ class StreamerLogService:
             reg_dt=datetime.now(ZoneInfo('Asia/Seoul'))
         )
         db.add(db_streamer_log)
-        db.commit()
-        db.refresh(db_streamer_log)
+        # db.commit()
+        # db.refresh(db_streamer_log)
+        db.flush()
         return db_streamer_log
 
