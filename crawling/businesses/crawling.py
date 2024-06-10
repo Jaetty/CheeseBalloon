@@ -103,7 +103,8 @@ class CrawlingBusiness:
             logger.info("데이터 입력이 종료됩니다.")
             logger.info("라이브 상태를 업데이트 합니다.")
             if cycle_id != 1:
-                end_live_list = LiveLogService().get_end_live_id(db=db, cycle_log_id=cycle_id-1, live_list=live_id_list)
+                end_live_list = LiveLogService().get_end_live_id(db=db, cycle_log_id=cycle_id - 1,
+                                                                 live_list=live_id_list)
                 LiveService().update_is_live_false(db=db, live_list=end_live_list)
                 logger.info("업데이트 완료")
 
@@ -113,7 +114,7 @@ class CrawlingBusiness:
             # 오류 발생시 롤백
             db.rollback()
             logger.error(e)
-            raise HTTPException(status_code=400, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e))
 
         end_time = datetime.datetime.now()
         logger.info("크롤링 완료되었습니다. 소요 시간 : " + str(end_time - start_time))
@@ -137,10 +138,12 @@ class CrawlingBusiness:
                     StreamerService().update_profile(db=db, streamer_id=f.streamer_id, profile_url=f.profile_url)
                 if f.name is not None:
                     StreamerService().update_name(db=db, streamer_id=f.streamer_id, name=f.name)
-
+            db.commit()
         except Exception as e:
+            db.rollback()
             logger.info(e)
+            raise HTTPException(status_code=500, detail=str(e))
+
         end_time = datetime.datetime.now()
         logger.info("팔로우 크롤링 완료되었습니다. 소요 시간 : " + str(end_time - start_time))
-
         return {"result": "good"}
