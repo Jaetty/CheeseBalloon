@@ -94,7 +94,7 @@ public class RankingServiceTest {
     @Test
     void findLiveRanking(){
         Long memberId = 1L;
-        Character platform=null;
+        Character platform='T';
         List<FindLiveRankingResDto> res = rankingService.findLiveRanking(memberId,platform);
         System.out.println(res);
     }
