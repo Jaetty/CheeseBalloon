@@ -3,10 +3,7 @@ package org.greenpine.cheeseballoon.notice.adapter.out.persistence;
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.global.exception.NotFindException;
 import org.greenpine.cheeseballoon.member.adapter.out.persistence.MemberEntity;
-import org.greenpine.cheeseballoon.notice.application.port.in.dto.DeleteNoticeReqDto;
-import org.greenpine.cheeseballoon.notice.application.port.in.dto.FindAllNoticeReqDto;
-import org.greenpine.cheeseballoon.notice.application.port.in.dto.FindNoticeReqDto;
-import org.greenpine.cheeseballoon.notice.application.port.in.dto.RegisterNoticeReqDto;
+import org.greenpine.cheeseballoon.notice.application.port.in.dto.*;
 import org.greenpine.cheeseballoon.notice.application.port.out.NoticePort;
 import org.greenpine.cheeseballoon.notice.application.port.out.dto.FindAllNoticeResDto;
 import org.greenpine.cheeseballoon.notice.application.port.out.dto.FindNoticeResDto;
@@ -53,7 +50,6 @@ public class NoticePersistenceAdapter implements NoticePort {
     }
 
     @Override
-    @Transactional
     public void registerNotice(Long memberId, RegisterNoticeReqDto reqDto) {
         MemberEntity member = MemberEntity.builder().memberId(memberId).build();
         NoticeEntity notice = NoticeEntity.builder()
@@ -67,11 +63,19 @@ public class NoticePersistenceAdapter implements NoticePort {
     }
 
     @Override
-    @Transactional
+    public void modifyNotice(ModifyNoticeReqDto reqDto) {
+        NoticeEntity notice = noticeRepository.findById(reqDto.getNoticeId())
+                .orElseThrow(NotFindException::new);
+        notice.setContent(reqDto.getContent());
+        notice.setThumbnail(reqDto.getThumbnail());
+        notice.setTitle(reqDto.getTitle());
+    }
+
+    @Override
     public void deleteNotice(DeleteNoticeReqDto reqDto) {
 
         NoticeEntity notice = noticeRepository.findById(reqDto.getNoticeId())
-                .orElseThrow(()->new NotFindException());
+                .orElseThrow(NotFindException::new);
         noticeRepository.delete(notice);
 
     }
