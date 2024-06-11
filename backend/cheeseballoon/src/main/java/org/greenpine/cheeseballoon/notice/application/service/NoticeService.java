@@ -9,6 +9,7 @@ import org.greenpine.cheeseballoon.notice.application.port.out.dto.FindAllNotice
 import org.greenpine.cheeseballoon.notice.application.port.out.dto.FindNoticeResDto;
 import org.greenpine.cheeseballoon.notice.application.port.out.dto.RegisterNoticeImgResDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -21,14 +22,12 @@ public class NoticeService implements NoticeUsecase {
     private final MinioManager minioManager;
     @Override
     public FindNoticeResDto findNotice(FindNoticeReqDto reqDto) {
-        FindNoticeResDto resDto = noticePort.findNotice(reqDto);
-        return null;
+        return noticePort.findNotice(reqDto);
     }
 
     @Override
     public List<FindAllNoticeResDto> findAllNotice(FindAllNoticeReqDto reqDto) {
-        List<FindAllNoticeResDto> resDto = noticePort.findAllNotice(reqDto);
-        return null;
+        return noticePort.findAllNotice(reqDto);
     }
 
     @Override
@@ -46,12 +45,20 @@ public class NoticeService implements NoticeUsecase {
     }
 
     @Override
+    @Transactional
     public void registerNotice(Long memberId, RegisterNoticeReqDto reqDto) {
         noticePort.registerNotice(memberId, reqDto);
     }
 
     @Override
+    @Transactional
     public void deleteNotice(DeleteNoticeReqDto reqDto) {
         noticePort.deleteNotice(reqDto);
+    }
+
+    @Override
+    @Transactional
+    public void modifyNotice(ModifyNoticeReqDto reqDto) {
+        noticePort.modifyNotice(reqDto);
     }
 }

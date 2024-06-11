@@ -11,5 +11,6 @@ public interface NoticePort {
     FindNoticeResDto findNotice(FindNoticeReqDto reqDto);
     List<FindAllNoticeResDto> findAllNotice(FindAllNoticeReqDto reqDto);
     void registerNotice(Long memberId, RegisterNoticeReqDto reqDto);
+    void modifyNotice(ModifyNoticeReqDto reqDto);
     void deleteNotice(DeleteNoticeReqDto reqDto);
 }
