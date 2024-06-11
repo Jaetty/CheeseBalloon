@@ -19,4 +19,6 @@ public interface NoticeUsecase {
     void registerNotice(Long memberId, RegisterNoticeReqDto reqDto);
 
     void deleteNotice(DeleteNoticeReqDto reqDto);
+
+    void modifyNotice(ModifyNoticeReqDto reqDto);
 }
