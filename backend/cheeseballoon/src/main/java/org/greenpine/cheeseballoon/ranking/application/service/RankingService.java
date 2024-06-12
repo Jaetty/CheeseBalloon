@@ -1,16 +1,25 @@
 package org.greenpine.cheeseballoon.ranking.application.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.global.redis.RedisUtil;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.FindBookmarkReqDto;
+import org.greenpine.cheeseballoon.member.application.port.out.BookmarkPort;
+import org.greenpine.cheeseballoon.member.application.port.out.dto.FindBookmarkResDto;
 import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.*;
 import org.greenpine.cheeseballoon.ranking.application.port.in.RankingUsecase;
+import org.greenpine.cheeseballoon.ranking.application.port.out.CycleLogPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +27,11 @@ public class RankingService implements RankingUsecase {
 
     private final Integer MAX_RANK = 300;
     private final RankingPort rankingPort;
+    private final CycleLogPort cycleLogPort;
+    private final BookmarkPort bookmarkPort;
+    private final RedisUtil redisUtil;
 
+    private Map<Long, Integer> streamer2LiveRankingIdx = new ConcurrentHashMap<>();
     /* !!!!! 도메인 리펙토링이 필요함 !!!!! */
 
     // 평균 시청자 수 랭킹 DTO 리턴
@@ -314,10 +327,7 @@ public class RankingService implements RankingUsecase {
         return ret;
     }
 
-    @Override
-    public List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform) {
-        return rankingPort.findLiveRanking(memberId, platform);
-    }
+
 
     private String getTime(Integer time){
 
@@ -366,5 +376,40 @@ public class RankingService implements RankingUsecase {
 
     }
 
-
+    @Override
+    @Transactional
+    public List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform) {
+        CycleLogEntity cycleLog= cycleLogPort.findLatestCycleLog();
+        List<FindLiveRankingResDto> resDto = null;
+        Long lastestCycleLogId = redisUtil.getData("latestCycleLogId"+platform, new TypeReference<Long>(){});
+        if(lastestCycleLogId == null || lastestCycleLogId < cycleLog.getCycleLogId()){
+            System.out.println(lastestCycleLogId+", "+ cycleLog.getCycleLogId()+"!!");
+            redisUtil.setData("latestCycleLogId"+platform, cycleLog.getCycleLogId(),60000L);
+            resDto = rankingPort.findLiveRanking(platform);
+            redisUtil.setData("liveRanking"+platform, resDto,60000L);
+            streamer2LiveRankingIdx.clear();
+            for(int idx=0; idx<resDto.size(); idx++){
+                streamer2LiveRankingIdx.put(resDto.get(idx).getStreamerId(), idx);
+            }
+        }
+        if(resDto==null)
+            resDto = redisUtil.getData("liveRanking"+platform, new TypeReference<List<FindLiveRankingResDto>>(){});
+        //System.out.println("레디스값 : "+resDto);
+        if(memberId!=null){
+            if(streamer2LiveRankingIdx.isEmpty()){
+                for(int idx=0; idx<resDto.size(); idx++){
+                    streamer2LiveRankingIdx.put(resDto.get(idx).getStreamerId(), idx);
+                }
+            }
+            List<FindBookmarkResDto> bookmarks=bookmarkPort.findBookmark(FindBookmarkReqDto.builder().memberId(memberId).build());
+            for(FindBookmarkResDto bookmark : bookmarks){
+                Integer idx = streamer2LiveRankingIdx.get(bookmark.getStreamerId());
+                if(idx!=null){
+                    resDto.get(idx).setBookmark(true);
+                }
+            }
+        }
+        return resDto;
+        //return rankingPort.findLiveRanking(memberId, platform);
+    }
 }

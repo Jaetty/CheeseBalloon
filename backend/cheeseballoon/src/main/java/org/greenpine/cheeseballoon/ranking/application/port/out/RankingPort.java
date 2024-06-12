@@ -14,4 +14,5 @@ public interface RankingPort {
     List<FindRatingRankResDtoInterface> findRatingRanking(String dtCode, String platform, long memberId);
     List<FindTotalAirTimeRankResDtoInterface> findTotalAirTimeRanking(String dtCode, String platform, long memberId);
     List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform);
+    List<FindLiveRankingResDto> findLiveRanking(Character platform);
 }

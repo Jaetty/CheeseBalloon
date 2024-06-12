@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.ranking.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.ranking.application.port.out.CycleLogPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.RankingPort;
 import org.greenpine.cheeseballoon.ranking.application.port.out.dto.FindLiveRankingResDto;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerLogRepository;
@@ -11,10 +12,11 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class RankingPersistenceAdapter implements RankingPort {
+public class RankingPersistenceAdapter implements RankingPort, CycleLogPort {
 
     final private StatisticsRepository statisticsRepository;
     final private StreamerLogRepository streamerLogRepository;
+    final private CycleLogRepository cycleLogRepository;
 
     // 평균 시청자 수 db 값 가져오기
     @Override
@@ -92,5 +94,34 @@ public class RankingPersistenceAdapter implements RankingPort {
 
     }
 
+    @Override
+    public List<FindLiveRankingResDto> findLiveRanking(Character platform) {
+        List<FindLiveRankingInterface> entities=null;
+        if(platform=='T')
+            entities = statisticsRepository.findLiveRanking();
+        else
+            entities = statisticsRepository.findLiveRankingWithPlatform(platform);
+        return entities.stream().map(en -> FindLiveRankingResDto.builder()
+                .streamerId(en.getStreamer_id())
+                .liveId(en.getLive_id())
+                .name(en.getName())
+                .liveLogId(en.getLive_log_id())
+                .title(en.getTitle())
+                .profileUrl(en.getProfile_url())
+                .streamUrl(en.getStream_url())
+                .thumbnailUrl(en.getThumbnail_url())
+                .viewerCnt(en.getViewer_cnt())
+                .channelUrl(en.getChannel_url())
+                .platform(en.getPlatform())
+                .category(en.getCategory())
+                .bookmark(en.getBookmark() != null && en.getBookmark() == 1)
+                .build()
+        ).toList();
+    }
 
+
+    @Override
+    public CycleLogEntity findLatestCycleLog() {
+        return cycleLogRepository.findLatestCycleLog();
+    }
 }
