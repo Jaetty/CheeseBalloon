@@ -64,7 +64,7 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     @Override
     public StreamerLiveDomain streamerDetailLive(Long streamerId) {
 
-        LiveEntity liveEntity = liveRepository.findFirstByStreamer_StreamerIdOrderByLiveId(streamerId);
+        LiveEntity liveEntity = liveRepository.findFirstByStreamer_StreamerIdOrderByLiveIdDesc(streamerId);
 
         StreamerDomain streamerDomain = new StreamerDomain(
                 liveEntity.getStreamer().getStreamerId(),
