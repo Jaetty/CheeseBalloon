@@ -12,7 +12,7 @@ import java.util.List;
 public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
 
 //    @Query("SELECT LiveEntity FROM LiveEntity le where le.streamer.streamerId = :streamerId order by le.liveId ")
-    LiveEntity findFirstByStreamer_StreamerIdOrderByLiveId(Long streamerId);
+    LiveEntity findFirstByStreamer_StreamerIdOrderByLiveIdDesc(Long streamerId);
 
     @Query(value = "SELECT live_id AS liveId, SUM( CASE WHEN total_time IS NULL THEN 0 ELSE total_time END) AS totalAirTime, date FROM\n" +
             "(SELECT live_id, TIME_TO_SEC(TIMEDIFF(max_time, min_time)) AS total_time, date FROM\n" +
