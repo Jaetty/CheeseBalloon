@@ -80,7 +80,7 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
         return liveInfos.stream().map(li -> SearchLivesResDto.builder()
                 .liveId(li.getLive_id())
                 .liveLogId(li.getLive_log_id())
-                .streamId(li.getStreamer_id())
+                .streamerId(li.getStreamer_id())
                 .thumbnailUrl(li.getThumbnail_url())
                 .profileUrl(li.getProfile_url())
                 .streamUrl(li.getStream_url())
