@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SearchLivesResDto {
-    Long streamId;
+    Long streamerId;
     Long liveId;
     Long liveLogId;
     String name;
