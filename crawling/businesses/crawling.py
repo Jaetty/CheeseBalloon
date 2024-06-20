@@ -51,7 +51,7 @@ class CrawlingBusiness:
                         categories = CategoryCreate(
                             category=streamer_info.category
                         )
-                        CategoryService().create(db=db, category=categories)
+                        category_id = CategoryService().create(db=db, category=categories).category_id
                 else:
                     category_id = None
 
