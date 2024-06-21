@@ -22,7 +22,7 @@ public class StreamerLogEntity {
     @GeneratedValue
     private Long streamerLogId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "streamer_id")
     private StreamerEntity streamer;
 
