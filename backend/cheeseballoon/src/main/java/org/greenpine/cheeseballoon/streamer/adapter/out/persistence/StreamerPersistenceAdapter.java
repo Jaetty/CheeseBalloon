@@ -3,6 +3,7 @@ package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveEntity;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
+import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.StatisticsEntity;
 import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.StatisticsRepository;
 import org.greenpine.cheeseballoon.streamer.application.port.out.StreamerPort;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
@@ -113,6 +114,11 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     @Override
     public List<FindTimeDetailResDtoInterface> streamerDetailTime(Long streamerId, LocalDateTime startDate, LocalDateTime endDate) {
         return liveRepository.findDetailTimeByDatesAndStreamerId(streamerId, startDate, endDate);
+    }
+
+    @Override
+    public StatisticsEntity streamerStatistics(StreamerEntity streamerEntity, String dtCode) {
+        return statisticsRepository.findByStreamerAndDtCode(streamerEntity,dtCode);
     }
 
 
