@@ -88,7 +88,8 @@ public class StreamerController {
     public ResponseEntity<CustomBody> streamerViewerDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
         LocalDateTime[] dates = DateCalculator.getPeriod(date);
-        FindStreamerViewerDto ret = streamerUsecase.streamerDetailViewer(streamerId, dates);
+        String[] dtCode = DateCalculator.getDateCodes(date);
+        FindStreamerViewerDto ret = streamerUsecase.streamerDetailViewer(streamerId, dates, dtCode);
 
 //        FindStreamerViewerDto ret = FindStreamerViewerDto.builder()
 //                .maxViewer(3000)
