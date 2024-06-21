@@ -21,10 +21,12 @@ public class StatisticsEntity {
     private Integer averageViewer;
     private Integer topViewer;
     private Double rating;
+    private Double soopRating;
+    private Double chzzRating;
     private Time totalAirTime;
     private String dtCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "streamer_id")
-    private StreamerEntity streamerId;
+    private StreamerEntity streamer;
 }

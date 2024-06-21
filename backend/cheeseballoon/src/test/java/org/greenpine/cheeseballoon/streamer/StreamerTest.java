@@ -8,6 +8,7 @@ import org.greenpine.cheeseballoon.streamer.application.port.out.dto.DailyAvgVie
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -127,6 +128,7 @@ public class StreamerTest {
     }
 
     @Test
+    @Transactional
     public void streamerFollowerTest(){
 
         long streamer_id = 3;
