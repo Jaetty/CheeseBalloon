@@ -104,10 +104,14 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDateTime[] dates) {
+    public FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDateTime[] dates, String[] dtCode) {
 
         List<FindStreamerDailyViewerResDtoInterface> curr = streamerPort.streamerDetailViewer(streamerId, dates[0], dates[1]);
         List<FindStreamerDailyViewerResDtoInterface> before = streamerPort.streamerDetailViewer(streamerId, dates[2], dates[3]);
+        StreamerEntity streamerEntity = new StreamerEntity();
+        streamerEntity.setStreamerId(streamerId);
+        StatisticsEntity statisticsEntity = streamerPort.streamerStatistics(streamerEntity, dtCode[0]);
+
 
         List<DailyAvgViewer> dailyAvgViewer = new ArrayList<>();
 
@@ -121,9 +125,6 @@ public class StreamerService implements StreamerUsecase {
 
         if(!curr.isEmpty()){
 
-            int sum = 0;
-            int count = 0;
-
             for(FindStreamerDailyViewerResDtoInterface var : curr){
                 while ( index < dailyAvgViewer.size() && !dailyAvgViewer.get(index).getDate().equals(var.getDate()) ){
                     index++;
@@ -131,11 +132,9 @@ public class StreamerService implements StreamerUsecase {
                 if(index>=dailyAvgViewer.size()) break;
                 dailyAvgViewer.get(index).setMaxViewer(var.getMaxViewer());
                 dailyAvgViewer.get(index).setViewer(var.getViewer());
-                curr_max = Math.max(curr_max,var.getMaxViewer());
-                sum += var.getViewer();
-                count++;
             }
-            curr_avg = sum/count;
+            curr_avg = statisticsEntity.getAverageViewer();
+            curr_max = statisticsEntity.getTopViewer();
         }
 
         int before_max = 0;
@@ -143,16 +142,11 @@ public class StreamerService implements StreamerUsecase {
 
         if(!before.isEmpty()){
 
-            int sum = 0;
-            int count = 0;
-
-            for(FindStreamerDailyViewerResDtoInterface var : before){
-
-                before_max = Math.max(before_max,var.getMaxViewer());
-                sum += var.getViewer();
-                count++;
+            statisticsEntity = streamerPort.streamerStatistics(streamerEntity, dtCode[1]);
+            if(statisticsEntity != null){
+                before_avg = statisticsEntity.getAverageViewer();
+                before_max = statisticsEntity.getTopViewer();
             }
-            before_avg = sum/count;
         }
 
         FindStreamerViewerDto dto = new FindStreamerViewerDto(curr_max, curr_max - before_max, curr_avg, curr_avg - before_avg, dailyAvgViewer);
