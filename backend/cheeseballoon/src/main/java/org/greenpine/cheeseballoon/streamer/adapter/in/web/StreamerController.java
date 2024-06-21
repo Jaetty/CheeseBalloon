@@ -188,7 +188,8 @@ public class StreamerController {
     public ResponseEntity<CustomBody> streamerRatingDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
         LocalDateTime[] dates = DateCalculator.getPeriod(date);
-        FindStreamerRatingDto ret = streamerUsecase.streamerDetailRating(streamerId, dates);
+        String[] dtCode = DateCalculator.getDateCodes(date);
+        FindStreamerRatingDto ret = streamerUsecase.streamerDetailRating(streamerId, dates, dtCode);
 
 //        FindStreamerRatingDto ret = new FindStreamerRatingDto();
 //        String val = "2024-03-1";

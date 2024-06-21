@@ -45,6 +45,8 @@ public interface StatisticsRepository extends JpaRepository<StatisticsEntity, Lo
             "JOIN streamer_logs ON statistic.streamerId = streamer_logs.streamer_id AND streamer_logs.reg_dt BETWEEN :startDate AND :endDate AND streamer_id = :streamerId", nativeQuery = true)
     FindSummaryRankResDtoInterface findRankingByDtCodeAndStreamerIdAndDates(String dtCode, Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
 
+    StatisticsEntity findByStreamerAndDtCode(StreamerEntity streamerEntity, String dtCode);
+
     @Query(value = "SELECT l.*, ll.* , s.*, c.category, " +
             "false AS bookmark "+
             "FROM lives l " +
