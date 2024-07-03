@@ -121,5 +121,10 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
         return statisticsRepository.findByStreamerAndDtCode(streamerEntity,dtCode);
     }
 
+    @Override
+    public List<FindStreamerRecordDtoInterface> streamerRecord(Long streamerId) {
+        return statisticsRepository.findStreamerRecord(streamerId);
+    }
+
 
 }
