@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import style from "src/containers/live/LiveList.module.scss";
-import LiveCard from "src/containers/live/LiveCard";
+import style from "./LiveList.module.scss";
+import LiveCard from "./LiveCard";
 
 interface LiveInfo {
   streamerId: number;
@@ -28,7 +28,7 @@ async function getData(query: string) {
 }
 
 export default function LiveList() {
-  const [liveData, setLiveData] = useState<LiveInfo[] | null>(null);
+  const [liveData, setLiveData] = useState<LiveInfo[]>([]);
   const [liveNum, setLiveNum] = useState<number>(36);
   const searchParams = useSearchParams();
 
@@ -54,7 +54,7 @@ export default function LiveList() {
 
   return (
     <div className={style.wrapper}>
-      {liveData && liveData.length > 0
+      {liveData.length > 0
         ? liveData.slice(0, liveNum).map((liveinfo: LiveInfo, idx: number) => (
             <div className={style.livecard} key={idx}>
               <LiveCard liveinfo={liveinfo} />
@@ -65,7 +65,7 @@ export default function LiveList() {
               <div className={style["no-result"]}>결과가 없습니다</div>
             </div>
           )}
-      {liveData && liveData.length > liveNum && (
+      {liveData.length > liveNum && (
         <button type="button" className={style.plus} onClick={handleLiveNum}>
           +
         </button>

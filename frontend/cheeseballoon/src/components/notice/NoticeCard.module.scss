@@ -3,6 +3,10 @@
   cursor: pointer;
 }
 
+.cardlink {
+  text-decoration: none;
+}
+
 .box {
   display: flex;
   align-items: center;
@@ -15,6 +19,7 @@
 .image {
   margin-right: 2rem;
   border-radius: 14px;
+  object-fit: cover;
 }
 
 .textContainer {

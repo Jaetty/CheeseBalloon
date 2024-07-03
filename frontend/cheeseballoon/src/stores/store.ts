@@ -6,6 +6,7 @@ import {
   RecommendDataType,
   LiveData,
   FavDataType,
+  MobileState,
 } from "src/types/type";
 import { persist } from "zustand/middleware";
 
@@ -49,4 +50,18 @@ const FavState = create(
     }
   )
 );
-export { useToggleState, RecommendState, FavState };
+
+const isMobileState = create(
+  persist<MobileState>(
+    (set) => ({
+      isMobile: false,
+      value: false,
+      setIsMobile: (value: boolean) => set({ isMobile: value }),
+    }),
+    {
+      name: "isMobile",
+    }
+  )
+);
+
+export { useToggleState, RecommendState, FavState, isMobileState };

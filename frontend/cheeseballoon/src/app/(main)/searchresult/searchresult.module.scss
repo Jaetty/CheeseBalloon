@@ -299,6 +299,183 @@
   opacity: 69%;
 }
 
+.responsive_live_content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* 아이템 간의 간격 조절 */
+}
+
+.responsive_live_flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* 아이템 간의 간격 조절 */
+}
+
+.responsive_live_item {
+  /* background-color: #f0f0f0; */
+  /* border: 1px solid #ccc; */
+  border-radius: 8px;
+  padding: 10px;
+  flex: 1 1 calc(25% - 16px); /* 기본 4개 */
+  max-width: calc(25% - 16px); /* 아이템의 최대 너비 고정 */
+  min-width: calc(25% - 16px); /* 아이템의 최소 너비 고정 */
+  box-sizing: border-box;
+  overflow: hidden; /* 아이템 크기 고정 */
+  transition: flex-basis 0.3s ease; /* 반응형 전환을 부드럽게 함 */
+}
+
+.hyper_link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hyper_link:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (max-width: 1300px) {
+  .responsive_live_item {
+    flex: 1 1 calc(50% - 16px); /* 2개 */
+    max-width: calc(50% - 100px); /* 아이템의 최대 너비 고정 */
+    min-width: calc(50% - 100px); /* 아이템의 최소 너비 고정 */
+  }
+}
+
+@media (max-width: 1000px) {
+  .responsive_live_item {
+    flex: 1 1 calc(100% - 16px); /* 1개 */
+    max-width: calc(100% - 370px); /* 아이템의 최대 너비 고정 */
+    min-width: calc(100% - 370px); /* 아이템의 최소 너비 고정 */
+  }
+}
+
+.responsive_first_row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.responsive_live_thumbnail_box {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 비율 */
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.responsive_live_thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.responisve_on_air_box,
+.responisve_platform_box {
+  display: flex;
+  align-items: center;
+}
+
+.responisve_on_air_box {
+  position: absolute;
+  left: 8px;
+  top: -6px;
+}
+
+.responisve_platform_box {
+  /* position: absolute; */
+  left: 59px;
+  top: 8px;
+}
+
+.responisve_view {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-size: 14px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.responisve_on_air {
+  width: 50px;
+}
+
+.responisve_platform {
+  width: 24px;
+  height: 24px;
+}
+
+.responsive_second_row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.responisve_bj_thumbnail_box {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  /* background-color: #ccc; */
+  margin-right: 8px;
+  overflow: hidden;
+  /* text-align: center; */
+}
+
+.responsive_live_thumbnail_box:hover {
+  transform: scale(1.2); /* 이미지 크기를 1.2배로 확대 */
+}
+
+.zoom-image:hover {
+  transform: scale(1.2); /* 이미지 크기를 1.2배로 확대 */
+}
+.responsive_bj_thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.responisve_info {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* 가능한 공간을 차지하게 함 */
+  overflow: hidden; /* 넘치는 내용을 숨김 */
+}
+
+.responisve_live_title {
+  font-size: 16px;
+  font-weight: bold;
+  /* width: calc(25% - 16px); */
+  margin-bottom: 4px;
+  overflow: hidden; /* 추가: 넘치는 내용을 숨김 */
+  text-overflow: ellipsis; /* 추가: 말줄임 표시(...) */
+  white-space: nowrap; /* 추가: 한 줄로 표시 */
+  width: 100%; /* 부모 요소의 너비에 맞추기 */
+}
+
+.responisve_bj_name {
+  font-size: 14px;
+  color: #666;
+}
+
+.responsive_category {
+  font-size: 14px;
+  /* color: #999; */
+  /* text-align: left; */
+  padding-left: 3%;
+  font-weight: 500;
+}
+
+.responsive_third_container {
+  display: flex;
+}
+
 @media (max-width: 1200px) {
   .live {
     width: calc(50% - 1%); /* 브라우저 너비가 768px 이하일 때 2개씩 배치 */

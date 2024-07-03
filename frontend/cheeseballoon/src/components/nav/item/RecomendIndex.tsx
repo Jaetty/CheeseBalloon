@@ -5,10 +5,13 @@ import RecomendCard from "src/components/nav/item/RecomendCard";
 import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
 import { useState, useEffect } from "react";
-import { useToggleState, RecommendState } from "src/stores/store";
+import { RecommendState } from "src/stores/store";
 
-export default function Recomend() {
-  const { value } = useToggleState();
+interface ValueProps {
+  value: boolean;
+}
+
+export default function Recomend({ value }: ValueProps) {
   const { data, setData, lastFetchTime, setLastFetchTime } = RecommendState();
   const [toggle2, setToggle] = useState(false);
 
@@ -30,7 +33,7 @@ export default function Recomend() {
         currentTime - localData.lastFetchTime >= 600000
       ) {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_LIVE_API}?offset=1&limit=15`
+          `${process.env.NEXT_PUBLIC_LIVE_API}?offset=0&limit=15`
         );
         const responseData = await response.json();
         const fetchedData = responseData.data;
@@ -74,8 +77,7 @@ export default function Recomend() {
           onKeyDown={switchToggle}
           role="presentation"
         >
-          {value && "더보기"}
-          <Image src={arrow} alt="" />
+          {value && "더보기"}&nbsp; <Image src={arrow} alt="" />
         </div>
       )}
       {toggle2 && (
