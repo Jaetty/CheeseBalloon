@@ -1,7 +1,7 @@
 .wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .atag {
@@ -10,7 +10,7 @@
 
 .livecard {
   display: block;
-  width: calc(25% - (6rem / 4));
+  width: calc(25% - (3rem / 4));
 }
 
 .no-result-container {
@@ -26,7 +26,6 @@
   font-size: large;
 }
 
-
 .plus {
   width: 100%;
   border-radius: 2rem;
@@ -35,12 +34,10 @@
   font-size: larger;
   font-weight: bold;
   text-align: center;
-  cursor: pointer;  
+  cursor: pointer;
 }
 
-
-
-@media (max-width: 1280px) {
+@media (max-width: 1440px) {
   .wrapper {
     gap: 1rem;
   }
@@ -52,7 +49,7 @@
 
 @media (max-width: 1080px) {
   .wrapper {
-    gap: 0.5rem;
+    gap: 1rem;
   }
 
   .livecard {

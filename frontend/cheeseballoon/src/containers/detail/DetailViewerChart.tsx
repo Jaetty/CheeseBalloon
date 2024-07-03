@@ -43,17 +43,19 @@ async function getData(streamerId: string, date: string) {
 export default function DetailViewerChart() {
   const { id, date } = useParams();
   const [viewerData, setViewerData] = useState<ViewerDataType | null>(null);
-  const [avgViewerArray, setAvgViewerArray] = useState<ViewerArrayType>([1]);
-  const [maxViewerArray, setMaxViewerArray] = useState<ViewerArrayType>([1]);
+  const [avgViewerArray, setAvgViewerArray] = useState<ViewerArrayType>([]);
+  const [maxViewerArray, setMaxViewerArray] = useState<ViewerArrayType>([]);
   // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
-  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data.dailyAvgViewers;
       const dates = dailyData.map((item: dailyViewersType) => item.date);
-      const avgViewers = dailyData.map((item: dailyViewersType) => item.viewer);
+      const avgViewers = dailyData.map((item: dailyViewersType) =>
+        item.viewer === 0 ? null : item.viewer
+      );
       const maxViewers = dailyData.map(
         (item: dailyViewersType) => item.maxViewer
       );
@@ -74,6 +76,31 @@ export default function DetailViewerChart() {
     };
     fetchData();
   }, [id, date]);
+
+  const maxYaxis = () => {
+    const maxViewer = viewerData?.maxViewer;
+
+    if (maxViewer !== undefined) {
+      switch (true) {
+        case maxViewer < 20:
+          return 20;
+        case maxViewer < 100:
+          return 100;
+        case maxViewer < 250:
+          return 250;
+        case maxViewer < 500:
+          return 500;
+        case maxViewer < 1000:
+          return 1000;
+        case maxViewer < 2500:
+          return 2500;
+        default:
+          return Math.ceil(maxViewer / 5000) * 5000;
+      }
+    } else {
+      return 100000;
+    }
+  };
 
   const chartData = {
     options: {
@@ -115,12 +142,15 @@ export default function DetailViewerChart() {
       },
       yaxis: {
         tickAmount: 5,
+        min: 0,
+        max: maxYaxis,
         labels: {
           style: {
             colors: "white",
             fontWeight: "bold",
           },
-          formatter: (value: number) => `${value.toLocaleString()}명`,
+          formatter: (value: number) =>
+            value === null ? `0명` : `${value.toLocaleString()}명`,
         },
       },
       grid: {
@@ -137,6 +167,9 @@ export default function DetailViewerChart() {
             show: true,
           },
         },
+        padding: {
+          right: 20
+        }
       },
       colors: ["#F0BD53"],
       legend: {

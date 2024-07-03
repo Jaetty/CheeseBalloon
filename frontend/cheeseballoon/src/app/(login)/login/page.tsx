@@ -11,10 +11,14 @@ export default function Login() {
   const redirect_uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
   // oauth 요청 URL
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
-  const handleLogin = () => {
-    window.location.href = kakaoURL;
+  // const handleLogin = () => {
+  //   window.location.href = kakaoURL;
+  // };
+  const handleLogin = (event: React.MouseEvent<HTMLImageElement>) => {
+    event.preventDefault();
+    // eslint-disable-next-line no-alert
+    alert("로그인 기능 개발 중입니다. 이용이 일시적으로 제한됩니다.");
   };
-
   return (
     <div className={styles.login}>
       <div className={styles.left}>
@@ -29,12 +33,14 @@ export default function Login() {
         </div>
         <div className={styles.social_login}>
           <div className={styles.sub}>소셜 로그인</div>
-          <div
-            className={styles.login_button}
-            onClick={handleLogin}
-            role="presentation"
-          >
-            <img className={styles.login_img} src={kakao_login.src} alt="ss" />
+          <div className={styles.login_button}>
+            <img
+              className={styles.login_img}
+              src={kakao_login.src}
+              alt="ss"
+              onClick={handleLogin}
+              role="presentation"
+            />
           </div>
         </div>
         {/* <div className={styles.sign_in}>

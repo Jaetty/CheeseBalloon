@@ -7,7 +7,7 @@ export default function DetailSelectButton() {
   const { id, category } = useParams();
   const router = useRouter();
   const handleSelectContent = (content: string) => {
-    router.push(`/detail/${id}/${content}`);
+    router.replace(`/detail/${id}/${content}`);
   };
 
   return (
@@ -77,19 +77,6 @@ export default function DetailSelectButton() {
       >
         팔로워
       </button>
-      {/* 
-      <button
-        onClick={() => {
-          handleSelectContent("calendar");
-        }}
-        onKeyDown={() => {
-          handleSelectContent("calendar");
-        }}
-        type="button"
-        className={`${style.button} ${category === "calendar" ? style.select : null}`}
-      >
-        방송기록
-      </button> */}
     </div>
   );
 }

@@ -10,7 +10,8 @@ import a_icon from "src/stores/afreeca_icon.png";
 import cnt from "src/stores/cnt_icon.png";
 import no_image from "src/stores/no_image.png";
 import no_image_profile from "src/stores/no_image_profile.png";
-import s_icon from "src/stores/soop_icon.png";
+import soop from "src/stores/soop_icon.png";
+import on_air from "src/stores/on_air.png";
 
 interface data_2 {
   data:
@@ -33,6 +34,7 @@ interface data_2 {
 interface data_3 {
   data:
     | {
+        // streamId: number;
         streamerId: number;
         name: string;
         isLive: boolean;
@@ -71,7 +73,6 @@ export default function SearchResult() {
     fetch(`${cheese_api}/streamer/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         setSearchStreamerResults(data);
       });
     fetch(`${cheese_api}/live/search?query=${query}`, {})
@@ -92,22 +93,28 @@ export default function SearchResult() {
       </div>
       <div className={styles.streamer_title}>스트리머</div>
       <div className={styles.streamer_list}>
-        {searchStreamerResults.data ? (
+        {searchStreamerResults.data && searchStreamerResults.data.length > 0 ? (
           searchStreamerResults.data
             .slice(0, visibleStreamerCount)
             .map((streamer) => (
               <div key={streamer.streamerId} className={styles.streamer}>
-                <div className={styles.streamer_thumbnail}>
-                  <img
-                    src={streamer.profileUrl}
-                    alt=""
-                    onError={(
-                      e: React.SyntheticEvent<HTMLImageElement, Event>
-                    ) => {
-                      e.currentTarget.src = no_image.src; // Set the source to the fallback image
-                    }}
-                  />
-                </div>
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                <a
+                  href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
+                  className={styles.hyper_link}
+                >
+                  <div className={styles.streamer_thumbnail}>
+                    <img
+                      src={streamer.profileUrl}
+                      alt=""
+                      onError={(
+                        e: React.SyntheticEvent<HTMLImageElement, Event>
+                      ) => {
+                        e.currentTarget.src = no_image.src; // Set the source to the fallback image
+                      }}
+                    />
+                  </div>
+                </a>
                 <div className={styles.streamer_info}>
                   <div className={styles.first_container}>
                     <div className={styles.platform}>
@@ -121,7 +128,14 @@ export default function SearchResult() {
                         />
                       )}
                     </div>
-                    <div className={styles.streamer_name}>{streamer.name}</div>
+                    <a
+                      href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
+                      className={styles.hyper_link}
+                    >
+                      <div className={styles.streamer_name}>
+                        {streamer.name}
+                      </div>
+                    </a>
                   </div>
                   <div className={styles.followers}>
                     팔로워 {streamer.follower}명
@@ -144,79 +158,126 @@ export default function SearchResult() {
           )}
       </div>
       <div className={styles.live_list_title}>LIVE</div>
-      <div className={styles.live_list}>
-        {searchLiveResults.data ? (
-          searchLiveResults.data.slice(0, visibleLiveCount).map((live) => (
-            // eslint-disable-next-line react/jsx-key
-            <div key={live.liveId} className={styles.live}>
-              <a
-                href={live.streamUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className={styles.live_thumbnail}>
-                  <img
-                    src={live.thumbnailUrl}
-                    alt="123"
-                    onError={(
-                      e: React.SyntheticEvent<HTMLImageElement, Event>
-                    ) => {
-                      e.currentTarget.src = no_image.src; // Set the source to the fallback image
-                    }}
-                  />
+      <div className={styles.responsive_live_content}>
+        <div className={styles.responsive_live_flexbox}>
+          {searchLiveResults.data && searchLiveResults.data.length > 0 ? (
+            searchLiveResults.data.slice(0, visibleLiveCount).map((live) => (
+              // eslint-disable-next-line react/jsx-key
+              <div key={live.liveId} className={styles.responsive_live_item}>
+                <a
+                  href={live.streamUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className={styles.responsive_first_row}>
+                    {/* 라이브 썸네일 */}
+                    <div className={styles.responsive_live_thumbnail_box}>
+                      <img
+                        src={live.thumbnailUrl}
+                        className={styles.responsive_live_thumbnail}
+                        alt="123"
+                        onError={(
+                          e: React.SyntheticEvent<HTMLImageElement, Event>
+                        ) => {
+                          e.currentTarget.src = no_image.src; // Set the source to the fallback image
+                        }}
+                      />
+                      {/* 가로정렬 */}
+                      <div className={styles.responisve_on_air_box}>
+                        <img
+                          src={on_air.src}
+                          alt="on_air"
+                          className={styles.responisve_on_air}
+                        />
+                      </div>
+                      <div className={styles.responisve_view}>
+                        {live.viewerCnt}명 시청중
+                      </div>
+                    </div>
+                  </div>
+                </a>
+                {/* bj 썸네일 & 제목 & bj 이름 가로정렬 */}
+                <div className={styles.responsive_second_row}>
+                  <a
+                    href={`https://cheeseballoon.site/detail/${live.streamerId}`}
+                    className={styles.hyper_link}
+                  >
+                    <div className={styles.responisve_bj_thumbnail_box}>
+                      <img
+                        className={styles.responsive_bj_thumbnail}
+                        src={live.profileUrl}
+                        alt="ss"
+                        onError={(
+                          e: React.SyntheticEvent<HTMLImageElement, Event>
+                        ) => {
+                          e.currentTarget.src = no_image_profile.src; // Set the source to the fallback image
+                        }}
+                      ></img>
+                    </div>
+                  </a>
+                  {/* 제목, bj 이름 세로정렬 */}
+                  <div className={styles.responisve_info}>
+                    <a
+                      href={live.streamUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.hyper_link}
+                    >
+                      <div className={styles.responisve_live_title}>
+                        {live.title}
+                      </div>
+                    </a>
+                    <a
+                      href={`https://cheeseballoon.site/detail//${live.streamerId}`}
+                      className={styles.hyper_link}
+                    >
+                      <div className={styles.responisve_bj_name}>
+                        {live.name}
+                      </div>
+                    </a>
+                  </div>
                 </div>
-              </a>
-              <div className={styles.second_container}>
-                <div className={styles.platform_icon}>
-                  {live.platform === "A" && (
-                    <img src={a_icon.src} alt="Platform A" />
-                  )}
-                  {live.platform === "C" && (
-                    <img
-                      src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
-                      alt="Platform C"
-                    />
-                  )}
-
-                  {live.platform === "S" && (
-                    <img src={s_icon.src} alt="Platform C" />
-                  )}
+                <div className={styles.responsive_third_container}>
+                  <div className={styles.responsive_platfrom_box}>
+                    {live.platform === "A" && (
+                      <img
+                        className={styles.responisve_platform}
+                        src={a_icon.src}
+                        alt="Platform A"
+                      />
+                    )}
+                    {live.platform === "C" && (
+                      <img
+                        className={styles.responisve_platform}
+                        src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
+                        alt="Platform C"
+                      />
+                    )}
+                    {live.platform === "S" && (
+                      <img
+                        className={styles.responisve_platform}
+                        src={a_icon.src}
+                        alt="S"
+                      />
+                    )}
+                  </div>
+                  <div className={styles.responsive_category}>
+                    {live.category}
+                  </div>
                 </div>
-                <div className={styles.bj_name}>{live.name}</div>
-                <div className={styles.category}>{live.category}</div>
               </div>
-              <div className={styles.third_container}>
-                <div className={styles.bj_thumbnail}>
-                  <img
-                    src={live.profileUrl}
-                    alt=""
-                    onError={(
-                      e: React.SyntheticEvent<HTMLImageElement, Event>
-                    ) => {
-                      e.currentTarget.src = no_image_profile.src; // Set the source to the fallback image
-                    }}
-                  />
-                </div>
-                <div className={styles.live_title}>{live.title}</div>
-              </div>
-              <div className={styles.cnt}>
-                <div className={styles.cnt_icon}>
-                  <img src={cnt.src} alt="cnt" />
-                </div>
-                <div className={styles.viewer}>{live.viewerCnt}</div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className={styles.no_data}>조회된 내역이 없습니다.</div>
-        )}
-        {searchLiveResults.data &&
-          searchLiveResults.data.length > visibleLiveCount && (
-            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-            <div className={styles.more} onClick={loadMoreLives}>
-              <p>더보기 ▽</p>
-            </div>
+            ))
+          ) : (
+            <div className={styles.no_data}>조회된 내역이 없습니다.</div>
           )}
+          {searchLiveResults.data &&
+            searchLiveResults.data.length > visibleLiveCount && (
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+              <div className={styles.more} onClick={loadMoreLives}>
+                <p>더보기 ▽</p>
+              </div>
+            )}
+        </div>
       </div>
     </div>
   );

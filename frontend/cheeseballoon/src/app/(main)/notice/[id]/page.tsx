@@ -1,9 +1,9 @@
-import DetailNotice from "src/containers/notice/DetailNotice";
+import NoticeDetail from "src/containers/notice/NoticeDetail";
 
-export default function DetailNoticePage() {
+export default function NoticeDetailPage() {
   return (
     <div>
-      <DetailNotice />
+      <NoticeDetail />
     </div>
   );
 }

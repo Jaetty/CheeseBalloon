@@ -41,12 +41,10 @@ async function getData(streamerId: string, date: string) {
 export default function DetailRatingChart() {
   const { id, date } = useParams();
   const [ratingData, setRatingData] = useState<RatingDataType | null>(null);
-  const [totalRatingArray, setTotalRatingArray] = useState<RatingArrayType>([
-    1,
-  ]);
+  const [totalRatingArray, setTotalRatingArray] = useState<RatingArrayType>([]);
   const [platformRatingArray, setplatformRatingArray] =
-    useState<RatingArrayType>([1]);
-  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
+    useState<RatingArrayType>([]);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +72,28 @@ export default function DetailRatingChart() {
     fetchData();
   }, [id, date]);
 
+  const maxYaxis = () => {
+    const maxRating = Math.max(...platformRatingArray);
+
+    switch (true) {
+      case maxRating < 0.05:
+        return 0.05;
+      case maxRating < 0.1:
+        return 0.1;
+      case maxRating < 0.5:
+        return 0.5;
+      case maxRating < 1:
+        return 1;
+      case maxRating < 5:
+        return 5;
+      case maxRating < 10:
+        return 10;
+      case maxRating < 25:
+        return 25;
+      default:
+        return Math.max(Math.floor(maxRating), 30);
+    }
+  };
   const chartData = {
     options: {
       title: {
@@ -121,7 +141,7 @@ export default function DetailRatingChart() {
       yaxis: [
         {
           min: 0,
-          max: Math.max(Math.floor(Math.max(...platformRatingArray) * 1.5), 30),
+          max: maxYaxis,
           tickAmount: 5,
           labels: {
             style: {

@@ -22,10 +22,15 @@ type DailyCategoryType = {
   avgViewer: number;
 };
 
-type TreemapType = {
-  x: string;
-  y: number;
-  z: number;
+interface Accumulator {
+  seriesData: number[];
+  labelsData: string[];
+}
+
+type listType = {
+  title: string;
+  time: number;
+  viewer: number;
 }[];
 
 const API_URL = process.env.NEXT_PUBLIC_CATEGORY_API_URL;
@@ -46,31 +51,48 @@ export default function DetailCategoryChart() {
   const [categoryData, setCategoryData] = useState<CategoryDataType | null>(
     null
   );
-  const [treemapData, setTreemapData] = useState<TreemapType>([
-    { x: "1", y: 1, z: 1 },
-  ]);
+  const [series, setSeries] = useState<number[]>([]);
+  const [labels, setLabels] = useState<string[]>([]);
+  const [lists, setLists] = useState<listType>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
-      const dailyData = responseData.data.dailyCategories;
-      dailyData.sort(
+      const categoriesData = responseData.data.dailyCategories;
+      categoriesData.sort(
         (a: DailyCategoryType, b: DailyCategoryType) => b.time - a.time
       );
+      const { seriesData, labelsData } = categoriesData.reduce(
+        (acc: Accumulator, item: DailyCategoryType) => {
+          acc.seriesData.push(item.time);
+          if (item.category === "") {
+            acc.labelsData.push("카테고리 없음");
+          } else {
+            acc.labelsData.push(item.category);
+          }
+          return acc;
+        },
+        { seriesData: [], labelsData: [] }
+      );
 
-      const seriesData = dailyData.map((item: DailyCategoryType) => ({
-        x: item.category,
-        y: item.time,
-        z: item.avgViewer,
+      setSeries(seriesData);
+      setLabels(labelsData);
+
+      const listData = categoriesData.map((item: DailyCategoryType) => ({
+        title: item.category,
+        time: item.time,
+        viewer: item.avgViewer,
       }));
 
-      setTreemapData(seriesData);
+      setLists(listData);
       setCategoryData(responseData.data);
     };
     fetchData();
   }, [id, date]);
 
   const chartData = {
+    series: series as number[],
+
     options: {
       title: {
         text: "카테고리",
@@ -81,19 +103,18 @@ export default function DetailCategoryChart() {
           color: "white",
         },
       },
+      labels: labels as string[],
       tooltip: {
-        x: {
-          show: false,
-        },
         y: {
-          formatter: (value: number) => `${value.toLocaleString()}시간`,
-        },
-        z: {
-          title: "평균 시청자수: ",
-          formatter: (value: number) => `${value.toLocaleString()}명`,
+          formatter: (value: number) =>
+            `${(Math.floor((value / 3600) * 10) / 10).toLocaleString()}시간`,
         },
       },
-
+      legend: {
+        labels: {
+          colors: "white",
+        },
+      },
       chart: {
         animations: {
           enabled: false,
@@ -108,25 +129,14 @@ export default function DetailCategoryChart() {
           },
         },
       },
-      plotOptions: {
-        treemap: {
-          distributed: true,
-          enableShades: true,
-        },
-      },
     },
-    series: [
-      {
-        data: treemapData,
-      },
-    ],
   };
 
   return (
     <div className={style.wrapper}>
       <div className={style["chart-container"]}>
         <ApexChart
-          type="treemap"
+          type="pie"
           options={chartData.options}
           series={chartData.series}
           height="265%"
@@ -140,22 +150,29 @@ export default function DetailCategoryChart() {
           <div className={style.time}>
             <div>시간</div>
           </div>
-          <div className={style.viewer}>시청자수</div>
+          <div className={style.viewer}>평균 시청자수</div>
         </div>
         <hr />
         {categoryData &&
-          treemapData &&
-          treemapData.map((item, idx: number) => (
+          lists &&
+          lists.map((item, idx: number) => (
             <div className={style.list} key={idx}>
               <div className={style.rank}>{idx + 1}</div>
-              <div className={style.name}>{item.x}</div>
+              <div className={style.name}>
+                {item.title === "" ? "카테고리 없음" : item.title}
+              </div>
               <div className={style.time}>
-                <div>{item.y.toLocaleString()}시간</div>
                 <div>
-                  {`(${((item.y * 100) / categoryData.totalTime).toFixed(1)}%)`}
+                  {(Math.floor((item.time / 3600) * 10) / 10).toLocaleString()}
+                  시간
+                </div>
+                <div>
+                  {`(${((item.time * 100) / categoryData.totalTime).toFixed(1)}%)`}
                 </div>
               </div>
-              <div className={style.viewer}>{item.z.toLocaleString()}명</div>
+              <div className={style.viewer}>
+                {item.viewer.toLocaleString()}명
+              </div>
             </div>
           ))}
       </div>
