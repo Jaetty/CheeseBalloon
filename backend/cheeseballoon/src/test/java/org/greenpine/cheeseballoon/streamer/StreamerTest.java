@@ -165,4 +165,17 @@ public class StreamerTest {
 
     }
 
+    @Test
+    public void streamerRecordTest(){
+
+        long streamer_id = 3;
+
+        List<FindStreamerRecordDtoInterface> ret = statisticsRepository.findStreamerRecord(streamer_id);
+
+        for(int i=0; i<ret.size(); i++){
+
+            System.out.println("value : " + ret.get(i).getValue() + " day : " + ret.get(i).getDay());
+        }
+    }
+
 }
