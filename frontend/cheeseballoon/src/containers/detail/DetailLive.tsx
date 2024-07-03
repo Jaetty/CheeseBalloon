@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import anya from "public/svgs/anya2.jpg";
-import style from "src/containers/detail/DetailLive.module.scss";
+import error from "public/svgs/no_image.jpg";
+import styles from "src/containers/detail/DetailLive.module.scss";
+import onAir from "src/stores/on_air.png";
 
 const API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
 
@@ -33,13 +34,13 @@ export default function DetailLive() {
   }, [id]);
 
   return (
-    <div className={style.wrapper}>
+    <div className={styles.wrapper}>
       {liveData && liveData.live && (
-        <div className={style.container}>
-          <div className={style["image-container"]}>
+        <div className={styles.container}>
+          <div className={styles["image-container"]}>
             <a
               href={liveData.streamerUrl}
-              className={style.link}
+              className={styles.link}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -47,10 +48,17 @@ export default function DetailLive() {
                 src={liveData.thumbnailUrl}
                 alt="라이브"
                 onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                  e.currentTarget.src = anya.src;
+                  e.currentTarget.src = error.src;
                 }}
-                className={style.thumbnail}
+                className={styles.thumbnail}
               />
+              <div className={styles["on-air-box"]}>
+                <img
+                  src={onAir.src}
+                  alt="on_air"
+                  className={styles["on-air"]}
+                />
+              </div>
             </a>
           </div>
           <hr />

@@ -11,10 +11,15 @@
   display: flex;
   height: 5rem;
   align-items: center;
+  transition: background-color 0.3s ease;
 }
 
 .subitem:not(:last-child) {
   border-bottom: 1px solid rgba(244, 244, 244, 0.2);
+}
+
+.subitem:hover {
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .index {
@@ -159,6 +164,9 @@
   flex: 1;
   text-align: right;
   max-height: 20px;
+}
+
+.livefav img {
   cursor: pointer;
 }
 

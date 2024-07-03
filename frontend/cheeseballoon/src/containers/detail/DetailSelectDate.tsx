@@ -9,7 +9,7 @@ export default function DetailSelectDate() {
   const handleChangeDate = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newDate = e.target.value;
 
-    router.push(
+    router.replace(
       category
         ? `/detail/${id}/${category}/${newDate}`
         : `/detail/${id}/viewer/${newDate}`
@@ -18,17 +18,19 @@ export default function DetailSelectDate() {
 
   return (
     <div className={style.wrapper}>
-      <select
-        onChange={(e) => {
-          handleChangeDate(e);
-        }}
-        className={style.button}
-        value={date || 1}
-      >
-        <option value={1}>7일</option>
-        <option value={2}>14일</option>
-        <option value={3}>30일</option>
-      </select>
+      {category === "calendar" ? null : (
+        <select
+          onChange={(e) => {
+            handleChangeDate(e);
+          }}
+          className={style.button}
+          value={date || 1}
+        >
+          <option value={1}>7일</option>
+          <option value={2}>14일</option>
+          <option value={3}>30일</option>
+        </select>
+      )}
     </div>
   );
 }
