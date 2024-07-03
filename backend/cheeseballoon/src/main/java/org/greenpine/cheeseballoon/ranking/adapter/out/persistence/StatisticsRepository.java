@@ -1,5 +1,6 @@
 package org.greenpine.cheeseballoon.ranking.adapter.out.persistence;
 
+import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.FindStreamerRecordDtoInterface;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.FindSummaryRankResDtoInterface;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -46,6 +47,9 @@ public interface StatisticsRepository extends JpaRepository<StatisticsEntity, Lo
     FindSummaryRankResDtoInterface findRankingByDtCodeAndStreamerIdAndDates(String dtCode, Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
 
     StatisticsEntity findByStreamerAndDtCode(StreamerEntity streamerEntity, String dtCode);
+
+    @Query(value="SELECT DATE_FORMAT(total_air_time, '%H:%i:%s') AS value, LEFT(dt_code,10) AS day FROM statistics WHERE streamer_id = :streamerId AND dt_code LIKE '%-0'", nativeQuery = true)
+    List<FindStreamerRecordDtoInterface> findStreamerRecord(Long streamerId);
 
     @Query(value = "SELECT l.*, ll.* , s.*, c.category, " +
             "false AS bookmark "+
