@@ -262,4 +262,12 @@ public class StreamerService implements StreamerUsecase {
         return ret;
     }
 
+    @Override
+    public List<FindStreamerRecordDtoInterface> streamerDetailRecord(Long streamerId) {
+
+        List<FindStreamerRecordDtoInterface> result =  streamerPort.streamerRecord(streamerId);
+
+        return result;
+    }
+
 }

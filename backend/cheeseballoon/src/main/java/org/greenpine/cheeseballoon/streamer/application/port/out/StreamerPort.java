@@ -30,5 +30,6 @@ public interface StreamerPort {
     List<FindTimeDetailResDtoInterface> streamerDetailTime(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
 
     StatisticsEntity streamerStatistics(StreamerEntity streamerEntity, String dtCode);
+    List<FindStreamerRecordDtoInterface> streamerRecord(Long streamerId);
 
 }
