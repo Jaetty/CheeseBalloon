@@ -23,16 +23,35 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	// redis
-	//implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	//mariadb
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	//security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//implementation 'org.springframework.security:spring-security-config:5.6.0'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	//Jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	//구글 토큰 복호화용 Jwt
+	implementation 'org.springframework.security:spring-security-oauth2-jose'
+
+	// 유효성 검사 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	//minio
+	implementation 'io.minio:minio:8.4.3'
+
 
 }
 
