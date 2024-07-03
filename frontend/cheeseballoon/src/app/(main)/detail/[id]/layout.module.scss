@@ -1,17 +1,24 @@
 .wrapper {
   padding-top: 7rem;
   padding-bottom: 7rem;
+  min-width: 700px;
 }
 
 .container {
-    max-width: 1290px;
-    margin: 0 auto;
+  max-width: 1290px;
+  margin: 0 auto;
 }
 
 .profile {
-  background-color: #4e4e4e;
+  // background-color: #4e4e4e;
   border-radius: 20px;
   margin-bottom: 2rem;
+  border: 2px solid white;
+  
+
+  &:hover {
+    filter: brightness(90%);
+  }
 }
 
 .summary {

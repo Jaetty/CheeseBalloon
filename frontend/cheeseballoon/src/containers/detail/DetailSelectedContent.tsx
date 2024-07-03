@@ -7,7 +7,6 @@ import DetailCategory from "src/containers/detail/DetailCategory";
 import DetailDuration from "src/containers/detail/DetailDuration";
 import DetailRating from "src/containers/detail/DetailRating";
 import DetailFollower from "src/containers/detail/DetailFollower";
-import DetailCalendar from "src/containers/detail/DetailCalendar";
 import DetailSelectDate from "src/containers/detail/DetailSelectDate";
 import style from "src/containers/detail/DetailSelectedContent.module.scss";
 
@@ -36,8 +35,6 @@ export default function DetailSelectedContent() {
         return <DetailRating />;
       case "follower":
         return <DetailFollower />;
-      case "calendar":
-        return <DetailCalendar />;
       default:
         return null;
     }

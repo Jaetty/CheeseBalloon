@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import style from "src/containers/detail/DetailChart.module.scss";
+import style from "src/containers/detail/DetailFollowerChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -40,8 +40,8 @@ export default function DetailFollowerChart() {
   const [followerData, setFollowerData] = useState<FollowerDataType | null>(
     null
   );
-  const [followerArray, setFollowerArray] = useState<FollowerArrayType>([1]);
-  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
+  const [followerArray, setFollowerArray] = useState<FollowerArrayType>([]);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +66,21 @@ export default function DetailFollowerChart() {
     };
     fetchData();
   }, [id, date]);
+
+  const yaxis = () => {
+    const diff = Math.max(...followerArray) - Math.min(...followerArray);
+    const digit = 10 ** (diff.toString().length - 1);
+
+    const maxYaxis =
+      Math.ceil(Math.max(...followerArray) / digit) * digit + digit;
+    const minYaxis =
+      Math.floor(Math.min(...followerArray) / digit) * digit - digit;
+    const tickAmount = Math.ceil(diff / digit);
+    const stepSize = digit;
+
+    return { maxYaxis, minYaxis, tickAmount, stepSize };
+  };
+  const { maxYaxis, minYaxis, tickAmount, stepSize } = yaxis();
 
   const chartData = {
     options: {
@@ -106,7 +121,10 @@ export default function DetailFollowerChart() {
       },
       yaxis: [
         {
-          tickAmount: 5,
+          min: minYaxis,
+          max: maxYaxis,
+          tickAmount: tickAmount as number,
+          stepSize: stepSize as number,
           labels: {
             style: {
               colors: "white",

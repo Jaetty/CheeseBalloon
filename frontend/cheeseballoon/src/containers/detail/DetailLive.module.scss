@@ -7,12 +7,26 @@
 }
 
 .image-container {
+  position: relative;
   margin: auto;
-  background-color: #4e4e4e;
+  // background-color: #4e4e4e;
+  border: 2px solid white;
+
   width: 50%;
   border-radius: 20px;
   padding: 0.5rem;
   margin-bottom: 2rem;
+}
+
+.on-air-box {
+  display: flex;
+  position: absolute;
+  left: 20px;
+  top: 5px;
+}
+
+.on-air {
+  width: 50px;
 }
 
 .link {
@@ -28,5 +42,5 @@
 }
 
 .thumbnail:hover {
-  filter: brightness(90%)
+  filter: brightness(80%)
 }

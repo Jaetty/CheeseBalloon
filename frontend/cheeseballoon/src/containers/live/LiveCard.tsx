@@ -5,9 +5,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import chzzkIcon from "public/svgs/chzzk.svg";
 import afreecaIcon from "public/svgs/afreeca.svg";
-import anya from "public/svgs/anya.jpg";
+import error from "public/svgs/no_image.jpg";
 import blankProfile from "public/svgs/blank_profile.png";
-import style from "src/containers/live/LiveCard.module.scss";
+import style from "./LiveCard.module.scss";
 
 interface LiveInfo {
   liveinfo: {
@@ -32,7 +32,9 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
   const query = searchParams.getAll("category");
   const [profileImageError, setProfileImageError] = useState<boolean>(false);
 
-  const handleQuery = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleQuery = (
+    e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
+  ) => {
     if (query.length >= 10) {
       return;
     }
@@ -71,7 +73,7 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
           src={liveinfo.thumbnailUrl}
           alt="썸네일"
           onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-            e.currentTarget.src = anya.src;
+            e.currentTarget.src = error.src;
           }}
           className={style.thumbnail}
         />
@@ -101,16 +103,22 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
           {liveinfo.name}
         </div>
         {liveinfo.category.length > 0 && (
-          <button
+          <div
+            role="button"
+            tabIndex={0}
             className={style.category}
-            type="button"
             onClick={(event) => {
               event.stopPropagation();
               handleQuery(event);
             }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                handleQuery(event);
+              }
+            }}
           >
             {liveinfo.category}
-          </button>
+          </div>
         )}
       </div>
       <div className={style["third-container"]}>
@@ -153,7 +161,9 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
       </div>
       <div className={style["fourth-container"]}>
         <img src="/svgs/viewericon.svg" alt="" className={style.viewericon} />
-        <div className={style.viewers}>{liveinfo.viewerCnt}</div>
+        <div className={style.viewers}>
+          {liveinfo.viewerCnt.toLocaleString()}
+        </div>
       </div>
     </div>
   );
