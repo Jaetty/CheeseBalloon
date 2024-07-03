@@ -167,9 +167,6 @@ export default function DetailViewerChart() {
             show: true,
           },
         },
-        padding: {
-          right: 20
-        }
       },
       colors: ["#F0BD53"],
       legend: {
@@ -201,6 +198,7 @@ export default function DetailViewerChart() {
       <div className={style.container}>
         <ApexChart
           type="line"
+          className={style.chart}
           options={chartData.options}
           series={chartData.series}
           height="170%"
