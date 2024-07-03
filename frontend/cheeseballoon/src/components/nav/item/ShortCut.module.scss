@@ -1,3 +1,7 @@
+.fontname {
+  font-family: "esamanru";
+}
+
 .open_navPill {
   display: flex;
   flex-direction: row;
@@ -23,9 +27,26 @@
   color: white;
   text-decoration: none;
   font-size: 13px;
+  align-items: center;
+}
+
+.open_linkdeco1 {
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
   line-height: 22px;
   align-items: center;
-  font-family: "Inter";
+}
+
+.open_linkdeco2 {
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 22px;
+  align-items: center;
+  margin-top: 1.5px;
 }
 
 .open_description {
@@ -58,7 +79,7 @@
 }
 
 .closed_linkdeco {
-  font-weight: 600;
+  font-weight: 500;
   color: white;
   text-decoration: none;
   font-size: 10px;

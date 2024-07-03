@@ -5,12 +5,16 @@ import Shortcut from "src/components/nav/item/ShortCut";
 import Fav from "src/components/nav/item/FavIndex";
 import Recomend from "src/components/nav/item/RecomendIndex";
 
-export default function Closed() {
+interface ValueProps {
+  value: boolean;
+}
+
+export default function Closed({ value }: ValueProps) {
   return (
     <div className={style.body}>
-      <Shortcut />
-      <Fav />
-      <Recomend />
+      <Shortcut value={value} />
+      <Fav value={value} />
+      <Recomend value={value} />
     </div>
   );
 }

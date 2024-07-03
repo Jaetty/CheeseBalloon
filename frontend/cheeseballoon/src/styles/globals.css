@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "esamanru";
+  src: url("../styles/font/esamanru\ Light.ttf") format("truetype");
+}
+
 .children {
   flex-grow: 1;
   overflow: auto;
@@ -6,9 +11,16 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-family: "esamanru";
 }
 
 body {
   margin: 0;
   background-color: #1e1f27;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    display: none !important;
+  }
 }
