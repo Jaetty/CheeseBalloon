@@ -1,4 +1,4 @@
-from pydantic import BaseModel,Field
+from pydantic import BaseModel
 from datetime import datetime
 # StreamerLog 생성을 위한 스키마
 class StreamerLogCreate(BaseModel):
