@@ -178,7 +178,7 @@ class Soop:
                 name=str(new_item['user_nick']),
                 profile_url=f"https://profile.img.afreecatv.com/LOGO/{new_item['user_id'][0:2]}/{new_item['user_id']}" +
                             f"/{new_item['user_id']}.jpg",
-                channel_url=f"https://play.afreecatv.com/{new_item['user_id']}",
+                channel_url=f"https://bj.afreecatv.com/{new_item['user_id']}",
                 platform="S",
                 stream_url=f"https://play.afreecatv.com/{new_item['user_id']}/{new_item['broad_no']}",
                 live_origin_id=int(new_item['broad_no']),
@@ -204,7 +204,7 @@ class Soop:
                     name=str(new_item['user_nick']),
                     profile_url=f"https://stimg.afreecatv.com/LOGO/{new_item['user_id'][0:2]}/{new_item['user_id']}" +
                                 f"/m/{new_item['user_id']}.webp",
-                    channel_url=f"https://play.afreecatv.com/{new_item['user_id']}",
+                    channel_url=f"https://bj.afreecatv.com/{new_item['user_id']}",
                     platform="S",
                     stream_url=f"https://play.afreecatv.com/{new_item['user_id']}/{new_item['broad_no']}",
                     live_origin_id=int(new_item['broad_no']),
