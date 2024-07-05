@@ -28,14 +28,19 @@ public class NoticeController {
     @GetMapping("")
     public ResponseEntity<CustomBody> findNotice(FindNoticeReqDto reqDto){
         log.info("findNotice - Call");
-        FindNoticeResDto resDto = noticeUsecase.findNotice(reqDto);
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, NoticeResMsg.SUCCESS, resDto));
+        try {
+            FindNoticeResDto resDto = noticeUsecase.findNotice(reqDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, NoticeResMsg.SUCCESS, resDto));
+        }catch (NotFindException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.NOT_EXIST, NoticeResMsg.NOT_EXIST, null));
+        }
+
     }
 
     @GetMapping("/all")
-    public ResponseEntity<CustomBody> findAllNotice(FindAllNoticeReqDto reqDto){
+    public ResponseEntity<CustomBody> findAllNotice(){
         log.info("findAllNotice - Call");
-        List<FindAllNoticeResDto> resDto = noticeUsecase.findAllNotice(reqDto);
+        List<FindAllNoticeResDto> resDto = noticeUsecase.findAllNotice();
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, NoticeResMsg.SUCCESS, resDto));
     }
 
