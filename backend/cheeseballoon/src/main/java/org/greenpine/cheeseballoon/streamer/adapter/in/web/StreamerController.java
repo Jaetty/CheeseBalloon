@@ -6,6 +6,7 @@ import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
 import org.greenpine.cheeseballoon.global.utils.DateCalculator;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.FindSearchStreamerResDtoInterface;
+import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.FindStreamerRecordDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.application.port.out.message.StreamerResMsg;
@@ -52,6 +53,13 @@ public class StreamerController {
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
     }
 
+    @GetMapping("/record")
+    public ResponseEntity<CustomBody> streamerRecord(@RequestParam Long streamerId){
+
+        List<FindStreamerRecordDtoInterface> ret = streamerUsecase.streamerDetailRecord(streamerId);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
+    }
+
     @GetMapping("/live")
     public ResponseEntity<CustomBody> streamerDetailLive(@RequestParam Long streamerId){
 
@@ -88,7 +96,8 @@ public class StreamerController {
     public ResponseEntity<CustomBody> streamerViewerDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
         LocalDateTime[] dates = DateCalculator.getPeriod(date);
-        FindStreamerViewerDto ret = streamerUsecase.streamerDetailViewer(streamerId, dates);
+        String[] dtCode = DateCalculator.getDateCodes(date);
+        FindStreamerViewerDto ret = streamerUsecase.streamerDetailViewer(streamerId, dates, dtCode);
 
 //        FindStreamerViewerDto ret = FindStreamerViewerDto.builder()
 //                .maxViewer(3000)
@@ -188,7 +197,8 @@ public class StreamerController {
     public ResponseEntity<CustomBody> streamerRatingDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
         LocalDateTime[] dates = DateCalculator.getPeriod(date);
-        FindStreamerRatingDto ret = streamerUsecase.streamerDetailRating(streamerId, dates);
+        String[] dtCode = DateCalculator.getDateCodes(date);
+        FindStreamerRatingDto ret = streamerUsecase.streamerDetailRating(streamerId, dates, dtCode);
 
 //        FindStreamerRatingDto ret = new FindStreamerRatingDto();
 //        String val = "2024-03-1";

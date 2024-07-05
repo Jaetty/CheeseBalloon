@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.streamer.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.StatisticsEntity;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.*;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.application.port.in.StreamerUsecase;
@@ -103,10 +104,14 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDateTime[] dates) {
+    public FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDateTime[] dates, String[] dtCode) {
 
         List<FindStreamerDailyViewerResDtoInterface> curr = streamerPort.streamerDetailViewer(streamerId, dates[0], dates[1]);
         List<FindStreamerDailyViewerResDtoInterface> before = streamerPort.streamerDetailViewer(streamerId, dates[2], dates[3]);
+        StreamerEntity streamerEntity = new StreamerEntity();
+        streamerEntity.setStreamerId(streamerId);
+        StatisticsEntity statisticsEntity = streamerPort.streamerStatistics(streamerEntity, dtCode[0]);
+
 
         List<DailyAvgViewer> dailyAvgViewer = new ArrayList<>();
 
@@ -120,9 +125,6 @@ public class StreamerService implements StreamerUsecase {
 
         if(!curr.isEmpty()){
 
-            int sum = 0;
-            int count = 0;
-
             for(FindStreamerDailyViewerResDtoInterface var : curr){
                 while ( index < dailyAvgViewer.size() && !dailyAvgViewer.get(index).getDate().equals(var.getDate()) ){
                     index++;
@@ -130,11 +132,9 @@ public class StreamerService implements StreamerUsecase {
                 if(index>=dailyAvgViewer.size()) break;
                 dailyAvgViewer.get(index).setMaxViewer(var.getMaxViewer());
                 dailyAvgViewer.get(index).setViewer(var.getViewer());
-                curr_max = Math.max(curr_max,var.getMaxViewer());
-                sum += var.getViewer();
-                count++;
             }
-            curr_avg = sum/count;
+            curr_avg = statisticsEntity.getAverageViewer();
+            curr_max = statisticsEntity.getTopViewer();
         }
 
         int before_max = 0;
@@ -142,16 +142,11 @@ public class StreamerService implements StreamerUsecase {
 
         if(!before.isEmpty()){
 
-            int sum = 0;
-            int count = 0;
-
-            for(FindStreamerDailyViewerResDtoInterface var : before){
-
-                before_max = Math.max(before_max,var.getMaxViewer());
-                sum += var.getViewer();
-                count++;
+            statisticsEntity = streamerPort.streamerStatistics(streamerEntity, dtCode[1]);
+            if(statisticsEntity != null){
+                before_avg = statisticsEntity.getAverageViewer();
+                before_max = statisticsEntity.getTopViewer();
             }
-            before_avg = sum/count;
         }
 
         FindStreamerViewerDto dto = new FindStreamerViewerDto(curr_max, curr_max - before_max, curr_avg, curr_avg - before_avg, dailyAvgViewer);
@@ -160,10 +155,12 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerRatingDto streamerDetailRating(Long streamerId, LocalDateTime[] dates) {
+    public FindStreamerRatingDto streamerDetailRating(Long streamerId, LocalDateTime[] dates, String[] dtCode) {
 
         StreamerEntity streamerEntity = streamerPort.findByStreamerId(streamerId);
+        StatisticsEntity statisticsEntity = streamerPort.streamerStatistics(streamerEntity, dtCode[0]);
         List<FindStreamerRatingResDtoInterface> list = streamerPort.streamerDetailRating(streamerId, dates[0], dates[1]);
+
         List<DailyRate> dailyRates = new ArrayList<>();
 
         for(LocalDate date = dates[0].toLocalDate(); !date.isAfter(dates[1].toLocalDate()); date = date.plusDays(1)){
@@ -175,7 +172,7 @@ public class StreamerService implements StreamerUsecase {
         }
 
         double totalRating = 0, platformRating = 0;
-        int count = 0, index = 0;
+        int index = 0;
 
         if(streamerEntity.getPlatform() == 'C'){
 
@@ -186,11 +183,10 @@ public class StreamerService implements StreamerUsecase {
                 if(index>=dailyRates.size()) break;
                 dailyRates.get(index).setTotal(val.getTotalRating());
                 dailyRates.get(index).setPlatform(val.getChzzkRating());
-
-                totalRating += val.getTotalRating();
-                platformRating += val.getChzzkRating();
-                count++;
             }
+
+            totalRating = statisticsEntity.getRating();
+            platformRating = statisticsEntity.getChzzRating();
 
         }
         else{
@@ -202,16 +198,10 @@ public class StreamerService implements StreamerUsecase {
                 if(index>=dailyRates.size()) break;
                 dailyRates.get(index).setTotal(val.getTotalRating());
                 dailyRates.get(index).setPlatform(val.getSoopRating());
-
-                totalRating += val.getTotalRating();
-                platformRating += val.getSoopRating();
-                count++;
             }
-
+            totalRating = statisticsEntity.getRating();
+            platformRating = statisticsEntity.getSoopRating();
         }
-
-        totalRating = Math.round(totalRating/count * 100)/100.0;
-        platformRating = Math.round(platformRating/count * 100) / 100.0;
 
         return FindStreamerRatingDto.builder().dailyRates(dailyRates).totalRating(totalRating).platformRating(platformRating).build();
     }
@@ -270,6 +260,14 @@ public class StreamerService implements StreamerUsecase {
         }
 
         return ret;
+    }
+
+    @Override
+    public List<FindStreamerRecordDtoInterface> streamerDetailRecord(Long streamerId) {
+
+        List<FindStreamerRecordDtoInterface> result =  streamerPort.streamerRecord(streamerId);
+
+        return result;
     }
 
 }
