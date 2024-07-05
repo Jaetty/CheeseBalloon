@@ -2,10 +2,9 @@ package org.greenpine.cheeseballoon.live.adapter.out.persistence;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.CycleLogEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "live_logs")
