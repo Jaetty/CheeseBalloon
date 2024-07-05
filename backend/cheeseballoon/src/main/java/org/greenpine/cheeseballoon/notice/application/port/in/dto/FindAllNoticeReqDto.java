@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+//@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
 public class FindAllNoticeReqDto {
-    Integer offset;
-    Integer limit;
+//    Integer offset;
+//    Integer limit;
 }

@@ -33,9 +33,9 @@ public class NoticeController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<CustomBody> findAllNotice(FindAllNoticeReqDto reqDto){
+    public ResponseEntity<CustomBody> findAllNotice(){
         log.info("findAllNotice - Call");
-        List<FindAllNoticeResDto> resDto = noticeUsecase.findAllNotice(reqDto);
+        List<FindAllNoticeResDto> resDto = noticeUsecase.findAllNotice();
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, NoticeResMsg.SUCCESS, resDto));
     }
 
