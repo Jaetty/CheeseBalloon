@@ -20,7 +20,7 @@ public class NoticePersistenceAdapter implements NoticePort {
     @Override
     public FindNoticeResDto findNotice(FindNoticeReqDto reqDto) {
         NoticeInfo entity = noticeRepository.findNotice(reqDto.getNoticeId());
-        
+        if(entity==null) throw new NotFindException();
         return FindNoticeResDto.builder()
                 .noticeId(entity.getNotice_id())
                 .nickname(entity.getNickname())
