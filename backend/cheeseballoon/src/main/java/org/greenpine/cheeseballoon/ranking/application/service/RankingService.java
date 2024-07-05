@@ -379,7 +379,7 @@ public class RankingService implements RankingUsecase {
     @Override
     @Transactional
     public List<FindLiveRankingResDto> findLiveRanking(Long memberId, Character platform) {
-        CycleLogEntity cycleLog= cycleLogPort.findLatestCycleLog();
+        /*CycleLogEntity cycleLog= cycleLogPort.findLatestCycleLog();
         List<FindLiveRankingResDto> resDto = null;
         Long lastestCycleLogId = redisUtil.getData("latestCycleLogId"+platform, new TypeReference<Long>(){});
         if(lastestCycleLogId == null || lastestCycleLogId < cycleLog.getCycleLogId()){
@@ -409,7 +409,7 @@ public class RankingService implements RankingUsecase {
                 }
             }
         }
-        return resDto;
-        //return rankingPort.findLiveRanking(memberId, platform);
+        return resDto;*/ //레디스를 사용하는 코드인데 안쓸거같아서 주석처리
+        return rankingPort.findLiveRanking(memberId, platform);
     }
 }

@@ -95,7 +95,7 @@ public class RankingPersistenceAdapter implements RankingPort, CycleLogPort {
     }
 
     @Override
-    public List<FindLiveRankingResDto> findLiveRanking(Character platform) {
+    public List<FindLiveRankingResDto> findLiveRanking(Character platform) { //즐겨찾기 여부 없는 코드(레디스로 부여하려함)
         List<FindLiveRankingInterface> entities=null;
         if(platform=='T')
             entities = statisticsRepository.findLiveRanking();
