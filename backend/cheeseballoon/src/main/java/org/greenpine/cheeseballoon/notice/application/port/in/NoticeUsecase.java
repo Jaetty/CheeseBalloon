@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface NoticeUsecase {
     FindNoticeResDto findNotice(FindNoticeReqDto reqDto);
-    List<FindAllNoticeResDto> findAllNotice(FindAllNoticeReqDto reqDto);
+    List<FindAllNoticeResDto> findAllNotice();
 
     RegisterNoticeImgResDto registerNoticeImg(MultipartFile file) throws Exception;
 

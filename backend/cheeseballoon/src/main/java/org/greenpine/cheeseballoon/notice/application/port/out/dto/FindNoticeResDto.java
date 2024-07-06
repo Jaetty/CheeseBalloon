@@ -18,4 +18,8 @@ public class FindNoticeResDto {
     String nickname;
     String thumbnail;
     LocalDateTime regDt;
+    String prevNoticeTitle;
+    Long prevNoticeId;
+    String nextNoticeTitle;
+    Long nextNoticeId;
 }

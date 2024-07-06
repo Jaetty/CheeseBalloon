@@ -20,6 +20,7 @@ public class NoticePersistenceAdapter implements NoticePort {
     @Override
     public FindNoticeResDto findNotice(FindNoticeReqDto reqDto) {
         NoticeInfo entity = noticeRepository.findNotice(reqDto.getNoticeId());
+        if(entity==null) throw new NotFindException();
         return FindNoticeResDto.builder()
                 .noticeId(entity.getNotice_id())
                 .nickname(entity.getNickname())
@@ -27,15 +28,17 @@ public class NoticePersistenceAdapter implements NoticePort {
                 .content(entity.getContent())
                 .thumbnail(entity.getThumbnail())
                 .regDt(entity.getReg_dt())
+                .prevNoticeId(entity.getPrev_notice_id())
+                .prevNoticeTitle(entity.getPrev_notice_title())
+                .nextNoticeId(entity.getNext_notice_id())
+                .nextNoticeTitle(entity.getNext_notice_title())
                 .build();
 
     }
 
     @Override
-    public List<FindAllNoticeResDto> findAllNotice(FindAllNoticeReqDto reqDto) {
-        int limit = reqDto.getLimit();
-        int offset = reqDto.getOffset();
-        List<NoticeInfo> entities = noticeRepository.findAllNotice(limit, offset);
+    public List<FindAllNoticeResDto> findAllNotice() {
+        List<NoticeInfo> entities = noticeRepository.findAllNotice();
         return entities.stream().map(
                 en ->FindAllNoticeResDto.builder()
                     .noticeId(en.getNotice_id())

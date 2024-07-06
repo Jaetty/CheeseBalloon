@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface NoticePort {
     FindNoticeResDto findNotice(FindNoticeReqDto reqDto);
-    List<FindAllNoticeResDto> findAllNotice(FindAllNoticeReqDto reqDto);
+    List<FindAllNoticeResDto> findAllNotice();
     void registerNotice(Long memberId, RegisterNoticeReqDto reqDto);
     void modifyNotice(ModifyNoticeReqDto reqDto);
     void deleteNotice(DeleteNoticeReqDto reqDto);
