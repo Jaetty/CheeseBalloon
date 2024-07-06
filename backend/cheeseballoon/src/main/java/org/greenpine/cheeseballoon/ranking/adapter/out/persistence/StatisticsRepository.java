@@ -48,7 +48,7 @@ public interface StatisticsRepository extends JpaRepository<StatisticsEntity, Lo
 
     StatisticsEntity findByStreamerAndDtCode(StreamerEntity streamerEntity, String dtCode);
 
-    @Query(value="SELECT DATE_FORMAT(total_air_time, '%H:%i:%s') AS value, LEFT(dt_code,10) AS day FROM statistics WHERE streamer_id = :streamerId AND dt_code LIKE '%-0'", nativeQuery = true)
+    @Query(value="SELECT ROUND(TIME_TO_SEC(total_air_time)/60,0) AS value, LEFT(dt_code,10) AS day FROM statistics WHERE streamer_id = :streamerId AND dt_code LIKE '%-0'", nativeQuery = true)
     List<FindStreamerRecordDtoInterface> findStreamerRecord(Long streamerId);
 
     @Query(value = "SELECT l.*, ll.* , s.*, c.category, " +
