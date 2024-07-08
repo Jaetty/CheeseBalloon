@@ -35,7 +35,7 @@ export default function Shortcut({ value }: ValueProps) {
             <Link href="/live" className={style.open_linkdeco}>
               <div className={style.open_navPill}>
                 <Image src={live} alt="" width={20} height={20} />
-                <div className={style.open_linkdeco}>LIVE 모아보기</div>
+                <div className={style.open_linkdeco}>실시간 방송</div>
               </div>
             </Link>
           </li>
@@ -64,7 +64,7 @@ export default function Shortcut({ value }: ValueProps) {
             <Link href="/live" className={style.closed_linkdeco}>
               <div className={style.closed_navPill}>
                 <Image src={live} alt="" width={20} height={20} />
-                <div className={style.closed_linkdeco}>모아보기</div>
+                <div className={style.closed_linkdeco}>실시간</div>
               </div>
             </Link>
           </li>
