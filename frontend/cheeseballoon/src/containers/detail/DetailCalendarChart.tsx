@@ -100,15 +100,25 @@ export default function DetailCalendarChart() {
           //   "#F0C105",
           //   "#C8A104",
           // ]}
+          // colors={[
+          //   "#F6EEA2",
+          //   "#F5EA8F",
+          //   "#F3E77C",
+          //   "#F1E46A",
+          //   "#EFE057",
+          //   "#EEDD44",
+          //   "#ECD932",
+          //   "#EAD51C",
+          // ]}
           colors={[
             "#FFFBEB",
             "#FDEEAF",
             "#FCE173",
-            "#FBD437",
-            "#F0C105",
-            "#B49104",
-            "#786002",
-            "#3C3001",
+            "#",
+            "#F3E77C",
+            "#F1E46A",
+            "#EEDD44",
+            "#EAD51C",
           ]}
           margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
           // yearLegend={(year: number) => ""}
