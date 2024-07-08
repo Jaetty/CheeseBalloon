@@ -111,10 +111,10 @@ export default function DetailCalendarChart() {
           //   "#EAD51C",
           // ]}
           colors={[
-            "#FFFBEB",
-            "#FDEEAF",
-            "#FCE173",
-            "#",
+            "#FDFCEC",
+            "#FAF5C7",
+            "#F6EEA2",
+            "#F5EA8F",
             "#F3E77C",
             "#F1E46A",
             "#EEDD44",
