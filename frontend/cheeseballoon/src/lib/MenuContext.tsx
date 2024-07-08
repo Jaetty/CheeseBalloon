@@ -36,18 +36,18 @@ export function MenuProvider({
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      sIsMobile(window.innerWidth < 768);
+      const isMobileSize = window.innerWidth < 768;
+      setIsMobile(isMobileSize);
+      sIsMobile(isMobileSize);
     };
 
-    handleResize();
+    handleResize(); // 초기 실행 시 한 번 호출하여 현재 창 크기 반영
 
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [sIsMobile]);
 
   return (
     <MenuContext.Provider value={value}>
