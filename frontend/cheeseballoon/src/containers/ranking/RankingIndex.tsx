@@ -137,11 +137,12 @@ export default function Ranking() {
     const handleResize = () => {
       const adjusted768 = 768 + (value ? 160 : 0);
       const adjusted1090 = 1090 + (value ? 160 : 0);
+      const currentIsMobile = isMobileState.getState().isMobile; // 현재 isMobile 상태 가져오기
 
-      if (isMobile) {
-        setChunkSize(1);
+      if (currentIsMobile) {
+        setChunkSize(2);
       } else if (window.innerWidth < adjusted768) {
-        setChunkSize(1);
+        setChunkSize(2);
       } else if (window.innerWidth < adjusted1090) {
         setChunkSize(2);
       } else {
@@ -152,7 +153,7 @@ export default function Ranking() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [value]);
 
   if (loading) {
     return (
@@ -191,14 +192,18 @@ export default function Ranking() {
           <PlatformSelect platform={platform} setPlatform={setPlatform} />
         </div>
       </div>
-      <div>
+      <div className={style.mobilewrapper}>
         {chunks.map((chunk, index) => (
           <div key={index} className={style.container}>
             {chunk.map((titleItem) => (
               <RankingIndex
                 key={titleItem}
                 title={titleItem}
-                data={rankingData[titleItem]?.data.slice(0, 10)}
+                data={
+                  isMobile
+                    ? rankingData[titleItem]?.data.slice(0, 5)
+                    : rankingData[titleItem]?.data.slice(0, 10)
+                }
               />
             ))}
           </div>

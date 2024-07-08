@@ -13,11 +13,11 @@
   position: fixed;
   top: 60px;
   left: 0;
-  width: 31%;
+  width: 30%;
   height: 100%;
   background: #1e1f27;
-  border: 1px solid #000;
-  z-index: 1001;
+  border-top: 2px solid rgba(41, 41, 41, 0.8);
+  z-index: 9999;
 }
 
 .fontname {
@@ -50,6 +50,8 @@
   text-decoration: none;
   font-size: 13px;
   align-items: center;
+  max-width: 70%;
+  white-space: pre-line;
 }
 
 .open_linkdeco1 {
@@ -83,4 +85,40 @@
 .icon {
   width: 20px;
   height: 20px;
+}
+
+@media (max-width: 503px) {
+  .modalContent {
+    width: 32vw;
+  }
+
+  .open_linkdeco {
+    font-size: 0.7rem;
+  }
+
+  .open_linkdeco1 {
+    font-size: 0.7rem;
+  }
+
+  .open_linkdeco2 {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 426px) {
+  .modalContent {
+    width: 32vw;
+  }
+
+  .open_linkdeco {
+    font-size: 0.65rem;
+  }
+
+  .open_linkdeco1 {
+    font-size: 0.65rem;
+  }
+
+  .open_linkdeco2 {
+    font-size: 0.65rem;
+  }
 }

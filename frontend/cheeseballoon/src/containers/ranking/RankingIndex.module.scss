@@ -75,6 +75,12 @@
     justify-content: space-around;
   }
 
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 0.5rem 1rem 1rem;
+  }
   .ranking {
     color: white;
     font-size: 20px;
@@ -84,6 +90,12 @@
     font-family: "esamanru";
     padding: 0;
   }
+  .title {
+    font-weight: 700;
+    font-size: 40px;
+    color: #ffffff;
+    margin: 5rem 1rem 1rem 1rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -92,9 +104,10 @@
     gap: 1rem;
   }
   .container {
-    flex-direction: column;
-    gap: 1rem;
+    flex-direction: row;
+    gap: 0.8rem;
     align-items: center;
+    margin: 3% 5%;
   }
   .ranking {
     color: white;
@@ -125,5 +138,8 @@
   }
   .subtitle {
     text-align: center;
+  }
+  .mobilewrapper {
+    margin-bottom: 2rem;
   }
 }
