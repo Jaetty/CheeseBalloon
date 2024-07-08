@@ -6,7 +6,7 @@ import { MenuProvider } from "src/lib/MenuContext";
 import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
-  title: "CheeseBalloon",
+  title: "치즈벌룬",
   description:
     "치지직과 아프리카TV 방송인들의 주요 데이터들을 수집하여 제공합니다.",
   icons: {

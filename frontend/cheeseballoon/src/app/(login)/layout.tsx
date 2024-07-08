@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "src/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "로그인",
   description: "치즈벌룬 로그인 페이지입니다.",
   icons: {
     icon: "/svgs/cheese.png",

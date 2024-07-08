@@ -69,7 +69,7 @@ export default function Modal({ isOpen, onClose, closeMenu }: ModalProps) {
             >
               <div className={styles.open_navPill}>
                 <Image src={live} alt="" width={20} height={20} />
-                <div className={styles.open_linkdeco}>LIVE 모아보기</div>
+                <div className={styles.open_linkdeco}>실시간 방송</div>
               </div>
             </Link>
           </li>
