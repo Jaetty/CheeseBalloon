@@ -33,3 +33,28 @@
   color: #f8db46;
   text-decoration: none;
 }
+
+@media (max-width: 768px) {
+  .rankbox {
+    box-sizing: border-box;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid #d8d8d8;
+    border-radius: 4px;
+  }
+
+  .maintitle {
+    font-size: clamp(1rem, 2.8vw, 1.25rem);
+  }
+
+  .item {
+    height: 36px;
+    margin: 0 0.5rem;
+  }
+
+  .morecontent {
+    font-size: 0.8rem;
+  }
+}

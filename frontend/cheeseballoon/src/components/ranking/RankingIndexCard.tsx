@@ -82,34 +82,42 @@ export default function RankCard({ item, title, number }: Props) {
       <div className={styles.number}>{number}</div>
       <div className={styles.image}>
         <Link href={`/detail/${item.streamerId}`}>
-          <Image
-            src={profileUrl || noimage.src}
-            alt=""
-            width={44}
-            height={44}
-            onError={() => {
-              handleImageError(item.streamerId);
-            }}
-          />
+          <div className={styles.imageWrapper}>
+            <Image
+              src={profileUrl || noimage.src}
+              alt=""
+              layout="fill"
+              objectFit="cover"
+              onError={() => {
+                handleImageError(item.streamerId);
+              }}
+            />
+          </div>
         </Link>
       </div>
       <div className={styles.name}>
         <Link href={`/detail/${item.streamerId}`} className={styles.link}>
           {item.name}
         </Link>{" "}
-        {logo && <Image src={logo} alt="" width={16} height={16} />}
+        <div className={styles.logo}>
+          {logo && <Image src={logo} alt="" layout="fill" objectFit="cover" />}
+        </div>
       </div>
       {RenderRank && (
         <div className={styles.rank}>
           {item.rankDiff !== undefined && item.rankDiff > 0 && (
             <>
-              <Image src={ArrowUp} alt="" width={7} height={12} />
+              <div className={styles.arrow}>
+                <Image src={ArrowUp} alt="" layout="fill" objectFit="cover" />
+              </div>
               <span>{Math.abs(item.rankDiff)}</span>
             </>
           )}
           {item.rankDiff !== undefined && item.rankDiff < 0 && (
             <>
-              <Image src={ArrowDown} alt="" width={7} height={12} />
+              <div className={styles.arrow}>
+                <Image src={ArrowDown} alt="" layout="fill" objectFit="cover" />
+              </div>
               <span>{Math.abs(item.rankDiff)}</span>
             </>
           )}
