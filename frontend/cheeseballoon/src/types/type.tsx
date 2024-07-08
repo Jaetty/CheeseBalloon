@@ -116,3 +116,9 @@ export interface MobileState {
   isMobile: boolean;
   setIsMobile: (value: boolean) => void;
 }
+
+export interface NoticePageType {
+  pageNum: number;
+  setPageNum: (pageNum: number) => void;
+  resetPageNum: () => void;
+};
