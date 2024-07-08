@@ -90,35 +90,15 @@ export default function DetailCalendarChart() {
           to={endOfYear}
           // emptyColor="#EFF0F2"
           emptyColor="#4e4e4e"
-          // colors={[
-          //   "#FFFBEB",
-          //   "#FEF2C3",
-          //   "#FDE99B",
-          //   "#FCE173",
-          //   "#FBD84B",
-          //   "#FBCF23",
-          //   "#F0C105",
-          //   "#C8A104",
-          // ]}
-          // colors={[
-          //   "#F6EEA2",
-          //   "#F5EA8F",
-          //   "#F3E77C",
-          //   "#F1E46A",
-          //   "#EFE057",
-          //   "#EEDD44",
-          //   "#ECD932",
-          //   "#EAD51C",
-          // ]}
           colors={[
-            "#FDFCEC",
-            "#FAF5C7",
-            "#F6EEA2",
-            "#F5EA8F",
-            "#F3E77C",
-            "#F1E46A",
-            "#EEDD44",
-            "#EAD51C",
+            "#FDF3C4",
+            "#FFE7AD",
+            "#FFE099",
+            "#FFD470",
+            "#FFC847",
+            "#FFC233",
+            "#FFB60A",
+            "#F5AB00",
           ]}
           margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
           // yearLegend={(year: number) => ""}
@@ -138,17 +118,17 @@ export default function DetailCalendarChart() {
               fill: "white",
             },
           }}
-          // legends={[
-          //   {
-          //     anchor: "top",
-          //     direction: "row",
-          //     translateY: 36,
-          //     itemCount: 8,
-          //     itemWidth: 34,
-          //     itemHeight: 36,
-          //     itemDirection: "top-to-bottom",
-          //   },
-          // ]}
+          legends={[
+            {
+              anchor: "top",
+              direction: "row",
+              translateY: -40,
+              itemCount: 6,
+              itemWidth: 34,
+              itemHeight: 36,
+              itemDirection: "top-to-bottom",
+            },
+          ]}
           minValue={0}
           maxValue={1440}
           tooltip={customTooltip}
