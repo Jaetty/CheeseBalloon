@@ -11,11 +11,13 @@ import searchBtn from "src/stores/search_button.png";
 import { isMobileState } from "src/stores/store";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import SearchModal from "src/components/nav/searchbar/MobileSearch";
 
 export default function Nav() {
   const isMobile = isMobileState((state) => state.isMobile);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,6 +39,16 @@ export default function Nav() {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  const openSearchModal = () => {
+    setIsSearchModalOpen(!isSearchModalOpen);
+  };
+
+  useEffect(() => {
+    if (!isSmallScreen) {
+      setIsSearchModalOpen(false);
+    }
+  }, [isSmallScreen]);
 
   return (
     <div>
@@ -62,6 +74,7 @@ export default function Nav() {
                 alt="Search Button"
                 width={25}
                 height={25}
+                onClick={openSearchModal}
               />
             )}
           </div>
@@ -74,6 +87,9 @@ export default function Nav() {
           onClose={handleMenuToggle}
           closeMenu={closeMenu}
         />
+      )}
+      {isSmallScreen && isSearchModalOpen && (
+        <SearchModal onClose={() => setIsSearchModalOpen(false)} />
       )}
     </div>
   );
