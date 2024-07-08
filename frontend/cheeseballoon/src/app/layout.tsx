@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/svgs/cheese.png",
   },
+  keywords: ['치즈벌룬', '아프리카tv', '치지직', '방송 통계', '랭킹', '인터넷 방송'],
 };
 
 export default function RootLayout({

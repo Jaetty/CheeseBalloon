@@ -7,6 +7,7 @@ import {
   LiveData,
   FavDataType,
   MobileState,
+  NoticePageType,
 } from "src/types/type";
 import { persist } from "zustand/middleware";
 
@@ -64,4 +65,23 @@ const isMobileState = create(
   )
 );
 
-export { useToggleState, RecommendState, FavState, isMobileState };
+const noticePageState = create(
+  persist<NoticePageType>(
+    (set) => ({
+      pageNum: 1,
+      setPageNum: (pageNum) => set({ pageNum }),
+      resetPageNum: () => set({ pageNum: 1 }),
+    }),
+    {
+      name: "notice-page",
+    }
+  )
+);
+
+export {
+  useToggleState,
+  RecommendState,
+  FavState,
+  isMobileState,
+  noticePageState,
+};

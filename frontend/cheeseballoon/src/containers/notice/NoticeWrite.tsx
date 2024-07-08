@@ -84,10 +84,10 @@ export default function NoticeWrite() {
       isError = true;
     }
 
-    if (!thumbnail) {
-      shakeElement("thumbnailInput");
-      isError = true;
-    }
+    // if (!thumbnail) {
+    //   shakeElement("thumbnailInput");
+    //   isError = true;
+    // }
 
     if (isError) {
       return;
@@ -100,7 +100,7 @@ export default function NoticeWrite() {
       },
       body: JSON.stringify(requestBody),
     });
-
+    
     if (response.ok) {
       router.push("/notice");
     }
@@ -118,33 +118,37 @@ export default function NoticeWrite() {
             onChange={handleTitleChange}
           />
         </div>
-        <div>
-          <div className={styles["thumbnail-container"]}>
-            <div className={styles["thumbnail-subtitle"]}>썸네일</div>
-            <input
-              id="thumbnailInput"
-              type="file"
-              accept=".jpg, .jpeg, .png"
-              className={styles["thumbnail-input"]}
-              onChange={handleThumbnailChange}
-            />
-          </div>
-          {thumbnail && (
-            <img
-              src={thumbnail || ""}
-              alt="썸네일"
-              className={styles["thumbnail-preview"]}
-            />
-          )}
-        </div>
         <div id="editorContainer" className={styles["editor-container"]}>
           <TinyMCE setContentProps={setContent} />
         </div>
 
         <div className={styles["submit-container"]}>
-          <button type="button" onClick={handleSubmit}>
-            등록
-          </button>
+          <div>
+            <div className={styles["thumbnail-container"]}>
+              <div className={styles["thumbnail-subtitle"]}>썸네일</div>
+              <input
+                id="thumbnailInput"
+                type="file"
+                accept=".jpg, .jpeg, .png"
+                className={styles["thumbnail-input"]}
+                onChange={handleThumbnailChange}
+              />
+            </div>
+            {thumbnail && (
+              <img
+                src={thumbnail || ""}
+                alt="썸네일"
+                className={styles["thumbnail-preview"]}
+              />
+            )}
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className={styles["submit-button"]}
+            >
+              등록
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -13,6 +13,10 @@
   box-sizing: border-box;
 }
 
+.chart {
+  padding: 1rem;
+}
+
 .viewer {
   display: grid;
   gap: 3rem;
@@ -52,10 +56,9 @@
 }
 
 .positive {
-    color: #8ce09e;
-  }
-  
-  .negative {
-    color: #d38883;
-  }
-  
+  color: #8ce09e;
+}
+
+.negative {
+  color: #d38883;
+}
