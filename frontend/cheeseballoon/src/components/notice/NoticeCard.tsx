@@ -1,5 +1,5 @@
 import Link from "next/link";
-import error from "public/svgs/no_image.jpg";
+import error from "public/svgs/cheese3.png";
 import styles from "src/components/notice/NoticeCard.module.scss";
 
 interface NoticeDataType {
