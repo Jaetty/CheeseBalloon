@@ -15,6 +15,10 @@ interface NoticeDataType {
   thumbnail: string;
   regDt: Date;
   nickname: string;
+  prevNoticeTitle : string;
+  prevNoticeId : number;
+  nextNoticeTitle : string;
+  nextNoticeId : number;
 }
 
 async function getData(api: string, id: string) {

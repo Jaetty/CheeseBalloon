@@ -118,17 +118,17 @@ export default function DetailCalendarChart() {
               fill: "white",
             },
           }}
-          legends={[
-            {
-              anchor: "top",
-              direction: "row",
-              translateY: -40,
-              itemCount: 6,
-              itemWidth: 34,
-              itemHeight: 36,
-              itemDirection: "top-to-bottom",
-            },
-          ]}
+          // legends={[
+          //   {
+          //     anchor: "top",
+          //     direction: "row",
+          //     translateY: -40,
+          //     itemCount: 6,
+          //     itemWidth: 34,
+          //     itemHeight: 36,
+          //     itemDirection: "top-to-bottom",
+          //   },
+          // ]}
           minValue={0}
           maxValue={1440}
           tooltip={customTooltip}
