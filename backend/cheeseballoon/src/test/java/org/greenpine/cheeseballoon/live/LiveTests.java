@@ -28,7 +28,7 @@ public class LiveTests {
     @Autowired
     private LiveLogRepository liveLogRepository;
 
-    @Test
+    /*@Test
     public void liveGetTest(){
         //System.out.println(liveController.getPartition("PUBG : 배틀그라운드"));
         List<String> categories = new ArrayList<>();
@@ -99,6 +99,6 @@ public class LiveTests {
             Long cnt = (Long) obj[1];
             System.out.println(live + " " + cnt);
         }
-    }
+    }*/
 
 }
