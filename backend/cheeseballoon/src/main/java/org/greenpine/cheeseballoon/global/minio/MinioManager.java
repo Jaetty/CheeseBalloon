@@ -15,7 +15,7 @@ import java.util.UUID;
 public class MinioManager {
     @Value("${minio.sslUrl}")
     private String minioSslUrl;
-    
+
     private final MinioClient minioClient;
 
     public String uploadFile(MultipartFile file, String bucketName) throws Exception {
