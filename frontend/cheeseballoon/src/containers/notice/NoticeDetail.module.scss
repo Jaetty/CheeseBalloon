@@ -93,6 +93,9 @@
     }
     .rightText {
       margin-left: 3rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }
