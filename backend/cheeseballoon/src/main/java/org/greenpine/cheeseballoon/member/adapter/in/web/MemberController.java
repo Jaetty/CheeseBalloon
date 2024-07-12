@@ -95,7 +95,7 @@ public class MemberController {
     public ResponseEntity<CustomBody> loginKakao(@RequestParam String code) {
         log.info("login/kakao - Call");
         System.out.println(code);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(code);
         /*try {
             UserInfoDto userInfoDto = oauthService.getKakaoUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
