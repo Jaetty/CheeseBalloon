@@ -33,7 +33,7 @@ export default function NoticeDetail() {
   const [date, setDate] = useState<string>("");
   const router = useRouter();
 
-  const { id } = useParams();
+  const { page, id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,14 +50,14 @@ export default function NoticeDetail() {
         const formattedDate = `${dateObj.getFullYear()}/${(dateObj.getMonth() + 1).toString().padStart(2, "0")}/${dateObj.getDate().toString().padStart(2, "0")} (${dayOfWeek})`;
         setDate(formattedDate);
       } else {
-        router.push("/error");
+        router.push("/notice");
       }
     };
     fetchData();
   }, [id, router]);
 
   function handleMovePage(noticeId: number) {
-    router.push(`/notice/${noticeId}`);
+    router.push(`/notice/${page}/${noticeId}`);
   }
 
   return (
@@ -110,7 +110,7 @@ export default function NoticeDetail() {
                 {noticeData.prevNoticeTitle}
               </span>
             ) : (
-              <span className={styles.rightText}>이전 글이 없습니다</span>
+              <span className={styles.noText}>이전 글이 없습니다</span>
             )}
           </div>
           <div className={styles.lineItem}>
@@ -130,7 +130,7 @@ export default function NoticeDetail() {
                 {noticeData.nextNoticeTitle}
               </span>
             ) : (
-              <span className={styles.rightText}>다음 글이 없습니다</span>
+              <span className={styles.noText}>다음 글이 없습니다</span>
             )}
           </div>
         </div>
