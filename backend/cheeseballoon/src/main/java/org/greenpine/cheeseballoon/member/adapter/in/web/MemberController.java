@@ -61,7 +61,7 @@ public class MemberController {
     @GetMapping("/login/google")
     public ResponseEntity<CustomBody> loginGoogle(@RequestParam String code){
         log.info("login/google - Call");
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, code));
+        return ResponseEntity.ok(null);
         /*try{
             UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
@@ -95,7 +95,7 @@ public class MemberController {
     public ResponseEntity<CustomBody> loginKakao(@RequestParam String code) {
         log.info("login/kakao - Call");
         System.out.println(code);
-        return ResponseEntity.ok(code);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, code));
         /*try {
             UserInfoDto userInfoDto = oauthService.getKakaoUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
