@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "src/containers/notice/NoticeWrite.module.scss";
 import TinyMCE from "src/components/notice/TextEditor";
+import noImg from "public/svgs/no_image.jpg";
 
 const AUTH = process.env.NEXT_PUBLIC_BEARER_AUTH;
 const NOTICE_API = process.env.NEXT_PUBLIC_NOTICE_API_URL;
@@ -70,6 +71,10 @@ export default function NoticeWrite() {
     }
   };
 
+  const handleThumbnailDelete = () => {
+    setThumbnail(null);
+  };
+
   const handleSubmit = async () => {
     const requestBody = { title, content, thumbnail };
 
@@ -84,11 +89,6 @@ export default function NoticeWrite() {
       isError = true;
     }
 
-    // if (!thumbnail) {
-    //   shakeElement("thumbnailInput");
-    //   isError = true;
-    // }
-
     if (isError) {
       return;
     }
@@ -100,7 +100,7 @@ export default function NoticeWrite() {
       },
       body: JSON.stringify(requestBody),
     });
-    
+
     if (response.ok) {
       router.push("/notice");
     }
@@ -122,25 +122,38 @@ export default function NoticeWrite() {
           <TinyMCE setContentProps={setContent} />
         </div>
 
-        <div className={styles["submit-container"]}>
-          <div>
-            <div className={styles["thumbnail-container"]}>
-              <div className={styles["thumbnail-subtitle"]}>썸네일</div>
-              <input
-                id="thumbnailInput"
-                type="file"
-                accept=".jpg, .jpeg, .png"
-                className={styles["thumbnail-input"]}
-                onChange={handleThumbnailChange}
-              />
-            </div>
-            {thumbnail && (
+        <div>
+          <div className={styles["thumbnail-container"]}>
+            <div className={styles["thumbnail-subtitle"]}>썸네일</div>
+            <input
+              id="thumbnailInput"
+              type="file"
+              accept=".jpg, .jpeg, .png"
+              className={styles["thumbnail-input"]}
+              onChange={handleThumbnailChange}
+            />
+            {thumbnail ? (
+              <div>
+                <img
+                  src={thumbnail || ""}
+                  alt="썸네일"
+                  className={styles["thumbnail-preview"]}
+                />
+                <div>
+                  <button type="button" onClick={handleThumbnailDelete}>
+                    삭제
+                  </button>
+                </div>
+              </div>
+            ) : (
               <img
-                src={thumbnail || ""}
-                alt="썸네일"
+                src={noImg.src || ""}
+                alt="이미지 없음"
                 className={styles["thumbnail-preview"]}
               />
             )}
+          </div>
+          <div className={styles["submit-container"]}>
             <button
               type="button"
               onClick={handleSubmit}
