@@ -61,7 +61,7 @@ public class MemberController {
     @GetMapping("/login/google")
     public ResponseEntity<CustomBody> loginGoogle(@RequestParam String code){
         log.info("login/google - Call");
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, code));
         /*try{
             UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
