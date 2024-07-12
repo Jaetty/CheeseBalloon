@@ -14,7 +14,7 @@ export default function Search() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth <= 1300);
+      setIsSmallScreen(window.innerWidth < 768);
     };
 
     handleResize(); // 초기 사이즈 설정
@@ -41,7 +41,7 @@ export default function Search() {
   };
 
   if (isSmallScreen) {
-    return null; // 화면 크기가 1300px 이하일 때 아예 렌더링하지 않음
+    return null;
   }
 
   return (

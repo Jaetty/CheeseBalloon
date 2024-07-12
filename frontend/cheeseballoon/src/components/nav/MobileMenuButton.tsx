@@ -16,7 +16,15 @@ export default function MobileMenuButton({ onToggle }: MobileMenuButtonProps) {
 
   return (
     <div className={styles1.button}>
-      <Image src={menu} alt="" onClick={handleClick} width={40} height={40} />
+      <div className={styles1.Wrapper}>
+        <Image
+          src={menu}
+          alt=""
+          onClick={handleClick}
+          layout="fill"
+          objectFit="cover"
+        />
+      </div>
     </div>
   );
 }

@@ -3,11 +3,16 @@
 import Image from "next/image";
 import Logo from "public/svgs/logo.png";
 import Link from "next/link";
+import styles from "src/components/nav/MainLogo.module.scss";
 
 export default function MainLogo() {
   return (
-    <Link href="/">
-      <Image src={Logo} alt="" width={140} height={24} />
-    </Link>
+    <div className={styles.mainLogo}>
+      <Link href="/">
+        <div className={styles.imageWrapper}>
+          <Image src={Logo} alt="" layout="fill" />
+        </div>
+      </Link>
+    </div>
   );
 }

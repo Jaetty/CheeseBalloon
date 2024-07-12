@@ -15,7 +15,7 @@
 
 .searchbar {
   left: 50%;
-  min-width: 25%;
+  min-width: 35%;
 }
 
 .islogin {
@@ -42,4 +42,14 @@
   padding-top: 0.25rem;
   position: absolute;
   left: calc(100% + 1rem);
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 0px 10px 0px 10px;
+  }
+  .mainlogo {
+    padding-top: 0.15rem;
+    left: calc(100% + 0.3rem);
+  }
 }
