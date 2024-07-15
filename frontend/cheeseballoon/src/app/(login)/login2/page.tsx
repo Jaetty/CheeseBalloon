@@ -2,6 +2,7 @@
 
 /* eslint-disable camelcase */
 
+import { useSession, signIn, signOut } from "next-auth/react";
 import kakao_login from "src/stores/kakao_login_large_narrow.png";
 import logo from "public/svgs/logo.png";
 import styles from "src/app/(login)/login/page.module.scss";
@@ -14,6 +15,7 @@ export default function Login() {
   const handleLogin = () => {
     window.location.href = kakaoURL;
   };
+
   return (
     <div className={styles.login}>
       <div className={styles.left}>
@@ -36,6 +38,26 @@ export default function Login() {
               onClick={handleLogin}
               role="presentation"
             />
+            <button
+              type="button"
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL,
+                })
+              }
+            >
+              구글 로그인
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                signIn("kakao", {
+                  callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL,
+                })
+              }
+            >
+              카카오 로그인
+            </button>
           </div>
         </div>
         {/* <div className={styles.sign_in}>
