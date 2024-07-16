@@ -64,7 +64,7 @@ export default function DetailProfileContent() {
       if (streamerDataResponse.status === "OK") {
         setStreamerData(streamerDataResponse.data);
       } else {
-        router.push("/error");
+        router.push("/home");
       }
       if (streamerDataResponse.status === "OK") {
         setRankData(rankDataResponse.data);
