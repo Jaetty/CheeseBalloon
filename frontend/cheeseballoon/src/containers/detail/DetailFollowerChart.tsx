@@ -10,8 +10,7 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 type AlignType = "center";
-type XaxisType = "datetime"
-
+type XaxisType = "datetime";
 
 type FollowerDataType = {
   data: [date: string, follower: number];
@@ -88,13 +87,15 @@ export default function DetailFollowerChart() {
         },
       },
       chart: {
-        defaultLocale: 'ko',
-        locales: [{
-          name: 'ko',
-          options: {
-            shortDays: ['일', '월', '화', '수', '목', '금', '토']
-          }
-        }],
+        defaultLocale: "ko",
+        locales: [
+          {
+            name: "ko",
+            options: {
+              shortDays: ["일", "월", "화", "수", "목", "금", "토"],
+            },
+          },
+        ],
         animations: {
           enabled: false,
         },
@@ -114,8 +115,8 @@ export default function DetailFollowerChart() {
       tooltip: {
         x: {
           show: true,
-          format: 'MM.dd (ddd)'
-        }
+          format: "MM.dd (ddd)",
+        },
       },
       xaxis: {
         type: "datetime" as XaxisType,
@@ -127,11 +128,11 @@ export default function DetailFollowerChart() {
           },
           rotate: 0,
           hideOverlappingLabels: true,
-          format: 'MM.dd (ddd)'
+          format: "MM.dd (ddd)",
         },
         tooltip: {
-          enabled: false
-        }
+          enabled: false,
+        },
       },
       yaxis: [
         {
@@ -144,13 +145,8 @@ export default function DetailFollowerChart() {
               colors: "white",
               fontWeight: "bold",
             },
-            formatter: (value: number) => {
-              if (value > 100000) {
-                const formattedValue = (value / 10000).toFixed(1);
-                return `${formattedValue}만명`;
-              }
-              return `${value.toLocaleString()}명`;
-            },
+            formatter: (value: number) =>
+              value === null ? `0명` : `${value.toLocaleString()}명`,
           },
         },
       ],
@@ -160,7 +156,7 @@ export default function DetailFollowerChart() {
         borderColor: "#bcbcbc",
         padding: {
           left: 10,
-          right: 40
+          right: 40,
         },
         xaxis: {
           lines: {
@@ -192,7 +188,7 @@ export default function DetailFollowerChart() {
         options={chartData.options}
         series={chartData.series}
         className={style.chart}
-        height="265%"
+        height="252%"
         width="100%"
       />
     </div>

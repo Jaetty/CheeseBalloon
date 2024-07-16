@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import afreeca from "public/svgs/afreeca.svg";
+import afreeca from "src/stores/afreeca.ico";
 import chzzk from "public/svgs/chzzk.svg";
 import error from "public/svgs/blank_profile.png";
 import style from "src/containers/detail/DetailProfileContent.module.scss";
