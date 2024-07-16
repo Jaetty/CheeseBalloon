@@ -4,6 +4,7 @@
   border-width: 1px 0px;
   border-style: solid;
   border-color: #f4f4f4;
+  min-width: 900px;
 }
 
 .subitem {
@@ -23,13 +24,13 @@
 }
 
 .index {
-  flex: 0.7;
+  flex: 0.7 0 7%;
   font-size: 1.5rem;
   font-weight: 700;
 }
 
 .nameinfo {
-  flex: 8.3;
+  flex: 6 0 60%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -64,13 +65,13 @@
 }
 
 .info {
-  flex: 1.8;
-  margin-left: auto;
+  flex: 2.6 0 26%;
   font-size: 1rem;
+  text-align: right;
 }
 
 .fav {
-  flex: 0.7;
+  flex: 0.7 0 7%;
   text-align: right;
   max-height: 20px;
 }
@@ -97,7 +98,7 @@
 }
 
 .liveindex {
-  flex: 0.7;
+  flex: 0.7 0 7%;
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -107,7 +108,7 @@
   flex-direction: row;
   align-items: center;
   gap: 1.2rem;
-  flex: 2.3;
+  flex: 2 0 20%;
 }
 
 .livename {
@@ -135,7 +136,7 @@
   vertical-align: middle;
 }
 .livetitleinfo {
-  flex: 5.8;
+  flex: 4.4 1 44%;
   font-weight: 300;
   font-size: 0.8rem;
   line-height: 1.5rem;
@@ -150,7 +151,7 @@
 }
 
 .livesubinfo {
-  flex: 1.7;
+  flex: 1.7 0 17%;
   font-weight: 500;
   font-size: 0.8rem;
   line-height: 1.5rem;
@@ -164,7 +165,7 @@
 }
 
 .liveinfo {
-  flex: 1;
+  flex: 0.7 0 7%;
   margin-left: auto;
   font-size: 0.8rem;
   line-height: 1.5rem;
@@ -174,7 +175,7 @@
 }
 
 .livefav {
-  flex: 1;
+  flex: 0.5 0 5%;
   text-align: right;
   max-height: 20px;
 }
@@ -201,6 +202,14 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    width: 100%;
+    box-sizing: border-box;
+    border-width: 1px 0px;
+    border-style: solid;
+    border-color: #f4f4f4;
+    min-width: 325px;
+  }
   .index {
     flex: 1 1;
     font-size: 3.5vw;
