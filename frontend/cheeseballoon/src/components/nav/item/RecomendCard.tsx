@@ -1,7 +1,7 @@
 import styles from "src/components/nav/item/FavCard.module.scss";
 import Image from "next/image";
 import chzzk from "public/svgs/chzzk.svg";
-import aflogo from "public/svgs/afreeca.svg";
+import aflogo from "src/stores/afreeca.ico";
 import { useToggleState } from "src/stores/store";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { LiveData } from "src/types/type";
