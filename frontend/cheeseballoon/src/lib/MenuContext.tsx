@@ -9,11 +9,11 @@ import {
 } from "react";
 import OpenMenu from "src/components/nav/item/OpenIndex";
 import ClosedMenu from "src/components/nav/item/ClosedIndex";
-
 import { useToggleState, isMobileState } from "../stores/store";
 
 interface MenuProviderProps {
   initialToggleValue: boolean;
+  initialIsMobile: boolean;
   children: ReactNode;
 }
 
@@ -23,11 +23,12 @@ const MenuContext = createContext({});
 // Provider 생성
 export function MenuProvider({
   initialToggleValue,
+  initialIsMobile,
   children,
 }: MenuProviderProps) {
   const { value, toggle } = useToggleState();
   const [menuValue, setMenuValue] = useState(initialToggleValue);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(initialIsMobile);
   const sIsMobile = isMobileState((state) => state.setIsMobile);
 
   useEffect(() => {
@@ -35,6 +36,10 @@ export function MenuProvider({
   }, [value]);
 
   useEffect(() => {
+    // 초기값 설정
+    setIsMobile(initialIsMobile);
+    sIsMobile(initialIsMobile);
+
     const handleResize = () => {
       const isMobileSize = window.innerWidth < 768;
       setIsMobile(isMobileSize);
@@ -47,7 +52,7 @@ export function MenuProvider({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [sIsMobile]);
+  }, [initialIsMobile, sIsMobile]);
 
   return (
     <MenuContext.Provider value={value}>
