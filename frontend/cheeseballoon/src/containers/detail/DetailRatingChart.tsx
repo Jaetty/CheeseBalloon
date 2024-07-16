@@ -209,7 +209,7 @@ export default function DetailRatingChart() {
           type="line"
           options={chartData.options}
           series={chartData.series}
-          height="215%"
+          height="213%"
           width="100%"
           className={style.chart}
         />
