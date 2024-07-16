@@ -15,6 +15,10 @@ interface NoticeDataType {
   thumbnail: string;
   regDt: Date;
   nickname: string;
+  prevNoticeTitle: string;
+  prevNoticeId: number;
+  nextNoticeTitle: string;
+  nextNoticeId: number;
 }
 
 async function getData(api: string, id: string) {
@@ -29,7 +33,7 @@ export default function NoticeDetail() {
   const [date, setDate] = useState<string>("");
   const router = useRouter();
 
-  const { id } = useParams();
+  const { page, id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,11 +50,15 @@ export default function NoticeDetail() {
         const formattedDate = `${dateObj.getFullYear()}/${(dateObj.getMonth() + 1).toString().padStart(2, "0")}/${dateObj.getDate().toString().padStart(2, "0")} (${dayOfWeek})`;
         setDate(formattedDate);
       } else {
-        router.push("/error");
+        router.push("/notice");
       }
     };
     fetchData();
   }, [id, router]);
+
+  function handleMovePage(noticeId: number) {
+    router.push(`/notice/${page}/${noticeId}`);
+  }
 
   return (
     noticeData && (
@@ -87,11 +95,43 @@ export default function NoticeDetail() {
         <div className={styles.endline}>
           <div className={styles.lineItem}>
             <span className={styles.leftText}>&uarr;이전글</span>
-            <span className={styles.rightText}>이전 글이 없습니다</span>
+            {noticeData.prevNoticeId ? (
+              <span
+                className={styles.rightText}
+                onClick={() => handleMovePage(noticeData.prevNoticeId)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleMovePage(noticeData.prevNoticeId);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+              >
+                {noticeData.prevNoticeTitle}
+              </span>
+            ) : (
+              <span className={styles.noText}>이전 글이 없습니다</span>
+            )}
           </div>
           <div className={styles.lineItem}>
             <span className={styles.leftText}>&darr;다음글</span>
-            <span className={styles.rightText}>다음 글이 없습니다</span>
+            {noticeData.nextNoticeId ? (
+              <span
+                className={styles.rightText}
+                onClick={() => handleMovePage(noticeData.nextNoticeId)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleMovePage(noticeData.nextNoticeId);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+              >
+                {noticeData.nextNoticeTitle}
+              </span>
+            ) : (
+              <span className={styles.noText}>다음 글이 없습니다</span>
+            )}
           </div>
         </div>
       </div>

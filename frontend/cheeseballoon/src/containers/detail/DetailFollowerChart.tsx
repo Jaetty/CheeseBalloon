@@ -10,6 +10,8 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 type AlignType = "center";
+type XaxisType = "datetime"
+
 
 type FollowerDataType = {
   data: [date: string, follower: number];
@@ -51,17 +53,9 @@ export default function DetailFollowerChart() {
       const followers = dailyData.map((item: DailyDataType) =>
         parseInt(item.follower, 10)
       );
-      const datesChange = dates.map((dateString: string) => {
-        const parts = dateString.split("-");
-        const [year, month, day] = parts.map(Number);
-        const dateObj = new Date(year, month - 1, day);
-        const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
-          weekday: "short",
-        });
-        return `${year}.${month}.${day} (${dayOfWeek})`;
-      });
+
       setFollowerArray(followers);
-      setDateXaxis(datesChange);
+      setDateXaxis(dates);
       setFollowerData(responseData.data);
     };
     fetchData();
@@ -94,6 +88,13 @@ export default function DetailFollowerChart() {
         },
       },
       chart: {
+        defaultLocale: 'ko',
+        locales: [{
+          name: 'ko',
+          options: {
+            shortDays: ['일', '월', '화', '수', '목', '금', '토']
+          }
+        }],
         animations: {
           enabled: false,
         },
@@ -110,14 +111,27 @@ export default function DetailFollowerChart() {
       markers: {
         size: 3,
       },
+      tooltip: {
+        x: {
+          show: true,
+          format: 'MM.dd (ddd)'
+        }
+      },
       xaxis: {
+        type: "datetime" as XaxisType,
         categories: dateXaxis,
         labels: {
           style: {
             colors: "white",
             fontWeight: "bold",
           },
+          rotate: 0,
+          hideOverlappingLabels: true,
+          format: 'MM.dd (ddd)'
         },
+        tooltip: {
+          enabled: false
+        }
       },
       yaxis: [
         {
@@ -144,6 +158,10 @@ export default function DetailFollowerChart() {
         show: true,
         strokeDashArray: 5,
         borderColor: "#bcbcbc",
+        padding: {
+          left: 10,
+          right: 40
+        },
         xaxis: {
           lines: {
             show: false,
@@ -173,6 +191,7 @@ export default function DetailFollowerChart() {
         type="line"
         options={chartData.options}
         series={chartData.series}
+        className={style.chart}
         height="265%"
         width="100%"
       />

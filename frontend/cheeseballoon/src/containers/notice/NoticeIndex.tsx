@@ -1,9 +1,9 @@
 "use client";
 
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NoticeCard from "src/components/notice/NoticeCard";
 import styles from "src/containers/notice/NoticeIndex.module.scss";
-import { noticePageState } from "src/stores/store";
 
 interface NoticeDataType {
   noticeId: number;
@@ -19,10 +19,15 @@ const API_URL = process.env.NEXT_PUBLIC_NOTICE_ALL_API_URL;
 export default function NoticeIndex() {
   const [noticeData, setNoticeData] = useState<NoticeDataType[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const { pageNum, setPageNum } = noticePageState();
+  const [pageNum, setPageNum] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>();
+
+  const { page } = useParams();
+  const router = useRouter();
 
   const pageSize = 5;
   const pageNumbers = [];
+
   if (noticeData) {
     for (let i = 1; i <= Math.ceil(noticeData.length / pageSize); i += 1) {
       pageNumbers.push(i);
@@ -34,12 +39,32 @@ export default function NoticeIndex() {
   }, [pageNum]);
 
   useEffect(() => {
+    if (page && typeof page === "string") {
+      setPageNum(parseInt(page, 10));
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (Array.isArray(page)) {
+      router.push("/notice");
+      return;
+    }
+    if (page && lastPage) {
+      const pageInt = parseInt(page, 10);
+      if (Number.isNaN(pageInt) || pageInt < 1 || pageInt > lastPage) {
+        router.push("/notice");
+      }
+    }
+  }, [lastPage, page, router]);
+
+  useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const res = await fetch(`${API_URL}?limit=1000&offset=0`);
         const data = await res.json();
         setNoticeData(data.data);
+        setLastPage(Math.ceil(data.data.length / pageSize));
       } finally {
         setLoading(false);
       }
@@ -48,7 +73,7 @@ export default function NoticeIndex() {
   }, []);
 
   const handlePage = (num: number) => {
-    setPageNum(num);
+    router.push(`/notice/${num}`);
   };
 
   const handlePageKeyDown = (

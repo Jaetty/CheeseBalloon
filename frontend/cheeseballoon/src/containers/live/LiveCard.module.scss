@@ -82,6 +82,9 @@
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  white-space: normal;
+  // line-height: 1rem;
+  // max-height: 2rem;
   overflow: hidden;
   text-overflow: ellipsis;
   padding-left: 1rem;

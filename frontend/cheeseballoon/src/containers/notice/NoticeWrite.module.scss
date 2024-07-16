@@ -18,8 +18,13 @@
   width: 99%;
 }
 
+.editor-container {
+  margin-bottom: 1rem;
+}
 
 .thumbnail-container {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 2rem;
 }
 
@@ -34,12 +39,20 @@
 }
 
 .thumbnail-preview {
+  margin-right: auto;
   width: 300px;
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
+
 .submit-container {
-  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-button {
+  margin-left: auto;
 }
 
 .shake {

@@ -10,6 +10,7 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 type AlignType = "center";
+type XaxisType = "datetime"
 
 type RatingDataType = {
   totalRating: number;
@@ -55,22 +56,15 @@ export default function DetailRatingChart() {
       const platformRatings = dailyData.map(
         (item: DailyRatingType) => item.platform
       );
-      const datesChange = dates.map((dateString: string) => {
-        const parts = dateString.split("-");
-        const [year, month, day] = parts.map(Number);
-        const dateObj = new Date(year, month - 1, day);
-        const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
-          weekday: "short",
-        });
-        return `${year}.${month}.${day} (${dayOfWeek})`;
-      });
+
       setTotalRatingArray(totalRatings);
       setplatformRatingArray(platformRatings);
-      setDateXaxis(datesChange);
+      setDateXaxis(dates);
       setRatingData(responseData.data);
     };
     fetchData();
   }, [id, date]);
+
 
   const maxYaxis = () => {
     const maxRating = Math.max(...platformRatingArray);
@@ -106,6 +100,13 @@ export default function DetailRatingChart() {
         },
       },
       chart: {
+        defaultLocale: 'ko',
+        locales: [{
+          name: 'ko',
+          options: {
+            shortDays: ['일', '월', '화', '수', '목', '금', '토']
+          }
+        }],
         animations: {
           enabled: false,
         },
@@ -129,14 +130,28 @@ export default function DetailRatingChart() {
           colors: "white",
         },
       },
+      tooltip: {
+        x: {
+          show: true,
+          format: 'MM.dd (ddd)'
+        }
+      },
       xaxis: {
+        type: "datetime" as XaxisType,
+        
         categories: dateXaxis,
         labels: {
           style: {
             colors: "white",
             fontWeight: "bold",
           },
+          rotate: 0,
+          hideOverlappingLabels: true,
+          format: 'MM.dd (ddd)'
         },
+        tooltip: {
+          enabled: false
+        }
       },
       yaxis: [
         {
@@ -156,6 +171,10 @@ export default function DetailRatingChart() {
         show: true,
         strokeDashArray: 5,
         borderColor: "#bcbcbc",
+        padding: {
+          left: 10,
+          right: 40
+        },
         xaxis: {
           lines: {
             show: false,
@@ -192,6 +211,7 @@ export default function DetailRatingChart() {
           series={chartData.series}
           height="215%"
           width="100%"
+          className={style.chart}
         />
       </div>
       {ratingData && (
