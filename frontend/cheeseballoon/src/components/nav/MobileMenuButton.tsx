@@ -21,8 +21,9 @@ export default function MobileMenuButton({ onToggle }: MobileMenuButtonProps) {
           src={menu}
           alt=""
           onClick={handleClick}
-          layout="fill"
-          objectFit="cover"
+          fill
+          sizes="(max-width: 768px) 35px, 40px"
+          style={{ objectFit: "cover" }}
         />
       </div>
     </div>

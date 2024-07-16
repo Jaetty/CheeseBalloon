@@ -126,8 +126,9 @@ export default function RestRanking({ data }: Props) {
                         <Image
                           src={updatedUrls[item.streamerId] || noimage.src}
                           alt=""
-                          layout="fill"
-                          objectFit="cover"
+                          fill
+                          style={{ objectFit: "cover" }}
+                          sizes="(max-width: 768px) 6vw, 48px"
                           onError={() => handleImageError(item.streamerId)}
                         />
                       </div>
@@ -168,15 +169,6 @@ export default function RestRanking({ data }: Props) {
                     </Link>
                   </div>
                 )}
-                {/* {!isMobile ? (
-                  <div className={style.liveinfo}>
-                    {item.diff.toLocaleString()} 명
-                  </div>
-                ) : (
-                  <div className={style.liveinfo}>
-                    {item.diff.toLocaleString()}
-                  </div>
-                )} */}
                 {!isMobile && (
                   <div className={style.liveinfo}>
                     {item.diff.toLocaleString()}
@@ -204,8 +196,9 @@ export default function RestRanking({ data }: Props) {
                         <Image
                           src={updatedUrls[item.streamerId] || noimage.src}
                           alt=""
-                          layout="fill"
-                          objectFit="cover"
+                          fill
+                          sizes="(max-width: 768px) 6vw, 48px"
+                          style={{ objectFit: "cover" }}
                           onError={() => handleImageError(item.streamerId)}
                         />
                       </div>
@@ -232,8 +225,9 @@ export default function RestRanking({ data }: Props) {
                             <Image
                               src={ArrowUp}
                               alt=""
-                              layout="fill"
-                              objectFit="cover"
+                              sizes="(max-width: 768px) 1.2vw, 7px"
+                              fill
+                              style={{ objectFit: "cover" }}
                             />
                           </div>
                           <span>{Math.abs(item.rankDiff)}</span>
@@ -244,9 +238,10 @@ export default function RestRanking({ data }: Props) {
                           <div className={style.arrow}>
                             <Image
                               src={ArrowDown}
+                              sizes="(max-width: 768px) 1.2vw, 7px"
                               alt=""
-                              layout="fill"
-                              objectFit="cover"
+                              fill
+                              style={{ objectFit: "cover" }}
                             />
                           </div>
                           <span>{Math.abs(item.rankDiff)}</span>

@@ -9,7 +9,7 @@
 .subitem {
   padding: 0 2rem;
   display: flex;
-  height: 5rem;
+  height: 4rem;
   align-items: center;
   transition: background-color 0.3s ease;
 }
@@ -207,12 +207,6 @@
     font-weight: 700;
   }
 
-  .liveindex {
-    flex: 1 1 8%;
-    font-size: 3.5vw;
-    font-weight: 700;
-  }
-
   .nameinfo {
     flex: 5.5;
     gap: 2vw;
@@ -261,7 +255,7 @@
 
   .arrow {
     width: 1vw;
-    height: 1.714vw;
+    height: 1.7vw;
     min-width: 0.3rem;
     min-height: 0.5142rem;
   }
@@ -271,8 +265,14 @@
     gap: 0.2rem;
   }
 
+  .liveindex {
+    flex: 0 0 8%;
+    font-size: clamp(0.5rem, 2.6vw, 1rem);
+    font-weight: 700;
+  }
+
   .livenameinfo {
-    flex: 2.5 1 25%;
+    flex: 0 0 30%;
     gap: 1.5vw;
   }
 
@@ -289,7 +289,7 @@
   }
 
   .livetitleinfo {
-    flex: 7 1 50%;
+    flex: 0 1 62%;
     font-weight: 300;
     font-size: clamp(0.7rem, 2.3vw, 0.8rem);
     line-height: 1.5rem;
@@ -298,24 +298,10 @@
     color: #ffffff;
     max-width: 80%;
     padding: 0 0 0 2rem;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: normal; /* nowrap 제거 */
+    white-space: nowrap;
     word-break: keep-all; /* 단어가 넘칠 때 줄 바꿈 */
-  }
-
-  .liveinfo {
-    flex: 1.5 1 15%;
-    margin-left: auto;
-    font-size: clamp(0.7rem, 2.3vw, 0.8rem);
-    line-height: 1.5rem;
-    letter-spacing: -0.1px;
-    text-align: right;
-    color: #ffffff;
   }
 }
 
@@ -325,9 +311,5 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 80px;
-  }
-
-  .liveindex {
-    flex: 1 1 10%;
   }
 }

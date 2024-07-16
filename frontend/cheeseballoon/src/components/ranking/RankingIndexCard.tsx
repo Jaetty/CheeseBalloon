@@ -86,8 +86,9 @@ export default function RankCard({ item, title, number }: Props) {
             <Image
               src={profileUrl || noimage.src}
               alt=""
-              layout="fill"
-              objectFit="cover"
+              fill
+              sizes="(max-width:768px) 5vw, 44px"
+              style={{ objectFit: "cover" }}
               onError={() => {
                 handleImageError(item.streamerId);
               }}
@@ -100,7 +101,15 @@ export default function RankCard({ item, title, number }: Props) {
           {item.name}
         </Link>{" "}
         <div className={styles.logo}>
-          {logo && <Image src={logo} alt="" layout="fill" objectFit="cover" />}
+          {logo && (
+            <Image
+              src={logo}
+              alt=""
+              fill
+              sizes="(max-width:768px) 2.8vw, 16px"
+              style={{ objectFit: "cover" }}
+            />
+          )}
         </div>
       </div>
       {RenderRank && (
@@ -108,7 +117,13 @@ export default function RankCard({ item, title, number }: Props) {
           {item.rankDiff !== undefined && item.rankDiff > 0 && (
             <>
               <div className={styles.arrow}>
-                <Image src={ArrowUp} alt="" layout="fill" objectFit="cover" />
+                <Image
+                  src={ArrowUp}
+                  alt=""
+                  fill
+                  sizes="(max-width:768px) 1vw, 7px"
+                  style={{ objectFit: "cover" }}
+                />
               </div>
               <span>{Math.abs(item.rankDiff)}</span>
             </>
@@ -116,7 +131,13 @@ export default function RankCard({ item, title, number }: Props) {
           {item.rankDiff !== undefined && item.rankDiff < 0 && (
             <>
               <div className={styles.arrow}>
-                <Image src={ArrowDown} alt="" layout="fill" objectFit="cover" />
+                <Image
+                  src={ArrowDown}
+                  alt=""
+                  fill
+                  sizes="(max-width:768px) 1vw, 7px"
+                  style={{ objectFit: "cover" }}
+                />
               </div>
               <span>{Math.abs(item.rankDiff)}</span>
             </>

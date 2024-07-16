@@ -10,7 +10,12 @@ export default function MainLogo() {
     <div className={styles.mainLogo}>
       <Link href="/">
         <div className={styles.imageWrapper}>
-          <Image src={Logo} alt="" layout="fill" />
+          <Image
+            src={Logo}
+            alt=""
+            fill
+            sizes="(max-width:768px) 108px, 140px"
+          />
         </div>
       </Link>
     </div>
