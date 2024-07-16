@@ -4,7 +4,7 @@ import styles from "src/components/ranking/RankingIndexCard.module.scss";
 import Image from "next/image";
 import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
-import aflogo from "public/svgs/afreeca.svg";
+import aflogo from "src/stores/afreeca.ico";
 import chzlogo from "public/svgs/chzzk.svg";
 import Link from "next/link";
 import noimage from "public/svgs/blank_profile.png";
