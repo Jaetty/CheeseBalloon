@@ -2,7 +2,7 @@
 
 import style from "src/components/ranking/TopThree.module.scss";
 import Image from "next/image";
-import aflogo from "public/svgs/afreeca.svg";
+import aflogo from "src/stores/afreeca.ico";
 import chzlogo from "public/svgs/chzzk.svg";
 import first from "public/svgs/1st.svg";
 import second from "public/svgs/2nd.svg";

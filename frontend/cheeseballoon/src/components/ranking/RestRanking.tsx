@@ -2,7 +2,7 @@
 
 import style from "src/components/ranking/RestRanking.module.scss";
 import Image from "next/image";
-import aflogo from "public/svgs/afreeca.svg";
+import aflogo from "src/stores/afreeca.ico";
 import chzlogo from "public/svgs/chzzk.svg";
 import nofav from "public/svgs/nofav.svg";
 import fav from "public/svgs/fav.svg";
