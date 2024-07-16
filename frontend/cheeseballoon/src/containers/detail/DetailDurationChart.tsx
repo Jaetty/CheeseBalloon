@@ -132,7 +132,7 @@ export default function DetailDurationChart() {
         {
           min: 0,
           max: 24,
-          tickAmount: 12,
+          tickAmount: 6,
           labels: {
             style: {
               colors: "white",
@@ -187,7 +187,7 @@ export default function DetailDurationChart() {
           options={chartData.options}
           series={chartData.series}
           className={style.chart}
-          height="325%"
+          height="252%"
           width="100%"
         />
       </div>
