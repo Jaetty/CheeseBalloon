@@ -32,7 +32,7 @@ export default function PlatformSelect({
         id="platform-dropdown"
         value={selectedOption}
         onChange={handleSelectChange}
-        className={style.platformselect}
+        className={style.subplatformselect}
       >
         <option value="T">전체 랭킹</option>
         <option value="S">아프리카TV 랭킹</option>

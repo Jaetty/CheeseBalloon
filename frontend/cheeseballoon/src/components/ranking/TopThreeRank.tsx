@@ -2,7 +2,7 @@
 
 import style from "src/components/ranking/TopThree.module.scss";
 import Image from "next/image";
-import aflogo from "public/svgs/afreeca.svg";
+import aflogo from "src/stores/afreeca.ico";
 import chzlogo from "public/svgs/chzzk.svg";
 import first from "public/svgs/1st.svg";
 import second from "public/svgs/2nd.svg";
@@ -164,7 +164,14 @@ export default function TopThreeRanking({ data }: Props) {
             {pathname === "live" ? (
               <div>
                 <div className={style.liveinfo}>
-                  <div className={style.content1}>{item.category}</div>
+                  <div className={style.content1}>
+                    <Link
+                      href={`/live?category=${item.category}`}
+                      className={style.link}
+                    >
+                      {item.category}
+                    </Link>
+                  </div>
                   <div className={style.content2}>
                     {item.diff.toLocaleString()} 명
                   </div>

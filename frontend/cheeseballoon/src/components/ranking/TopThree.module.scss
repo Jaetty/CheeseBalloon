@@ -1,15 +1,19 @@
 .wrapper {
   display: flex;
   flex-direction: row;
-  margin: 0 7.82945% 2rem 7.82945%;
-  justify-content: space-between;
+  margin: 0 auto 2rem auto;
+  // justify-content: center;
+  justify-content: space-around;
+  // gap: 3rem;
+  min-width: 900px;
 }
 
 .box {
   position: relative;
-  background: #3e3e3e;
+  background: #4d4d4d;
   border-radius: 10px;
   width: 31.1926%;
+  max-width: 340px;
   height: 280px;
   display: flex;
   flex-direction: column;
@@ -180,14 +184,6 @@
 .zero {
   color: #3e3e3e;
 }
-
-// .content {
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   padding: 0 0.8rem;
-//   font-size: 0.7rem;
-// }
 
 .rank {
   display: flex;

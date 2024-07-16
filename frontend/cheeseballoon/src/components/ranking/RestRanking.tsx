@@ -2,7 +2,7 @@
 
 import style from "src/components/ranking/RestRanking.module.scss";
 import Image from "next/image";
-import aflogo from "public/svgs/afreeca.svg";
+import aflogo from "src/stores/afreeca.ico";
 import chzlogo from "public/svgs/chzzk.svg";
 import nofav from "public/svgs/nofav.svg";
 import fav from "public/svgs/fav.svg";
@@ -12,6 +12,7 @@ import noimage from "public/svgs/blank_profile.png";
 import { useState, useEffect } from "react";
 import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
+import { isMobileState } from "src/stores/store";
 
 type RankingData = {
   streamerId: number;
@@ -46,6 +47,7 @@ export default function RestRanking({ data }: Props) {
   const pathname = usePathname()?.split("/").pop() || "";
   const [updatedUrls, setUpdatedUrls] = useState<Record<number, string>>({});
   const [bookmarks, setBookmarks] = useState<Record<number, boolean>>({});
+  const isMobile = isMobileState((state) => state.isMobile);
 
   useEffect(() => {
     if (data) {
@@ -101,21 +103,35 @@ export default function RestRanking({ data }: Props) {
   return (
     <div className={style.container}>
       {data &&
-        data.map((item, index) => (
+        (isMobile ? data : data.slice(3)).map((item, index) => (
           <div key={index} className={style.subitem}>
-            <div className={style.index}>{index + 4}</div>
+            {isMobile && pathname === "live" && (
+              <div className={style.liveindex}>{index + 1}</div>
+            )}
+            {isMobile && pathname !== "live" && (
+              <div className={style.index}>{index + 1}</div>
+            )}
+            {!isMobile && pathname === "live" && (
+              <div className={style.liveindex}>{index + 4}</div>
+            )}
+            {!isMobile && pathname !== "live" && (
+              <div className={style.index}>{index + 4}</div>
+            )}
             {pathname === "live" ? (
               <>
                 <div className={style.livenameinfo}>
                   <div className={style.image}>
                     <Link href={`/detail/${item.streamerId}`}>
-                      <Image
-                        src={updatedUrls[item.streamerId] || noimage.src}
-                        alt=""
-                        width={48}
-                        height={48}
-                        onError={() => handleImageError(item.streamerId)}
-                      />
+                      <div className={style.imageWrapper}>
+                        <Image
+                          src={updatedUrls[item.streamerId] || noimage.src}
+                          alt=""
+                          fill
+                          style={{ objectFit: "cover" }}
+                          sizes="(max-width: 768px) 6vw, 48px"
+                          onError={() => handleImageError(item.streamerId)}
+                        />
+                      </div>
                     </Link>
                   </div>
                   <div className={style.livename}>
@@ -134,7 +150,6 @@ export default function RestRanking({ data }: Props) {
                     </span>
                   </div>
                 </div>
-
                 <div className={style.livetitleinfo}>
                   <Link
                     href={item.streamUrl || ""}
@@ -144,33 +159,49 @@ export default function RestRanking({ data }: Props) {
                     {item.value}
                   </Link>
                 </div>
-                <div className={style.livesubinfo}>{item.category}</div>
-                <div className={style.liveinfo}>
-                  {item.diff.toLocaleString()} 명
-                </div>
-                <div className={style.livefav}>
-                  <Image
-                    src={bookmarks[item.streamerId] ? fav : nofav}
-                    alt=""
-                    width={20}
-                    height={20}
-                    onClick={() => toggleBookmark(item.streamerId)}
-                    role="presentation"
-                  />
-                </div>
+                {!isMobile && (
+                  <div className={style.livesubinfo}>
+                    <Link
+                      href={`/live?category=${item.category}`}
+                      className={style.link}
+                    >
+                      {item.category}
+                    </Link>
+                  </div>
+                )}
+                {!isMobile && (
+                  <div className={style.liveinfo}>
+                    {item.diff.toLocaleString()}
+                  </div>
+                )}
+                {!isMobile && (
+                  <div className={style.livefav}>
+                    <Image
+                      src={bookmarks[item.streamerId] ? fav : nofav}
+                      alt=""
+                      width={20}
+                      height={20}
+                      onClick={() => toggleBookmark(item.streamerId)}
+                      role="presentation"
+                    />
+                  </div>
+                )}
               </>
             ) : (
               <>
                 <div className={style.nameinfo}>
                   <div className={style.image}>
                     <Link href={`/detail/${item.streamerId}`}>
-                      <Image
-                        src={updatedUrls[item.streamerId] || noimage.src}
-                        alt=""
-                        width={48}
-                        height={48}
-                        onError={() => handleImageError(item.streamerId)}
-                      />
+                      <div className={style.imageWrapper}>
+                        <Image
+                          src={updatedUrls[item.streamerId] || noimage.src}
+                          alt=""
+                          fill
+                          sizes="(max-width: 768px) 6vw, 48px"
+                          style={{ objectFit: "cover" }}
+                          onError={() => handleImageError(item.streamerId)}
+                        />
+                      </div>
                     </Link>
                   </div>
                   <div className={style.name}>
@@ -178,25 +209,41 @@ export default function RestRanking({ data }: Props) {
                       href={`/detail/${item.streamerId}`}
                       className={style.link}
                     >
-                      {item.name}
+                      <div className={style.caneli}>{item.name}</div>
                     </Link>{" "}
                     {item.platform === "A" || item.platform === "S" ? (
-                      <Image src={aflogo} alt="" width={14} height={14} />
+                      <Image src={aflogo} alt="" width={15} height={15} />
                     ) : (
-                      <Image src={chzlogo} alt="" width={14} height={14} />
+                      <Image src={chzlogo} alt="" width={15} height={15} />
                     )}
                   </div>
                   {item.rankDiff !== undefined && (
                     <div className={style.rank}>
                       {item.rankDiff > 0 && (
                         <>
-                          <Image src={ArrowUp} alt="" width={7} height={12} />
+                          <div className={style.arrow}>
+                            <Image
+                              src={ArrowUp}
+                              alt=""
+                              sizes="(max-width: 768px) 1.2vw, 7px"
+                              fill
+                              style={{ objectFit: "cover" }}
+                            />
+                          </div>
                           <span>{Math.abs(item.rankDiff)}</span>
                         </>
                       )}
                       {item.rankDiff < 0 && (
                         <>
-                          <Image src={ArrowDown} alt="" width={7} height={12} />
+                          <div className={style.arrow}>
+                            <Image
+                              src={ArrowDown}
+                              sizes="(max-width: 768px) 1.2vw, 7px"
+                              alt=""
+                              fill
+                              style={{ objectFit: "cover" }}
+                            />
+                          </div>
                           <span>{Math.abs(item.rankDiff)}</span>
                         </>
                       )}
@@ -276,16 +323,18 @@ export default function RestRanking({ data }: Props) {
                     </>
                   )}
                 </div>
-                <div className={style.fav}>
-                  <Image
-                    src={bookmarks[item.streamerId] ? fav : nofav}
-                    alt=""
-                    width={20}
-                    height={20}
-                    onClick={() => toggleBookmark(item.streamerId)}
-                    role="presentation"
-                  />
-                </div>
+                {!isMobile && (
+                  <div className={style.fav}>
+                    <Image
+                      src={bookmarks[item.streamerId] ? fav : nofav}
+                      alt=""
+                      width={20}
+                      height={20}
+                      onClick={() => toggleBookmark(item.streamerId)}
+                      role="presentation"
+                    />
+                  </div>
+                )}
               </>
             )}
           </div>

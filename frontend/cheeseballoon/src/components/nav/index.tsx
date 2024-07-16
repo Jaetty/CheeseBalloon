@@ -21,7 +21,7 @@ export default function Nav() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 1300);
+      setIsSmallScreen(window.innerWidth < 768);
     };
 
     handleResize();
@@ -72,8 +72,8 @@ export default function Nav() {
               <Image
                 src={searchBtn}
                 alt="Search Button"
-                width={25}
-                height={25}
+                width={23}
+                height={23}
                 onClick={openSearchModal}
               />
             )}

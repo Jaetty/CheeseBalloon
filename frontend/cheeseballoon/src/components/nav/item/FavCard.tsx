@@ -3,12 +3,11 @@
 import styles from "src/components/nav/item/FavCard.module.scss";
 import Image from "next/image";
 import chzzk from "public/svgs/chzzk.svg";
-import aflogo from "public/svgs/afreeca.svg";
+import aflogo from "src/stores/afreeca.ico";
 import { useToggleState } from "src/stores/store";
-import { useState, useRef, useLayoutEffect, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { LiveData } from "src/types/type";
 import noimage from "public/svgs/blank_profile.png";
-import Link from "next/link";
 import decodeText from "src/lib/DecodeText";
 
 type Props = {
@@ -30,8 +29,6 @@ const fixProfileUrl = (url: string) => {
 export default function FavCard({ data }: Props) {
   const { value } = useToggleState();
   const [isHovered, setIsHovered] = useState(false);
-  const [modalStyle, setModalStyle] = useState({});
-  const containerRef = useRef<HTMLDivElement>(null);
   const [profileUrl, setProfileUrl] = useState<string>("");
 
   const handleImageError = async (id: number) => {
@@ -58,16 +55,6 @@ export default function FavCard({ data }: Props) {
       setProfileUrl(fixProfileUrl(data.profileUrl));
     }
   }, [data]);
-
-  useLayoutEffect(() => {
-    if (containerRef.current && isHovered) {
-      const { top, left } = containerRef.current.getBoundingClientRect();
-      setModalStyle({
-        top: `${top}px`,
-        left: `${left + 60}px`,
-      });
-    }
-  }, [isHovered]);
 
   return (
     <div>
@@ -126,28 +113,26 @@ export default function FavCard({ data }: Props) {
               }}
             />
           </div>
-          {isHovered && (
-            <div className={styles.description_modal}>
-              <div className={styles.modal_container}>
-                <div className={styles.content}>
-                  <div className={styles.closed_titledisc}>
-                    {decodeText(data?.name as string)}
-                  </div>
-                  {data?.platform === "A" || data?.platform === "S" ? (
-                    <Image src={aflogo} alt="" width={14} height={14} />
-                  ) : (
-                    <Image src={chzzk} alt="" width={14} height={14} />
-                  )}
+          <div className={styles.description_modal}>
+            <div className={styles.modal_container}>
+              <div className={styles.content}>
+                <div className={styles.closed_titledisc}>
+                  {decodeText(data?.name as string)}
                 </div>
-                <div className={styles.viewer}>
-                  {data?.viewerCnt.toLocaleString()}
-                </div>
+                {data?.platform === "A" || data?.platform === "S" ? (
+                  <Image src={aflogo} alt="" width={14} height={14} />
+                ) : (
+                  <Image src={chzzk} alt="" width={14} height={14} />
+                )}
               </div>
-              <div className={styles.modal_subcontent}>
-                {decodeText(data?.category as string)}
+              <div className={styles.viewer}>
+                {data?.viewerCnt.toLocaleString()}
               </div>
             </div>
-          )}
+            <div className={styles.modal_subcontent}>
+              {decodeText(data?.category as string)}
+            </div>
+          </div>
         </div>
       )}
     </div>

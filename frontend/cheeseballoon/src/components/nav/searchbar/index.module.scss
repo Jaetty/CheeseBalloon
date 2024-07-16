@@ -1,31 +1,27 @@
 .search_box {
   display: flex;
-  /* gap: 10px;  gap 제거 */
-  width: 100%;
+  width: 90%;
+  margin: auto;
 }
 
 .search__input_container {
-  position: relative;
+  display: flex;
   width: 100%;
+  align-items: center;
 }
 
 .search__input {
   width: 100%;
   color: white;
   height: 50%;
-  padding: 8px; /* 오른쪽 패딩을 더 늘려서 버튼 공간 확보 */
+  padding: 8px clamp(10px, 1.5vw, 30px) 8px 8px;
   background-color: transparent;
   text-align: center;
-  font-size: 18px;
-  line-height: 18px;
-  background-repeat: no-repeat;
-  background-size: 18px 18px;
-  background-position: 95% center;
+  font-size: clamp(15px, 1.5vw, 18px);
   border-radius: 50px;
   border: 1px solid #575756;
 }
 
-/* Search input placeholder styling */
 .search__input::placeholder {
   color: rgba(87, 87, 86, 0.8);
   text-transform: uppercase;
@@ -33,16 +29,12 @@
 }
 
 .search__input:focus {
-  /* 입력 필드가 포커스 되었을 때 스타일 */
-  color: white; /* 포커스 시 글자색 변경 */
+  color: white;
 }
 
 .search_btn {
-  position: absolute;
-  right: 0px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 35px;
+  position: relative;
+  margin-left: -40px;
   height: 30px;
   cursor: pointer;
   display: flex;
@@ -52,5 +44,18 @@
   > img {
     height: 75%;
     object-fit: fill;
+  }
+}
+
+@media (max-width: 1250px) {
+  .search_btn {
+    position: relative;
+    margin-left: -35px;
+    height: 25px;
+  }
+
+  .search_box {
+    width: 100%;
+    margin: 0;
   }
 }

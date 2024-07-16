@@ -21,8 +21,13 @@ export default function MainLayout({
 }>) {
   const cookieStore = cookies();
   const toggleValue = cookieStore.get("toggle")?.value === "true";
+  const initialIsMobile = cookieStore.get("viewport")?.value === "mobile";
+
   return (
-    <MenuProvider initialToggleValue={toggleValue}>
+    <MenuProvider
+      initialToggleValue={toggleValue}
+      initialIsMobile={initialIsMobile}
+    >
       <PaddingProvider initialToggleValue={toggleValue}>
         <div className="children">
           {children}
