@@ -29,7 +29,7 @@ export default function DaySelect({ date, setDate }: DaySelectProps) {
         id="data-dropdown"
         value={selectedOption}
         onChange={handleSelectChange}
-        className={style.dayselect}
+        className={style.subdayselect}
       >
         <option value="0">어제</option>
         <option value="1">최근 7일</option>

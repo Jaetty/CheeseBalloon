@@ -30,7 +30,7 @@ export default function Recomend({ value }: ValueProps) {
         !localData ||
         !localData.data ||
         !localData.lastFetchTime ||
-        currentTime - localData.lastFetchTime >= 600000
+        currentTime - localData.lastFetchTime >= 300000
       ) {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_LIVE_API}?offset=0&limit=15`
