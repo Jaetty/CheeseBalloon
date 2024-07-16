@@ -74,6 +74,11 @@ export default function Login() {
                 네이버 로그인
               </button>
             </div>
+            <div>
+              <button type="button" onClick={() => signOut()}>
+                로그아웃
+              </button>
+            </div>
           </div>
         </div>
         {/* <div className={styles.sign_in}>
