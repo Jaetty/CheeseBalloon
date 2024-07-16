@@ -18,6 +18,7 @@ import {
 } from "src/types/type";
 import decodetext from "src/lib/DecodeText";
 import { usePopstate } from "src/lib/PopContext";
+import { isMobileState } from "src/stores/store";
 
 type RankingData = {
   streamerId: number;
@@ -153,6 +154,7 @@ export default function SubRanking() {
 
   const observer = useRef<IntersectionObserver | null>(null);
   const subrankData = data?.slice(0, 3);
+  const isMobile = isMobileState((state) => state.isMobile);
 
   useEffect(() => {
     const handleObserver = (entities: IntersectionObserverEntry[]) => {
@@ -274,11 +276,11 @@ export default function SubRanking() {
 
   useEffect(() => {
     if (num === 1 && data) {
-      setSubRankAllData(data?.slice(3, 15));
+      setSubRankAllData(data?.slice(0, 15));
     } else if (num > 1 && data) {
       const maxDataLength = 300;
       const newDataSliceEnd = Math.min(15 + num * 15, maxDataLength);
-      const newDataSlice = data?.slice(3, newDataSliceEnd);
+      const newDataSlice = data?.slice(0, newDataSliceEnd);
       setSubRankAllData(newDataSlice);
     }
   }, [num, data]);
@@ -318,7 +320,7 @@ export default function SubRanking() {
           <PlatformSelect platform={platform} setPlatform={setPlatform} />
         </div>
       )}
-      <TopThreeRanking data={subrankData as RankingData[]} />
+      {!isMobile && <TopThreeRanking data={subrankData as RankingData[]} />}
       <RestRanking data={subrankAllData as RankingData[]} />
       {allDataLoaded && <p className={style.DataLoaded}></p>}
       <div id="bottom" style={{ height: "1px" }} />

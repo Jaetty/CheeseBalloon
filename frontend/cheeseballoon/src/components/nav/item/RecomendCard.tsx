@@ -57,16 +57,6 @@ export default function RecomendCard({ data }: Props) {
     }
   }, [data]);
 
-  useLayoutEffect(() => {
-    if (containerRef.current && isHovered) {
-      const { top, left } = containerRef.current.getBoundingClientRect();
-      setModalStyle({
-        top: `${top}px`,
-        left: `${left + 60}px`,
-      });
-    }
-  }, [isHovered]);
-
   return (
     <Link href={data?.streamUrl || ""} className={styles.link} target="_blank">
       <div>

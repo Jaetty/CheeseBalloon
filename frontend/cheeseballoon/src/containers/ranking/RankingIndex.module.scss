@@ -46,6 +46,7 @@
   gap: 0.5rem;
   margin-bottom: 1.2rem;
   justify-content: right;
+  min-width: 900px;
 }
 
 .container {
@@ -122,7 +123,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 1.2rem;
+    margin: 0 1rem 1.2rem 1rem;
   }
   .select_menu {
     display: flex;
@@ -133,13 +134,20 @@
   }
   .title {
     text-align: center;
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
     margin-top: 3rem;
+    font-weight: 500;
   }
   .subtitle {
     text-align: center;
+    font-size: 0.7rem;
   }
   .mobilewrapper {
     margin-bottom: 2rem;
+  }
+  .detail_menu {
+    justify-content: center;
+    min-width: 325px;
   }
 }

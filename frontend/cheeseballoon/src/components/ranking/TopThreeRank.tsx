@@ -164,7 +164,14 @@ export default function TopThreeRanking({ data }: Props) {
             {pathname === "live" ? (
               <div>
                 <div className={style.liveinfo}>
-                  <div className={style.content1}>{item.category}</div>
+                  <div className={style.content1}>
+                    <Link
+                      href={`/live?category=${item.category}`}
+                      className={style.link}
+                    >
+                      {item.category}
+                    </Link>
+                  </div>
                   <div className={style.content2}>
                     {item.diff.toLocaleString()} 명
                   </div>
