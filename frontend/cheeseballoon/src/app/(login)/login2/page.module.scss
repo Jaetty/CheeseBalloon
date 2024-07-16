@@ -1,0 +1,72 @@
+.login {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 60%;
+  // z-index: -99;
+  display: flex;
+}
+
+.video_descript {
+  color: white;
+  font-size: 50px;
+  position: absolute;
+  top: 50%;
+  opacity: 0;
+  z-index: -99999;
+}
+
+.left {
+  width: 50vw;
+  height: 100vh;
+  text-align: center;
+}
+
+.right {
+  width: 50vw;
+  height: 100vh;
+  text-align: center;
+}
+
+.right_title {
+  font-family: "Comfortaa";
+  font-size: 80px;
+  color: #ffae37;
+  padding-top: 18%;
+}
+
+.sub {
+  font-family: "Pretendard-Regular";
+  padding-top: 10%;
+  font-size: 15px;
+  color: #878c9e;
+}
+
+.login_button {
+  padding-top: 5%;
+  //   width: 40%;
+}
+
+.login_img {
+  cursor: pointer;
+}
+@font-face {
+  font-family: "Comfortaa", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  src: url("../../../styles/font/Comfortaa.ttf.woff");
+}
+
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
