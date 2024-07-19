@@ -16,16 +16,25 @@
   height: 160px;
 }
 
-.image {
+.image-container {
+  height: 130px;
+  width: 200px;
   margin-right: 2rem;
+  flex-shrink: 0;
+}
+
+.image {
   border-radius: 14px;
   object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .textContainer {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  max-width: calc(100% - 200px);
 }
 
 .update {
@@ -40,6 +49,9 @@
   color: #ffffff;
   font-weight: bold;
   font-size: 2.5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .date {

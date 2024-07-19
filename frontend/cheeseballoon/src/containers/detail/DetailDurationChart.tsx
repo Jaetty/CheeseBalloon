@@ -10,6 +10,7 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 type AlignType = "center";
+type XaxisType = "datetime"
 
 type TimeDataType = {
   totalTime: number;
@@ -59,10 +60,10 @@ export default function DetailDurationChart() {
         const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
           weekday: "short",
         });
-        return `${year}.${month}.${day} (${dayOfWeek})`;
+        return `${month}.${day} (${dayOfWeek})`;
       });
       setTimeArray(times);
-      setDateXaxis(datesChange);
+      setDateXaxis(dates);
       setTimeData(responseData.data);
     };
     fetchData();
@@ -80,6 +81,13 @@ export default function DetailDurationChart() {
         },
       },
       chart: {
+        defaultLocale: 'ko',
+        locales: [{
+          name: 'ko',
+          options: {
+            shortDays: ['일', '월', '화', '수', '목', '금', '토']
+          }
+        }],
         animations: {
           enabled: false,
         },
@@ -96,20 +104,35 @@ export default function DetailDurationChart() {
       markers: {
         size: 3,
       },
+      tooltip: {
+        x: {
+          show: true,
+          format: 'MM.dd (ddd)'
+        }
+      },
       xaxis: {
+        type: "datetime" as XaxisType,
+        tickPlacement: 'on',
+
         categories: dateXaxis,
         labels: {
           style: {
             colors: "white",
             fontWeight: "bold",
           },
+          rotate: 0,
+          hideOverlappingLabels: true,
+          format: 'MM.dd (ddd)'
         },
+        tooltip: {
+          enabled: false
+        }
       },
       yaxis: [
         {
           min: 0,
           max: 24,
-          tickAmount: 12,
+          tickAmount: 6,
           labels: {
             style: {
               colors: "white",
@@ -124,6 +147,10 @@ export default function DetailDurationChart() {
         show: true,
         strokeDashArray: 5,
         borderColor: "#bcbcbc",
+        padding: {
+          left: 10,
+          right: 40
+        },
         xaxis: {
           lines: {
             show: false,
@@ -159,7 +186,8 @@ export default function DetailDurationChart() {
           type="line"
           options={chartData.options}
           series={chartData.series}
-          height="325%"
+          className={style.chart}
+          height="252%"
           width="100%"
         />
       </div>
