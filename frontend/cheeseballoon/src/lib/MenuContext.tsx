@@ -36,8 +36,6 @@ export function MenuProvider({
   }, [value]);
 
   useEffect(() => {
-    // 초기값 설정
-    setIsMobile(initialIsMobile);
     sIsMobile(initialIsMobile);
 
     const handleResize = () => {
@@ -46,7 +44,7 @@ export function MenuProvider({
       sIsMobile(isMobileSize);
     };
 
-    handleResize(); // 초기 실행 시 한 번 호출하여 현재 창 크기 반영
+    handleResize();
 
     window.addEventListener("resize", handleResize);
     return () => {

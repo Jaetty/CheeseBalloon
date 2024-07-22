@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import searchBtn from "src/stores/search_button.png";
 import styles from "./index.module.scss";
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -10,20 +10,6 @@ import styles from "./index.module.scss";
 export default function Search() {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 768);
-    };
-
-    handleResize(); // 초기 사이즈 설정
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   const handleSearch = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -39,10 +25,6 @@ export default function Search() {
       setQuery("");
     }
   };
-
-  if (isSmallScreen) {
-    return null;
-  }
 
   return (
     <div className={styles.search_box}>
