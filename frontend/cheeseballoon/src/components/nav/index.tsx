@@ -16,21 +16,7 @@ import SearchModal from "src/components/nav/searchbar/MobileSearch";
 export default function Nav() {
   const isMobile = isMobileState((state) => state.isMobile);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 768);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -45,10 +31,10 @@ export default function Nav() {
   };
 
   useEffect(() => {
-    if (!isSmallScreen) {
+    if (!isMobile) {
       setIsSearchModalOpen(false);
     }
-  }, [isSmallScreen]);
+  }, [isMobile]);
 
   return (
     <div>
@@ -63,20 +49,20 @@ export default function Nav() {
             <MainLogo />
           </div>
         </div>
-        <div className={styles.searchbar}>
-          <Searchbar />
-        </div>
+        {!isMobile && (
+          <div className={styles.searchbar}>
+            <Searchbar />
+          </div>
+        )}
         <div className={styles.islogin}>
           <div className={styles.searchbtn}>
-            {isSmallScreen && (
-              <Image
-                src={searchBtn}
-                alt="Search Button"
-                width={23}
-                height={23}
-                onClick={openSearchModal}
-              />
-            )}
+            <Image
+              src={searchBtn}
+              alt="Search Button"
+              width={23}
+              height={23}
+              onClick={openSearchModal}
+            />
           </div>
           <IsLogin />
         </div>
@@ -88,7 +74,7 @@ export default function Nav() {
           closeMenu={closeMenu}
         />
       )}
-      {isSmallScreen && isSearchModalOpen && (
+      {isMobile && isSearchModalOpen && (
         <SearchModal onClose={() => setIsSearchModalOpen(false)} />
       )}
     </div>

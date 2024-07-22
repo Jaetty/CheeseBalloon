@@ -26,10 +26,7 @@
 }
 
 .searchbtn {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
 }
 .logowrap {
   display: flex;
@@ -51,5 +48,14 @@
   .mainlogo {
     padding-top: 0.15rem;
     left: calc(100% + 0.3rem);
+  }
+  .searchbar {
+    display: none;
+  }
+  .searchbtn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
