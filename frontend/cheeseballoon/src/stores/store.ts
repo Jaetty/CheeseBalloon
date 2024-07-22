@@ -6,6 +6,7 @@ import {
   LiveData,
   FavDataType,
   MobileState,
+  RecommendDataType,
 } from "src/types/type";
 import { persist } from "zustand/middleware";
 
@@ -17,6 +18,22 @@ const useToggleState = create(
     }),
     {
       name: "toggle-state",
+    }
+  )
+);
+
+const RecommendState = create(
+  persist<RecommendDataType>(
+    (set) => ({
+      lastFetchTime: null,
+      data: [],
+      setData: (newData: LiveData[]) =>
+        set((state) => ({ ...state, data: newData })),
+      setLastFetchTime: (time: number) =>
+        set((state) => ({ ...state, lastFetchTime: time })),
+    }),
+    {
+      name: "recommend-state",
     }
   )
 );
@@ -47,4 +64,4 @@ const isMobileState = create(
   )
 );
 
-export { useToggleState, FavState, isMobileState };
+export { useToggleState, RecommendState, FavState, isMobileState };
