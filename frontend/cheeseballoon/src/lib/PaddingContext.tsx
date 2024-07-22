@@ -43,6 +43,7 @@ export function PaddingProvider({
   useEffect(() => {
     const cleanupLocalStorage = () => {
       localStorage.removeItem("fav-state");
+      localStorage.removeItem("recommend-state");
     };
 
     window.addEventListener("beforeunload", cleanupLocalStorage);
