@@ -100,6 +100,13 @@ export interface RankingData {
   };
 }
 
+export interface RecommendDataType {
+  lastFetchTime: number | null;
+  data: LiveData[];
+  setData: (newData: LiveData[]) => void;
+  setLastFetchTime: (time: number) => void;
+}
+
 export interface FavDataType {
   data: LiveData[];
   setData: (newData: LiveData[]) => void;
