@@ -1,8 +1,5 @@
-"use client";
-
 import dynamic from "next/dynamic";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { isMobileState } from "@/src/stores/store";
 import style from "src/containers/detail/DetailCategoryChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
@@ -11,27 +8,16 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 
 type AlignType = "center";
 
-type CategoryDataType = {
-  totalTime: number;
-  dailyCategories: [category: string, time: number, avgViewer: number];
-};
-
-type DailyCategoryType = {
-  category: string;
-  time: number;
-  avgViewer: number;
-};
-
-interface Accumulator {
-  seriesData: number[];
-  labelsData: string[];
-}
-
 type listType = {
   title: string;
   time: number;
   viewer: number;
 }[];
+
+type DetailViewerChartProps = {
+  series: number[];
+  labels: string[];
+};
 
 const API_URL = process.env.NEXT_PUBLIC_CATEGORY_API_URL;
 
@@ -46,49 +32,11 @@ async function getData(streamerId: string, date: string) {
   return res.json();
 }
 
-export default function DetailCategoryChart() {
-  const { id, date } = useParams();
-  const [categoryData, setCategoryData] = useState<CategoryDataType | null>(
-    null
-  );
-  const [series, setSeries] = useState<number[]>([]);
-  const [labels, setLabels] = useState<string[]>([]);
-  const [lists, setLists] = useState<listType>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const responseData = await getData(id as string, date as string);
-      const categoriesData = responseData.data.dailyCategories;
-      categoriesData.sort(
-        (a: DailyCategoryType, b: DailyCategoryType) => b.time - a.time
-      );
-      const { seriesData, labelsData } = categoriesData.reduce(
-        (acc: Accumulator, item: DailyCategoryType) => {
-          acc.seriesData.push(item.time);
-          if (item.category === "") {
-            acc.labelsData.push("카테고리 없음");
-          } else {
-            acc.labelsData.push(item.category);
-          }
-          return acc;
-        },
-        { seriesData: [], labelsData: [] }
-      );
-
-      setSeries(seriesData);
-      setLabels(labelsData);
-
-      const listData = categoriesData.map((item: DailyCategoryType) => ({
-        title: item.category,
-        time: item.time,
-        viewer: item.avgViewer,
-      }));
-
-      setLists(listData);
-      setCategoryData(responseData.data);
-    };
-    fetchData();
-  }, [id, date]);
+export default function DetailCategoryChart({
+  series,
+  labels,
+}: DetailViewerChartProps) {
+  const isMobile = isMobileState((state) => state.isMobile);
 
   const chartColors = [
     "#008ffb",
@@ -112,12 +60,17 @@ export default function DetailCategoryChart() {
         text: "카테고리",
         align: "center" as AlignType,
         style: {
-          fontSize: "15px",
+          fontSize: isMobile ? "10px" : "15px",
           fontWeight: "bold",
           color: "white",
         },
       },
       labels: labels as string[],
+      dataLabels: {
+        style: {
+          fontSize: isMobile ? "10px" : "15px",
+        },
+      },
       tooltip: {
         y: {
           formatter: (value: number) =>
@@ -125,8 +78,22 @@ export default function DetailCategoryChart() {
         },
       },
       legend: {
+        fontSize: isMobile ? "6rem" : "12rem",
+        width: isMobile ? 80 : 150,
         labels: {
           colors: "white",
+        },
+        markers: isMobile
+          ? {
+              width: 5,
+              height: 5,
+            }
+          : {
+              width: 10,
+              height: 10,
+            },
+        itemMargin: {
+          vertical: 2,
         },
       },
       chart: {
@@ -142,6 +109,46 @@ export default function DetailCategoryChart() {
             zoomout: false,
           },
         },
+        events: {
+          mounted() {
+            if (isMobile) {
+              const legendSeries = document.querySelectorAll(
+                ".apexcharts-legend-series"
+              );
+              legendSeries.forEach((element) => {
+                const el = element as HTMLElement;
+                el.style.display = "flex";
+                el.style.alignItems = "center";
+              });
+              const legendMarkers = document.querySelectorAll(
+                ".apexcharts-legend-marker"
+              );
+              legendMarkers.forEach((element) => {
+                const el = element as HTMLElement;
+                el.style.flexShrink = "0";
+              });
+            }
+          },
+          updated() {
+            if (isMobile) {
+              const legendSeries = document.querySelectorAll(
+                ".apexcharts-legend-series"
+              );
+              legendSeries.forEach((element) => {
+                const el = element as HTMLElement;
+                el.style.display = "flex";
+                el.style.alignItems = "center";
+              });
+              const legendMarkers = document.querySelectorAll(
+                ".apexcharts-legend-marker"
+              );
+              legendMarkers.forEach((element) => {
+                const el = element as HTMLElement;
+                el.style.flexShrink = "0";
+              });
+            }
+          },
+        },
       },
       colors: chartColors,
     },
@@ -154,42 +161,10 @@ export default function DetailCategoryChart() {
           type="pie"
           options={chartData.options}
           series={chartData.series}
-          height="265%"
+          height={isMobile ? "100%" : "265%"}
           width="100%"
+          className={style.chart}
         />
-      </div>
-      <div className={style["list-container"]}>
-        <div className={style.label}>
-          <div className={style.rank}>#</div>
-          <div className={style.name}>카테고리</div>
-          <div className={style.time}>
-            <div>시간</div>
-          </div>
-          <div className={style.viewer}>평균 시청자수</div>
-        </div>
-        <hr />
-        {categoryData &&
-          lists &&
-          lists.map((item, idx: number) => (
-            <div className={style.list} key={idx}>
-              <div className={style.rank}>{idx + 1}</div>
-              <div className={style.name}>
-                {item.title === "" ? "카테고리 없음" : item.title}
-              </div>
-              <div className={style.time}>
-                <div>
-                  {(Math.floor((item.time / 3600) * 10) / 10).toLocaleString()}
-                  시간
-                </div>
-                <div>
-                  {`(${((item.time * 100) / categoryData.totalTime).toFixed(1)}%)`}
-                </div>
-              </div>
-              <div className={style.viewer}>
-                {item.viewer.toLocaleString()}명
-              </div>
-            </div>
-          ))}
       </div>
     </div>
   );

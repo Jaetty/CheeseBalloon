@@ -2,10 +2,8 @@
   height: 300px;
   border-width: 1rem;
   border-radius: 20px;
-
   border: 2px solid white;
   margin-top: 1rem;
-
 }
 
 .container {
@@ -24,7 +22,7 @@
   padding: 5px 9px;
 }
 
-.tooltip-content{
+.tooltip-content {
   display: flex;
   gap: 7px;
 }
@@ -34,4 +32,33 @@
   align-self: center;
   width: 12px;
   height: 12px;
+}
+
+@media (max-width: 767px) {
+  .wrapper {
+    height: 100px;
+    border-radius: 10px;
+    border: 1px solid white;
+  }
+
+  .container {
+    padding: 0.7rem;
+  }
+
+  .name {
+    font-size: 0.6rem;
+  }
+
+  .tooltip-content {
+    display: flex;
+    gap: 3px;
+    font-size: 0.5rem;
+  }
+
+  .tooltip-color {
+    display: block;
+    align-self: center;
+    width: 6px;
+    height: 6px;
+  }
 }

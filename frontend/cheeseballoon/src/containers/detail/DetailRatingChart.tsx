@@ -1,8 +1,5 @@
-"use client";
-
 import dynamic from "next/dynamic";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { isMobileState } from "@/src/stores/store";
 import style from "src/containers/detail/DetailRatingChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
@@ -10,103 +7,46 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 type AlignType = "center";
-type XaxisType = "datetime"
-
-type RatingDataType = {
-  totalRating: number;
-  platformRating: number;
-  dailyRates: [total: number, platform: number, date: string];
-};
+type XaxisType = "datetime";
 
 type DateArrayType = string[];
 type RatingArrayType = number[];
-type DailyRatingType = {
-  total: number;
-  platform: number;
-  date: string;
+
+type DetailRatingChartPropsType = {
+  totalRatingArray: RatingArrayType;
+  platformRatingArray: RatingArrayType;
+  dateXaxis: DateArrayType | null;
+  maxYaxis: () => number;
 };
 
-const API_URL = process.env.NEXT_PUBLIC_RATING_API_URL;
-
-async function getData(streamerId: string, date: string) {
-  let res;
-  if (date) {
-    res = await fetch(`${API_URL}streamerId=${streamerId}&date=${date}`);
-  } else {
-    res = await fetch(`${API_URL}streamerId=${streamerId}&date=1`);
-  }
-
-  return res.json();
-}
-
-export default function DetailRatingChart() {
-  const { id, date } = useParams();
-  const [ratingData, setRatingData] = useState<RatingDataType | null>(null);
-  const [totalRatingArray, setTotalRatingArray] = useState<RatingArrayType>([]);
-  const [platformRatingArray, setplatformRatingArray] =
-    useState<RatingArrayType>([]);
-  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const responseData = await getData(id as string, date as string);
-      const dailyData = responseData.data.dailyRates;
-      const dates = dailyData.map((item: DailyRatingType) => item.date);
-      const totalRatings = dailyData.map((item: DailyRatingType) => item.total);
-      const platformRatings = dailyData.map(
-        (item: DailyRatingType) => item.platform
-      );
-
-      setTotalRatingArray(totalRatings);
-      setplatformRatingArray(platformRatings);
-      setDateXaxis(dates);
-      setRatingData(responseData.data);
-    };
-    fetchData();
-  }, [id, date]);
-
-
-  const maxYaxis = () => {
-    const maxRating = Math.max(...platformRatingArray);
-
-    switch (true) {
-      case maxRating < 0.05:
-        return 0.05;
-      case maxRating < 0.1:
-        return 0.1;
-      case maxRating < 0.5:
-        return 0.5;
-      case maxRating < 1:
-        return 1;
-      case maxRating < 5:
-        return 5;
-      case maxRating < 10:
-        return 10;
-      case maxRating < 25:
-        return 25;
-      default:
-        return Math.max(Math.floor(maxRating), 30);
-    }
-  };
+export default function DetailRatingChart({
+  totalRatingArray,
+  platformRatingArray,
+  dateXaxis,
+  maxYaxis,
+}: DetailRatingChartPropsType) {
+  const isMobile = isMobileState((state) => state.isMobile);
   const chartData = {
     options: {
       title: {
         text: "시청률",
         align: "center" as AlignType,
         style: {
-          fontSize: "15px",
+          fontSize: isMobile ? "10px" : "15px",
           fontWeight: "bold",
           color: "white",
         },
       },
       chart: {
-        defaultLocale: 'ko',
-        locales: [{
-          name: 'ko',
-          options: {
-            shortDays: ['일', '월', '화', '수', '목', '금', '토']
-          }
-        }],
+        defaultLocale: "ko",
+        locales: [
+          {
+            name: "ko",
+            options: {
+              shortDays: ["일", "월", "화", "수", "목", "금", "토"],
+            },
+          },
+        ],
         animations: {
           enabled: false,
         },
@@ -122,36 +62,39 @@ export default function DetailRatingChart() {
       },
       colors: ["#77B6EA", "#F8DB46"],
       markers: {
-        size: 3,
+        size: isMobile ? 2 : 3,
       },
       legend: {
         show: true,
         labels: {
           colors: "white",
         },
+        fontSize: isMobile ? "8" : "12",
       },
       tooltip: {
         x: {
           show: true,
-          format: 'MM.dd (ddd)'
-        }
+          format: "MM.dd (ddd)",
+        },
       },
       xaxis: {
         type: "datetime" as XaxisType,
-        
+
         categories: dateXaxis,
         labels: {
           style: {
             colors: "white",
             fontWeight: "bold",
+            fontSize: isMobile ? "8" : "12",
           },
+          offsetY: isMobile ? -3 : -2,
           rotate: 0,
           hideOverlappingLabels: true,
-          format: 'MM.dd (ddd)'
+          format: "MM.dd (ddd)",
         },
         tooltip: {
-          enabled: false
-        }
+          enabled: false,
+        },
       },
       yaxis: [
         {
@@ -162,6 +105,7 @@ export default function DetailRatingChart() {
             style: {
               colors: "white",
               fontWeight: "bold",
+              fontSize: isMobile ? "8" : "12",
             },
             formatter: (value: number) => `${value}%`,
           },
@@ -173,7 +117,7 @@ export default function DetailRatingChart() {
         borderColor: "#bcbcbc",
         padding: {
           left: 10,
-          right: 40
+          right: 40,
         },
         xaxis: {
           lines: {
@@ -209,27 +153,11 @@ export default function DetailRatingChart() {
           type="line"
           options={chartData.options}
           series={chartData.series}
-          height="213%"
+          height={isMobile ? "150%" : "250%"}
           width="100%"
           className={style.chart}
         />
       </div>
-      {ratingData && (
-        <div className={style.rating}>
-          <div className={style["rating-container"]}>
-            <div className={style["rating-title"]}>플랫폼 시청률</div>
-            <div className={style["rating-cnt"]}>
-              {ratingData.platformRating.toFixed(1)}%
-            </div>
-          </div>
-          <div className={style["rating-container"]}>
-            <div className={style["rating-title"]}>통합 시청률</div>
-            <div className={style["rating-cnt"]}>
-              {ratingData.totalRating.toFixed(1)}%
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

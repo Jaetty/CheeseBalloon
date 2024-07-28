@@ -1,5 +1,9 @@
-.date {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
+.wrapper {
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    margin-top: 0;
+  }
 }
