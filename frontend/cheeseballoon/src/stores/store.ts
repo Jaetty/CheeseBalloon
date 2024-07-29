@@ -3,10 +3,10 @@
 import { create } from "zustand";
 import {
   ToggleStateType,
-  RecommendDataType,
   LiveData,
   FavDataType,
   MobileState,
+  RecommendDataType,
 } from "src/types/type";
 import { persist } from "zustand/middleware";
 
@@ -64,9 +64,4 @@ const isMobileState = create(
   )
 );
 
-export {
-  useToggleState,
-  RecommendState,
-  FavState,
-  isMobileState,
-};
+export { useToggleState, RecommendState, FavState, isMobileState };
