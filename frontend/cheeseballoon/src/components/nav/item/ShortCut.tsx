@@ -10,66 +10,42 @@ interface ValueProps {
 }
 
 export default function Shortcut({ value }: ValueProps) {
+  const descriptionClass = value
+    ? style.open_description
+    : style.closed_description;
+  const listItemClass = value ? style.open_listItem : style.closed_listItem;
+  const linkDecoClass = value ? style.open_linkdeco : style.closed_linkdeco;
+  const navPillClass = value ? style.open_navPill : style.closed_navPill;
+  const linkDeco1Class = value ? style.open_linkdeco1 : style.closed_linkdeco;
+  const linkDeco2Class = value ? style.open_linkdeco2 : style.closed_linkdeco;
+
   return (
-    <div>
-      {value && (
-        <div className={style.fontname}>
-          <div className={style.open_description}>바로가기</div>
-          <li className={style.open_listItem}>
-            <Link href="/notice" className={style.open_linkdeco}>
-              <div className={style.open_navPill}>
-                <Image src={notice} alt="" width={20} height={20} />
-                <div className={style.open_linkdeco1}>공지사항</div>
-              </div>
-            </Link>
-          </li>
-          <li className={style.open_listItem}>
-            <Link href="/ranking" className={style.open_linkdeco}>
-              <div className={style.open_navPill}>
-                <Image src={ranking} alt="" width={20} height={20} />
-                <div className={style.open_linkdeco2}>방송 랭킹</div>
-              </div>
-            </Link>
-          </li>
-          <li className={style.open_listItem}>
-            <Link href="/live" className={style.open_linkdeco}>
-              <div className={style.open_navPill}>
-                <Image src={live} alt="" width={20} height={20} />
-                <div className={style.open_linkdeco}>실시간 방송</div>
-              </div>
-            </Link>
-          </li>
-        </div>
-      )}
-      {!value && (
-        <div className={style.fontname}>
-          <div className={style.closed_description}>바로가기</div>
-          <li className={style.closed_listItem}>
-            <Link href="/notice" className={style.closed_linkdeco}>
-              <div className={style.closed_navPill}>
-                <Image src={notice} alt="" width={20} height={20} />
-                <div className={style.closed_linkdeco}>공지</div>
-              </div>
-            </Link>
-          </li>
-          <li className={style.closed_listItem}>
-            <Link href="/ranking" className={style.closed_linkdeco}>
-              <div className={style.closed_navPill}>
-                <Image src={ranking} alt="" width={20} height={20} />
-                <div className={style.closed_linkdeco}>랭킹</div>
-              </div>
-            </Link>
-          </li>
-          <li className={style.closed_listItem}>
-            <Link href="/live" className={style.closed_linkdeco}>
-              <div className={style.closed_navPill}>
-                <Image src={live} alt="" width={20} height={20} />
-                <div className={style.closed_linkdeco}>실시간</div>
-              </div>
-            </Link>
-          </li>
-        </div>
-      )}
+    <div className={style.fontname}>
+      <div className={descriptionClass}>바로가기</div>
+      <li className={listItemClass}>
+        <Link href="/notice" className={linkDecoClass}>
+          <div className={navPillClass}>
+            <Image src={notice} alt="" width={20} height={20} />
+            <div className={linkDeco1Class}>공지사항</div>
+          </div>
+        </Link>
+      </li>
+      <li className={listItemClass}>
+        <Link href="/ranking" className={linkDecoClass}>
+          <div className={navPillClass}>
+            <Image src={ranking} alt="" width={20} height={20} />
+            <div className={linkDeco2Class}>방송 랭킹</div>
+          </div>
+        </Link>
+      </li>
+      <li className={listItemClass}>
+        <Link href="/live" className={linkDecoClass}>
+          <div className={navPillClass}>
+            <Image src={live} alt="" width={20} height={20} />
+            <div className={linkDecoClass}>실시간 방송</div>
+          </div>
+        </Link>
+      </li>
     </div>
   );
 }

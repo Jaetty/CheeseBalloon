@@ -13,7 +13,12 @@ export default function MySwiper() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("/api/recommend");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_AUTH}`,
+        },
+      });
       const responseData = await response.json();
       setData(responseData.data);
     };
