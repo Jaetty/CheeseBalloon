@@ -40,19 +40,6 @@ export function PaddingProvider({
     setPaddingValue(value);
   }, [value]);
 
-  useEffect(() => {
-    const cleanupLocalStorage = () => {
-      localStorage.removeItem("fav-state");
-      localStorage.removeItem("recommend-state");
-    };
-
-    window.addEventListener("beforeunload", cleanupLocalStorage);
-
-    return () => {
-      window.removeEventListener("beforeunload", cleanupLocalStorage);
-    };
-  }, []);
-
   return (
     <PaddingContext.Provider value={value}>
       <div style={paddingStyle}>{children}</div>

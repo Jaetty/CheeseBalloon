@@ -100,19 +100,18 @@ export interface RankingData {
   };
 }
 
-export interface RecommendDataType {
-  lastFetchTime: number | null;
-  data: LiveData[];
-  setData: (newData: LiveData[]) => void;
-  setLastFetchTime: (time: number) => void;
-}
-
-export interface FavDataType {
-  data: LiveData[];
-  setData: (newData: LiveData[]) => void;
-}
 export interface MobileState {
   value: boolean;
   isMobile: boolean;
   setIsMobile: (value: boolean) => void;
+}
+
+export interface FavState {
+  bookmarkId: number;
+  streamerId: number;
+  name: string;
+  platform: string;
+  profileUrl: string;
+  followerCnt: number;
+  isLive: boolean;
 }

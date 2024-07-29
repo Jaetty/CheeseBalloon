@@ -1,7 +1,8 @@
 import styles from "src/containers/mypage/MyIndex.module.scss";
 import CardCarousel from "src/components/mypage/CardCarousel";
+import ViewLog from "src/components/mypage/ViewLog";
 import fav from "public/svgs/fav.svg";
-import nofav from "public/svgs/nofav.svg";
+import history from "public/svgs/history.svg";
 import Image from "next/image";
 
 export default function MyPage() {
@@ -19,6 +20,13 @@ export default function MyPage() {
           <span>즐겨찾기</span>
         </div>
         <CardCarousel />
+      </div>
+      <div className={styles.viewlog}>
+        <div className={styles.viewtitle}>
+          <Image src={history} alt="" width={22} height={22} />
+          <span> 시청기록</span>
+        </div>
+        <ViewLog />
       </div>
     </div>
   );

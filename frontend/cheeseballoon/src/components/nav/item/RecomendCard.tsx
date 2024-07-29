@@ -27,9 +27,6 @@ const fixProfileUrl = (url: string) => {
 
 export default function RecomendCard({ data }: Props) {
   const { value } = useToggleState();
-  const [isHovered, setIsHovered] = useState(false);
-  const [modalStyle, setModalStyle] = useState({});
-  const containerRef = useRef<HTMLDivElement>(null);
   const [profileUrl, setProfileUrl] = useState<string>("");
 
   const handleImageError = async (id: number) => {
@@ -97,12 +94,7 @@ export default function RecomendCard({ data }: Props) {
           </div>
         )}
         {!value && (
-          <div
-            className={styles.closed_container}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            ref={containerRef}
-          >
+          <div className={styles.closed_container}>
             <div className={styles.on_image}>
               <Image
                 src={profileUrl || noimage.src}
@@ -116,28 +108,26 @@ export default function RecomendCard({ data }: Props) {
                 }}
               />
             </div>
-            {isHovered && (
-              <div className={styles.description_modal} style={modalStyle}>
-                <div className={styles.modal_container}>
-                  <div className={styles.content}>
-                    <div className={styles.closed_titledisc}>
-                      {decodeText(data?.name as string)}
-                    </div>
-                    {data?.platform === "A" || data?.platform === "S" ? (
-                      <Image src={aflogo} alt="" width={14} height={14} />
-                    ) : (
-                      <Image src={chzzk} alt="" width={14} height={14} />
-                    )}
+            <div className={styles.description_modal}>
+              <div className={styles.modal_container}>
+                <div className={styles.content}>
+                  <div className={styles.closed_titledisc}>
+                    {decodeText(data?.name as string)}
                   </div>
-                  <div className={styles.viewer}>
-                    {data?.viewerCnt.toLocaleString()}
-                  </div>
+                  {data?.platform === "A" || data?.platform === "S" ? (
+                    <Image src={aflogo} alt="" width={14} height={14} />
+                  ) : (
+                    <Image src={chzzk} alt="" width={14} height={14} />
+                  )}
                 </div>
-                <div className={styles.modal_subcontent}>
-                  {decodeText(data?.category as string)}
+                <div className={styles.viewer}>
+                  {data?.viewerCnt.toLocaleString()}
                 </div>
               </div>
-            )}
+              <div className={styles.modal_subcontent}>
+                {decodeText(data?.category as string)}
+              </div>
+            </div>
           </div>
         )}
       </div>
