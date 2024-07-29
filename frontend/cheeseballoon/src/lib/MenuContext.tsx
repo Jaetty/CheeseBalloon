@@ -7,8 +7,7 @@ import {
   useState,
   ReactNode,
 } from "react";
-import OpenMenu from "src/components/nav/item/OpenIndex";
-import ClosedMenu from "src/components/nav/item/ClosedIndex";
+import Menu from "src/components/nav/item/index";
 import { useToggleState, isMobileState } from "../stores/store";
 
 interface MenuProviderProps {
@@ -55,12 +54,7 @@ export function MenuProvider({
   return (
     <MenuContext.Provider value={value}>
       <div style={{ marginTop: "60px" }}>
-        {!isMobile &&
-          (menuValue ? (
-            <OpenMenu value={menuValue} />
-          ) : (
-            <ClosedMenu value={menuValue} />
-          ))}
+        <Menu />
         {children}
       </div>
     </MenuContext.Provider>
