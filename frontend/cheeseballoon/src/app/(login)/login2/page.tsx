@@ -34,7 +34,7 @@ export default function Login() {
                 type="button"
                 onClick={() =>
                   signIn("google", {
-                    callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL,
+                    callbackUrl: process.env.CALLBACK_URL,
                   })
                 }
               >
@@ -46,7 +46,7 @@ export default function Login() {
                 type="button"
                 onClick={() =>
                   signIn("kakao", {
-                    callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL,
+                    callbackUrl: process.env.CALLBACK_URL,
                   })
                 }
               >
@@ -58,7 +58,7 @@ export default function Login() {
                 type="button"
                 onClick={() =>
                   signIn("naver", {
-                    callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL,
+                    callbackUrl: process.env.CALLBACK_URL,
                   })
                 }
               >
