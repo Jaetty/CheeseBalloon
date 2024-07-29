@@ -1,16 +1,23 @@
 .button {
     box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
     align-items: center;
     padding: 0.5rem;
-
     width: 7.5rem;
     height: 31px;
-    font-weight: 400;
-    font-size: 13px;
+    font-size: 0.7rem;
     color: white;
     background: #232323;
     border: 1px solid #949393;
     border-radius: 5px;
   }
+
+
+@media (max-width: 768px) {
+  .button {
+    width: auto;
+    font-size: 0.6rem;
+    height: 1.5rem;
+    padding: 0.2rem;
+    color: white;
+  }
+}

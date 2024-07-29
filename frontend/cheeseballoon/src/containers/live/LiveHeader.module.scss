@@ -19,3 +19,19 @@
   padding: 0;
   color: gray;
 }
+
+@media (max-width: 768px) {
+  .icon {
+    height: 5.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .page-name {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+
+  .page-introduce {
+    font-size: 0.8rem;
+  }
+}

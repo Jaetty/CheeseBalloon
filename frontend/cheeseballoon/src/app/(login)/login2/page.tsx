@@ -3,19 +3,10 @@
 /* eslint-disable camelcase */
 
 import { useSession, signIn, signOut } from "next-auth/react";
-import kakao_login from "src/stores/kakao_login_large_narrow.png";
 import logo from "public/svgs/logo.png";
 import styles from "src/app/(login)/login2/page.module.scss";
 
 export default function Login() {
-  const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_REST_API;
-  const redirect_uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
-  // oauth 요청 URL
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
-  const handleLogin = () => {
-    window.location.href = kakaoURL;
-  };
-
   return (
     <div className={styles.login}>
       <div className={styles.left}>
@@ -81,10 +72,6 @@ export default function Login() {
             </div>
           </div>
         </div>
-        {/* <div className={styles.sign_in}>
-          <div className={styles.sub}>계정이 없으신가요?</div>
-          <div className={styles.kakao}>카카오 로고</div>
-        </div> */}
       </div>
     </div>
   );

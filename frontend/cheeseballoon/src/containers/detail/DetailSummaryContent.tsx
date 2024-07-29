@@ -81,18 +81,16 @@ export default function DetailSummaryContent() {
 
     return (
       <div className={style.content}>
-        <div>
-          <div className={style["content-name"]}>{name}</div>
-          <div className={style["content-num"]}>
-            {num.toLocaleString()}
-            {mod}
-          </div>
-          <div
-            className={`${style["content-diff"]} ${diff >= 0 ? style.positive : style.negative}`}
-          >
-            {Math.abs(diff).toLocaleString()}
-            {mod} {updown}
-          </div>
+        <div className={style["content-name"]}>{name}</div>
+        <div className={style["content-num"]}>
+          {num.toLocaleString()}
+          {mod}
+        </div>
+        <div
+          className={`${style["content-diff"]} ${diff >= 0 ? style.positive : style.negative}`}
+        >
+          {Math.abs(diff).toLocaleString()}
+          {mod} {updown}
         </div>
       </div>
     );

@@ -3,7 +3,6 @@
   align-items: center;
   padding: 0.5rem;
   cursor: pointer;
-  
 }
 
 .image-container {
@@ -41,13 +40,6 @@
   color: white;
 }
 
-.introduce {
-  margin-top: 1rem;
-  font-size: 1rem;
-  font-weight: 100;
-  color: white;
-}
-
 .rank {
   font-weight: bold;
   margin-left: auto;
@@ -75,4 +67,61 @@
 .live {
   box-sizing: border-box;
   border: 5px solid red;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    display: flex;
+    align-items: center;
+    padding: 0.2rem;
+    cursor: pointer;
+  }
+  
+  .image-container {
+    height: 3rem;
+    width: 3rem;
+    padding-right: 0.5rem;
+  }
+  
+  .profile-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 31%;
+    margin-right: 0.5rem;
+  }
+  
+  .platform-logo {
+    width: 1rem;
+    margin-right: 0.5rem;
+    border-radius: 35%;
+  }
+  
+  .name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .rank {
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: 0.5rem;
+  }
+  
+  .rank-num {
+    font-size: 1.3rem;
+    padding-right: 0.5rem;
+    color: white;
+  }
+  
+  .rank-diff {
+    text-align: end;
+    font-size: 1rem;
+  }
+  
+  .live {
+    box-sizing: border-box;
+    border: 3px solid red;
+  }
 }

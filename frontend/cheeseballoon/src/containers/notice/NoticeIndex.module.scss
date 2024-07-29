@@ -1,5 +1,4 @@
 .wrapper {
-  min-height: 78vh;
   color: white;
   font-size: 20px;
   width: 80.625rem;
@@ -76,4 +75,46 @@
 .loading {
   margin-top: 10rem;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    width: 100%;
+  }
+
+  .title-container {
+    text-align: center;
+  }
+
+  .title {
+    margin-top: 3rem;
+  }
+
+  .subtitle {
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+
+  .pagination {
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+  }
+
+  .pageNumber {
+    width: 15px;
+    height: 15px;
+    padding: 3px;
+    border-radius: 5px;
+    font-size: 15px;
+  }
+
+  .no-notice {
+    margin-top: 5rem;
+  }
+
+  .loading {
+    margin-top: 5rem;
+  }
 }
