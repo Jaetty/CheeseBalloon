@@ -4,7 +4,7 @@ import style from "src/app/(main)/detail/[id]/page.module.scss";
 export default function DetailPage() {
   return (
     <div>
-      <div className={style.content}>
+      <div className={style.wrapper}>
         <DetailViewer />
       </div>
     </div>

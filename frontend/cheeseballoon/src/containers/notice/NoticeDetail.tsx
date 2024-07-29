@@ -63,7 +63,7 @@ export default function NoticeDetail() {
   return (
     noticeData && (
       <div className={styles.wrapper}>
-        <div>
+        <div className={styles["title-container"]}>
           <p className={styles.title}>Notice</p>
           <div className={styles.subtitle}>
             치즈벌룬의 업데이트 및 다양한 소식을 알려드립니다.
@@ -86,6 +86,7 @@ export default function NoticeDetail() {
           {noticeData && (
             // eslint-disable-next-line react/no-danger
             <div
+              className={styles.content}
               dangerouslySetInnerHTML={{
                 __html: sanitizedHtml,
               }}

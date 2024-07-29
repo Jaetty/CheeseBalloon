@@ -1,0 +1,12 @@
+.wrapper {
+  padding-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding-bottom: 3rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    min-width: 300px;
+  }
+}
