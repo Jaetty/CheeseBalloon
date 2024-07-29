@@ -27,6 +27,11 @@ const nextConfig = {
         hostname: "profile.img.afreecatv.com",
         port: "",
       },
+      {
+        protocol: "http",
+        hostname: "t1.kakaocdn.net",
+        port: "",
+      },
     ],
   },
   reactStrictMode: false,

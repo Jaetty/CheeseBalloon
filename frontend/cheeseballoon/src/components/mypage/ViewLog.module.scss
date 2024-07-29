@@ -1,0 +1,78 @@
+.container {
+  width: 100%;
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.periodPicker {
+  text-align: right;
+}
+
+.centerMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.centerMessageText {
+  font-size: 22px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 22px;
+}
+
+.deleteButton {
+  opacity: 1;
+}
+
+.overview {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  width: 90%;
+}
+
+.overviewInput {
+  flex: 0 0 2.5%;
+  justify-content: flex-start;
+  margin: 0;
+}
+
+.overviewName {
+  flex: 0 0 15%;
+  margin: 0;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.overviewTitle {
+  flex: 0 0 55%;
+  margin: 0;
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.overviewCategory {
+  flex: 0 0 15%;
+  margin: 0;
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.overviewDate {
+  flex: 0 0 12.5%;
+  margin: 0;
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-align: center;
+}
