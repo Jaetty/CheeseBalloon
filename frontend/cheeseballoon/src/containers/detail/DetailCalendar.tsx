@@ -6,7 +6,6 @@ export default function DetailCalendar() {
       <div>
         <DetailCalendarChart />
       </div>
-      {/* <div>방송 기록</div> */}
     </div>
   );
 }

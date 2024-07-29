@@ -61,7 +61,7 @@ export default function DetailLive() {
               </div>
             </a>
           </div>
-          <hr />
+          <hr className={styles.line} />
         </div>
       )}
     </div>

@@ -5,9 +5,9 @@
 }
 
 .container {
-    width: 80%;
-    max-width: 1290px;
-    margin: 0 auto;
+  width: 80%;
+  max-width: 1290px;
+  margin: 0 auto;
 }
 
 .header {
@@ -22,4 +22,30 @@
 .live {
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    min-width: 300px;
+  }
+
+  .container {
+    margin: 0 2rem;
+  }
+
+  .header {
+    margin-bottom: 1rem;
+  }
+
+  .search {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .live {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 }

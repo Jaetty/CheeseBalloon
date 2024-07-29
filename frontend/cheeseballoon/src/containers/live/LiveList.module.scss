@@ -56,3 +56,9 @@
     width: calc((100% - 1rem) / 2);
   }
 }
+
+@media (max-width: 768px) {
+  .livecard {
+    width: 100%;
+  }
+}

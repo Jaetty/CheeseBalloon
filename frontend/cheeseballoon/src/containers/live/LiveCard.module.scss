@@ -32,6 +32,7 @@
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+  word-break: break-all;
   color: white;
   text-decoration-line: none;
   font-size: x-small;
@@ -52,6 +53,7 @@
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-all;
   text-overflow: ellipsis;
   color: white;
   margin-left: auto;
@@ -70,6 +72,7 @@
 .third-container {
   display: flex;
   padding-top: 1rem;
+  align-items: center;
 }
 
 .profile {
@@ -82,15 +85,14 @@
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  white-space: normal;
-  // line-height: 1rem;
-  // max-height: 2rem;
   overflow: hidden;
   text-overflow: ellipsis;
   padding-left: 1rem;
   color: white;
   text-decoration-line: none;
+  word-break: break-all;
   font-size: small;
+  line-height: 1rem;
 }
 
 .fourth-container {

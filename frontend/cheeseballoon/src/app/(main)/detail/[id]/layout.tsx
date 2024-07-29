@@ -23,7 +23,7 @@ export default function DetailLayout({
           <DetailSummary />
         </div>
         <hr />
-        <div>
+        <div className={style.chart}>
           <DetailSelect />
         </div>
         <div>{children}</div>

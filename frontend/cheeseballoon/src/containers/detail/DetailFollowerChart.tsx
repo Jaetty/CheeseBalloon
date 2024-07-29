@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { isMobileState } from "@/src/stores/store";
 import style from "src/containers/detail/DetailFollowerChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
@@ -43,6 +44,7 @@ export default function DetailFollowerChart() {
   );
   const [followerArray, setFollowerArray] = useState<FollowerArrayType>([]);
   const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>([]);
+  const isMobile = isMobileState((state) => state.isMobile);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,7 +83,7 @@ export default function DetailFollowerChart() {
         text: "팔로워",
         align: "center" as AlignType,
         style: {
-          fontSize: "15px",
+          fontSize: isMobile ? "10px" : "15px",
           fontWeight: "bold",
           color: "white",
         },
@@ -108,9 +110,10 @@ export default function DetailFollowerChart() {
             zoomout: false,
           },
         },
+        
       },
       markers: {
-        size: 3,
+        size: isMobile ? 2 : 3,
       },
       tooltip: {
         x: {
@@ -125,10 +128,12 @@ export default function DetailFollowerChart() {
           style: {
             colors: "white",
             fontWeight: "bold",
+            fontSize: isMobile ? "8" : "12",
           },
           rotate: 0,
           hideOverlappingLabels: true,
           format: "MM.dd (ddd)",
+          
         },
         tooltip: {
           enabled: false,
@@ -144,6 +149,7 @@ export default function DetailFollowerChart() {
             style: {
               colors: "white",
               fontWeight: "bold",
+              fontSize: isMobile ? "8" : "12",
             },
             formatter: (value: number) =>
               value === null ? `0명` : `${value.toLocaleString()}명`,
@@ -156,7 +162,7 @@ export default function DetailFollowerChart() {
         borderColor: "#bcbcbc",
         padding: {
           left: 10,
-          right: 40,
+          right: 10,
         },
         xaxis: {
           lines: {
@@ -188,7 +194,7 @@ export default function DetailFollowerChart() {
         options={chartData.options}
         series={chartData.series}
         className={style.chart}
-        height="252%"
+        height={isMobile ? "150%" : "252%"}
         width="100%"
       />
     </div>

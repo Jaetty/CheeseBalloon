@@ -84,3 +84,13 @@
   background-color: darkcyan;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+
+  .input {
+    width: 100%;
+  }
+}

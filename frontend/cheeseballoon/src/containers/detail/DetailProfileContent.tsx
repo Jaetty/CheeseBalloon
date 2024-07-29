@@ -6,6 +6,8 @@ import afreeca from "src/stores/afreeca.ico";
 import chzzk from "public/svgs/chzzk.svg";
 import error from "public/svgs/blank_profile.png";
 import style from "src/containers/detail/DetailProfileContent.module.scss";
+import { isMobileState } from "src/stores/store";
+
 
 interface StreamerDataType {
   streamId: number;
@@ -44,6 +46,7 @@ export default function DetailProfileContent() {
   );
   const [rankData, setRankData] = useState<RankDataType | null>(null);
   const [liveData, setLiveData] = useState<LiveDataType | null>(null);
+  const isMobile = isMobileState((state) => state.isMobile);
   const router = useRouter();
 
   useEffect(() => {
