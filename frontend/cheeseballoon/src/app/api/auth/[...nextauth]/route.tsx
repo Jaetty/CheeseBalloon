@@ -18,7 +18,35 @@ const handler = NextAuth({
       clientSecret: process.env.NAVER_CLIENT_SECRET as string,
     }),
   ],
-  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
+  callbacks: {
+    async jwt({ token, account, user }) {
+      // console.log(token, account, user);
+      // console.log("jwt 콜백");
+      if (account && user) {
+        // console.log("jwt account, user 존재");
+        return {
+          accessToken: account.access_token,
+          accessTokenExpires: account.expires_at,
+          refreshToken: account.refresh_token,
+          provider: account.provider,
+          user,
+        };
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // console.log("session 콜백");
+      const newSession = {
+        ...session,
+        user: token.user || session.user,
+        accessToken: token.accessToken,
+        refreshToken: token.refreshToken,
+        provider: token.provider,
+      };
+      return newSession;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 });
 
 export { handler as GET, handler as POST };
