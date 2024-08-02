@@ -31,15 +31,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <GoogleTagManager gtmId="G-F2SWLBDJYR" />
       <PopstateProvider>
-        <AuthContext>
-          <body>
+        <body>
+          <AuthContext>
             <Nav />
             <div className="flex-container">
               <GoogleAnalytics gaId="G-F2SWLBDJYR" />
               <div className="children">{children}</div>
             </div>
-          </body>
-        </AuthContext>
+          </AuthContext>
+        </body>
       </PopstateProvider>
     </html>
   );
