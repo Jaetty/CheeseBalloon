@@ -2,26 +2,27 @@
 
 /* eslint-disable camelcase */
 
-import { useSession, signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { signIn, signOut } from "next-auth/react";
+// import { useEffect, useState } from "react";
+// import { useRouter } from "next/navigation";
 import logo from "public/svgs/logo.png";
-import { useEffect, useState } from "react";
 import styles from "src/app/(login)/login2/page.module.scss";
 
 export default function Login() {
-  const [isLoggedIn, setIsloggedIn] = useState<boolean>(true);
-  const router = useRouter();
-  const { data: session, status } = useSession();
+  const redirectUrl = "https://cheeseballoon.site/detail/1234";
+  // const [isLoggedIn, setIsloggedIn] = useState<boolean>(true);
+  // const router = useRouter();
+  // const { data: session, status } = useSession();
 
-  useEffect(() => {
-    // console.log(session);
-    // console.log(status);
-    // if (session.data) {
-    //   router.push("/home");
-    // } else {
-    //   setIsloggedIn(false);
-    // }
-  }, [router, session, status]);
+  // useEffect(() => {
+  //   // console.log(session);
+  //   // console.log(status);
+  //   // if (session.data) {
+  //   //   router.push("/home");
+  //   // } else {
+  //   //   setIsloggedIn(false);
+  //   // }
+  // }, [router, session, status]);
 
   return (
     // !isLoggedIn &&
@@ -43,9 +44,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() =>
-                  signIn("google", {
-                    callbackUrl: process.env.CALLBACK_URL,
-                  })
+                  signIn("google")
                 }
               >
                 구글 로그인
@@ -55,9 +54,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() =>
-                  signIn("kakao", {
-                    callbackUrl: process.env.CALLBACK_URL,
-                  })
+                  signIn("kakao")
                 }
               >
                 카카오 로그인
@@ -67,9 +64,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() =>
-                  signIn("naver", {
-                    callbackUrl: process.env.CALLBACK_URL,
-                  })
+                  signIn("naver")
                 }
               >
                 네이버 로그인
