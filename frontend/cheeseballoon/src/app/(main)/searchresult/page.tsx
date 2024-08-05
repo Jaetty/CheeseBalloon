@@ -1,12 +1,15 @@
-"use client";
-
+/* eslint-disable no-alert */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable camelcase */
+
+"use client";
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import styles from "src/app/(main)/searchresult/searchresult.module.scss";
-import empty from "src/stores/Frame 114.png";
-import a_icon from "src/stores/afreeca_icon.png";
+import empty from "public/svgs/fav.svg";
+import a_icon from "src/stores/afreeca.ico";
 import cnt from "src/stores/cnt_icon.png";
 import no_image from "src/stores/no_image.png";
 import no_image_profile from "src/stores/no_image_profile.png";
@@ -63,13 +66,20 @@ export default function SearchResult() {
   });
 
   const loadMoreStreamers = () => {
-    setVisibleStreamerCount((prevCount) => prevCount + streamerIncrement);
+    setVisibleStreamerCount((prevCount) => {
+      const newCount = prevCount + streamerIncrement;
+      return newCount > 24 ? 24 : newCount; // 40으로 제한
+    });
   };
   const loadMoreLives = () => {
     setVisibleLiveCount((prevCount) => prevCount + liveIncrement);
   };
 
   useEffect(() => {
+    // 검색 쿼리가 변경될 때 visibleStreamerCount를 초기화
+    setVisibleStreamerCount(12);
+    setVisibleLiveCount(12);
+
     fetch(`${cheese_api}/streamer/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
@@ -117,31 +127,40 @@ export default function SearchResult() {
                 </a>
                 <div className={styles.streamer_info}>
                   <div className={styles.first_container}>
-                    <div className={styles.platform}>
-                      {streamer.platform === "A" && (
-                        <img src={a_icon.src} alt="Platform A" />
-                      )}
-                      {streamer.platform === "C" && (
-                        <img
-                          src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
-                          alt="Platform C"
-                        />
-                      )}
-                    </div>
-                    <a
-                      href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
-                      className={styles.hyper_link}
-                    >
-                      <div className={styles.streamer_name}>
-                        {streamer.name}
+                    <div className={styles.pla_na}>
+                      <div className={styles.platform}>
+                        {streamer.platform === "S" && (
+                          <img src={a_icon.src} alt="Platform A" />
+                        )}
+                        {streamer.platform === "C" && (
+                          <img
+                            src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
+                            alt="Platform C"
+                          />
+                        )}
                       </div>
-                    </a>
-                  </div>
-                  <div className={styles.followers}>
-                    팔로워 {streamer.follower}명
+                      <a
+                        href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
+                        className={styles.hyper_link}
+                      >
+                        <div className={styles.streamer_name}>
+                          {streamer.name}
+                        </div>
+                      </a>
+                    </div>
+                    <div className={styles.followers}>
+                      팔로워 {streamer.follower}명
+                    </div>
                   </div>
                 </div>
-                <div className={styles.favorites}>
+                <div
+                  className={styles.favorites}
+                  onClick={() => {
+                    alert(
+                      "로그인 기능 개발 중입니다. 이용이 일시적으로 제한됩니다."
+                    );
+                  }}
+                >
                   <img src={empty.src} alt="ss" />
                 </div>
               </div>
@@ -150,7 +169,8 @@ export default function SearchResult() {
           <div className={styles.no_data}>조회된 내역이 없습니다.</div>
         )}
         {searchStreamerResults.data &&
-          searchStreamerResults.data.length > visibleStreamerCount && (
+          searchStreamerResults.data.length > visibleStreamerCount &&
+          visibleStreamerCount < 24 && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
             <div className={styles.more} onClick={loadMoreStreamers}>
               <p>더보기 ▽</p>
@@ -161,8 +181,7 @@ export default function SearchResult() {
       <div className={styles.responsive_live_content}>
         <div className={styles.responsive_live_flexbox}>
           {searchLiveResults.data && searchLiveResults.data.length > 0 ? (
-            searchLiveResults.data.slice(0, visibleLiveCount).map((live) => (
-              // eslint-disable-next-line react/jsx-key
+            searchLiveResults.data.map((live) => (
               <div key={live.liveId} className={styles.responsive_live_item}>
                 <a
                   href={live.streamUrl}
@@ -227,42 +246,47 @@ export default function SearchResult() {
                         {live.title}
                       </div>
                     </a>
-                    <a
-                      href={`https://cheeseballoon.site/detail//${live.streamerId}`}
-                      className={styles.hyper_link}
-                    >
-                      <div className={styles.responisve_bj_name}>
-                        {live.name}
+                    <div className={styles.responsive_third_container}>
+                      <div className={styles.responsive_platfrom_box}>
+                        {live.platform === "A" && (
+                          <img
+                            className={styles.responisve_platform}
+                            src={a_icon.src}
+                            alt="Platform A"
+                          />
+                        )}
+                        {live.platform === "C" && (
+                          <img
+                            className={styles.responisve_platform}
+                            src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
+                            alt="Platform C"
+                          />
+                        )}
+                        {live.platform === "S" && (
+                          <img
+                            className={styles.responisve_platform}
+                            src={a_icon.src}
+                            alt="S"
+                          />
+                        )}
+                        <a
+                          href={`https://cheeseballoon.site/detail/${live.streamerId}`}
+                          className={styles.hyper_link}
+                        >
+                          <div className={styles.responisve_bj_name}>
+                            {live.name}
+                          </div>
+                        </a>
                       </div>
-                    </a>
-                  </div>
-                </div>
-                <div className={styles.responsive_third_container}>
-                  <div className={styles.responsive_platfrom_box}>
-                    {live.platform === "A" && (
-                      <img
-                        className={styles.responisve_platform}
-                        src={a_icon.src}
-                        alt="Platform A"
-                      />
-                    )}
-                    {live.platform === "C" && (
-                      <img
-                        className={styles.responisve_platform}
-                        src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
-                        alt="Platform C"
-                      />
-                    )}
-                    {live.platform === "S" && (
-                      <img
-                        className={styles.responisve_platform}
-                        src={a_icon.src}
-                        alt="S"
-                      />
-                    )}
-                  </div>
-                  <div className={styles.responsive_category}>
-                    {live.category}
+                      <div className={styles.responsive_category}>
+                        <a
+                          href={`https://cheeseballoon.site/live?category=${live.category}`}
+                          className={styles.hyper_link}
+                        >
+                          {live.category}
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -270,13 +294,6 @@ export default function SearchResult() {
           ) : (
             <div className={styles.no_data}>조회된 내역이 없습니다.</div>
           )}
-          {searchLiveResults.data &&
-            searchLiveResults.data.length > visibleLiveCount && (
-              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-              <div className={styles.more} onClick={loadMoreLives}>
-                <p>더보기 ▽</p>
-              </div>
-            )}
         </div>
       </div>
     </div>
