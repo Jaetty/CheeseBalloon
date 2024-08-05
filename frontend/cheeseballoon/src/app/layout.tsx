@@ -3,7 +3,6 @@ import "src/styles/globals.css";
 import Nav from "src/components/nav/index";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import { PopstateProvider } from "src/lib/PopContext";
-import AuthContext from "../context/AuthContext";
 
 export const metadata: Metadata = {
   title: "치즈벌룬",
@@ -32,13 +31,11 @@ export default function RootLayout({
       <GoogleTagManager gtmId="G-F2SWLBDJYR" />
       <PopstateProvider>
         <body>
-          <AuthContext>
-            <Nav />
-            <div className="flex-container">
-              <GoogleAnalytics gaId="G-F2SWLBDJYR" />
-              <div className="children">{children}</div>
-            </div>
-          </AuthContext>
+          <Nav />
+          <div className="flex-container">
+            <GoogleAnalytics gaId="G-F2SWLBDJYR" />
+            <div className="children">{children}</div>
+          </div>
         </body>
       </PopstateProvider>
     </html>
