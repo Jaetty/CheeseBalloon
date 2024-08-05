@@ -397,6 +397,18 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .ranking {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .leaderboard {
+    display: none !important;
+  }
+}
+
 .more {
   float: right;
 }
