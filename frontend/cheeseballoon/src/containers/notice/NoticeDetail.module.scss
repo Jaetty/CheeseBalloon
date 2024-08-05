@@ -1,0 +1,185 @@
+.wrapper {
+  min-height: 78vh;
+  color: white;
+  font-size: 20px;
+  width: 80.625rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 40px;
+  color: #ffffff;
+  margin-top: 5rem;
+  margin-bottom: 0;
+}
+
+.subtitle {
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 24px;
+  color: rgba(245, 245, 245, 0.8);
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(245, 245, 245, 0.8);
+}
+
+.titlebox {
+  width: 100%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background: #3e3e3e;
+  border-radius: 14px;
+}
+
+.linkto {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #ffffff;
+  margin: 3rem 0;
+}
+
+.cardlink {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.wrap {
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.date {
+  font-weight: bold;
+  font-size: 0.7rem;
+  color: #a8a8a8;
+  margin-bottom: 0.5rem;
+}
+
+.maintitle {
+  font-weight: bold;
+  font-size: 2.2rem;
+  color: #ffffff;
+}
+
+.bodybox {
+  margin: 3rem 1rem;
+  font-size: 1rem;
+}
+
+.content img {
+  max-width: 100%;
+}
+
+.endline {
+  .lineItem {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 1rem;
+    &:first-child {
+      border-top: 1px solid #e4e4e4;
+      border-bottom: 1px solid #e4e4e4;
+    }
+    &:last-child {
+      border-bottom: 1px solid #e4e4e4;
+    }
+    .leftText {
+      margin-left: 1rem;
+    }
+    .rightText {
+      margin-left: 3rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+
+      &:hover {
+        color: yellowgreen;
+      }
+    }
+    .noText {
+      margin-left: 3rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    width: 100%;
+  }
+
+  .title-container {
+    text-align: center;
+  }
+
+  .title {
+    margin-top: 3rem;
+  }
+
+  .subtitle {
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .titlebox {
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background: #3e3e3e;
+    border-radius: 14px;
+  }
+
+  .linkto {
+    font-size: 0.8rem;
+    margin: 1rem 0;
+  }
+
+  .date {
+    font-weight: bold;
+    font-size: 0.5rem;
+    color: #a8a8a8;
+    margin-bottom: 0.5rem;
+  }
+
+  .maintitle {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-right: 1rem;
+  }
+
+  .bodybox {
+    margin: 1.5rem 0;
+    font-size: 1rem;
+  }
+
+  .endline {
+    .lineItem {
+      height: 35px;
+      font-size: 0.7rem;
+      .leftText {
+        width: 20%;
+        margin-left: 0.5rem;
+      }
+      .rightText {
+        width: 80%;
+        margin-left: 1.5rem;
+      }
+      .noText {
+        width: 80%;
+        margin-left: 1.5rem;
+      }
+    }
+  }
+}

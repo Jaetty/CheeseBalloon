@@ -1,0 +1,19 @@
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-height: 4rem;
+  overflow-y: hidden;
+}
+
+.category {
+  color: yellow;
+  font-size: small;
+  border: 0;
+  background-color: transparent;
+}
+
+.category:hover {
+  color: greenyellow;
+  cursor: pointer;
+}

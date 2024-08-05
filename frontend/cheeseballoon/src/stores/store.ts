@@ -1,19 +1,32 @@
-// zustand 사용 예시
-/** import { createStore } from "zustand";
+"use client";
 
-type State = {
-  count: number;
-  increment: () => void;
-  decrement: () => void;
-  reset: () => void;
-};
+import { create } from "zustand";
+import { ToggleStateType, MobileState } from "src/types/type";
+import { persist } from "zustand/middleware";
 
-const useStore = createStore<State>((set) => ({
-  count: 0,
-  increment: () => set((state) => ({ count: state.count + 1 })),
-  decrement: () => set((state) => ({ count: state.count - 1 })),
-  reset: () => set({ count: 0 }),
-}));
+const useToggleState = create(
+  persist<ToggleStateType>(
+    (set) => ({
+      value: false,
+      toggle: () => set((state) => ({ value: !state.value })),
+    }),
+    {
+      name: "toggle-state",
+    }
+  )
+);
 
-export default useStore;
-*/
+const isMobileState = create(
+  persist<MobileState>(
+    (set) => ({
+      isMobile: false,
+      value: false,
+      setIsMobile: (value: boolean) => set({ isMobile: value }),
+    }),
+    {
+      name: "isMobile",
+    }
+  )
+);
+
+export { useToggleState, isMobileState };

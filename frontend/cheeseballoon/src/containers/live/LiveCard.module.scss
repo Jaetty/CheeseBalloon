@@ -1,0 +1,114 @@
+.wrapper {
+  background-color: #4e4e4e;
+  border-radius: 1rem;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.wrapper:hover {
+  background-color: gray;
+  filter: brightness(80%);
+}
+
+.thumbnail {
+  border-radius: 1rem;
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.second-container {
+  display: flex;
+  align-items: center;
+  padding-top: 0.5rem;
+}
+
+.platformicon {
+  height: 1rem;
+}
+
+.name {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  color: white;
+  text-decoration-line: none;
+  font-size: x-small;
+  font-weight: bold;
+  padding-left: 0.3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.name:hover {
+  font-weight: bold;
+  color: yellow;
+  font-weight: bolder;
+}
+
+.category {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  color: white;
+  margin-left: auto;
+  font-size: x-small;
+  max-width: 50%;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.category:hover {
+  font-weight: bold;
+  color: yellow;
+}
+
+.third-container {
+  display: flex;
+  padding-top: 1rem;
+  align-items: center;
+}
+
+.profile {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 25%;
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 1rem;
+  color: white;
+  text-decoration-line: none;
+  word-break: break-all;
+  font-size: small;
+  line-height: 1rem;
+}
+
+.fourth-container {
+  display: flex;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+.viewericon {
+  height: 1rem;
+  margin-left: auto;
+}
+
+.viewers {
+  margin-left: 3px;
+  margin-right: 1rem;
+  color: white;
+  font-size: small;
+}

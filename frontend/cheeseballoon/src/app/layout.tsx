@@ -1,13 +1,25 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "src/styles/globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import Nav from "src/components/nav/index";
+import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
+import { PopstateProvider } from "src/lib/PopContext";
+import AuthContext from "../context/AuthContext";
 
 export const metadata: Metadata = {
-  title: "CheeseBalloon",
+  title: "치즈벌룬",
   description:
     "치지직과 아프리카TV 방송인들의 주요 데이터들을 수집하여 제공합니다.",
+  icons: {
+    icon: "/svgs/cheese.png",
+  },
+  keywords: [
+    "치즈벌룬",
+    "아프리카tv",
+    "치지직",
+    "방송 통계",
+    "랭킹",
+    "인터넷 방송",
+  ],
 };
 
 export default function RootLayout({
@@ -16,8 +28,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className as string | undefined}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <GoogleTagManager gtmId="G-F2SWLBDJYR" />
+      <PopstateProvider>
+        <body>
+          <AuthContext>
+            <Nav />
+            <div className="flex-container">
+              <GoogleAnalytics gaId="G-F2SWLBDJYR" />
+              <div className="children">{children}</div>
+            </div>
+          </AuthContext>
+        </body>
+      </PopstateProvider>
     </html>
   );
 }

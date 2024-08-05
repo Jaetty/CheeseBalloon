@@ -1,0 +1,86 @@
+@font-face {
+  font-family: "esamanru";
+  src: url("../../styles/font/esamanru\ Light.ttf") format("truetype");
+}
+
+.ranking {
+  color: white;
+  font-size: 20px;
+  max-width: 80.625rem;
+  margin: 0 auto;
+  font-family: "esamanru";
+  padding: 0 1rem;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 40px;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  margin-top: 5rem;
+}
+
+.subtitle {
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 24px;
+  color: rgba(245, 245, 245, 0.8);
+  margin-bottom: 1rem;
+}
+
+.carousel {
+  padding: 1rem 0 4rem 0;
+  border-top: 1px solid #b8b8b8;
+  border-bottom: 1px solid #b8b8b8;
+}
+
+.favtitle {
+  display: flex;
+  margin-bottom: 3rem;
+  gap: 0.5rem;
+  font-weight: 700;
+  padding-left: 0.5rem;
+}
+
+.viewlog {
+  margin-top: 1rem;
+}
+
+.viewtitle {
+  display: flex;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+  font-weight: 700;
+  padding-left: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .ranking {
+    color: white;
+    font-size: 20px;
+    width: 100%;
+    max-width: 80.625rem;
+    margin: 0 auto;
+    font-family: "esamanru";
+    padding: 0;
+  }
+  .title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    margin-top: 3rem;
+    font-weight: 500;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 0.7rem;
+  }
+  .favtitle {
+    display: flex;
+    margin-bottom: 3rem;
+    gap: 0.5rem;
+    font-weight: 700;
+    padding-left: 0.5rem;
+    justify-content: center;
+  }
+}
