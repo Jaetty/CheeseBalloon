@@ -66,13 +66,20 @@ export default function SearchResult() {
   });
 
   const loadMoreStreamers = () => {
-    setVisibleStreamerCount((prevCount) => prevCount + streamerIncrement);
+    setVisibleStreamerCount((prevCount) => {
+      const newCount = prevCount + streamerIncrement;
+      return newCount > 24 ? 24 : newCount; // 40으로 제한
+    });
   };
   const loadMoreLives = () => {
     setVisibleLiveCount((prevCount) => prevCount + liveIncrement);
   };
 
   useEffect(() => {
+    // 검색 쿼리가 변경될 때 visibleStreamerCount를 초기화
+    setVisibleStreamerCount(12);
+    setVisibleLiveCount(12);
+
     fetch(`${cheese_api}/streamer/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
@@ -97,70 +104,73 @@ export default function SearchResult() {
       <div className={styles.streamer_title}>스트리머</div>
       <div className={styles.streamer_list}>
         {searchStreamerResults.data && searchStreamerResults.data.length > 0 ? (
-          searchStreamerResults.data.slice(0, 12).map((streamer) => (
-            <div key={streamer.streamerId} className={styles.streamer}>
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-              <a
-                href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
-                className={styles.hyper_link}
-              >
-                <div className={styles.streamer_thumbnail}>
-                  <img
-                    src={streamer.profileUrl}
-                    alt=""
-                    onError={(
-                      e: React.SyntheticEvent<HTMLImageElement, Event>
-                    ) => {
-                      e.currentTarget.src = no_image.src; // Set the source to the fallback image
-                    }}
-                  />
-                </div>
-              </a>
-              <div className={styles.streamer_info}>
-                <div className={styles.first_container}>
-                  <div className={styles.pla_na}>
-                    <div className={styles.platform}>
-                      {streamer.platform === "S" && (
-                        <img src={a_icon.src} alt="Platform A" />
-                      )}
-                      {streamer.platform === "C" && (
-                        <img
-                          src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
-                          alt="Platform C"
-                        />
-                      )}
-                    </div>
-                    <a
-                      href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
-                      className={styles.hyper_link}
-                    >
-                      <div className={styles.streamer_name}>
-                        {streamer.name}
+          searchStreamerResults.data
+            .slice(0, visibleStreamerCount)
+            .map((streamer) => (
+              <div key={streamer.streamerId} className={styles.streamer}>
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                <a
+                  href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
+                  className={styles.hyper_link}
+                >
+                  <div className={styles.streamer_thumbnail}>
+                    <img
+                      src={streamer.profileUrl}
+                      alt=""
+                      onError={(
+                        e: React.SyntheticEvent<HTMLImageElement, Event>
+                      ) => {
+                        e.currentTarget.src = no_image.src; // Set the source to the fallback image
+                      }}
+                    />
+                  </div>
+                </a>
+                <div className={styles.streamer_info}>
+                  <div className={styles.first_container}>
+                    <div className={styles.pla_na}>
+                      <div className={styles.platform}>
+                        {streamer.platform === "S" && (
+                          <img src={a_icon.src} alt="Platform A" />
+                        )}
+                        {streamer.platform === "C" && (
+                          <img
+                            src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
+                            alt="Platform C"
+                          />
+                        )}
                       </div>
-                    </a>
-                  </div>
-                  <div className={styles.followers}>
-                    팔로워 {streamer.follower}명
+                      <a
+                        href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
+                        className={styles.hyper_link}
+                      >
+                        <div className={styles.streamer_name}>
+                          {streamer.name}
+                        </div>
+                      </a>
+                    </div>
+                    <div className={styles.followers}>
+                      팔로워 {streamer.follower}명
+                    </div>
                   </div>
                 </div>
+                <div
+                  className={styles.favorites}
+                  onClick={() => {
+                    alert(
+                      "로그인 기능 개발 중입니다. 이용이 일시적으로 제한됩니다."
+                    );
+                  }}
+                >
+                  <img src={empty.src} alt="ss" />
+                </div>
               </div>
-              <div
-                className={styles.favorites}
-                onClick={() => {
-                  alert(
-                    "로그인 기능 개발 중입니다. 이용이 일시적으로 제한됩니다."
-                  );
-                }}
-              >
-                <img src={empty.src} alt="ss" />
-              </div>
-            </div>
-          ))
+            ))
         ) : (
           <div className={styles.no_data}>조회된 내역이 없습니다.</div>
         )}
         {searchStreamerResults.data &&
-          searchStreamerResults.data.length > visibleStreamerCount && (
+          searchStreamerResults.data.length > visibleStreamerCount &&
+          visibleStreamerCount < 24 && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
             <div className={styles.more} onClick={loadMoreStreamers}>
               <p>더보기 ▽</p>
