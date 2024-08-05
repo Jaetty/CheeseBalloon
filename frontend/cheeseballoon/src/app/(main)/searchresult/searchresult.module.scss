@@ -203,17 +203,20 @@
 }
 
 .more {
+  width: 50%;
+  max-width: 200px;
+  height: 30px;
+  margin: 1rem auto 0 auto;
+  border: 1px solid #949393;
+  border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 10%;
-  font-size: 14px;
+  color: white;
+  font-size: 0.7rem;
+  cursor: pointer;
+  font-family: "esamanru";
   font-weight: bold;
-  color: #e5e5e5;
-  font-family: "GmarketSans";
-  border: 2px solid #6c6c6c;
-  border-radius: 55px;
-  margin: auto;
 }
 
 .more > p {
