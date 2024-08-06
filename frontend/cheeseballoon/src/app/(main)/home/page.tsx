@@ -127,7 +127,7 @@ export default function Home() {
             </div>
           </Link>
         </div>
-        <div className={styles.ranking}>
+        {/* <div className={styles.ranking}>
           <div className={styles.title}>일일 시청률 랭킹</div>
           <div className={styles.sub_title}>
             <p className={styles.toggleText} onClick={handleClick}>
@@ -307,7 +307,7 @@ export default function Home() {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
         <div className={styles.title}>
           <p>실시간 방송</p>
         </div>
