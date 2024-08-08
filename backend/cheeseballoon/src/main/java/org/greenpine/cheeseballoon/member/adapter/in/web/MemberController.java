@@ -126,7 +126,7 @@ public class MemberController {
         log.info("loginNaver - Call");
         System.out.println(code);
         try{
-            oauthService.getNaverUserInfo(code,state);
+//            oauthService.getNaverUserInfo(code,state);
         }catch ( Exception e ){
 
         }
