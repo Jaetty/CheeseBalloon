@@ -9,5 +9,6 @@ public interface BookmarkWithFollower {
     Character getPlatform();
     String getProfile_img_url();
     Integer getFollower();
+    String getStream_url();
     Boolean getIs_live();
 }

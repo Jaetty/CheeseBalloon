@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BookmarkRepository  extends JpaRepository<BookmarkEntity,Long> {
 
-    @Query(value ="SELECT members.*, streamers.*, bf.bookmark_id, bf.follower, lives.is_live FROM ( "+
+    @Query(value ="SELECT members.*, streamers.*, bf.bookmark_id, bf.follower, lives.is_live, lives.stream_url FROM ( "+
             "   SELECT b.*, sl.follower "+
             "   FROM bookmarks b "+
             "   LEFT JOIN ( "+
