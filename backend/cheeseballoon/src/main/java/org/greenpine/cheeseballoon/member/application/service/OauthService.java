@@ -33,13 +33,22 @@ public class OauthService {
     @Value("${oauth2.google.redirect-uri}")
     private String GOOGLE_REDIRECT_URL;
 
-    private final String KAKAO_USER_API = "https://kapi.kakao.com/v2/user/me";
+    private final String KAKAO_TOKEN_API = "https://kapi.kakao.com/v2/user/me";
+    private final String KAKAO_USER_API = "https://openapi.naver.com/v1/nid/me";
     @Value("${oauth2.kakao.redirect-uri}")
     private String KAKAO_REDIRECT_URL;
     @Value("${oauth2.kakao.rest-api-key}")
     private String KAKAO_RESTAPI_KEY;
 
+    private final String NAVER_TOKEN_URL = "https://nid.naver.com/oauth2.0/token";
+    @Value("${oauth2.naver.redirect-uri}")
+    private String NAVER_REDIRECT_URL;
+    @Value("${oauth2.naver.client-id}")
+    private String NAVER_CLIENT_ID;
+    @Value("${oauth2.naver.client-secret}")
+    private String NAVER_CLIENT_SECRET;
     private final JwtUtil jwtUtil;
+    private final ObjectMapper objectMapper;
 
     public GetAccessTokenResDto getNewAccessToken(Long memberId, String role){
         String accessToken = jwtUtil.createAccessToken(memberId, role);
@@ -62,7 +71,6 @@ public class OauthService {
 
         if(responseEntity.getStatusCode() == HttpStatus.OK){
             //System.out.println(responseEntity.getBody());
-            ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
             String accessToken = (String) jsonMap.get("access_token");
             //System.out.println("accessToken:"+accessToken);
@@ -125,7 +133,6 @@ public class OauthService {
         //System.out.println(responseEntity.getBody());
         if(responseEntity.getStatusCode() == HttpStatus.OK){
             //System.out.println(responseEntity.getBody());
-            ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
             String accessToken = (String) jsonMap.get("access_token");
             //System.out.println(accessToken);
@@ -142,7 +149,7 @@ public class OauthService {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
-                KAKAO_USER_API,
+                KAKAO_TOKEN_API,
                 HttpMethod.GET,
                 entity,
                 String.class
@@ -151,7 +158,6 @@ public class OauthService {
         if (response.getStatusCode().is2xxSuccessful()) {
             String responseBody = response.getBody();
             //System.out.println(responseBody);
-            ObjectMapper objectMapper = new ObjectMapper();
             KakaoUserInfoResDto kakaoUserInfo = objectMapper.readValue(responseBody, KakaoUserInfoResDto.class);
             //System.out.println("id: " + kakaoUserInfo.getId());
             //System.out.println("nickname: " + kakaoUserInfo.getProperties().getNickname());
@@ -165,5 +171,45 @@ public class OauthService {
         } else {
             throw new BadRequestException();
         }
+    }
+
+    public UserInfoDto getNaverUserInfo(String accessCode, String state) throws JsonProcessingException {
+        // HTTP POST를 요청할 때 보내는 데이터(body)를 설명해주는 헤더도 만들어 같이 보내줘야 한다.
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        // body 데이터를 담을 오브젝트인 MultiValueMap를 만들어보자
+        // body는 보통 key, value의 쌍으로 이루어지기 때문에 자바에서 제공해주는 MultiValueMap 타입을 사용한다.
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", NAVER_CLIENT_ID);
+        params.add("client_secret", NAVER_CLIENT_SECRET);
+        params.add("code", accessCode);
+        params.add("state", state);
+        // 요청하기 위해 헤더(Header)와 데이터(Body)를 합친다.
+        RestTemplate restTemplate=new RestTemplate();
+        ResponseEntity<String> responseEntity=restTemplate.postForEntity(NAVER_TOKEN_URL, params,String.class);
+        System.out.println(responseEntity.getStatusCode());
+        if(responseEntity.getStatusCode() == HttpStatus.OK) {
+            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
+            String accessToken = (String) jsonMap.get("access_token");
+            return requestNaverUserInfo(accessToken);
+        }
+        return null;
+    }
+
+    public UserInfoDto requestNaverUserInfo(String accessToken){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                KAKAO_USER_API,
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
+        System.out.println(response.getBody());
+        return null;
     }
 }

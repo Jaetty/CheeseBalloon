@@ -25,6 +25,7 @@ public class BookmarkPersistenceAdapter implements BookmarkPort {
         List<FindBookmarkResDto> res = bookmarks.stream().map(b -> FindBookmarkResDto.builder()
                 .bookmarkId(b.getBookmark_id())
                 .streamerId(b.getStreamer_id())
+                .streamUrl(b.getStream_url())
                 .name(b.getName())
                 .profileUrl(b.getProfile_img_url())
                 .followerCnt(b.getFollower())

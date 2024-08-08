@@ -81,7 +81,6 @@ public class MemberController {
         try{
             UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
-
             return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
@@ -95,7 +94,7 @@ public class MemberController {
     public ResponseEntity<CustomBody> loginKakao(@RequestParam String code) {
         log.info("login/kakao - Call");
         System.out.println(code);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, code));
         /*try {
             UserInfoDto userInfoDto = oauthService.getKakaoUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
@@ -121,6 +120,27 @@ public class MemberController {
         }catch (BadRequestException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
         }
+    }
+    @GetMapping("/login/naver")
+    public ResponseEntity<CustomBody> loginNaver(@RequestParam String code, @RequestParam String state){
+        log.info("loginNaver - Call");
+        System.out.println(code);
+        try{
+            oauthService.getNaverUserInfo(code,state);
+        }catch ( Exception e ){
+
+        }
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+
+    }
+    @GetMapping("/login/naver/code")
+    public ResponseEntity<CustomBody> loginNaverCode(@RequestParam String code, @RequestParam String state){
+        log.info("loginNaverCode - Call");
+        System.out.println(code);
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+
     }
 
     @PostMapping("/changeNickname")
