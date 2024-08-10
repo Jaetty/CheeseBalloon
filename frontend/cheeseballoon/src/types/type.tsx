@@ -115,3 +115,8 @@ export interface FavState {
   followerCnt: number;
   isLive: boolean;
 }
+
+export interface AccessToken {
+  accessToken: string | null;
+  setAccessToken: (token: string | null) => void;
+}

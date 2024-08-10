@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import customFetch from "@/src/lib/CustomFetch";
 import afreeca from "src/stores/afreeca.ico";
 import chzzk from "public/svgs/chzzk.svg";
 import error from "public/svgs/blank_profile.png";
 import style from "src/containers/detail/DetailProfileContent.module.scss";
-import { isMobileState } from "src/stores/store";
-
+import favorite from "public/svgs/fav.svg";
+import noFavorite from "public/svgs/nofav.svg";
 
 interface StreamerDataType {
   streamId: number;
@@ -34,7 +35,7 @@ const STREAMER_LIVE_API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
 const SUMMARY_API_URL = process.env.NEXT_PUBLIC_SUMMARY_API_URL;
 
 async function getData(api: string, streamerId: string) {
-  const res = await fetch(`${api}${streamerId}`);
+  const res = await customFetch(`${api}${streamerId}`);
 
   return res.json();
 }
@@ -46,7 +47,6 @@ export default function DetailProfileContent() {
   );
   const [rankData, setRankData] = useState<RankDataType | null>(null);
   const [liveData, setLiveData] = useState<LiveDataType | null>(null);
-  const isMobile = isMobileState((state) => state.isMobile);
   const router = useRouter();
 
   useEffect(() => {
@@ -132,6 +132,21 @@ export default function DetailProfileContent() {
           >
             {rankData.diff >= 0 ? `(+${rankData.diff})` : `(${rankData.diff})`}
           </div>
+        </div>
+        <div className={style.favorite}>
+          {streamerData.bookmark ? (
+            <img
+              src={favorite.src}
+              alt="즐겨찾기"
+              className={style["favorite-image"]}
+            />
+          ) : (
+            <img
+              src={noFavorite.src}
+              alt="즐겨찾기"
+              className={style["favorite-image"]}
+            />
+          )}
         </div>
       </div>
     )

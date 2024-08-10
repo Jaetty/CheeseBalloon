@@ -1,24 +1,21 @@
 "use client";
 
-/* eslint-disable camelcase */
-
-import kakao_login from "src/stores/kakao_login_large_narrow.png";
+import { useRouter } from "next/navigation";
+import kakaoLogin from "src/stores/kakao_login_large_narrow.png";
 import logo from "public/svgs/logo.png";
 import styles from "src/app/(login)/login/page.module.scss";
 
 export default function Login() {
-  const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_REST_API;
-  const redirect_uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+  const router = useRouter();
+  const restApiKey = process.env.NEXT_PUBLIC_KAKAO_REST_API;
+  const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
   // oauth 요청 URL
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
-  // const handleLogin = () => {
-  //   window.location.href = kakaoURL;
-  // };
-  const handleLogin = (event: React.MouseEvent<HTMLImageElement>) => {
-    event.preventDefault();
-    // eslint-disable-next-line no-alert
-    alert("로그인 기능 개발 중입니다. 이용이 일시적으로 제한됩니다.");
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${restApiKey}&redirect_uri=${redirectUri}&response_type=code`;
+  const handleLogin = () => {
+    // event.preventDefault();
+    router.replace(kakaoURL);
   };
+
   return (
     <div className={styles.login}>
       <div className={styles.left}>
@@ -36,17 +33,13 @@ export default function Login() {
           <div className={styles.login_button}>
             <img
               className={styles.login_img}
-              src={kakao_login.src}
+              src={kakaoLogin.src}
               alt="ss"
               onClick={handleLogin}
               role="presentation"
             />
           </div>
         </div>
-        {/* <div className={styles.sign_in}>
-          <div className={styles.sub}>계정이 없으신가요?</div>
-          <div className={styles.kakao}>카카오 로고</div>
-        </div> */}
       </div>
     </div>
   );
