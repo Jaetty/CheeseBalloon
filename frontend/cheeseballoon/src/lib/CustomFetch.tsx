@@ -1,12 +1,12 @@
 import Cookies from "js-cookie";
-import { useAccessToken } from "@/src/stores/store";
+import { accessTokenState } from "@/src/stores/store";
 
 const REFRESH_API_URL = process.env.NEXT_PUBLIC_REFRESH_API_URL;
 
 // accessToken 갱신
 const refreshAccessToken = async () => {
   const refreshToken = Cookies.get("refreshToken");
-  const { setAccessToken } = useAccessToken.getState();
+  const { setAccessToken } = accessTokenState.getState();
 
   // refreshToken이 유효하면 accessToken갱신 및 반환
   // refreshToken이 유효하지 않으면 accessToken값 삭제 후 null값 반환
@@ -31,7 +31,7 @@ export default async function customFetch(
   url: string,
   options: RequestInit = {}
 ) {
-  let { accessToken } = useAccessToken.getState();
+  let { accessToken } = accessTokenState.getState();
 
   // accessToken이 없는 경우, refreshAccessToken 함수 실행
   if (!accessToken) {

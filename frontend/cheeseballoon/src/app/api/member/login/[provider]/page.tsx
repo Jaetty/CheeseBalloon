@@ -3,14 +3,14 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
-import { useAccessToken } from "@/src/stores/store";
+import { accessTokenState } from "@/src/stores/store";
 
 export default function KakaoRedirect() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
   const redirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
-  const { accessToken, setAccessToken } = useAccessToken.getState();
+  const { accessToken, setAccessToken } = accessTokenState.getState();
 
   useEffect(() => {
     const getToken = async () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import { ToggleStateType, MobileState, AccessToken } from "src/types/type";
+import { ToggleStateType, MobileState, AccessTokenState, SignInState } from "src/types/type";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 const useToggleState = create(
@@ -29,8 +29,8 @@ const isMobileState = create(
   )
 );
 
-const useAccessToken = create(
-  persist<AccessToken>(
+const accessTokenState = create(
+  persist<AccessTokenState>(
     (set) => ({
       accessToken: null,
       setAccessToken: (token) => set({ accessToken: token }),
@@ -42,4 +42,16 @@ const useAccessToken = create(
   )
 );
 
-export { useToggleState, isMobileState, useAccessToken };
+const isSignInState = create(
+  persist<SignInState>(
+    (set) => ({
+      isSignIn: false,
+      setIsSignIn: (value: boolean) => set({ isSignIn: value }),
+    }),
+    {
+      name: "isSignIn",
+    }
+  )
+);
+
+export { useToggleState, isMobileState, accessTokenState, isSignInState };

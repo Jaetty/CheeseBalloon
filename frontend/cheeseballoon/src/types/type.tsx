@@ -116,7 +116,12 @@ export interface FavState {
   isLive: boolean;
 }
 
-export interface AccessToken {
+export interface AccessTokenState {
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;
+}
+
+export interface SignInState {
+  isSignIn: boolean;
+  setIsSignIn: (value: boolean) => void;
 }

@@ -33,10 +33,10 @@ interface LiveDataType {
 const STREAMER_API_URL = process.env.NEXT_PUBLIC_STREAMER_API_URL;
 const STREAMER_LIVE_API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
 const SUMMARY_API_URL = process.env.NEXT_PUBLIC_SUMMARY_API_URL;
+const BOOKMARK_API_URL = process.env.NEXT_PUBLIC_MYPAGE_BOOK;
 
-async function getData(api: string, streamerId: string) {
-  const res = await customFetch(`${api}${streamerId}`);
-
+async function getData(url: string) {
+  const res = await customFetch(url);
   return res.json();
 }
 
@@ -51,18 +51,9 @@ export default function DetailProfileContent() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const streamerDataResponse = await getData(
-        STREAMER_API_URL as string,
-        id.toString()
-      );
-      const rankDataResponse = await getData(
-        SUMMARY_API_URL as string,
-        id.toString()
-      );
-      const liveDataResponse = await getData(
-        STREAMER_LIVE_API_URL as string,
-        id.toString()
-      );
+      const streamerDataResponse = await getData(`${STREAMER_API_URL}${id}`);
+      const rankDataResponse = await getData(`${SUMMARY_API_URL}${id}`);
+      const liveDataResponse = await getData(`${STREAMER_LIVE_API_URL}${id}`);
 
       if (streamerDataResponse.status === "OK") {
         setStreamerData(streamerDataResponse.data);
@@ -82,6 +73,14 @@ export default function DetailProfileContent() {
 
   const handleOpenUrl = (url: string) => {
     window.open(url, "_blank");
+  };
+
+  const handleBookmark = () => {
+    if (streamerData?.bookmark) {
+      customFetch(`${BOOKMARK_API_URL}`, { method: "DELETE" });
+    } else {
+      customFetch(`${BOOKMARK_API_URL}?streamerId=${id}`, { method: "POST" });
+    }
   };
 
   return (
@@ -133,7 +132,21 @@ export default function DetailProfileContent() {
             {rankData.diff >= 0 ? `(+${rankData.diff})` : `(${rankData.diff})`}
           </div>
         </div>
-        <div className={style.favorite}>
+        <div
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.stopPropagation();
+              handleBookmark();
+            }
+          }}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleBookmark();
+          }}
+          className={style.favorite}
+        >
           {streamerData.bookmark ? (
             <img
               src={favorite.src}
