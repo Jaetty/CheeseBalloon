@@ -10,14 +10,7 @@
 }
 
 .profile {
-  background-color: #4e4e4e;
-  border-radius: 20px;
   margin-bottom: 2rem;
-  border: 2px solid white;
-
-  &:hover {
-    filter: brightness(90%);
-  }
 }
 
 .live {
@@ -45,7 +38,6 @@
 
   .profile {
     margin-bottom: 1rem;
-    border: 1px solid white;
   }
 
   .live {
