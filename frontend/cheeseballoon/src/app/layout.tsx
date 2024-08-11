@@ -36,7 +36,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <GoogleTagManager gtmId="G-F2SWLBDJYR" />
       <PopstateProvider>
-        <SignInChecker />
+        {/* <SignInChecker /> */}
         <body>
           <Nav />
           <div className="flex-container">
