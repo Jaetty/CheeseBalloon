@@ -1,17 +1,18 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import { usePathname, useSearchParams } from "next/navigation";
 import { accessTokenState, isSignInState } from "../stores/store";
 
 const REFRESH_API_URL = process.env.NEXT_PUBLIC_REFRESH_API_URL;
 
 export default function SignInChecker() {
-  const pathname = usePathname();
-  const params = useSearchParams();
   const setAccessToken = accessTokenState((state) => state.setAccessToken);
   const setIsSignIn = isSignInState((state) => state.setIsSignIn);
+
+  const path = usePathname();
+  const params = useSearchParams();
 
   useEffect(() => {
     async function getNewAccessToken() {
@@ -42,7 +43,7 @@ export default function SignInChecker() {
       return null;
     }
     getNewAccessToken();
-  }, [pathname, params, setAccessToken, setIsSignIn]);
+  }, [path, params, setAccessToken, setIsSignIn]);
 
   return null;
 }

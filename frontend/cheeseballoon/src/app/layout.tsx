@@ -3,7 +3,8 @@ import "src/styles/globals.css";
 import Nav from "src/components/nav/index";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import { PopstateProvider } from "src/lib/PopContext";
-import SignInChecker from "../lib/SignInChecker";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "치즈벌룬",
@@ -27,6 +28,10 @@ export const metadata: Metadata = {
   ],
 };
 
+const SignInChecker = dynamic(() => import("@/src/lib/SignInChecker"), {
+  ssr: false,
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,7 +41,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <GoogleTagManager gtmId="G-F2SWLBDJYR" />
       <PopstateProvider>
-        {/* <SignInChecker /> */}
+        <Suspense fallback={null}>
+          <SignInChecker />
+        </Suspense>
         <body>
           <Nav />
           <div className="flex-container">
