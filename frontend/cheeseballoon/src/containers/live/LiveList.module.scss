@@ -1,7 +1,7 @@
 .wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 3rem;
 }
 
 .atag {
@@ -10,7 +10,7 @@
 
 .livecard {
   display: block;
-  width: calc(25% - (3rem / 4));
+  width: calc(25% - (9rem / 4));
 }
 
 .no-result-container {
@@ -30,11 +30,17 @@
   width: 100%;
   border-radius: 2rem;
   color: white;
-  background-color: gray;
+  background-color: transparent;
+  border: solid white;
   font-size: larger;
   font-weight: bold;
   text-align: center;
   cursor: pointer;
+
+  &:hover {
+  color: black;
+  background-color: gray;
+  }
 }
 
 @media (max-width: 1440px) {

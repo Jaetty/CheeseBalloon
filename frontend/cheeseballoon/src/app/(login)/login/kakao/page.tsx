@@ -17,7 +17,8 @@ export default function KakaoRedirect() {
     })
       .then((response) => response.json())
       .then((data) => {
-        router.push("/");
+        // console.log('데이터', data)
+        // router.push("/");
       })
       .catch((error) => {
         // console.error("오류 발생", error); //
