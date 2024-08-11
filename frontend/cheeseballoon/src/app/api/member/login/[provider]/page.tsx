@@ -37,8 +37,8 @@ export default function KakaoRedirect() {
         router.back();
       } catch (error) {
         // eslint-disable-next-line no-alert
-        // alert("로그인이 실패했습니다");
-        // router.replace("/login");
+        alert("로그인이 실패했습니다");
+        router.replace("/login");
       }
     };
 
