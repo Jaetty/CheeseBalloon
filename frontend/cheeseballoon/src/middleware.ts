@@ -9,7 +9,7 @@ export default function middleware(request: NextRequest) {
   const response = NextResponse.next();
   response.cookies.set("viewport", viewport, { path: "/" });
 
-  if (pathname === "/login") {
+  if (pathname === "/login" || pathname.startsWith("/api")) {
     if (refreshToken) {
       return NextResponse.redirect(new URL("/home", request.url));
     }
