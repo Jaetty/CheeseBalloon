@@ -110,7 +110,6 @@ export default function DetailFollowerChart() {
             zoomout: false,
           },
         },
-        
       },
       markers: {
         size: isMobile ? 2 : 3,
@@ -133,7 +132,6 @@ export default function DetailFollowerChart() {
           rotate: 0,
           hideOverlappingLabels: true,
           format: "MM.dd (ddd)",
-          
         },
         tooltip: {
           enabled: false,
@@ -180,7 +178,7 @@ export default function DetailFollowerChart() {
 
     series: [
       {
-        name: "시청률",
+        name: "팔로워",
         type: "line",
         data: followerArray as number[],
       },

@@ -106,9 +106,9 @@ export default function NoticeIndex() {
   return (
     <div className={styles.wrapper}>
       <div className={styles["title-container"]}>
-        <p className={styles.title}>Notice</p>
+        <p className={styles.title}>공지사항</p>
         <div className={styles.subtitle}>
-          치즈벌룬의 업데이트 및 다양한 소식을 알려드립니다. 
+          치즈벌룬의 업데이트 및 다양한 소식을 알려드립니다.
         </div>
       </div>
       {content}

@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### yml ###
-#*.yml 추후 주석지울것
+*.yml
