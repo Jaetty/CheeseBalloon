@@ -4,7 +4,7 @@ import style from "src/app/(main)/detail/[id]/page.module.scss";
 
 const STREAMER_API_URL = process.env.NEXT_PUBLIC_STREAMER_API_URL;
 
-export const getData = async (url: string) => {
+const getData = async (url: string) => {
   const res = await fetch(url);
   return res.json();
 };
