@@ -37,9 +37,9 @@ export default function Login() {
         <div className={styles.social_login}>
           <div className={styles.sub}>소셜 로그인</div>
           <div className={styles.login_button}>
-            <button type="button" onClick={() => handleLogin("google")}>
+            {/* <button type="button" onClick={() => handleLogin("google")}>
               구글 로그인
-            </button>
+            </button> */}
             <img
               className={styles.login_img}
               src={kakaoLogin.src}
