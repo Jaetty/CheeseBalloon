@@ -47,6 +47,7 @@ export default function DetailProfileContent() {
   );
   const [rankData, setRankData] = useState<RankDataType | null>(null);
   const [liveData, setLiveData] = useState<LiveDataType | null>(null);
+  const [bookmarkChange, setBookmarkChange] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -69,7 +70,7 @@ export default function DetailProfileContent() {
     };
 
     fetchData();
-  }, [id, router]);
+  }, [id, router, bookmarkChange]);
 
   const handleOpenUrl = (url: string) => {
     window.open(url, "_blank");
@@ -77,9 +78,17 @@ export default function DetailProfileContent() {
 
   const handleBookmark = () => {
     if (streamerData?.bookmark) {
-      customFetch(`${BOOKMARK_API_URL}`, { method: "DELETE" });
+      customFetch(`${BOOKMARK_API_URL}`, { method: "DELETE" }).then(() =>
+        setBookmarkChange((prevState) => !prevState)
+      );
     } else {
-      customFetch(`${BOOKMARK_API_URL}?streamerId=${id}`, { method: "POST" });
+      customFetch(`${BOOKMARK_API_URL}?streamerId=${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ streamerId: id }),
+      }).then(() => setBookmarkChange((prevState) => !prevState));
     }
   };
 
