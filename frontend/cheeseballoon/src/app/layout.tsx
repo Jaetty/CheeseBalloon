@@ -14,10 +14,15 @@ export const metadata: Metadata = {
   },
   keywords: [
     "치즈벌룬",
+    "cheeseballoon",
     "아프리카tv",
+    "afreecatv",
+    "숲",
     "치지직",
+    "chzzk",
     "방송 통계",
     "랭킹",
+    "실시간 방송",
     "인터넷 방송",
   ],
 };
