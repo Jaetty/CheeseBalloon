@@ -28,9 +28,7 @@ export const metadata: Metadata = {
   ],
 };
 
-const SignInChecker = dynamic(() => import("@/src/lib/SignInChecker"), {
-  ssr: false,
-});
+const SignInChecker = dynamic(() => import("@/src/lib/SignInChecker"));
 
 export default function RootLayout({
   children,
