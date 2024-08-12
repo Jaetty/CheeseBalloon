@@ -3,6 +3,7 @@ package org.greenpine.cheeseballoon.member.adapter.out.persistence;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,4 +33,8 @@ public interface BookmarkRepository  extends JpaRepository<BookmarkEntity,Long> 
     BookmarkEntity findByMemberAndStreamer(MemberEntity member, StreamerEntity streamer);
 
     long deleteByBookmarkIdAndMember(Long bookmarkId, MemberEntity member);
+
+    @Transactional
+    Long deleteByMemberAndStreamer(MemberEntity member, StreamerEntity streamer);
+
 }
