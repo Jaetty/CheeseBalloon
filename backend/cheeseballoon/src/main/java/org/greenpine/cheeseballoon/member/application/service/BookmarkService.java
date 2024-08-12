@@ -3,6 +3,7 @@ package org.greenpine.cheeseballoon.member.application.service;
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.member.application.port.in.BookmarkUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.AddBookmarkReqDto;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.DeleteBookmarkByStreamerIdReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.DeleteBookmarkReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.FindBookmarkReqDto;
 import org.greenpine.cheeseballoon.member.application.port.out.BookmarkPort;
@@ -26,6 +27,12 @@ public class BookmarkService implements BookmarkUsecase  {
     @Transactional
     public void deleteBookmark(DeleteBookmarkReqDto reqDto) throws RuntimeException{
         long delCnt = bookmarkPort.deleteBookmark(reqDto);
+        if(delCnt == 0L )throw new DuplicateKeyException("");
+    }
+
+    @Override
+    public void deleteBookmarkByStreamerId(DeleteBookmarkByStreamerIdReqDto reqDto) {
+        long delCnt = bookmarkPort.deleteBookmarkByStreamerId(reqDto);
         if(delCnt == 0L )throw new DuplicateKeyException("");
     }
 
