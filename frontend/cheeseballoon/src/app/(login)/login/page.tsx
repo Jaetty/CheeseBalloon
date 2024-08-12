@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import kakaoLogin from "src/stores/kakao_login_large_narrow.png";
 import logo from "public/svgs/logo.png";
 import styles from "src/app/(login)/login/page.module.scss";
-import customFetch from "@/src/lib/CustomFetch";
-customFetch
+
 const googleRestApiKey = process.env.NEXT_PUBLIC_GOOGLE_REST_API;
 const googleRedirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
 const kakaoRestApiKey = process.env.NEXT_PUBLIC_KAKAO_REST_API;
