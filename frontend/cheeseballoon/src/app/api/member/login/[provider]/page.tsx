@@ -29,7 +29,7 @@ export default function KakaoRedirect() {
         Cookies.set("refreshToken", data.data.refreshToken, {
           secure: true,
           sameSite: "strict",
-          httpOnly: true,
+          // httpOnly: true,
         });
 
         setAccessToken(data.data.accessToken);

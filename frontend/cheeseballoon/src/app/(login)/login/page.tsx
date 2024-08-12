@@ -41,7 +41,7 @@ export default function Login() {
               className={styles.login_img}
               src={kakaoLogin.src}
               alt="ss"
-              onClick={() => handleLogin("kakao")}
+              onClick={() => handleLogin("google")}
               role="presentation"
             />
           </div>
