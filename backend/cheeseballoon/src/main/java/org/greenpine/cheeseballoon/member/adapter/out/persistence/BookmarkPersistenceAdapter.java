@@ -2,6 +2,7 @@ package org.greenpine.cheeseballoon.member.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.AddBookmarkReqDto;
+import org.greenpine.cheeseballoon.member.application.port.in.dto.DeleteBookmarkByStreamerIdReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.DeleteBookmarkReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.FindBookmarkReqDto;
 import org.greenpine.cheeseballoon.member.application.port.out.BookmarkPort;
@@ -41,6 +42,15 @@ public class BookmarkPersistenceAdapter implements BookmarkPort {
     public long deleteBookmark(DeleteBookmarkReqDto reqDto) {
         MemberEntity member = MemberEntity.builder().memberId(reqDto.getMemberId()).build();
         return bookmarkRepository.deleteByBookmarkIdAndMember(reqDto.getBookmarkId(), member);
+    }
+
+    @Override
+    public long deleteBookmarkByStreamerId(DeleteBookmarkByStreamerIdReqDto reqDto) {
+
+        MemberEntity member = MemberEntity.builder().memberId(reqDto.getMemberId()).build();
+        StreamerEntity streamer = StreamerEntity.builder().streamerId(reqDto.getStreamerId()).build();
+
+        return bookmarkRepository.deleteByMemberAndStreamer(member,streamer);
     }
 
     @Override

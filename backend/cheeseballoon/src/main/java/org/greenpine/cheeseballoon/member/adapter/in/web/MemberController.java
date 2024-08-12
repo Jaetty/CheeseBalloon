@@ -195,6 +195,19 @@ public class MemberController {
 
     }
 
+    @DeleteMapping("/bookmark-streamer")
+    public ResponseEntity<CustomBody> deleteBookmarkByStreamerId(@AuthenticationPrincipal Long memberId, @RequestBody DeleteBookmarkByStreamerIdReqDto reqDto){
+        log.info("deleteBookmarkByStreamerId - Call " + memberId);
+        reqDto.setMemberId(memberId);
+        try{
+            bookmarkUsecase.deleteBookmarkByStreamerId(reqDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+        }catch (DuplicateKeyException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.NOT_EXIST, MemberResMsg.NOT_EXIST, null));
+        }
+
+    }
+
     @GetMapping("/viewlog")
     public ResponseEntity<CustomBody> findViewLog(@AuthenticationPrincipal Long memberId, FindViewLogReqDto reqDto ){
         log.info("findViewLog - Call " + memberId);
