@@ -13,7 +13,7 @@ export default function KakaoRedirect() {
   const googleRedirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
   const kakaoRedirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
   const { accessToken, setAccessToken } = accessTokenState.getState();
-
+  console.log('코드1', code)
   useEffect(() => {
     const getToken = async () => {
       try {
@@ -25,11 +25,10 @@ export default function KakaoRedirect() {
         }
         const response = await fetch(`${redirectUri}/code?code=${code}`);
         const data = await response.json();
-
+        console.log('data', data)
         Cookies.set("refreshToken", data.data.refreshToken, {
           secure: true,
           sameSite: "strict",
-          // httpOnly: true,
         });
 
         setAccessToken(data.data.accessToken);
@@ -41,8 +40,9 @@ export default function KakaoRedirect() {
         router.replace("/login");
       }
     };
-
+    console.log('코드2', code)
     if (code) {
+      console.log('getToken 실행')
       getToken();
     }
   }, [
