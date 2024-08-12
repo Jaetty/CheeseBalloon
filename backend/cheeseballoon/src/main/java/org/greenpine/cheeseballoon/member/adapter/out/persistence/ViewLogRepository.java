@@ -13,9 +13,9 @@ public interface ViewLogRepository  extends JpaRepository<ViewLogEntity,Long> {
     @Query(value ="SELECT view_logs.*, streamers.streamer_id, streamers.name, streamers.profile_url, live_logs.title, categories.category FROM view_logs "+
             "LEFT JOIN lives ON lives.live_id = view_logs.live_id "+
             "LEFT JOIN streamers ON streamers.streamer_id = lives.streamer_id "+
-            "LEFT JOIN live_logs ON live_logs.live_log_id = view_logs.view_log_id "+
+            "LEFT JOIN live_logs ON live_logs.live_log_id = view_logs.live_log_id "+
             "LEFT JOIN categories ON categories.category_id = live_logs.category_id "+
-            "WHERE member_id = :memberId AND reg_dt >= :start AND reg_dt <= :end"
+            "WHERE member_id = :memberId AND reg_dt BETWEEN :start AND :end"
             , nativeQuery = true)
     List<ViewLogWithStream> findByMemberAndDateTime(Long memberId, LocalDateTime start, LocalDateTime end);
     ViewLogEntity findByLiveAndLiveLogAndMember(LiveEntity live, LiveLogEntity liveLog, MemberEntity member);
