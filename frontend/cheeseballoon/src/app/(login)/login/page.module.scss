@@ -50,9 +50,8 @@
   color: #878c9e;
 }
 
-.login_button {
-  padding-top: 5%;
-  //   width: 40%;
+.login-button {
+  padding-top: 2rem;
 }
 
 .login_img {
@@ -71,4 +70,46 @@
     format("woff");
   font-weight: 400;
   font-style: normal;
+}
+
+.login-button-wrapper {
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: white;
+  margin-top: 1rem;
+  height: 4rem;
+  width: 50%;
+  border-radius: 12px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.login-button-logo {
+  height: 100%;
+  object-fit: contain;
+}
+
+.logo {
+  position: absolute;
+  border-radius: 12px;
+  height: 4rem;
+}
+
+.login-button-text {
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: bold;
+}
+
+.google {
+  background-color: white;
+}
+
+.kakao {
+  background-color: #fee500;
+}
+
+.naver {
+  background-color: #03c75a;
 }
