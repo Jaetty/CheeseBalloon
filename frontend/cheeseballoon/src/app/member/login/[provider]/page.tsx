@@ -10,8 +10,8 @@ export default function KakaoRedirect() {
   const { provider } = useParams();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
-  const googleRedirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
-  const kakaoRedirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+  const googleTokenAPI = process.env.NEXT_PUBLIC_GOOGLE_TOKEN_API;
+  const kakaoTokenAPI = process.env.NEXT_PUBLIC_KAKAO_TOKEN_API;
   const { accessToken, setAccessToken } = accessTokenState.getState();
 
   useEffect(() => {
@@ -19,9 +19,9 @@ export default function KakaoRedirect() {
       try {
         let redirectUri;
         if (provider === "google") {
-          redirectUri = googleRedirectUri;
+          redirectUri = googleTokenAPI;
         } else if (provider === "kakao") {
-          redirectUri = kakaoRedirectUri;
+          redirectUri = kakaoTokenAPI;
         }
         const response = await fetch(`${redirectUri}/code?code=${code}`);
         const data = await response.json();
@@ -40,7 +40,6 @@ export default function KakaoRedirect() {
         router.replace("/login");
       }
     };
-
     if (code) {
       getToken();
     }
@@ -49,8 +48,8 @@ export default function KakaoRedirect() {
     router,
     setAccessToken,
     accessToken,
-    googleRedirectUri,
-    kakaoRedirectUri,
+    googleTokenAPI,
+    kakaoTokenAPI,
     provider,
   ]);
 

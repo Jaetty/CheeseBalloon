@@ -45,11 +45,11 @@
 
 @media (max-width: 1440px) {
   .wrapper {
-    gap: 1rem;
+    gap: 2rem;
   }
 
   .livecard {
-    width: calc((100% - 2rem) / 3);
+    width: calc((100% - 4rem) / 3);
   }
 }
 

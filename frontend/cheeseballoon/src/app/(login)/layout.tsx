@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import styles from "./layout.module.scss"
 import "src/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -15,9 +16,9 @@ export default function LoginLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <div className={styles.wrapper}>
       <div style={{ paddingTop: "60px" }}></div>
       <div className="children">{children}</div>
-    </>
+    </div>
   );
 }
