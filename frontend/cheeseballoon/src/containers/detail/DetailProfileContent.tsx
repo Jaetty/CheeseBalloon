@@ -33,7 +33,8 @@ interface LiveDataType {
 const STREAMER_API_URL = process.env.NEXT_PUBLIC_STREAMER_API_URL;
 const STREAMER_LIVE_API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
 const SUMMARY_API_URL = process.env.NEXT_PUBLIC_SUMMARY_API_URL;
-const BOOKMARK_API_URL = process.env.NEXT_PUBLIC_MYPAGE_BOOK;
+const BOOKMARK_API_URL = process.env.NEXT_PUBLIC_BOOKMARK_API_URL;
+const BOOKMARK_DELETE_API_URL = process.env.NEXT_PUBLIC_BOOKMARK_DELETE_API_URL;
 
 async function getData(url: string) {
   const res = await customFetch(url);
@@ -78,9 +79,13 @@ export default function DetailProfileContent() {
 
   const handleBookmark = () => {
     if (streamerData?.bookmark) {
-      customFetch(`${BOOKMARK_API_URL}`, { method: "DELETE" }).then(() =>
-        setBookmarkChange((prevState) => !prevState)
-      );
+      customFetch(`${BOOKMARK_DELETE_API_URL}?streamerId=${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ streamerId: id }),
+      }).then(() => setBookmarkChange((prevState) => !prevState));
     } else {
       customFetch(`${BOOKMARK_API_URL}?streamerId=${id}`, {
         method: "POST",
