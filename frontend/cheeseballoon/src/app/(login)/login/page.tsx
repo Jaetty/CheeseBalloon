@@ -57,25 +57,23 @@ export default function Login() {
   }
 
   return (
-    <div className={styles.login}>
-      <div className={styles.left}>
-        <video className={styles.video} muted autoPlay loop>
-          <source src="/videos/login.mp4" type="video/mp4" />
-        </video>
-        <div className={styles.video_descript}>Welcome to CheeseBalloon</div>
-      </div>
+    <div className={styles.wrapper}>
+        {/* <div className={styles.left}>
+          <video className={styles.video} muted autoPlay loop>
+            <source src="/videos/login.mp4" type="video/mp4" />
+          </video>
+          <div className={styles.video_descript}>Welcome to CheeseBalloon</div>
+        </div> */}
       <div className={styles.right}>
         <div className={styles.right_title}>
-          <img src={logo.src} alt="asfd" />
+          <img src={logo.src} alt="asfd" className={styles.cheeseballoon}/>
         </div>
-        <div className={styles.social_login}>
           <div className={styles.sub}>소셜 로그인</div>
           <div className={styles["login-button"]}>
             {loginButton("google", "구글")}
             {/* {loginButton("naver", "네이버")} */}
             {loginButton("kakao", "카카오")}
           </div>
-        </div>
       </div>
     </div>
   );
