@@ -6,6 +6,10 @@
   border-radius: 20px;
   border: 2px solid white;
   background-color: #4e4e4e;
+
+  &:hover {
+    filter: brightness(90%);
+  }
 }
 
 .image-container {
@@ -47,7 +51,7 @@
   margin-bottom: auto;
 
   :hover {
-    transform: scale(1.2);
+    transform: scale(1.3);
   }
 }
 

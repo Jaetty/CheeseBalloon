@@ -170,13 +170,6 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
           </div>
         </div>
       </div>
-
-      {/* <div className={style["fourth-container"]}>
-        <img src="/svgs/viewericon.svg" alt="" className={style.viewericon} />
-        <div className={style.viewers}>
-          {liveinfo.viewerCnt.toLocaleString()}
-        </div>
-      </div> */}
     </div>
   );
 }
