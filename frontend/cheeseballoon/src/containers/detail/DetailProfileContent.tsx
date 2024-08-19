@@ -9,6 +9,7 @@ import error from "public/svgs/blank_profile.png";
 import style from "src/containers/detail/DetailProfileContent.module.scss";
 import favorite from "public/svgs/fav.svg";
 import noFavorite from "public/svgs/nofav.svg";
+import { isSignInState } from "@/src/stores/store";
 
 interface StreamerDataType {
   streamId: number;
@@ -49,6 +50,7 @@ export default function DetailProfileContent() {
   const [rankData, setRankData] = useState<RankDataType | null>(null);
   const [liveData, setLiveData] = useState<LiveDataType | null>(null);
   const [bookmarkChange, setBookmarkChange] = useState<boolean>(false);
+  const isSignIn = isSignInState((state) => state.isSignIn);
   const router = useRouter();
 
   useEffect(() => {
@@ -78,6 +80,10 @@ export default function DetailProfileContent() {
   };
 
   const handleBookmark = () => {
+    if (!isSignIn) {
+      router.push("/login");
+    }
+
     if (streamerData?.bookmark) {
       customFetch(`${BOOKMARK_DELETE_API_URL}?streamerId=${id}`, {
         method: "DELETE",

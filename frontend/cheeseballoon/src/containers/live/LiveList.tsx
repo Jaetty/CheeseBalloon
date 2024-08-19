@@ -46,6 +46,14 @@ export default function LiveList() {
       setLiveData(data.data);
     };
     fetchData();
+
+    const intervalData = setInterval(() => {
+      fetchData();
+    }, 360000);
+
+    return () => {
+      clearInterval(intervalData);
+    };
   }, [searchParams]);
 
   const handleLiveNum = () => {
