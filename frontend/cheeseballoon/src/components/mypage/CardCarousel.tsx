@@ -6,21 +6,27 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import Card from "src/components/mypage/CardCompoent";
+import Card from "src/components/mypage/CardComponent";
+import { FavState } from "src/types/type";
+import customFetch from "src/lib/CustomFetch";
 
 export default function MySwiper() {
   const [data, setData] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_AUTH}`,
-        },
-      });
+      const response = await customFetch(
+        `${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`,
+        {
+          method: "GET",
+        }
+      );
       const responseData = await response.json();
-      setData(responseData.data);
+
+      const sortedData = responseData.data.sort(
+        (a: FavState, b: FavState) => b.followerCnt - a.followerCnt
+      );
+
+      setData(sortedData);
     };
 
     fetchData();

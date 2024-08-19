@@ -75,6 +75,8 @@ export interface RatingRankData {
 
 export interface LiveRankData {
   streamerId: number;
+  liveId: number;
+  liveLogId: number;
   name: string;
   title: string;
   platform: string;
@@ -111,6 +113,7 @@ export interface FavState {
   streamerId: number;
   name: string;
   platform: string;
+  streamUrl: string;
   profileUrl: string;
   followerCnt: number;
   isLive: boolean;

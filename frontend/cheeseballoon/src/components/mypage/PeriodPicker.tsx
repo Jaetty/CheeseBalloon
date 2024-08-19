@@ -30,7 +30,9 @@ export default function PeriodPicker({
     setEnd(e.target.value);
   };
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date();
+  today.setHours(today.getHours() + 9);
+  const formattedToday = today.toISOString().split("T")[0];
 
   return (
     <div className={styles.periodPickerContainer}>
@@ -38,7 +40,7 @@ export default function PeriodPicker({
         type="date"
         onChange={handleStartChange}
         onClick={handleStartClick}
-        max={today}
+        max={formattedToday}
         className={styles.dateInput}
       />
       <input
@@ -46,7 +48,7 @@ export default function PeriodPicker({
         onChange={handleEndChange}
         ref={endInputRef}
         min={start || ""}
-        max={today}
+        max={formattedToday}
         disabled={!start}
         value={end || ""}
         className={styles.dateInput}
