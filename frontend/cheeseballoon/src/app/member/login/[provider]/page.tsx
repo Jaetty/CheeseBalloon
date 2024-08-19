@@ -33,11 +33,7 @@ export default function KakaoRedirect() {
 
         setAccessToken(data.data.accessToken);
 
-        if (provider === "google") {
-          window.history.go(-2);
-        } else if (provider === "kakao") {
-          router.back();
-        }
+        router.push("/home");
       } catch (error) {
         // eslint-disable-next-line no-alert
         alert("로그인이 실패했습니다");
