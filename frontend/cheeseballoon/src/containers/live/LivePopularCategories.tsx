@@ -31,14 +31,6 @@ export default function LivePopularCategories() {
     };
 
     fetchData();
-
-    const intervalData = setInterval(() => {
-      fetchData();
-    }, 360000);
-
-    return () => {
-      clearInterval(intervalData);
-    };
   }, []);
 
   const handleQuery = (e: React.MouseEvent<HTMLButtonElement>) => {
