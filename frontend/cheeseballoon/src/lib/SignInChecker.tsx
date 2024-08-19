@@ -43,6 +43,14 @@ export default function SignInChecker() {
       return null;
     }
     getNewAccessToken();
+
+    const intervalToken = setInterval(() => {
+      getNewAccessToken();
+    }, 1800000);
+
+    return () => {
+      clearInterval(intervalToken);
+    };
   }, [path, params, setAccessToken, setIsSignIn]);
 
   return null;
