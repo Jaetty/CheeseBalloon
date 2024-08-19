@@ -46,7 +46,7 @@ export default function SignInChecker() {
 
     const intervalToken = setInterval(() => {
       getNewAccessToken();
-    }, 360000);
+    }, 1800000);
 
     return () => {
       clearInterval(intervalToken);
