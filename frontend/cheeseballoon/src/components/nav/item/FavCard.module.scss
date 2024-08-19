@@ -166,3 +166,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.gray_image {
+  filter: grayscale(0.8);
+}

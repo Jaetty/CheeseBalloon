@@ -59,7 +59,11 @@ export default function FavCard({ data }: Props) {
   return (
     <div>
       {value && (
-        <Link href={`/detail/${data.streamerId}`} className={styles.link}>
+        <Link
+          href={data.isLive ? data.streamUrl : `/detail/${data.streamerId}`}
+          className={styles.link}
+          target={data.isLive ? "_blank" : "_self"}
+        >
           {/* <Link href={data.isLive ? data.streamUrl : `/detail/${data.streamerId}`}> */}
           <div className={styles.open_container}>
             <div className={data.isLive ? styles.on_image : styles.off_image}>
@@ -68,6 +72,7 @@ export default function FavCard({ data }: Props) {
                 alt=""
                 width={28}
                 height={28}
+                className={!data.isLive ? styles.gray_image : ""}
                 onError={() => {
                   if (data.streamerId !== undefined) {
                     handleImageError(data.streamerId);
@@ -86,22 +91,16 @@ export default function FavCard({ data }: Props) {
                   <Image src={chzzk} alt="" width={14} height={14} />
                 )}
               </div>
-              {/* {data.isLive && (
-              <>
-                <div className={styles.subcontent}>
-                  {decodeText(data?.category as string)}
-                </div>
-                <div className={styles.viewer}>
-                  {data?.viewerCnt.toLocaleString()}
-                </div>
-              </>
-            )} */}
             </div>
           </div>
         </Link>
       )}
       {!value && (
-        <Link href={`/detail/${data.streamerId}`} className={styles.link}>
+        <Link
+          href={data.isLive ? data.streamUrl : `/detail/${data.streamerId}`}
+          className={styles.link}
+          target={data.isLive ? "_blank" : "_self"}
+        >
           <div className={styles.closed_container}>
             <div className={data.isLive ? styles.on_image : styles.off_image}>
               <Image
@@ -109,6 +108,7 @@ export default function FavCard({ data }: Props) {
                 alt=""
                 width={32}
                 height={32}
+                className={!data.isLive ? styles.gray_image : ""}
                 onError={() => {
                   if (data.streamerId !== undefined) {
                     handleImageError(data.streamerId);
@@ -128,17 +128,7 @@ export default function FavCard({ data }: Props) {
                     <Image src={chzzk} alt="" width={14} height={14} />
                   )}
                 </div>
-                {/* {data.isLive && (
-                <div className={styles.viewer}>
-                  {data?.viewerCnt.toLocaleString()}
-                </div>
-              )} */}
               </div>
-              {/* {data.isLive && (
-              <div className={styles.modal_subcontent}>
-                {decodeText(data?.category as string)}
-              </div>
-            )} */}
             </div>
           </div>
         </Link>

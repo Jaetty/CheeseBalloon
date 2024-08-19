@@ -1,0 +1,47 @@
+.notification {
+  width: 190px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 16px;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  color: black;
+  transform: translateY(200%);
+  animation: noti 0.5s forwards ease-in;
+
+  &.hide {
+    display: none;
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.notificationTitle {
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  margin: 0;
+  align-items: center;
+}
+.notificationHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.notificationClose {
+  cursor: pointer;
+  width: 0.8rem;
+}
+@keyframes noti {
+  from {
+    transform: translateY(200%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

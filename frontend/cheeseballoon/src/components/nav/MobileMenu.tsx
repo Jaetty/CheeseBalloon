@@ -7,6 +7,8 @@ import Image from "next/image";
 import notice from "public/svgs/notice.svg";
 import live from "public/svgs/live.svg";
 import ranking from "public/svgs/rank.svg";
+import vercel from "public/svgs/vercel.svg";
+import { isSignInState } from "src/stores/store";
 
 interface ModalProps {
   isOpen: boolean;
@@ -15,6 +17,7 @@ interface ModalProps {
 }
 
 export default function Modal({ isOpen, onClose, closeMenu }: ModalProps) {
+  const isSign = isSignInState((state) => state.isSignIn);
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -73,6 +76,16 @@ export default function Modal({ isOpen, onClose, closeMenu }: ModalProps) {
               </div>
             </Link>
           </li>
+          {isSign && (
+            <li className={styles.open_listItem}>
+              <Link href="/mypage" className={styles.open_linkdeco}>
+                <div className={styles.open_navPill}>
+                  <Image src={vercel} alt="" width={20} height={20} />
+                  <div className={styles.open_linkdeco}>마이페이지</div>
+                </div>
+              </Link>
+            </li>
+          )}
         </div>
       </div>
     </div>

@@ -19,6 +19,7 @@ import {
 import decodetext from "src/lib/DecodeText";
 import { usePopstate } from "src/lib/PopContext";
 import { isMobileState } from "src/stores/store";
+import customFetch from "src/lib/CustomFetch";
 
 type RankingData = {
   streamerId: number;
@@ -31,6 +32,8 @@ type RankingData = {
   category?: string;
   streamUrl?: string;
   bookmark?: boolean;
+  liveId?: number;
+  liveLogId?: number;
 };
 
 function transformFollowData(data: FollowRankData[]): RankingData[] {
@@ -128,6 +131,8 @@ function transformLiveData(data: LiveRankData[]): RankingData[] {
     category: decodetext(item.category),
     streamUrl: item.streamUrl,
     bookmark: item.bookmark,
+    liveId: item.liveId,
+    liveLogId: item.liveLogId,
   }));
 }
 
@@ -203,7 +208,9 @@ export default function SubRanking() {
         apiUrl = process.env.NEXT_PUBLIC_AVG_RANK;
         break;
     }
-    const response = await fetch(`${apiUrl}?${queryString}`);
+    const response = await customFetch(`${apiUrl}?${queryString}`, {
+      method: "GET",
+    });
     const newData = await response.json();
     let transformedData: RankingData[];
     switch (pathname) {
