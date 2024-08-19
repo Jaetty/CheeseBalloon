@@ -10,7 +10,7 @@ interface ViewLogCardProps {
     profileUrl: string;
     category: string;
     title: string;
-    regDt: Date;
+    regDt: string;
   };
   selectedLogs: number[];
   setSelectedLogs: React.Dispatch<React.SetStateAction<number[]>>;
@@ -68,7 +68,7 @@ export default function ViewLogCard({
       </div>
       <div className={styles.livetitleinfo}>{item.title}</div>
       <div className={styles.livesubinfo}>{item.category}</div>
-      <div className={styles.livedate}>{item.regDt.toLocaleDateString()}</div>
+      <div className={styles.livedate}>{item.regDt.split("T")[0]}</div>
     </div>
   );
 }
