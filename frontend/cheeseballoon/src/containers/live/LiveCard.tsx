@@ -106,6 +106,7 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
           <div
             role="button"
             tabIndex={0}
+            title={liveinfo.title}
             onClick={(event) => {
               event.stopPropagation();
               handleOpenUrl(liveinfo.streamUrl);
