@@ -19,19 +19,8 @@ export const generateMetadata = async ({
   const summaryData = await getData(`${SUMMARY_API_URL}${params.id}`);
 
   return {
-    title: `${streamerData.data.name}`,
-    description: `${streamerData.data.name}의 방송기록. 랭킹: ${summaryData.data.rank}, 평균 시청자: ${summaryData.data.avgViewer}, 팔로워: ${summaryData.data.follow}, 평균 시청률: ${summaryData.data.rating}`,
-    keywords: [
-      `${streamerData.data.name}`,
-      `${streamerData.data.name} 통계`,
-      `${streamerData.data.name} 방송 정보`,
-      `${streamerData.data.name} 시청자수`,
-      `${streamerData.data.name} 평균 시청자`,
-      `${streamerData.data.name} 시청률`,
-      `${streamerData.data.name} 팔로워`,
-      `${streamerData.data.name} 팔로워수`,
-      `${streamerData.data.name} 방송시간`,
-    ],
+    title: `${streamerData.data.name} 방송기록`,
+    description: `랭킹: ${summaryData.data.rank}, 평균 시청자수: ${summaryData.data.avgViewer}, 팔로워: ${summaryData.data.follow}, 평균 시청률: ${summaryData.data.rating}, 방송시간: ${summaryData.data.totalAirTime}`,
   };
 };
 
