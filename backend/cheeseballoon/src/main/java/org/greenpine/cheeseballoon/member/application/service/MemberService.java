@@ -27,11 +27,11 @@ public class MemberService implements MemberUsecase, AuthUsecase {
     public LoginResDto login(UserInfoDto dto) {
         MemberEntity member = memberPort.findMember(dto);
         if(member==null){ //비회원
-            String nickname = dto.getName()+generateRandomString(10);
+            String nickname = generateRandomString(10);
             while(true){
                 if(memberPort.findByNickname(nickname)==null)
                     break;
-                nickname = dto.getName()+generateRandomString(10);
+                nickname = generateRandomString(10);
             }
             dto.setName(nickname);
             member = memberPort.register(dto); //회원가입
