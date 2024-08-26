@@ -5,14 +5,11 @@ import org.greenpine.cheeseballoon.global.token.JwtUtil;
 import org.greenpine.cheeseballoon.member.adapter.out.persistence.MemberEntity;
 import org.greenpine.cheeseballoon.member.application.port.in.AuthUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.MemberUsecase;
-import org.greenpine.cheeseballoon.member.application.port.in.BookmarkUsecase;
-import org.greenpine.cheeseballoon.member.application.port.in.ViewLogUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.ChangeNicknameReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.MemberPort;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
