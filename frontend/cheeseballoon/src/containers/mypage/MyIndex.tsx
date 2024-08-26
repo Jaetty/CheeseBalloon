@@ -3,8 +3,13 @@ import CardCarousel from "src/components/mypage/CardCarousel";
 import ViewLog from "src/components/mypage/ViewLog";
 import fav from "public/svgs/fav.svg";
 import Image from "next/image";
+import { FavState } from "src/types/type";
 
-export default function MyPage() {
+interface MyIndexProps {
+  data: FavState[];
+}
+
+export default function MyPage({ data }: MyIndexProps) {
   return (
     <div className={styles.ranking}>
       <p className={styles.title}>마이페이지</p>
@@ -28,7 +33,7 @@ export default function MyPage() {
           </div>
           <span>즐겨찾기</span>
         </div>
-        <CardCarousel />
+        <CardCarousel data={data} />
       </div>
       <div className={styles.viewlog}>
         <ViewLog />

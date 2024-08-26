@@ -1,7 +1,13 @@
 "use client";
 
 import { create } from "zustand";
-import { ToggleStateType, MobileState, AccessTokenState, SignInState } from "src/types/type";
+import {
+  ToggleStateType,
+  MobileState,
+  AccessTokenState,
+  SignInState,
+  AlertState,
+} from "src/types/type";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 const useToggleState = create(
@@ -54,4 +60,17 @@ const isSignInState = create(
   )
 );
 
-export { useToggleState, isMobileState, accessTokenState, isSignInState };
+const useAlertStore = create<AlertState>((set) => ({
+  message: "",
+  isVisible: false,
+  showAlert: (message: string) => set({ message, isVisible: true }),
+  hideAlert: () => set({ isVisible: false }),
+}));
+
+export {
+  useToggleState,
+  isMobileState,
+  accessTokenState,
+  isSignInState,
+  useAlertStore,
+};

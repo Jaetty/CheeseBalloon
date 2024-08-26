@@ -12,7 +12,7 @@ import noimage from "public/svgs/blank_profile.png";
 import { useState, useEffect } from "react";
 import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
-import { isMobileState, isSignInState } from "src/stores/store";
+import { isMobileState, isSignInState, useAlertStore } from "src/stores/store";
 import { useNotification } from "src/lib/NotificationContext";
 import customFetch from "src/lib/CustomFetch";
 
@@ -54,6 +54,7 @@ export default function RestRanking({ data }: Props) {
   const isMobile = isMobileState((state) => state.isMobile);
   const isSign = isSignInState((state) => state.isSignIn);
   const { showNotification } = useNotification();
+  const showAlert = useAlertStore((state) => state.showAlert);
 
   useEffect(() => {
     if (data) {
@@ -101,8 +102,7 @@ export default function RestRanking({ data }: Props) {
 
   const toggleBookmark = async (item: RankingData) => {
     if (!isSign) {
-      // eslint-disable-next-line no-alert
-      alert("로그인이 필요한 서비스입니다");
+      showAlert("로그인이 필요한 서비스입니다");
       return;
     }
 
@@ -136,8 +136,7 @@ export default function RestRanking({ data }: Props) {
       }
 
       if (response && response.status === 401) {
-        // eslint-disable-next-line no-alert
-        alert("로그인이 필요한 서비스입니다");
+        showAlert("로그인이 필요한 서비스입니다");
         return;
       }
 
@@ -152,8 +151,7 @@ export default function RestRanking({ data }: Props) {
         [item.streamerId]: !prev[item.streamerId],
       }));
     } catch (error) {
-      // eslint-disable-next-line no-alert
-      alert("로그인이 필요한 서비스입니다");
+      showAlert("로그인이 필요한 서비스입니다");
     }
   };
 
