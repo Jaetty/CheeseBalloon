@@ -93,9 +93,6 @@ public class OauthService {
             GoogleUserInfoResDto googleUserInfo = responseEntity.getBody();
             //System.out.println(googleUserInfo);
             return UserInfoDto.builder()
-                    .email(googleUserInfo.getEmail())
-                    .name(googleUserInfo.getName())
-                    .profileImgUrl(googleUserInfo.getPicture())
                     .originId(googleUserInfo.getSub())
                     .platform('G')
                     .build();
