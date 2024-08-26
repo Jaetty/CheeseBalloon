@@ -17,7 +17,7 @@ import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
 import { useNotification } from "src/lib/NotificationContext";
 import customFetch from "src/lib/CustomFetch";
-import { isSignInState } from "src/stores/store";
+import { isSignInState, useAlertStore } from "src/stores/store";
 
 type RankingData = {
   streamerId: number;
@@ -58,6 +58,7 @@ export default function TopThreeRanking({ data }: Props) {
     {}
   );
   const isSign = isSignInState((state) => state.isSignIn);
+  const showAlert = useAlertStore((state) => state.showAlert);
 
   const handleImageError = async (id: number) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
@@ -92,8 +93,7 @@ export default function TopThreeRanking({ data }: Props) {
 
   const toggleBookmark = async (item: RankingData) => {
     if (!isSign) {
-      // eslint-disable-next-line no-alert
-      alert("로그인이 필요한 서비스입니다");
+      showAlert("로그인이 필요한 서비스입니다");
       return;
     }
 
@@ -127,8 +127,7 @@ export default function TopThreeRanking({ data }: Props) {
       }
 
       if (response && response.status === 401) {
-        // eslint-disable-next-line no-alert
-        alert("로그인이 필요한 서비스입니다");
+        showAlert("로그인이 필요한 서비스입니다");
         return;
       }
 
@@ -143,8 +142,7 @@ export default function TopThreeRanking({ data }: Props) {
         [item.streamerId]: !prev[item.streamerId],
       }));
     } catch (error) {
-      // eslint-disable-next-line no-alert
-      alert("로그인이 필요한 서비스입니다");
+      showAlert("로그인이 필요한 서비스입니다");
     }
   };
 

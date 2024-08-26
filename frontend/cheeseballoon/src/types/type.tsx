@@ -128,3 +128,10 @@ export interface SignInState {
   isSignIn: boolean;
   setIsSignIn: (value: boolean) => void;
 }
+
+export interface AlertState {
+  message: string;
+  isVisible: boolean;
+  showAlert: (message: string) => void;
+  hideAlert: () => void;
+}
