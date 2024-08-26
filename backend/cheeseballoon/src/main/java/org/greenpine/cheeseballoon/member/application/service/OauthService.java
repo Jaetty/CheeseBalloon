@@ -163,8 +163,6 @@ public class OauthService {
             //System.out.println("nickname: " + kakaoUserInfo.getProperties().getNickname());
             //System.out.println("Thumbnail Image: " + kakaoUserInfo.getProperties().getProfileImage());
             return UserInfoDto.builder()
-                    .profileImgUrl(kakaoUserInfo.getProperties().getProfileImage())
-                    .name(kakaoUserInfo.getProperties().getNickname())
                     .originId(kakaoUserInfo.getId())
                     .platform('K')
                     .build();
