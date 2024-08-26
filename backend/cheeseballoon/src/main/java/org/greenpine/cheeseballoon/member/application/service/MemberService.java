@@ -31,7 +31,7 @@ public class MemberService implements MemberUsecase, AuthUsecase {
             while(true){
                 if(memberPort.findByNickname(nickname)==null)
                     break;
-                nickname= dto.getName()+generateRandomString(6);
+                nickname= generateRandomString(10);
             }
             dto.setName(nickname);
             member = memberPort.register(dto); //회원가입
