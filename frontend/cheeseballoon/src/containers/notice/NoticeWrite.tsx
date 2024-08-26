@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "src/containers/notice/NoticeWrite.module.scss";
 import TinyMCE from "src/components/notice/TextEditor";
+import { accessTokenState } from "src/stores/store";
 import noImg from "public/svgs/no_image.jpg";
 
-const AUTH = process.env.NEXT_PUBLIC_BEARER_AUTH;
 const NOTICE_API = process.env.NEXT_PUBLIC_NOTICE_API_URL;
 const IMAGE_UPLOAD_API = process.env.NEXT_PUBLIC_NOTICE_IMAGE_UPLOAD_API_URL;
 
@@ -14,6 +14,7 @@ export default function NoticeWrite() {
   const [title, setTitle] = useState<string | null>(null);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [content, setContent] = useState<string | null>(null);
+  const accessToken = accessTokenState((state) => state.accessToken);
   const router = useRouter();
 
   const shakeElement = (id: string) => {
@@ -54,7 +55,7 @@ export default function NoticeWrite() {
       const res = await fetch(`${IMAGE_UPLOAD_API}`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${AUTH}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: formData,
       });
@@ -96,7 +97,7 @@ export default function NoticeWrite() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${AUTH}`,
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(requestBody),
     });
