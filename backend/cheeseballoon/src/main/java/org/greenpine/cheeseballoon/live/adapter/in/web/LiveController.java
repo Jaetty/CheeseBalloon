@@ -5,18 +5,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.greenpine.cheeseballoon.global.response.CustomBody;
 import org.greenpine.cheeseballoon.global.response.StatusEnum;
+import org.greenpine.cheeseballoon.global.utils.DateCalculator;
 import org.greenpine.cheeseballoon.live.application.port.in.CategoryUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.LiveUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.SearchLivesReqDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.SearchLivesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.live.application.port.out.message.LiveResMsg;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -59,6 +60,23 @@ public class LiveController {
                 .query(query)
                 .build();
         List<SearchLivesResDto> ret = liveUsecase.searchLives(searchLivesReqDto);
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
+
+    }
+
+    @GetMapping("/barchart")
+    public ResponseEntity<CustomBody> barchartData(){
+
+        LocalDate startDate, endDate;
+
+        // 데이터는 어제 날짜까지 있으니 어제를 시작점으로 한다.
+        endDate = LocalDate.now().minusDays (1);
+        startDate = LocalDate.now().minusDays (14);
+
+        System.out.println(startDate+ " ~ " +endDate);
+
+        List<FindBarchartData> ret = liveUsecase.findBarchartData(startDate, endDate);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
 
