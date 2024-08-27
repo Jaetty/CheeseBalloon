@@ -177,7 +177,7 @@ class Soop:
                 cate = "파리올림픽"
             else:
                 cate = str(map_category[new_item['broad_cate_no']])
-            logger.info(print(type(new_item['broad_cate_no'])))
+            # logger.info(print(type(new_item['broad_cate_no'])))
             streamer_info = StreamerInfo(
                 origin_id=str(new_item['user_id']),
                 name=str(new_item['user_nick']),
