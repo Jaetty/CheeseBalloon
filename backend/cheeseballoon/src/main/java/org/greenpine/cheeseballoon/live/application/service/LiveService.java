@@ -1,19 +1,19 @@
 package org.greenpine.cheeseballoon.live.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.live.adapter.out.persistence.FindBarchartDataResDtoInterface;
 import org.greenpine.cheeseballoon.live.application.port.in.CategoryUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.LiveUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.SearchLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.out.CategoryPort;
 import org.greenpine.cheeseballoon.live.application.port.out.LivePort;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.SearchLivesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +48,26 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
     @Override
     public FindCategoriesResDto findCategories(String query) {
         return categoryPort.findCategories(query);
+    }
+
+    @Override
+    public List<FindBarchartData> findBarchartData(LocalDate startDate, LocalDate endDate) {
+
+        List<FindBarchartDataResDtoInterface> list = livePort.findBarchartData(startDate, endDate);
+
+        List<FindBarchartData> ret = new ArrayList<>();
+
+        for(FindBarchartDataResDtoInterface var : list){
+            ret.add(FindBarchartData.builder()
+                    .averageViewer(var.getAverage_viewer())
+                    .date(var.getDate())
+                    .streamerId(var.getStreamer_id())
+                    .platform(var.getPlatform())
+                    .profileUrl(var.getProfile_url())
+                    .build());
+        }
+
+        return ret;
     }
 
     @Override
