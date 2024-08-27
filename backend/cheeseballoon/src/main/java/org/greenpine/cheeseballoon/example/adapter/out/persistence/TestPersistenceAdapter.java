@@ -27,6 +27,8 @@ public class TestPersistenceAdapter implements TestPort, AnotherPort { //포트 
     public TestResDto read(Long id) {
         //TestEntity test = testRepository.findById(id); //testRepository가 안되니 주석
         TestEntity test = new TestEntity(id, 100);
+
+        // 여기서 도메인을 부른다.
         return TestResDto.builder()
                 .id(test.getId())
                 .value(test.getValue())
