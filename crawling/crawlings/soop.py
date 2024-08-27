@@ -173,7 +173,7 @@ class Soop:
         item_list = live_list['broad']
         cur_cnt = 0
         for new_item in item_list:
-            if new_item['broad_cate_no'] is "00730000":
+            if str(new_item['broad_cate_no']) is "00730000":
                 cate = "파리올림픽"
             else:
                 cate = str(map_category[new_item['broad_cate_no']])
@@ -204,7 +204,7 @@ class Soop:
                 if cur_cnt < 50:
                     break
 
-                if new_item['broad_cate_no'] is "00730000":
+                if str(new_item['broad_cate_no']) is "00730000":
                     cate = "파리올림픽"
                 else:
                     cate = str(map_category[new_item['broad_cate_no']])
