@@ -15,6 +15,7 @@ import org.greenpine.cheeseballoon.member.application.port.in.dto.*;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.FindBookmarkResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.FindViewLogResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
+import org.greenpine.cheeseballoon.member.application.port.out.dto.NaverLoginUrl;
 import org.greenpine.cheeseballoon.member.application.port.out.message.MemberResMsg;
 import org.greenpine.cheeseballoon.member.application.service.OauthService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -127,9 +128,11 @@ public class MemberController {
     public ResponseEntity<CustomBody> loginNaver(HttpSession session){
 
         String[] value = oauthService.getNaverUrl();
+        NaverLoginUrl naverLoginUrl =new NaverLoginUrl(value[1]);
+
         session.setAttribute("stateToken", value[0]);
 
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, value[1]));
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, naverLoginUrl));
 
     }
 
