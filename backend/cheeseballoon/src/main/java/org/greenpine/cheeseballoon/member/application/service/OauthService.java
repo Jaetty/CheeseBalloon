@@ -2,6 +2,7 @@ package org.greenpine.cheeseballoon.member.application.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -11,6 +12,7 @@ import org.greenpine.cheeseballoon.member.application.port.in.dto.GetAccessToken
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.GoogleUserInfoResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.KakaoUserInfoResDto;
+import org.greenpine.cheeseballoon.member.application.port.out.dto.NaverUserInfoResDto;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -183,7 +185,7 @@ public class OauthService {
         return new String[] {state, naverLoginUrl};
     }
 
-    public UserInfoDto getNaverUserInfo(String accessCode, String state) throws JsonProcessingException {
+    public UserInfoDto getNaverUserInfo(String accessCode, String state) throws BadRequestException, JsonProcessingException {
         // HTTP POST를 요청할 때 보내는 데이터(body)를 설명해주는 헤더도 만들어 같이 보내줘야 한다.
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -198,7 +200,7 @@ public class OauthService {
         // 요청하기 위해 헤더(Header)와 데이터(Body)를 합친다.
         RestTemplate restTemplate=new RestTemplate();
         ResponseEntity<String> responseEntity=restTemplate.postForEntity(NAVER_TOKEN_URL, params,String.class);
-        System.out.println(responseEntity.getStatusCode());
+//        System.out.println(responseEntity.getStatusCode());
         if(responseEntity.getStatusCode() == HttpStatus.OK) {
             Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
             String accessToken = (String) jsonMap.get("access_token");
@@ -207,7 +209,7 @@ public class OauthService {
         return null;
     }
 
-    public UserInfoDto requestNaverUserInfo(String accessToken){
+    public UserInfoDto requestNaverUserInfo(String accessToken) throws BadRequestException, JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
@@ -219,8 +221,21 @@ public class OauthService {
                 entity,
                 String.class
         );
-        System.out.println(response.getBody());
-        return null;
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            String responseBody = response.getBody();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(responseBody);
+            String id = rootNode.path("response").path("id").asText();
+
+            return UserInfoDto.builder()
+                    .originId(id)
+                    .platform('N')
+                    .build();
+        } else {
+            throw new BadRequestException();
+        }
+
     }
 
     private String generateState()

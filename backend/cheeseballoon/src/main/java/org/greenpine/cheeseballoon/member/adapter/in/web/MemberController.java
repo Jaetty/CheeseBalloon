@@ -122,25 +122,39 @@ public class MemberController {
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
         }
     }
+
     @GetMapping("/login/naver")
     public ResponseEntity<CustomBody> loginNaver(HttpSession session){
 
         String[] value = oauthService.getNaverUrl();
-
         session.setAttribute("stateToken", value[0]);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, value[1]));
 
     }
 
-//    @GetMapping("/login/naver/code")
-//    public ResponseEntity<CustomBody> loginNaverCode(@RequestParam String code, @RequestParam String state){
-//        log.info("loginNaverCode - Call");
-//        System.out.println(code);
-//
-//        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
-//
-//    }
+    @GetMapping("/login/naver/code")
+    public ResponseEntity<CustomBody> loginNaverCode(@RequestParam String code, @RequestParam String state, HttpSession session){
+
+        log.info("loginNaverCode - Call");
+
+        String sessionStateToken  = (String) session.getAttribute("stateToken");
+
+        if(!sessionStateToken.equals(state)){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.UNAUTHORIZED, null));
+        }
+
+        try {
+            UserInfoDto userInfoDto = oauthService.getNaverUserInfo(code, state);
+            LoginResDto resDto = authUsecase.login(userInfoDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
+        }catch (JsonProcessingException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
+        }
+        catch (BadRequestException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
+        }
+    }
 
     @PostMapping("/changeNickname")
     public ResponseEntity<CustomBody> changeNickname(@AuthenticationPrincipal Long memberId, @RequestBody ChangeNicknameReqDto reqDto) {
