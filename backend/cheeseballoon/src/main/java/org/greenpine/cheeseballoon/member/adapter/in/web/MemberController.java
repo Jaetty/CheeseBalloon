@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.member.adapter.in.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -122,26 +123,24 @@ public class MemberController {
         }
     }
     @GetMapping("/login/naver")
-    public ResponseEntity<CustomBody> loginNaver(@RequestParam String code, @RequestParam String state){
-        log.info("loginNaver - Call");
-        System.out.println(code);
-        try{
-//            oauthService.getNaverUserInfo(code,state);
-        }catch ( Exception e ){
+    public ResponseEntity<CustomBody> loginNaver(HttpSession session){
 
-        }
+        String[] value = oauthService.getNaverUrl();
 
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+        session.setAttribute("stateToken", value[0]);
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, value[1]));
 
     }
-    @GetMapping("/login/naver/code")
-    public ResponseEntity<CustomBody> loginNaverCode(@RequestParam String code, @RequestParam String state){
-        log.info("loginNaverCode - Call");
-        System.out.println(code);
 
-        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
-
-    }
+//    @GetMapping("/login/naver/code")
+//    public ResponseEntity<CustomBody> loginNaverCode(@RequestParam String code, @RequestParam String state){
+//        log.info("loginNaverCode - Call");
+//        System.out.println(code);
+//
+//        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+//
+//    }
 
     @PostMapping("/changeNickname")
     public ResponseEntity<CustomBody> changeNickname(@AuthenticationPrincipal Long memberId, @RequestBody ChangeNicknameReqDto reqDto) {
