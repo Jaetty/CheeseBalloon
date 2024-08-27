@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
@@ -44,5 +46,13 @@ public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
     , nativeQuery = true)
     List<Object[]> test();
 
+    @Query(value = "SELECT streamers.streamer_id, statistics.average_viewer, SUBSTRING(statistics.dt_code, 1, 10) AS date, streamers.name, streamers.profile_url, streamers.platform FROM \n" +
+            "statistics JOIN (SELECT statistics.streamer_id FROM statistics WHERE dt_code LIKE '2024-08-18-3' ORDER BY average_viewer DESC LIMIT 20) AS streamer \n" +
+            "ON statistics.streamer_id = streamer.streamer_id\n" +
+            "JOIN streamers\n" +
+            "ON statistics.streamer_id = streamers.streamer_id\n" +
+            "WHERE SUBSTRING(dt_code, 1, 10) BETWEEN :startDate AND :endDate AND dt_code LIKE '%-0';"
+            , nativeQuery = true)
+    List<FindBarchartDataResDtoInterface> findBarchartData(LocalDate startDate, LocalDate endDate);
 
 }

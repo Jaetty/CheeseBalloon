@@ -5,14 +5,13 @@ import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.SearchLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.out.CategoryPort;
 import org.greenpine.cheeseballoon.live.application.port.out.LivePort;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.SearchLivesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.StreamerEntity;
 import org.springframework.stereotype.Repository;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -93,6 +92,13 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
                 .build()
         ).toList();
 
+    }
+
+    @Override
+    public List<FindBarchartDataResDtoInterface> findBarchartData(LocalDate startDate, LocalDate endDate) {
+
+
+        return liveLogRepository.findBarchartData(startDate, endDate);
     }
 
     @Override
