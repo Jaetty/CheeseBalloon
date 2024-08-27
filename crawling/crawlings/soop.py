@@ -173,6 +173,10 @@ class Soop:
         item_list = live_list['broad']
         cur_cnt = 0
         for new_item in item_list:
+            if new_item['broad_cate_no'] is '00730000':
+                cate = "파리올림픽"
+            else:
+                cate = str(map_category[new_item['broad_cate_no']])
             streamer_info = StreamerInfo(
                 origin_id=str(new_item['user_id']),
                 name=str(new_item['user_nick']),
@@ -184,7 +188,7 @@ class Soop:
                 live_origin_id=int(new_item['broad_no']),
                 live_start=datetime.strptime(new_item['broad_start'], '%Y-%m-%d %H:%M:%S'),
                 thumbnail_url=str(new_item['broad_thumb']),
-                category=str(map_category[new_item['broad_cate_no']]),
+                category=cate,
                 title=str(new_item['broad_title']),
                 viewer_cnt=int(new_item['total_view_cnt'])
             )
@@ -199,6 +203,12 @@ class Soop:
                 cur_cnt = int(new_item['total_view_cnt'])
                 if cur_cnt < 50:
                     break
+
+                if new_item['broad_cate_no'] is '00730000':
+                    cate = "파리올림픽"
+                else:
+                    cate = str(map_category[new_item['broad_cate_no']])
+
                 streamer_info = StreamerInfo(
                     origin_id=str(new_item['user_id']),
                     name=str(new_item['user_nick']),
@@ -210,7 +220,7 @@ class Soop:
                     live_origin_id=int(new_item['broad_no']),
                     live_start=datetime.strptime(new_item['broad_start'], '%Y-%m-%d %H:%M:%S'),
                     thumbnail_url=str(new_item['broad_thumb']),
-                    category=str(map_category[new_item['broad_cate_no']]),
+                    category=cate,
                     title=str(new_item['broad_title']),
                     viewer_cnt=int(new_item['total_view_cnt'])
                 )
