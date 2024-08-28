@@ -21,7 +21,7 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
     FindStreamerDetailResDtoInterface findStreamerDetailByStreamerId(Long streamerId, Long memberId);
 
     // 스트리머 이름으로 스트리머 정보 가져오기
-    @Query(value = "SELECT streamer_info.*, case when bookmark_info.bookmark_id IS NOT NULL then 'TRUE' ELSE 'FALSE' END AS bookmark, max(lives.is_live) AS isLive\n" +
+    @Query(value = "SELECT streamer_info.streamer_id AS streamerId, streamer_info.channel_url AS channelUrl, streamer_info.profile_url AS ProfileUrl, streamer_info.name, streamer_info.follower, streamer_info.platform, case when bookmark_info.bookmark_id IS NOT NULL then 'TRUE' ELSE 'FALSE' END AS bookmark, max(lives.is_live) AS isLive\n" +
             "FROM (SELECT * FROM bookmarks WHERE bookmarks.member_id = :memberId) AS bookmark_info \n" +
             "RIGHT OUTER JOIN \n" +
             "(SELECT streamers.*, streamer_logs.follower, streamer_logs.reg_dt \n" +
