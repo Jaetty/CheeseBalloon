@@ -39,7 +39,7 @@ export default function Login() {
       router.replace(kakaoURL);
     } else if (provider === "naver") {
       const naverURL = await getUrl(`${naverLoginUrl}`);
-
+      console.log('네이버', naverURL)
       router.replace(naverURL);
     }
   };
