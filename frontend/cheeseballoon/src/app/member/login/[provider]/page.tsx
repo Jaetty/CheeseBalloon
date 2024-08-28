@@ -10,20 +10,25 @@ export default function KakaoRedirect() {
   const { provider } = useParams();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
+  const state = searchParams.get("state");
   const googleTokenAPI = process.env.NEXT_PUBLIC_GOOGLE_TOKEN_API;
   const kakaoTokenAPI = process.env.NEXT_PUBLIC_KAKAO_TOKEN_API;
+  const naverTokenAPI = process.env.NEXT_PUBLIC_NAVER_LOGIN_URL;
   const { accessToken, setAccessToken } = accessTokenState.getState();
 
   useEffect(() => {
     const getToken = async () => {
       try {
-        let redirectUri;
+        let redirectUri = "";
         if (provider === "google") {
-          redirectUri = googleTokenAPI;
+          redirectUri = `${googleTokenAPI}/code?code=${code}`;
+        } else if (provider === "naver") {
+          redirectUri = `${naverTokenAPI}/code?code=${code}&state=${state}`;
         } else if (provider === "kakao") {
-          redirectUri = kakaoTokenAPI;
+          redirectUri = `${kakaoTokenAPI}/code?code=${code}`;
         }
-        const response = await fetch(`${redirectUri}/code?code=${code}`);
+
+        const response = await fetch(redirectUri);
         const data = await response.json();
 
         Cookies.set("refreshToken", data.data.refreshToken, {
@@ -45,11 +50,13 @@ export default function KakaoRedirect() {
     }
   }, [
     code,
+    state,
     router,
     setAccessToken,
     accessToken,
     googleTokenAPI,
     kakaoTokenAPI,
+    naverTokenAPI,
     provider,
   ]);
 
