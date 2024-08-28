@@ -24,10 +24,12 @@ export default function Login() {
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApiKey}&redirect_uri=${kakaoRedirectUri}&response_type=code`;
   const googleURL = `https://accounts.google.com/o/oauth2/auth?response_type=code&scope=email+profile&client_id=${googleRestApiKey}&redirect_uri=${googleRedirectUri}`;
 
-  async function getData(url: string) {
+  async function getUrl(url: string) {
     const res = await fetch(url);
+    const response = await res.json();
+    const signInUrl = response.data.naverLoginUrl;
 
-    return res.json();
+    return signInUrl;
   }
 
   const handleLogin = async (provider: string) => {
@@ -36,8 +38,7 @@ export default function Login() {
     } else if (provider === "kakao") {
       router.replace(kakaoURL);
     } else if (provider === "naver") {
-      const response = await getData(`${naverLoginUrl}`);
-      const naverURL = response.data.naverLoginUrl;
+      const naverURL = await getUrl(`${naverLoginUrl}`);
 
       router.replace(naverURL);
     }
