@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "src/styles/globals.css";
 import Nav from "src/components/nav/index";
+import CustomAlert from "src/lib/CustomAlert";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import { PopstateProvider } from "src/lib/PopContext";
 import dynamic from "next/dynamic";
@@ -48,6 +49,7 @@ export default function RootLayout({
           <div className="flex-container">
             <GoogleAnalytics gaId="G-F2SWLBDJYR" />
             <div className="children">{children}</div>
+            <CustomAlert />
           </div>
         </body>
       </PopstateProvider>
