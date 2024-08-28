@@ -11,6 +11,7 @@ const googleRestApiKey = process.env.NEXT_PUBLIC_GOOGLE_REST_API;
 const googleRedirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
 const kakaoRestApiKey = process.env.NEXT_PUBLIC_KAKAO_REST_API;
 const kakaoRedirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+const naverLoginUrl = process.env.NEXT_PUBLIC_NAVER_LOGIN_URL;
 
 const logos = {
   google: googleLogo.src,
@@ -23,11 +24,22 @@ export default function Login() {
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApiKey}&redirect_uri=${kakaoRedirectUri}&response_type=code`;
   const googleURL = `https://accounts.google.com/o/oauth2/auth?response_type=code&scope=email+profile&client_id=${googleRestApiKey}&redirect_uri=${googleRedirectUri}`;
 
-  const handleLogin = (provider: string) => {
+  async function getData(url: string) {
+    const res = await fetch(url);
+
+    return res.json();
+  }
+
+  const handleLogin = async (provider: string) => {
     if (provider === "google") {
       router.replace(googleURL);
     } else if (provider === "kakao") {
       router.replace(kakaoURL);
+    } else if (provider === "naver") {
+      const response = await getData(`${naverLoginUrl}`);
+      const naverURL = response.data.naverLoginUrl;
+
+      router.replace(naverURL);
     }
   };
 
@@ -58,7 +70,7 @@ export default function Login() {
 
   return (
     <div className={styles.wrapper}>
-        {/* <div className={styles.left}>
+      {/* <div className={styles.left}>
           <video className={styles.video} muted autoPlay loop>
             <source src="/videos/login.mp4" type="video/mp4" />
           </video>
@@ -66,14 +78,14 @@ export default function Login() {
         </div> */}
       <div className={styles.right}>
         <div className={styles.right_title}>
-          <img src={logo.src} alt="asfd" className={styles.cheeseballoon}/>
+          <img src={logo.src} alt="asfd" className={styles.cheeseballoon} />
         </div>
-          <div className={styles.sub}>소셜 로그인</div>
-          <div className={styles["login-button"]}>
-            {loginButton("google", "구글")}
-            {/* {loginButton("naver", "네이버")} */}
-            {loginButton("kakao", "카카오")}
-          </div>
+        <div className={styles.sub}>소셜 로그인</div>
+        <div className={styles["login-button"]}>
+          {loginButton("google", "구글")}
+          {loginButton("naver", "네이버")}
+          {loginButton("kakao", "카카오")}
+        </div>
       </div>
     </div>
   );
