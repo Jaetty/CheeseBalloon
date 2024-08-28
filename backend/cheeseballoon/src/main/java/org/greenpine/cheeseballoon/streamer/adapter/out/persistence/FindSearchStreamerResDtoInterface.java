@@ -3,15 +3,15 @@ package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 import java.math.BigInteger;
 
 public interface FindSearchStreamerResDtoInterface {
-    Long getStreamerId();
+    Long getStreamer_id();
 
     String getName();
 
     boolean getIsLive();
 
-    String getProfileUrl();
+    String getProfile_url();
 
-    String getChannelUrl();
+    String getChannel_url();
 
     int getFollower();
 
