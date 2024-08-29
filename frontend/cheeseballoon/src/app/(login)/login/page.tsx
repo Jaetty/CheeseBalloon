@@ -84,7 +84,7 @@ export default function Login() {
         <div className={styles.sub}>소셜 로그인</div>
         <div className={styles["login-button"]}>
           {loginButton("google", "구글")}
-          {loginButton("naver", "네이버")}
+          {/* {loginButton("naver", "네이버")} */}
           {loginButton("kakao", "카카오")}
         </div>
       </div>
