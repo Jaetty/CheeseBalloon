@@ -147,9 +147,11 @@ export default function DetailProfileContent() {
         <div className={style.rank}>
           <div className={style["rank-num"]}># {rankData.rank}</div>
           <div
-            className={`${style["rank-diff"]} ${rankData.diff >= 0 ? style.positive : style.negative}`}
+            className={`${style["rank-diff"]} ${rankData.diff > 0 && style.negative} ${rankData.diff < 0 && style.positive}`}
           >
-            {rankData.diff >= 0 ? `(+${rankData.diff})` : `(${rankData.diff})`}
+            {rankData.diff > 0 && `(↓${rankData.diff} )`}
+            {rankData.diff === 0 && "( - )"}
+            {rankData.diff < 0 && `(↑${rankData.diff.toString().slice(1)} )`}
           </div>
         </div>
         <div
