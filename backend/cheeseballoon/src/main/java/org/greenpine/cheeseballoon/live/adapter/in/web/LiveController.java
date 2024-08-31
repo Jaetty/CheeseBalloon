@@ -74,8 +74,6 @@ public class LiveController {
         endDate = LocalDate.now().minusDays (1);
         startDate = LocalDate.now().minusDays (14);
 
-        System.out.println(startDate+ " ~ " +endDate);
-
         List<FindBarchartData> ret = liveUsecase.findBarchartData(startDate, endDate);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
