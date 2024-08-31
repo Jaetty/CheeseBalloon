@@ -14,6 +14,7 @@ public class FindBarchartData {
     Long streamerId;
     Integer averageViewer;
     String date;
+    String name;
     String profileUrl;
     Character platform;
 

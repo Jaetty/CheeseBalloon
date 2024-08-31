@@ -7,5 +7,6 @@ public interface FindBarchartDataResDtoInterface {
     Integer getAverage_viewer();
     String getDate();
     String getProfile_url();
+    String getName();
     Character getPlatform();
 }
