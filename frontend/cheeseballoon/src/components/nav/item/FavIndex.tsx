@@ -29,6 +29,13 @@ export default function Fav({ value }: ValueProps) {
   const switchToggle = () => {
     setToggle(!toggle1);
   };
+  // eslint-disable-next-line no-console
+  console.log("FavIndex rendered");
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log("favData has been updated:", favData);
+  }, [favData]);
 
   if (favData === null) {
     return null;

@@ -45,3 +45,9 @@
 .modalButton:hover {
   background-color: rgb(255, 200, 71);
 }
+
+.modalButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}

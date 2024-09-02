@@ -77,7 +77,7 @@ export default function Card({ data }: CardProps) {
         />
       </div>
       <div className={styles.cardname}>
-        {data.name}
+        <div className={styles.name}>{data.name}</div>
         <span className={styles.logo}>
           {data.platform === "A" || data.platform === "S" ? (
             <Image src={aflogo} alt="" width={16} height={16} />
