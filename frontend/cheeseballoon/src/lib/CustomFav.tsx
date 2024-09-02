@@ -27,6 +27,8 @@ export default function useFavData() {
     });
 
     setFavData(sortedData);
+    // eslint-disable-next-line no-console
+    console.log("Updated favData:", sortedData);
   };
 
   useEffect(() => {
