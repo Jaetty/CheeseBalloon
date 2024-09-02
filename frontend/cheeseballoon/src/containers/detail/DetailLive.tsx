@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import customFetch from "@/src/lib/CustomFetch";
 import error from "public/svgs/no_image.jpg";
 import styles from "src/containers/detail/DetailLive.module.scss";
 import onAir from "src/stores/on_air.png";
 
 const API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
+const VIEWLOG_API = process.env.NEXT_PUBLIC_VIEWLOG_API_URL;
 
 interface liveDataType {
   live: boolean;
+  liveId: number;
+  liveLogId: number;
   streamerUrl: string;
   thumbnailUrl: string;
 }
@@ -33,6 +37,17 @@ export default function DetailLive() {
     fetchData();
   }, [id]);
 
+  // const handleViewlog = () => {
+  //   const data = { liveId: liveData.liveId, liveLogId: liveData.liveLogId };
+  //   customFetch(`${VIEWLOG_API}`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   });
+  // };
+
   return (
     <div className={styles.wrapper}>
       {liveData && liveData.live && (
@@ -43,6 +58,7 @@ export default function DetailLive() {
               className={styles.link}
               target="_blank"
               rel="noopener noreferrer"
+              // onClick={handleViewlog}
             >
               <img
                 src={liveData.thumbnailUrl}
