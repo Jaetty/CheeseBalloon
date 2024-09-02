@@ -132,6 +132,9 @@ export interface SignInState {
 export interface AlertState {
   message: string;
   isVisible: boolean;
+  isConfirm: boolean;
+  resolveConfirm: (value: boolean) => void;
   showAlert: (message: string) => void;
+  showConfirm: (message: string) => Promise<boolean>;
   hideAlert: () => void;
 }

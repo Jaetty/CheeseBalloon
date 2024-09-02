@@ -9,6 +9,7 @@ import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
 import { useNotification } from "src/lib/NotificationContext";
 import customFetch from "src/lib/CustomFetch";
+import { useAlertStore, useFavStore } from "src/stores/store";
 
 type CardProps = {
   data: FavState;
@@ -17,11 +18,14 @@ type CardProps = {
 export default function Card({ data }: CardProps) {
   const [isFav, setIsFav] = useState(true);
   const { showNotification } = useNotification();
+  const showConfirm = useAlertStore((state) => state.showConfirm);
+  const fetchData = useFavStore((state) => state.fetchData);
 
   const handleFavClick = async () => {
     if (isFav) {
-      // eslint-disable-next-line no-restricted-globals, no-alert
-      if (!confirm("삭제하시겠습니까?")) return;
+      const confirmed = await showConfirm("삭제하시겠습니까?");
+      if (!confirmed) return;
+
       await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
         method: "DELETE",
         headers: {
@@ -44,6 +48,7 @@ export default function Card({ data }: CardProps) {
       });
       showNotification("즐겨찾기가 추가되었습니다.");
     }
+    await fetchData();
     setIsFav((prev) => !prev);
   };
 
@@ -74,7 +79,7 @@ export default function Card({ data }: CardProps) {
         />
       </div>
       <div className={styles.cardname}>
-        {data.name}
+        <div className={styles.name}>{data.name}</div>
         <span className={styles.logo}>
           {data.platform === "A" || data.platform === "S" ? (
             <Image src={aflogo} alt="" width={16} height={16} />
