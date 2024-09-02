@@ -7,8 +7,16 @@ import {
   AccessTokenState,
   SignInState,
   AlertState,
+  FavState,
 } from "src/types/type";
 import { persist, createJSONStorage } from "zustand/middleware";
+import customFetch from "src/lib/CustomFetch";
+
+interface FavStore {
+  favData: Array<FavState> | null;
+  setFavData: (data: Array<FavState>) => void;
+  fetchData: () => Promise<void>;
+}
 
 const useToggleState = create(
   persist<ToggleStateType>(
@@ -79,10 +87,36 @@ const useAlertStore = create<AlertState>((set) => ({
   hideAlert: () => set({ isVisible: false }),
 }));
 
+const useFavStore = create<FavStore>((set) => ({
+  favData: null, // 상태 초기값을 null로 설정
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setFavData: (data: any) => set({ favData: data }), // 상태를 업데이트하는 함수
+  fetchData: async () => {
+    const response = await customFetch(
+      `${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`
+    );
+    if (response && response.status === 401) {
+      set({ favData: null });
+      return;
+    }
+
+    const responseData = await response.json();
+    const sortedData = responseData.data.sort((a: FavState, b: FavState) => {
+      if (a.isLive === b.isLive) {
+        return b.followerCnt - a.followerCnt;
+      }
+      return a.isLive ? -1 : 1;
+    });
+
+    set({ favData: sortedData }); // 상태를 업데이트할 때 새로운 참조를 사용
+  },
+}));
+
 export {
   useToggleState,
   isMobileState,
   accessTokenState,
   isSignInState,
   useAlertStore,
+  useFavStore,
 };

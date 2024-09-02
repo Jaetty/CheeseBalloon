@@ -19,6 +19,7 @@
   color: rgba(255, 255, 255, 0.8);
   vertical-align: middle;
   display: flex;
+  max-width: 85%;
   text-align: center;
   margin-top: 0.8rem;
 }
@@ -27,7 +28,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 55%;
+  max-width: 85%;
   display: inline-block;
 }
 
