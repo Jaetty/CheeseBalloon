@@ -9,7 +9,7 @@ import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
 import { useNotification } from "src/lib/NotificationContext";
 import customFetch from "src/lib/CustomFetch";
-import { useAlertStore } from "src/stores/store";
+import { useAlertStore, useFavStore } from "src/stores/store";
 
 type CardProps = {
   data: FavState;
@@ -19,6 +19,7 @@ export default function Card({ data }: CardProps) {
   const [isFav, setIsFav] = useState(true);
   const { showNotification } = useNotification();
   const showConfirm = useAlertStore((state) => state.showConfirm);
+  const fetchData = useFavStore((state) => state.fetchData);
 
   const handleFavClick = async () => {
     if (isFav) {
@@ -47,6 +48,7 @@ export default function Card({ data }: CardProps) {
       });
       showNotification("즐겨찾기가 추가되었습니다.");
     }
+    await fetchData();
     setIsFav((prev) => !prev);
   };
 

@@ -5,8 +5,6 @@ import FavCard from "src/components/nav/item/FavCard";
 import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
 import { useState, useEffect } from "react";
-import customFetch from "src/lib/CustomFetch";
-// import useFavData from "src/lib/CustomFav";
 import { useFavStore } from "src/stores/store";
 
 interface ValueProps {

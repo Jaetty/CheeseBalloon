@@ -6,7 +6,7 @@ import history from "public/svgs/history.svg";
 import Image from "next/image";
 import DatePicker from "src/components/mypage/DatePicker";
 import styles from "src/components/mypage/ViewLog.module.scss";
-import { isMobileState } from "src/stores/store";
+import { isMobileState, useAlertStore } from "src/stores/store";
 import customFetch from "src/lib/CustomFetch";
 
 interface LogItem {
@@ -26,6 +26,7 @@ export default function ViewLog() {
   const [selectedLogs, setSelectedLogs] = useState<number[]>([]);
   const [allSelected, setAllSelected] = useState<boolean>(false);
   const isMobile = isMobileState((state) => state.isMobile);
+  const showConfirm = useAlertStore((state) => state.showConfirm);
 
   const fetchLogs = async (starti: string, endi: string) => {
     const response = await customFetch(
@@ -63,8 +64,8 @@ export default function ViewLog() {
   }, [start, end]);
 
   const handleDelete = async () => {
-    // eslint-disable-next-line no-restricted-globals, no-alert
-    if (confirm("삭제하시겠습니까?")) {
+    const confirmed = await showConfirm("삭제하시겠습니까?");
+    if (confirmed) {
       await deleteLogs(selectedLogs);
       if (start && end) {
         fetchLogs(start, end);

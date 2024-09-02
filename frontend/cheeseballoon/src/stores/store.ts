@@ -88,9 +88,9 @@ const useAlertStore = create<AlertState>((set) => ({
 }));
 
 const useFavStore = create<FavStore>((set) => ({
-  favData: null, // 상태 초기값을 null로 설정
+  favData: null,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setFavData: (data: any) => set({ favData: data }), // 상태를 업데이트하는 함수
+  setFavData: (data: any) => set({ favData: data }),
   fetchData: async () => {
     const response = await customFetch(
       `${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`
@@ -108,7 +108,7 @@ const useFavStore = create<FavStore>((set) => ({
       return a.isLive ? -1 : 1;
     });
 
-    set({ favData: sortedData }); // 상태를 업데이트할 때 새로운 참조를 사용
+    set({ favData: sortedData });
   },
 }));
 
