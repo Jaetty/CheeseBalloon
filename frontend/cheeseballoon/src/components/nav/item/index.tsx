@@ -9,18 +9,14 @@ import {
   useToggleState,
   isMobileState,
   accessTokenState,
+  isSignInState,
 } from "src/stores/store";
 
 export default function Menu() {
   const [isHovered, setIsHovered] = useState(false);
   const { value } = useToggleState();
   const isMobile = isMobileState((state) => state.isMobile);
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const currentToken = accessTokenState.getState().accessToken;
-    setToken(currentToken);
-  }, []);
+  const isSign = isSignInState((state) => state.isSignIn);
 
   if (isMobile) {
     return null;
@@ -35,7 +31,7 @@ export default function Menu() {
       onMouseLeave={() => setIsHovered(false)}
     >
       <Shortcut value={value} />
-      {token && <Fav value={value} />}
+      {isSign && <Fav value={value} />}
       <Recomend value={value} />
     </div>
   );

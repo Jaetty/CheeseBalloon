@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Mypage from "src/containers/mypage/MyIndex";
-import { useAlertStore } from "src/stores/store";
+import { useAlertStore, isSignInState } from "src/stores/store";
 import customFetch from "src/lib/CustomFetch";
 import { FavState } from "src/types/type";
 
@@ -12,12 +12,11 @@ export default function MyPage() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<FavState[]>([]);
   const showAlert = useAlertStore((state) => state.showAlert);
+  const isSignIn = isSignInState((state) => state.isSignIn);
 
   useEffect(() => {
     const checkAuthAndFetchData = async () => {
-      const token = sessionStorage.getItem("accessToken");
-
-      if (!token) {
+      if (!isSignIn) {
         showAlert("로그인이 필요한 서비스입니다");
         router.push("/home");
         return;
@@ -54,8 +53,13 @@ export default function MyPage() {
     };
 
     checkAuthAndFetchData();
+
+    if (!isSignIn) {
+      showAlert("로그인이 필요한 서비스입니다");
+      router.push("/home");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [isSignIn, router]);
 
   if (loading) {
     return null;
