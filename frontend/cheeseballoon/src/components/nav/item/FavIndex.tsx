@@ -6,6 +6,7 @@ import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
 import { useState, useEffect } from "react";
 import customFetch from "src/lib/CustomFetch";
+import useFavData from "src/lib/CustomFav";
 
 interface ValueProps {
   value: boolean;
@@ -23,49 +24,12 @@ export interface FavState {
 }
 
 export default function Fav({ value }: ValueProps) {
-  const [favData, setFavData] = useState<FavState[] | null>(null);
   const [toggle1, setToggle] = useState(false);
-
+  const { favData } = useFavData();
   const switchToggle = () => {
     setToggle(!toggle1);
   };
 
-  const fetchData = async () => {
-    const response = await customFetch(
-      `${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`,
-      {
-        method: "GET",
-      }
-    );
-
-    if (response && response.status === 401) {
-      // 401 에러가 발생한 경우 null을 반환하여 아무것도 렌더링하지 않음
-      setFavData(null);
-      return;
-    }
-
-    // response가 null인 경우, 데이터를 설정하지 않고 반환
-    if (response === null) {
-      setFavData(null);
-      return;
-    }
-
-    const responseData = await response.json();
-    const sortedData = responseData.data.sort((a: FavState, b: FavState) => {
-      if (a.isLive === b.isLive) {
-        return b.followerCnt - a.followerCnt;
-      }
-      return a.isLive ? -1 : 1;
-    });
-
-    setFavData(sortedData);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  // favData가 null이면 아무것도 렌더링하지 않음
   if (favData === null) {
     return null;
   }
