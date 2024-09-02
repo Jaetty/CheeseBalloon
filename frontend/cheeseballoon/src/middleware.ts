@@ -16,5 +16,9 @@ export default function middleware(request: NextRequest) {
     return response;
   }
 
+  // if (pathname === "/login") {
+  //   return NextResponse.redirect(new URL("/home", request.url));
+  // }
+
   return response;
 }

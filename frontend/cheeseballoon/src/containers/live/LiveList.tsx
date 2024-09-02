@@ -8,6 +8,7 @@ import LiveCard from "./LiveCard";
 interface LiveInfo {
   streamerId: number;
   liveId: number;
+  liveLogId: number;
   name: string;
   title: string;
   thumbnailUrl: string;
