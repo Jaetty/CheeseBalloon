@@ -18,7 +18,6 @@ import ArrowDown from "public/svgs/downarrow.png";
 import { useNotification } from "src/lib/NotificationContext";
 import customFetch from "src/lib/CustomFetch";
 import { isSignInState, useAlertStore, useFavStore } from "src/stores/store";
-// import useFavData from "src/lib/CustomFav";
 
 type RankingData = {
   streamerId: number;
@@ -59,7 +58,10 @@ export default function TopThreeRanking({ data }: Props) {
     {}
   );
   const isSign = isSignInState((state) => state.isSignIn);
-  const showAlert = useAlertStore((state) => state.showAlert);
+  const { showAlert, showConfirm } = useAlertStore((state) => ({
+    showAlert: state.showAlert,
+    showConfirm: state.showConfirm,
+  }));
   const fetchData = useFavStore((state) => state.fetchData);
 
   const handleImageError = async (id: number) => {
@@ -102,8 +104,8 @@ export default function TopThreeRanking({ data }: Props) {
     try {
       let response;
       if (bookmarkState[item.streamerId]) {
-        // eslint-disable-next-line no-restricted-globals, no-alert
-        if (!confirm("삭제하시겠습니까?")) return;
+        const confirmed = await showConfirm("삭제하시겠습니까?");
+        if (!confirmed) return;
         response = await customFetch(
           `${process.env.NEXT_PUBLIC_MYPAGE_DBOOK}`,
           {
