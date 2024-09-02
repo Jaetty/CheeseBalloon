@@ -6,7 +6,8 @@ import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
 import { useState, useEffect } from "react";
 import customFetch from "src/lib/CustomFetch";
-import useFavData from "src/lib/CustomFav";
+// import useFavData from "src/lib/CustomFav";
+import { useFavStore } from "src/stores/store";
 
 interface ValueProps {
   value: boolean;
@@ -25,17 +26,16 @@ export interface FavState {
 
 export default function Fav({ value }: ValueProps) {
   const [toggle1, setToggle] = useState(false);
-  const { favData } = useFavData();
+  const favData = useFavStore((state) => state.favData);
+  const fetchData = useFavStore((state) => state.fetchData);
   const switchToggle = () => {
     setToggle(!toggle1);
   };
-  // eslint-disable-next-line no-console
-  console.log("FavIndex rendered");
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log("favData has been updated:", favData);
-  }, [favData]);
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (favData === null) {
     return null;

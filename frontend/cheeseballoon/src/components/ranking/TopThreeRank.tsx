@@ -17,8 +17,8 @@ import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
 import { useNotification } from "src/lib/NotificationContext";
 import customFetch from "src/lib/CustomFetch";
-import { isSignInState, useAlertStore } from "src/stores/store";
-import useFavData from "src/lib/CustomFav";
+import { isSignInState, useAlertStore, useFavStore } from "src/stores/store";
+// import useFavData from "src/lib/CustomFav";
 
 type RankingData = {
   streamerId: number;
@@ -60,7 +60,7 @@ export default function TopThreeRanking({ data }: Props) {
   );
   const isSign = isSignInState((state) => state.isSignIn);
   const showAlert = useAlertStore((state) => state.showAlert);
-  const { fetchData } = useFavData();
+  const fetchData = useFavStore((state) => state.fetchData);
 
   const handleImageError = async (id: number) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
