@@ -2,17 +2,20 @@
 
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
+import customFetch from "@/src/lib/CustomFetch";
 import chzzkIcon from "public/svgs/chzzk.svg";
 import afreecaIcon from "@/src/stores/afreeca.ico";
 import error from "public/svgs/no_image.jpg";
 import blankProfile from "public/svgs/blank_profile.png";
 import style from "./LiveCard.module.scss";
 
+const VIEWLOG_API = process.env.NEXT_PUBLIC_VIEWLOG_API_URL;
+
 interface LiveInfo {
   liveinfo: {
     streamerId: number;
     liveId: number;
+    liveLogId: number;
     name: string;
     title: string;
     thumbnailUrl: string;
@@ -53,6 +56,15 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
   };
 
   const handleOpenUrl = (url: string) => {
+    const data = { liveId: liveinfo.liveId, liveLogId: liveinfo.liveLogId };
+    customFetch(`${VIEWLOG_API}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
     window.open(url, "_blank");
   };
 
