@@ -12,7 +12,12 @@ import noimage from "public/svgs/blank_profile.png";
 import { useState, useEffect } from "react";
 import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
-import { isMobileState, isSignInState, useAlertStore } from "src/stores/store";
+import {
+  isMobileState,
+  isSignInState,
+  useAlertStore,
+  useFavStore,
+} from "src/stores/store";
 import { useNotification } from "src/lib/NotificationContext";
 import customFetch from "src/lib/CustomFetch";
 
@@ -54,7 +59,11 @@ export default function RestRanking({ data }: Props) {
   const isMobile = isMobileState((state) => state.isMobile);
   const isSign = isSignInState((state) => state.isSignIn);
   const { showNotification } = useNotification();
-  const showAlert = useAlertStore((state) => state.showAlert);
+  const { showAlert, showConfirm } = useAlertStore((state) => ({
+    showAlert: state.showAlert,
+    showConfirm: state.showConfirm,
+  }));
+  const fetchData = useFavStore((state) => state.fetchData);
 
   useEffect(() => {
     if (data) {
@@ -109,8 +118,8 @@ export default function RestRanking({ data }: Props) {
     try {
       let response;
       if (bookmarks[item.streamerId]) {
-        // eslint-disable-next-line no-restricted-globals, no-alert
-        if (!confirm("삭제하시겠습니까?")) return;
+        const confirmed = await showConfirm("삭제하시겠습니까?");
+        if (!confirmed) return;
         response = await customFetch(
           `${process.env.NEXT_PUBLIC_MYPAGE_DBOOK}`,
           {
@@ -146,6 +155,7 @@ export default function RestRanking({ data }: Props) {
           : "즐겨찾기가 추가되었습니다."
       );
 
+      await fetchData();
       setBookmarks((prev) => ({
         ...prev,
         [item.streamerId]: !prev[item.streamerId],

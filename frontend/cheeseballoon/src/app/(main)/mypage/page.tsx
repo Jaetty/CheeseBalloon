@@ -37,14 +37,13 @@ export default function MyPage() {
 
         const responseData = await response.json();
 
-        // Check if responseData.data is an array and has elements
         if (responseData.data.length > 0) {
           const sortedData = responseData.data.sort(
             (a: FavState, b: FavState) => b.followerCnt - a.followerCnt
           );
           setData(sortedData);
         } else {
-          setData([]); // Explicitly set an empty array if no data is found
+          setData([]);
         }
 
         setLoading(false);

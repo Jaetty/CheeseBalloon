@@ -17,7 +17,6 @@ export default function usePopstateListener() {
     };
   }, []);
 
-  // 상태를 초기화하는 함수를 반환
   const resetPopstate = () => setIsPopstate(false);
 
   return { isPopstate, resetPopstate };
