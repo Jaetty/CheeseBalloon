@@ -17,13 +17,18 @@
 .cardname {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.8);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   vertical-align: middle;
   display: flex;
   text-align: center;
   margin-top: 0.8rem;
+}
+
+.name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
+  display: inline-block;
 }
 
 .link {

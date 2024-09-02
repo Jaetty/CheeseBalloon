@@ -63,7 +63,19 @@ const isSignInState = create(
 const useAlertStore = create<AlertState>((set) => ({
   message: "",
   isVisible: false,
-  showAlert: (message: string) => set({ message, isVisible: true }),
+  isConfirm: false,
+  resolveConfirm: () => {},
+  showAlert: (message: string) =>
+    set({ message, isVisible: true, isConfirm: false }),
+  showConfirm: (message: string) =>
+    new Promise((resolve) => {
+      set({
+        message,
+        isVisible: true,
+        isConfirm: true,
+        resolveConfirm: resolve,
+      });
+    }),
   hideAlert: () => set({ isVisible: false }),
 }));
 
