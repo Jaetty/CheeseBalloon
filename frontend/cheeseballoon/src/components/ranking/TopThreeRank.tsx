@@ -18,6 +18,7 @@ import ArrowDown from "public/svgs/downarrow.png";
 import { useNotification } from "src/lib/NotificationContext";
 import customFetch from "src/lib/CustomFetch";
 import { isSignInState, useAlertStore } from "src/stores/store";
+import useFavData from "src/lib/CustomFav";
 
 type RankingData = {
   streamerId: number;
@@ -59,6 +60,7 @@ export default function TopThreeRanking({ data }: Props) {
   );
   const isSign = isSignInState((state) => state.isSignIn);
   const showAlert = useAlertStore((state) => state.showAlert);
+  const { fetchData } = useFavData();
 
   const handleImageError = async (id: number) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
@@ -136,6 +138,8 @@ export default function TopThreeRanking({ data }: Props) {
           ? "즐겨찾기가 삭제되었습니다."
           : "즐겨찾기가 추가되었습니다."
       );
+
+      await fetchData();
 
       setBookmarkState((prev) => ({
         ...prev,
