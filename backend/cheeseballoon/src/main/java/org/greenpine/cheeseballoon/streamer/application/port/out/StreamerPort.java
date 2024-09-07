@@ -23,7 +23,7 @@ public interface StreamerPort {
 
     List<StreamerLogEntity> streamerDetailFollower(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
 
-    Integer streamerFollower(Long streamerId, LocalDate endDate);
+    Integer streamerFollower(Long streamerId, LocalDateTime endDate);
 
     List<FindStreamerDailyViewerResDtoInterface> streamerDetailViewer(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
 

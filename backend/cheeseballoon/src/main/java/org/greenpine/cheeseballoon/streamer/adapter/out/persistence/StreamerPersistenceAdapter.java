@@ -96,7 +96,7 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     }
 
     @Override
-    public Integer streamerFollower(Long streamerId, LocalDate endDate) {
+    public Integer streamerFollower(Long streamerId, LocalDateTime endDate) {
         return streamerLogRepository.findFollowerByEndDate(streamerId, endDate);
     }
 
