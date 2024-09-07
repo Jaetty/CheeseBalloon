@@ -76,6 +76,10 @@ public class StreamerController {
             memberId = -1L;
         }
 
+        if(query.isEmpty()){
+            query = " ";
+        }
+
         List<FindSearchStreamerResDtoInterface> ret = streamerUsecase.searchStreamer(query, memberId);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));

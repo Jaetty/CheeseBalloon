@@ -20,24 +20,14 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
             "LEFT outer JOIN bookmarks ON streamer.streamer_id = bookmarks.streamer_id AND bookmarks.member_id = :memberId", nativeQuery = true)
     FindStreamerDetailResDtoInterface findStreamerDetailByStreamerId(Long streamerId, Long memberId);
 
-    // 스트리머 이름으로 스트리머 정보 가져오기
-    @Query(value = "SELECT streamer_info.streamer_id AS streamerId, streamer_info.channel_url AS channelUrl, streamer_info.profile_url AS ProfileUrl, streamer_info.name, streamer_info.follower, streamer_info.platform, case when bookmark_info.bookmark_id IS NOT NULL then 'TRUE' ELSE 'FALSE' END AS bookmark, max(lives.is_live) AS isLive\n" +
-            "FROM (SELECT * FROM bookmarks WHERE bookmarks.member_id = :memberId) AS bookmark_info \n" +
-            "RIGHT OUTER JOIN \n" +
-            "(SELECT streamers.*, streamer_logs.follower, streamer_logs.reg_dt \n" +
-            "FROM streamers \n" +
-            "JOIN streamer_logs ON streamers.streamer_id = streamer_logs.streamer_id\n" +
-            "WHERE streamers.`name` LIKE CONCAT('%', :query, '%') \n" +
-            "AND reg_dt > CASE \n" +
-            "                WHEN CURRENT_TIME >= '04:00:00' THEN DATE_FORMAT(NOW(), '%Y-%m-%d 03:10:00')\n" +
-            "                ELSE DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%Y-%m-%d 03:10:00')\n" +
-            "            END\n" +
-            "    AND \n" +
-            "    (CURRENT_TIME >= '04:00:00' OR reg_dt < DATE_FORMAT(NOW(), '%Y-%m-%d 03:10:00'))\n" +
-            "LIMIT 30)\n" +
-            "AS streamer_info ON bookmark_info.streamer_id = streamer_info.streamer_id\n" +
-            "JOIN lives ON lives.streamer_id = streamer_info.streamer_id\n" +
-            "GROUP BY streamer_info.streamer_id;", nativeQuery = true)
+    // 스트리머 이름으로 스트리머 정보 가져오기 -> isLive도 가져와야해서 join이 있음
+    @Query(value = "SELECT streamers.streamer_id AS streamerId, streamers.name, streamers.profile_url AS profileUrl, streamers.channel_url AS channelUrl, streamers.platform, streamer_logs.follower, case when bookmarks.bookmark_id IS NOT NULL then 'true' ELSE 'false' END AS bookmark, case when max(lives.is_live) = 1 then 'true' ELSE 'false' END  AS isLive\n" +
+            "FROM streamers JOIN streamer_logs\n" +
+            "on streamer_logs.streamer_id = streamers.streamer_id AND streamer_logs.reg_dt > DATE_SUB((SELECT MAX(reg_dt) FROM streamer_logs), INTERVAL 2 HOUR) AND streamers.`name` LIKE CONCAT(:query, '%')\n" +
+            "JOIN lives on lives.streamer_id = streamers.streamer_id\n" +
+            "LEFT OUTER JOIN bookmarks ON bookmarks.streamer_id = streamers.streamer_id AND bookmarks.member_id = :memberId \n" +
+            "GROUP BY streamerId\n" +
+            "LIMIT 30", nativeQuery = true)
     List<FindSearchStreamerResDtoInterface> findStreamerInfoByName(String query, Long memberId);
 
     @Query(value = "SELECT l.streamer_id, t.live_log_id, t.live_id, t.cycle_log_id, MAX(t.viewer_cnt) AS maxViewer, ROUND(AVG(t.viewer_cnt),0) AS viewer, t.date FROM lives AS l INNER JOIN \n" +

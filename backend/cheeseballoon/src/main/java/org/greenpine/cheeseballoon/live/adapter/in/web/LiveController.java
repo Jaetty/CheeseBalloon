@@ -68,13 +68,7 @@ public class LiveController {
     @GetMapping("/barchart")
     public ResponseEntity<CustomBody> barchartData(){
 
-        LocalDate startDate, endDate;
-
-        // 데이터는 어제 날짜까지 있으니 어제를 시작점으로 한다.
-        endDate = LocalDate.now().minusDays (1);
-        startDate = LocalDate.now().minusDays (14);
-
-        List<FindBarchartData> ret = liveUsecase.findBarchartData(startDate, endDate);
+        List<FindBarchartData> ret = liveUsecase.findBarchartData();
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, LiveResMsg.SUCCESS, ret));
 
