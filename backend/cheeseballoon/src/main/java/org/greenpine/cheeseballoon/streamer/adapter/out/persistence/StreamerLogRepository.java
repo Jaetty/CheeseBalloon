@@ -32,6 +32,6 @@ public interface StreamerLogRepository extends JpaRepository<StreamerLogEntity,L
     @Query(value = "SELECT follower \n" +
             "FROM streamer_logs \n" +
             "WHERE streamer_id = :streamerId AND reg_dt = (select max(reg_dt) FROM streamer_logs WHERE streamer_id=:streamerId AND streamer_logs.reg_dt <= :endDate)", nativeQuery = true)
-    Integer findFollowerByEndDate(Long streamerId, LocalDate endDate);
+    Integer findFollowerByEndDate(Long streamerId, LocalDateTime endDate);
 
 }
