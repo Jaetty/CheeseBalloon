@@ -11,6 +11,7 @@ import org.greenpine.cheeseballoon.streamer.domain.StreamerDomain;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -92,6 +93,11 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
         StreamerEntity streamerEntity = StreamerEntity.builder().streamerId(streamerId).build();
 
         return streamerLogRepository.findStreamerLogEntitiesByStreamerAndRegDtBetween(streamerEntity, startDate, endDate);
+    }
+
+    @Override
+    public Integer streamerFollower(Long streamerId, LocalDate endDate) {
+        return streamerLogRepository.findFollowerByEndDate(streamerId, endDate);
     }
 
     @Override
