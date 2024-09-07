@@ -5,16 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindBarchartData {
+public class BarchartData {
 
-    String Date;
-    List<FindBarchartDataResDtoInterface> dataList;
+    Integer rank;
+    Long streamerId;
+    Integer averageViewer;
+    String date;
+    String name;
+    String profileUrl;
+    Character platform;
 
 }

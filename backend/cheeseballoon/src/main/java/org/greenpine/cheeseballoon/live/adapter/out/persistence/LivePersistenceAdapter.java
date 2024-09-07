@@ -95,10 +95,8 @@ public class LivePersistenceAdapter implements LivePort, CategoryPort {
     }
 
     @Override
-    public List<FindBarchartDataResDtoInterface> findBarchartData(LocalDate startDate, LocalDate endDate) {
-
-
-        return liveLogRepository.findBarchartData(startDate, endDate);
+    public List<FindBarchartDataResDtoInterface> findBarchartData(String dtCode) {
+        return liveLogRepository.findBarchartData(dtCode);
     }
 
     @Override
