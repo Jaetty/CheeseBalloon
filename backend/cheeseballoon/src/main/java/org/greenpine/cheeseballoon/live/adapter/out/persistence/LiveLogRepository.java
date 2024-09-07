@@ -46,7 +46,7 @@ public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
     , nativeQuery = true)
     List<Object[]> test();
 
-    @Query(value = "SELECT streamers.streamer_id, statistics.average_viewer, SUBSTRING(statistics.dt_code, 1, 10) AS date, streamers.name, streamers.profile_url, streamers.platform FROM \n" +
+    @Query(value = "SELECT streamers.streamer_id, statistics.average_viewer, SUBSTRING(statistics.dt_code, 6,5) AS date, streamers.name, streamers.profile_url, streamers.platform FROM \n" +
             "statistics JOIN (SELECT statistics.streamer_id FROM statistics WHERE dt_code LIKE '2024-08-18-3' ORDER BY average_viewer DESC LIMIT 20) AS streamer \n" +
             "ON statistics.streamer_id = streamer.streamer_id\n" +
             "JOIN streamers\n" +
