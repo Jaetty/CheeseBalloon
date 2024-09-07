@@ -15,6 +15,6 @@ public interface LiveUsecase {
     List<FindLivesResDto> findLives(FindLivesReqDto reqDto);
     List<SearchLivesResDto> searchLives(SearchLivesReqDto reqDto);
 
-    List<FindBarchartData> findBarchartData(LocalDate startDate, LocalDate endDate);
+    List<FindBarchartData> findBarchartData();
 
 }

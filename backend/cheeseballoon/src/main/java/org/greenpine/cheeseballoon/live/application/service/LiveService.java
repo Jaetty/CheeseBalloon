@@ -1,7 +1,6 @@
 package org.greenpine.cheeseballoon.live.application.service;
 
 import lombok.RequiredArgsConstructor;
-import org.greenpine.cheeseballoon.live.adapter.out.persistence.FindBarchartDataResDtoInterface;
 import org.greenpine.cheeseballoon.live.application.port.in.CategoryUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.LiveUsecase;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,22 +51,17 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
     }
 
     @Override
-    public List<FindBarchartData> findBarchartData(LocalDate startDate, LocalDate endDate) {
+    public List<FindBarchartData> findBarchartData() {
 
-        List<FindBarchartDataResDtoInterface> list = livePort.findBarchartData(startDate, endDate);
+        LocalDate startDate = LocalDate.now().minusDays (14);
 
         List<FindBarchartData> ret = new ArrayList<>();
 
-        for(FindBarchartDataResDtoInterface var : list){
-            ret.add(FindBarchartData.builder()
-                    .averageViewer(var.getAverage_viewer())
-                    .date(var.getDate())
-                    .name(var.getName())
-                    .streamerId(var.getStreamer_id())
-                    .platform(var.getPlatform())
-                    .profileUrl(var.getProfile_url())
-                    .build());
+        for(int i=0; i<14; i++){
+            String dtCode = startDate.plusDays(i).toString()+"-0";
+            ret.add(FindBarchartData.builder().Date(startDate.plusDays(i).format(DateTimeFormatter.ofPattern("MM/dd"))).dataList(livePort.findBarchartData(dtCode)).build());
         }
+
 
         return ret;
     }
