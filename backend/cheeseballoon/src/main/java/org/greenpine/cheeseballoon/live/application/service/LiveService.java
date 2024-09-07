@@ -61,7 +61,7 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
             ret.add(FindBarchartData.builder()
                     .averageViewer(var.getAverage_viewer())
                     .date(var.getDate())
-                    .name("<span style=\"color:red;\">I am red</span>")
+                    .name(var.getName())
                     .streamerId(var.getStreamer_id())
                     .platform(var.getPlatform())
                     .profileUrl(var.getProfile_url())
