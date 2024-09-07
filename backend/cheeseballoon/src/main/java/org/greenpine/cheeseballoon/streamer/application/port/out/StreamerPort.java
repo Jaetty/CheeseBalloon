@@ -6,6 +6,7 @@ import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.*;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 import org.greenpine.cheeseballoon.streamer.domain.StreamerLiveDomain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +22,8 @@ public interface StreamerPort {
     StreamerLiveDomain streamerDetailLive(Long streamerId);
 
     List<StreamerLogEntity> streamerDetailFollower(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
+
+    Integer streamerFollower(Long streamerId, LocalDate endDate);
 
     List<FindStreamerDailyViewerResDtoInterface> streamerDetailViewer(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
 
