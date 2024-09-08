@@ -47,12 +47,14 @@ public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
     , nativeQuery = true)
     List<Object[]> test();
 
-    @Query(value = "SELECT streamers.streamer_id, streamers.name, streamers.profile_url, streamers.platform, average_viewer\n" +
-            "FROM streamers JOIN (SELECT ROW_NUMBER() OVER(ORDER BY average_viewer DESC) AS RANK,statistics.streamer_id, statistics.average_viewer FROM statistics WHERE dt_code = :dtCode LIMIT 200) AS st\n" +
-            "ON streamers.streamer_id = st.streamer_id \n" +
-            "ORDER BY RANK\n" +
-            "LIMIT 30"
+    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY average_viewer DESC) AS RANK, streamers.streamer_id, streamers.name, streamers.profile_url, streamers.platform, average_viewer \n" +
+            "FROM streamers\n" +
+            "JOIN (SELECT sn.streamer_id, case when statistics.average_viewer is null then 0 ELSE statistics.average_viewer END AS average_viewer FROM statistics \n" +
+            "right outer JOIN (SELECT streamer_id FROM statistics WHERE dt_code = :currDt ORDER BY average_viewer DESC LIMIT 30) AS sn ON \n" +
+            "sn.streamer_id = statistics.streamer_id AND statistics.dt_code = :dtCode ) AS st \n" +
+            "ON streamers.streamer_id = st.streamer_id\n" +
+            "ORDER BY RANK"
             , nativeQuery = true)
-    List<FindBarchartDataResDtoInterface> findBarchartData(String dtCode);
+    List<FindBarchartDataResDtoInterface> findBarchartData(String currDt, String dtCode);
 
 }

@@ -13,6 +13,6 @@ public interface LivePort {
     List<FindLivesResDto> findLivesAll(FindLivesReqDto reqDto);
     List<SearchLivesResDto> searchLives(SearchLivesReqDto reqDto);
 
-    List<FindBarchartDataResDtoInterface> findBarchartData(String dtCode);
+    List<FindBarchartDataResDtoInterface> findBarchartData(String currDt, String dtCode);
 
 }
