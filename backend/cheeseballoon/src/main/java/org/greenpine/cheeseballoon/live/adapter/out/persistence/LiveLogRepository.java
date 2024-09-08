@@ -51,7 +51,7 @@ public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
             "FROM streamers JOIN (SELECT ROW_NUMBER() OVER(ORDER BY average_viewer DESC) AS RANK,statistics.streamer_id, statistics.average_viewer FROM statistics WHERE dt_code = :dtCode LIMIT 200) AS st\n" +
             "ON streamers.streamer_id = st.streamer_id \n" +
             "ORDER BY RANK\n" +
-            "LIMIT 10"
+            "LIMIT 30"
             , nativeQuery = true)
     List<FindBarchartDataResDtoInterface> findBarchartData(String dtCode);
 
