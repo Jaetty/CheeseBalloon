@@ -11,8 +11,10 @@ import java.util.List;
 
 public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
 
-//    @Query("SELECT LiveEntity FROM LiveEntity le where le.streamer.streamerId = :streamerId order by le.liveId ")
-    LiveEntity findFirstByStreamer_StreamerIdOrderByLiveIdDesc(Long streamerId);
+    @Query(value = "SELECT liveId, MAX(live_log_id) AS liveLogId, case when isLive = 1 then 'true' ELSE 'false' END AS isLive, stream_url AS streamUrl, thumbnail_url AS thumbnailUrl FROM live_logs JOIN \n" +
+            "(SELECT streamer_id, lives.thumbnail_url, lives.stream_url, MAX(is_live) AS isLive, MAX(live_id) AS liveId FROM lives WHERE streamer_id = :streamerId) AS live\n" +
+            "ON live_logs.live_id = live.liveId", nativeQuery = true)
+    FindStreamerLiveResDtoInterface findFirstByStreamer_StreamerIdOrderByLiveIdDesc(Long streamerId);
 
     @Query(value = "SELECT live_id AS liveId, SUM( CASE WHEN total_time IS NULL THEN 0 ELSE total_time END) AS totalAirTime, date FROM\n" +
             "(SELECT live_id, TIME_TO_SEC(TIMEDIFF(max_time, min_time)) AS total_time, date FROM\n" +

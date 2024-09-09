@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.streamer.application.port.out;
 
 
+import org.greenpine.cheeseballoon.live.adapter.out.persistence.FindStreamerLiveResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.StatisticsEntity;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.*;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
@@ -19,7 +20,7 @@ public interface StreamerPort {
 
     FindStreamerDetailResDto streamerDetail(Long streamerId, long memberId);
 
-    StreamerLiveDomain streamerDetailLive(Long streamerId);
+    FindStreamerLiveResDtoInterface streamerDetailLive(Long streamerId);
 
     List<StreamerLogEntity> streamerDetailFollower(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
 
