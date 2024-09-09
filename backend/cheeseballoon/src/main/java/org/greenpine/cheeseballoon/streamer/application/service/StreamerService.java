@@ -44,7 +44,7 @@ public class StreamerService implements StreamerUsecase {
 
         if(curr != null){
             ret.setRank(curr.getRank());
-            ret.setDiff(curr.getRank());
+            ret.setDiff(301-curr.getRank());
             ret.setAvgViewer(curr.getAverageViewer());
             ret.setViewerDiff(curr.getAverageViewer());
             ret.setFollow(curr.getFollower());
