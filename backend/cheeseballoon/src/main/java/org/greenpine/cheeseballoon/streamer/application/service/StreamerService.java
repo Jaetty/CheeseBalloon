@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.streamer.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.live.adapter.out.persistence.FindStreamerLiveResDtoInterface;
 import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.StatisticsEntity;
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.*;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
@@ -79,13 +80,14 @@ public class StreamerService implements StreamerUsecase {
     @Override
     public FindStreamerDetailLiveResDto streamerDetailLive(Long streamerId) {
 
-        StreamerLiveDomain liveDomain = streamerPort.streamerDetailLive(streamerId);
-        liveDomain.liveCheck();
+        FindStreamerLiveResDtoInterface live = streamerPort.streamerDetailLive(streamerId);
 
         FindStreamerDetailLiveResDto result = FindStreamerDetailLiveResDto.builder()
-                .isLive(liveDomain.getLive())
-                .streamerUrl(liveDomain.getStreamUrl())
-                .thumbnailUrl(liveDomain.getThumbnailUrl())
+                .liveId(live.getLiveId())
+                .liveLogId(live.getLiveLogId())
+                .isLive(live.getIsLive())
+                .streamerUrl(live.getStreamUrl())
+                .thumbnailUrl(live.getThumbnailUrl())
                 .build();
 
 

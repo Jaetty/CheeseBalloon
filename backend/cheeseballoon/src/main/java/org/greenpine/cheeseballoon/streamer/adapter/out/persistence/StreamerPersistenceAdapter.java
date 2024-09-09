@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.streamer.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
+import org.greenpine.cheeseballoon.live.adapter.out.persistence.FindStreamerLiveResDtoInterface;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveEntity;
 import org.greenpine.cheeseballoon.live.adapter.out.persistence.LiveRepository;
 import org.greenpine.cheeseballoon.ranking.adapter.out.persistence.StatisticsEntity;
@@ -64,27 +65,9 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     }
 
     @Override
-    public StreamerLiveDomain streamerDetailLive(Long streamerId) {
+    public FindStreamerLiveResDtoInterface streamerDetailLive(Long streamerId) {
 
-        LiveEntity liveEntity = liveRepository.findFirstByStreamer_StreamerIdOrderByLiveIdDesc(streamerId);
-
-        StreamerDomain streamerDomain = new StreamerDomain(
-                liveEntity.getStreamer().getStreamerId(),
-                liveEntity.getStreamer().getOriginId(),
-                liveEntity.getStreamer().getName(),
-                liveEntity.getStreamer().getProfileUrl(),
-                liveEntity.getStreamer().getChannelUrl(),
-                liveEntity.getStreamer().getPlatform());
-
-        StreamerLiveDomain liveDomain = new StreamerLiveDomain(liveEntity.getLiveId(),
-                liveEntity.getLiveOriginId(),
-                liveEntity.getStreamUrl(),
-                liveEntity.getThumbnailUrl(),
-                liveEntity.getIsLive(),
-                streamerDomain);
-
-
-        return liveDomain;
+        return liveRepository.findFirstByStreamer_StreamerIdOrderByLiveIdDesc(streamerId);
     }
 
     @Override
