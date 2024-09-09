@@ -69,7 +69,7 @@ class Chzzk:
                 response = await client.get(f'https://api.chzzk.naver.com/service/v1/channels/{s.origin_id}',
                                             headers=headers)
                 res = response.json()
-                if res['code'] != '200':
+                if res['code'] != 200:
                     continue
                 follower_text = res['content']['followerCount']
                 follower_cnt = int(follower_text)
@@ -193,7 +193,7 @@ class Chzzk:
 
     async def chzzk_profile(self, streamer: StreamerRead):
         res = await self.streamer_info(streamer.origin_id)
-        if res['code'] == '200':
+        if res['code'] == 200:
             streamer_profile = res['content']['channelImageUrl']
             return streamer_profile
         else:
