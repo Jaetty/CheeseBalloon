@@ -37,16 +37,18 @@ export default function DetailLive() {
     fetchData();
   }, [id]);
 
-  // const handleViewlog = () => {
-  //   const data = { liveId: liveData.liveId, liveLogId: liveData.liveLogId };
-  //   customFetch(`${VIEWLOG_API}`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   });
-  // };
+  const handleViewlog = () => {
+    if (liveData) {
+      const data = { liveId: liveData.liveId, liveLogId: liveData.liveLogId };
+      customFetch(`${VIEWLOG_API}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    }
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -58,7 +60,7 @@ export default function DetailLive() {
               className={styles.link}
               target="_blank"
               rel="noopener noreferrer"
-              // onClick={handleViewlog}
+              onClick={handleViewlog}
             >
               <img
                 src={liveData.thumbnailUrl}
