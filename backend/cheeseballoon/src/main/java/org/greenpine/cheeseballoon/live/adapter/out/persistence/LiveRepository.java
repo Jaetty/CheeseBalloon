@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface LiveRepository extends JpaRepository<LiveEntity,Long> {
 
-    @Query(value = "SELECT live_logs.live_log_id AS liveLogId, lives.live_id AS liveId, lives.streamer_id AS streamerId, lives.thumbnail_url AS thumbnailUrl, case when lives.is_live = 1 then 'true' ELSE 'false' END AS isLive\n" +
+    @Query(value = "SELECT live_logs.live_log_id AS liveLogId, lives.live_id AS liveId, lives.streamer_id AS streamerId, lives.stream_url AS streamUrl,  lives.thumbnail_url AS thumbnailUrl, case when lives.is_live = 1 then 'true' ELSE 'false' END AS isLive\n" +
             "FROM live_logs JOIN lives\n" +
             "ON live_logs.live_id = lives.live_id AND lives.live_id = (SELECT MAX(live_id) FROM lives WHERE streamer_id = :streamerId)\n" +
             "ORDER BY live_log_id DESC LIMIT 1", nativeQuery = true)
