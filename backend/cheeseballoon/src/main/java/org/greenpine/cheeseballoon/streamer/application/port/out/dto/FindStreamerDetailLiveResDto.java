@@ -14,7 +14,7 @@ public class FindStreamerDetailLiveResDto {
     private long liveId;
     private long liveLogId;
     private boolean isLive;
-    private String streamerUrl;
+    private String streamUrl;
     private String thumbnailUrl;
 
 }

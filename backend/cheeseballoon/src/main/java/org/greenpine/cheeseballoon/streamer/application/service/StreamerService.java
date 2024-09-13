@@ -86,7 +86,7 @@ public class StreamerService implements StreamerUsecase {
                 .liveId(live.getLiveId())
                 .liveLogId(live.getLiveLogId())
                 .isLive(live.getIsLive())
-                .streamerUrl(live.getStreamUrl())
+                .streamUrl(live.getStreamUrl())
                 .thumbnailUrl(live.getThumbnailUrl())
                 .build();
 
