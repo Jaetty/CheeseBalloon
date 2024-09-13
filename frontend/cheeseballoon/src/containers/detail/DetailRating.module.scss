@@ -15,12 +15,13 @@
 
 .rating-container {
   border: 2px solid white;
-
   border-radius: 20px;
   padding: 1rem;
   box-sizing: border-box;
   align-content: center;
   text-align: center;
+  white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
 .rating-title {
