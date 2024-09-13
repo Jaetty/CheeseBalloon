@@ -14,7 +14,7 @@ interface liveDataType {
   live: boolean;
   liveId: number;
   liveLogId: number;
-  streamerUrl: string;
+  streamUrl: string;
   thumbnailUrl: string;
 }
 
@@ -56,7 +56,7 @@ export default function DetailLive() {
         <div className={styles.container}>
           <div className={styles["image-container"]}>
             <a
-              href={liveData.streamerUrl}
+              href={liveData.streamUrl}
               className={styles.link}
               target="_blank"
               rel="noopener noreferrer"
