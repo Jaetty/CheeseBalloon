@@ -50,7 +50,7 @@ public interface LiveLogRepository extends JpaRepository<LiveLogEntity,Long> {
     @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY average_viewer DESC) AS RANK, streamers.streamer_id, streamers.name, streamers.profile_url, streamers.platform, average_viewer \n" +
             "FROM streamers\n" +
             "JOIN (SELECT sn.streamer_id, case when statistics.average_viewer is null then 0 ELSE statistics.average_viewer END AS average_viewer FROM statistics \n" +
-            "right outer JOIN (SELECT streamer_id FROM statistics WHERE dt_code = :currDt ORDER BY average_viewer DESC LIMIT 30) AS sn ON \n" +
+            "right outer JOIN (SELECT streamer_id FROM statistics WHERE dt_code = :currDt ORDER BY average_viewer DESC LIMIT 17) AS sn ON \n" +
             "sn.streamer_id = statistics.streamer_id AND statistics.dt_code = :dtCode ) AS st \n" +
             "ON streamers.streamer_id = st.streamer_id\n" +
             "ORDER BY RANK"
