@@ -82,7 +82,7 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
     >
       <div className={style["thumbnail-container"]}>
         <img
-          src={liveinfo.thumbnailUrl}
+          src={`${liveinfo.thumbnailUrl}?${Date.now()}`}
           alt="썸네일"
           onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
             e.currentTarget.src = error.src;
