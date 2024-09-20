@@ -137,7 +137,7 @@ export default function Ranking() {
   useEffect(() => {
     const handleResize = () => {
       const adjusted768 = 768 + (value ? 160 : 0);
-      const adjusted1090 = 1090 + (value ? 160 : 0);
+      const adjusted1090 = 1210 + (value ? 160 : 0);
       const currentIsMobile = isMobileState.getState().isMobile; // 현재 isMobile 상태 가져오기
 
       if (currentIsMobile) {
@@ -153,6 +153,25 @@ export default function Ranking() {
     handleResize(); // Set initial size
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    if (isMobile) {
+      // 모바일인 경우 항상 접힌 상태로 적용
+      root.style.setProperty("--breakpoint-lg", "1210px");
+      root.style.setProperty("--breakpoint-md", "768px");
+    } else if (value) {
+      // 네비게이션이 펼쳐졌을 때
+      root.style.setProperty("--breakpoint-lg", "1370px");
+      root.style.setProperty("--breakpoint-md", "835px");
+    } else {
+      // 네비게이션이 접혔을 때
+      root.style.setProperty("--breakpoint-lg", "1210px");
+      root.style.setProperty("--breakpoint-md", "768px");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
@@ -182,7 +201,10 @@ export default function Ranking() {
     chunks.push(title.slice(i, i + chunkSize));
   }
   return (
-    <div className={style.ranking}>
+    <div
+      className={style.ranking}
+      style={!isMobile && value ? { minWidth: "630px" } : {}}
+    >
       <p className={style.title}>랭킹</p>
       <div className={style.wrapper}>
         <div className={style.subtitle}>
