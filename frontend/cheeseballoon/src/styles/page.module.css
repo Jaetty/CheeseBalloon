@@ -397,9 +397,23 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 800px) {
   .ranking {
     display: none;
+  }
+  .notice {
+    margin: 12px;
+  }
+
+  .border {
+    margin-top: 15px;
+  }
+  .notice_title {
+    font-size: x-large;
+  }
+
+  .content {
+    margin: 2px;
   }
 }
 
