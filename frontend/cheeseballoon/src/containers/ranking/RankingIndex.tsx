@@ -10,7 +10,7 @@ import Loading from "src/app/loading";
 import decodetext from "src/lib/DecodeText";
 import { usePopstate } from "src/lib/PopContext";
 import { useToggleState, isMobileState } from "src/stores/store";
-import customFetch from "src/lib/CustomFetch";
+// import customFetch from "src/lib/CustomFetch";
 
 export default function Ranking() {
   const [date, setDate] = useState(1);
@@ -62,7 +62,7 @@ export default function Ranking() {
         url = undefined;
     }
     if (url) {
-      const response = await customFetch(url);
+      const response = await fetch(url);
       const data = await response.json();
       if (data?.data) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -138,7 +138,7 @@ export default function Ranking() {
     const handleResize = () => {
       const adjusted768 = 768 + (value ? 160 : 0);
       const adjusted1090 = 1210 + (value ? 160 : 0);
-      const currentIsMobile = isMobileState.getState().isMobile; // 현재 isMobile 상태 가져오기
+      const currentIsMobile = isMobileState.getState().isMobile;
 
       if (currentIsMobile) {
         setChunkSize(2);
@@ -150,7 +150,7 @@ export default function Ranking() {
         setChunkSize(3);
       }
     };
-    handleResize(); // Set initial size
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps

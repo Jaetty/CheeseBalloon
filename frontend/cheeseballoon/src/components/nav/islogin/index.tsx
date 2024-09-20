@@ -17,7 +17,7 @@ export default function IsLogin() {
   const setAccessToken = accessTokenState((state) => state.setAccessToken);
   const setIsSignIn = isSignInState((state) => state.setIsSignIn);
   const isSignIn = isSignInState((state) => state.isSignIn);
-  const isMobile = isMobileState((state) => state.isMobile); // isMobile 상태 가져오기
+  const isMobile = isMobileState((state) => state.isMobile);
   const router = useRouter();
 
   const handleLogin = (e: MouseEvent<HTMLButtonElement | HTMLImageElement>) => {

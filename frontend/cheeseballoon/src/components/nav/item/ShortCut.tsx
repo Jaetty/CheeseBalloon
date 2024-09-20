@@ -4,8 +4,8 @@ import live from "public/svgs/live.svg";
 import ranking from "public/svgs/rank.svg";
 import Link from "next/link";
 import style from "src/components/nav/item/ShortCut.module.scss";
-import vercel from "public/svgs/vercel.svg";
-import { isSignInState } from "src/stores/store";
+// import vercel from "public/svgs/vercel.svg";
+// import { isSignInState } from "src/stores/store";
 
 interface ValueProps {
   value: boolean;
@@ -20,7 +20,7 @@ export default function Shortcut({ value }: ValueProps) {
   const navPillClass = value ? style.open_navPill : style.closed_navPill;
   const linkDeco1Class = value ? style.open_linkdeco1 : style.closed_linkdeco;
   const linkDeco2Class = value ? style.open_linkdeco2 : style.closed_linkdeco;
-  const isSign = isSignInState((state) => state.isSignIn);
+  // const isSign = isSignInState((state) => state.isSignIn);
 
   return (
     <div className={style.fontname}>
@@ -49,7 +49,7 @@ export default function Shortcut({ value }: ValueProps) {
           </div>
         </Link>
       </li>
-      {isSign && (
+      {/* {isSign && (
         <li className={listItemClass}>
           <Link href="/mypage" className={linkDecoClass}>
             <div className={navPillClass}>
@@ -58,7 +58,7 @@ export default function Shortcut({ value }: ValueProps) {
             </div>
           </Link>
         </li>
-      )}
+      )} */}
     </div>
   );
 }
