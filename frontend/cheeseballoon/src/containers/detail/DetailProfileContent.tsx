@@ -10,7 +10,8 @@ import error from "public/svgs/blank_profile.png";
 import style from "src/containers/detail/DetailProfileContent.module.scss";
 import favorite from "public/svgs/fav.svg";
 import noFavorite from "public/svgs/nofav.svg";
-import { isSignInState, useAlertStore, useFavStore } from "src/stores/store";
+// import { isSignInState, useAlertStore, useFavStore } from "src/stores/store";
+import { isSignInState } from "src/stores/store";
 
 interface StreamerDataType {
   streamId: number;
@@ -54,11 +55,11 @@ export default function DetailProfileContent() {
   const isSignIn = isSignInState((state) => state.isSignIn);
   const router = useRouter();
   const { showNotification } = useNotification();
-  const { showAlert, showConfirm } = useAlertStore((state) => ({
-    showAlert: state.showAlert,
-    showConfirm: state.showConfirm,
-  }));
-  const favFetched = useFavStore((state) => state.fetchData);
+  // const { showAlert, showConfirm } = useAlertStore((state) => ({
+  //   showAlert: state.showAlert,
+  //   showConfirm: state.showConfirm,
+  // }));
+  // const favFetched = useFavStore((state) => state.fetchData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,55 +87,55 @@ export default function DetailProfileContent() {
     window.open(url, "_blank");
   };
 
-  const handleBookmark = async () => {
-    if (!isSignIn) {
-      showAlert("로그인이 필요한 서비스입니다");
-      return;
-    }
+  // const handleBookmark = async () => {
+  //   if (!isSignIn) {
+  //     showAlert("로그인이 필요한 서비스입니다");
+  //     return;
+  //   }
 
-    try {
-      let response;
-      if (streamerData?.bookmark) {
-        const confirmed = await showConfirm("삭제하시겠습니까?");
-        if (!confirmed) return;
+  //   try {
+  //     let response;
+  //     if (streamerData?.bookmark) {
+  //       const confirmed = await showConfirm("삭제하시겠습니까?");
+  //       if (!confirmed) return;
 
-        response = await customFetch(
-          `${BOOKMARK_DELETE_API_URL}?streamerId=${id}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ streamerId: id }),
-          }
-        );
-      } else {
-        response = await customFetch(`${BOOKMARK_API_URL}?streamerId=${id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ streamerId: id }),
-        });
-      }
+  //       response = await customFetch(
+  //         `${BOOKMARK_DELETE_API_URL}?streamerId=${id}`,
+  //         {
+  //           method: "DELETE",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify({ streamerId: id }),
+  //         }
+  //       );
+  //     } else {
+  //       response = await customFetch(`${BOOKMARK_API_URL}?streamerId=${id}`, {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ streamerId: id }),
+  //       });
+  //     }
 
-      if (response && response.status === 401) {
-        showAlert("로그인이 필요한 서비스입니다");
-        return;
-      }
+  //     if (response && response.status === 401) {
+  //       showAlert("로그인이 필요한 서비스입니다");
+  //       return;
+  //     }
 
-      showNotification(
-        streamerData?.bookmark
-          ? "즐겨찾기가 삭제되었습니다."
-          : "즐겨찾기가 추가되었습니다."
-      );
+  //     showNotification(
+  //       streamerData?.bookmark
+  //         ? "즐겨찾기가 삭제되었습니다."
+  //         : "즐겨찾기가 추가되었습니다."
+  //     );
 
-      await favFetched();
-      setBookmarkChange((prevState) => !prevState);
-    } catch (err) {
-      showAlert("오류가 발생했습니다. 다시 시도해주세요.");
-    }
-  };
+  //     await favFetched();
+  //     setBookmarkChange((prevState) => !prevState);
+  //   } catch (err) {
+  //     showAlert("오류가 발생했습니다. 다시 시도해주세요.");
+  //   }
+  // };
 
   return (
     streamerData &&
@@ -187,7 +188,7 @@ export default function DetailProfileContent() {
             {rankData.diff < 0 && `(↑${rankData.diff.toString().slice(1)} )`}
           </div>
         </div>
-        <div
+        {/* <div
           role="button"
           tabIndex={0}
           onKeyDown={(event) => {
@@ -215,7 +216,7 @@ export default function DetailProfileContent() {
               className={style["favorite-image"]}
             />
           )}
-        </div>
+        </div> */}
       </div>
     )
   );

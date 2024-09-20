@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -8,13 +10,16 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import styles from "src/app/(main)/searchresult/searchresult.module.scss";
-import empty from "public/svgs/fav.svg";
+import empty from "public/svgs/nofav.svg";
+import fill from "public/svgs/fav.svg"; // 향후 사용할 이미지
 import a_icon from "src/stores/afreeca.ico";
 import cnt from "src/stores/cnt_icon.png";
 import no_image from "src/stores/no_image.png";
 import no_image_profile from "src/stores/no_image_profile.png";
 import soop from "src/stores/soop_icon.png";
 import on_air from "src/stores/on_air.png";
+import c_icon from "public/svgs/chzzk.svg";
+import Loading from "src/app/loading";
 
 interface data_2 {
   data:
@@ -37,7 +42,6 @@ interface data_2 {
 interface data_3 {
   data:
     | {
-        // streamId: number;
         streamerId: number;
         name: string;
         isLive: boolean;
@@ -57,6 +61,9 @@ export default function SearchResult() {
   const [streamerIncrement, setStreamerIncrement] = useState(12);
   const [visibleLiveCount, setVisibleLiveCount] = useState(12);
   const [liveIncrement, setLiveIncrement] = useState(12);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
+  const [liveStatus, setLiveStatus] = useState<{ [key: number]: boolean }>({});
+  const [loading, setLoading] = useState(true);
 
   const [searchStreamerResults, setSearchStreamerResults] = useState<data_3>({
     data: null,
@@ -68,7 +75,7 @@ export default function SearchResult() {
   const loadMoreStreamers = () => {
     setVisibleStreamerCount((prevCount) => {
       const newCount = prevCount + streamerIncrement;
-      return newCount > 24 ? 24 : newCount; // 40으로 제한
+      return newCount > 24 ? 24 : newCount;
     });
   };
   const loadMoreLives = () => {
@@ -76,21 +83,77 @@ export default function SearchResult() {
   };
 
   useEffect(() => {
-    // 검색 쿼리가 변경될 때 visibleStreamerCount를 초기화
     setVisibleStreamerCount(12);
     setVisibleLiveCount(12);
+    setLoading(true);
 
-    fetch(`${cheese_api}/streamer/search?query=${query}`, {})
+    const fetchStreamers = fetch(
+      `${cheese_api}/streamer/search?query=${query}`,
+      {}
+    )
       .then((response) => response.json())
       .then((data) => {
         setSearchStreamerResults(data);
-      });
-    fetch(`${cheese_api}/live/search?query=${query}`, {})
+
+        if (data?.data?.length > 0) {
+          const liveStatusPromises = data.data.map((streamer: any) =>
+            fetch(
+              `${cheese_api}/streamer/live?streamerId=${streamer.streamerId}`,
+              {}
+            )
+              .then((response) => response.json())
+              .then((liveData) => {
+                if (liveData?.data?.live) {
+                  setLiveStatus((prevStatus) => ({
+                    ...prevStatus,
+                    [streamer.streamerId]: true,
+                  }));
+                }
+              })
+              .catch((error) => {})
+          );
+
+          return Promise.all(liveStatusPromises);
+        }
+        return undefined;
+      })
+      .catch((error) => {});
+
+    const fetchLives = fetch(`${cheese_api}/live/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
         setSearchLiveResults(data);
+      })
+      .catch((error) => {});
+
+    Promise.all([fetchStreamers, fetchLives])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
       });
+
+    const token = localStorage.getItem("authToken");
+    setIsLoggedIn(!!token);
   }, [cheese_api, query]);
+
+  if (loading) {
+    return (
+      <>
+        <div className={styles.searchresult1}>
+          <div className={styles.top}>
+            <p className={styles.title}>검색결과</p>
+            <p className={styles.sub_title}>
+              입력하신 <span>‘{query}’ </span>을(를) 포함한 스트리머와 LIVE 방송
+              결과입니다.
+            </p>
+          </div>
+        </div>
+        <Loading />
+      </>
+    );
+  }
 
   return (
     <div className={styles.searchresult}>
@@ -108,35 +171,35 @@ export default function SearchResult() {
             .slice(0, visibleStreamerCount)
             .map((streamer) => (
               <div key={streamer.streamerId} className={styles.streamer}>
-                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <a
                   href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
                   className={styles.hyper_link}
                 >
-                  <div className={styles.streamer_thumbnail}>
+                  <div
+                    className={`${styles.streamer_thumbnail} ${liveStatus[streamer.streamerId] ? styles.live_border : ""}`}
+                  >
                     <img
                       src={streamer.profileUrl}
                       alt=""
                       onError={(
                         e: React.SyntheticEvent<HTMLImageElement, Event>
                       ) => {
-                        e.currentTarget.src = no_image.src; // Set the source to the fallback image
+                        e.currentTarget.src = no_image.src;
                       }}
                     />
                   </div>
                 </a>
+                {/* streamer_name, followers, 등 다른 요소들 */}
                 <div className={styles.streamer_info}>
                   <div className={styles.first_container}>
                     <div className={styles.pla_na}>
                       <div className={styles.platform}>
+                        {/* 플랫폼 아이콘 */}
                         {streamer.platform === "S" && (
                           <img src={a_icon.src} alt="Platform A" />
-                        )}
+                        )}{" "}
                         {streamer.platform === "C" && (
-                          <img
-                            src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
-                            alt="Platform C"
-                          />
+                          <img src={c_icon.src} alt="Platform A" />
                         )}
                       </div>
                       <a
@@ -153,16 +216,14 @@ export default function SearchResult() {
                     </div>
                   </div>
                 </div>
-                <div
+                {/* <div
                   className={styles.favorites}
                   onClick={() => {
-                    alert(
-                      "로그인 기능 개발 중입니다. 이용이 일시적으로 제한됩니다."
-                    );
+                    alert("로그인 기능 개발 중입니다.");
                   }}
                 >
-                  <img src={empty.src} alt="ss" />
-                </div>
+                  <img src={empty.src} alt="favorite" />
+                </div> */}
               </div>
             ))
         ) : (
@@ -171,7 +232,6 @@ export default function SearchResult() {
         {searchStreamerResults.data &&
           searchStreamerResults.data.length > visibleStreamerCount &&
           visibleStreamerCount < 24 && (
-            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
             <div className={styles.more} onClick={loadMoreStreamers}>
               <p>더보기 ▽</p>
             </div>
@@ -189,7 +249,6 @@ export default function SearchResult() {
                   rel="noopener noreferrer"
                 >
                   <div className={styles.responsive_first_row}>
-                    {/* 라이브 썸네일 */}
                     <div className={styles.responsive_live_thumbnail_box}>
                       <img
                         src={live.thumbnailUrl}
@@ -198,10 +257,9 @@ export default function SearchResult() {
                         onError={(
                           e: React.SyntheticEvent<HTMLImageElement, Event>
                         ) => {
-                          e.currentTarget.src = no_image.src; // Set the source to the fallback image
+                          e.currentTarget.src = no_image.src;
                         }}
                       />
-                      {/* 가로정렬 */}
                       <div className={styles.responisve_on_air_box}>
                         <img
                           src={on_air.src}
@@ -215,7 +273,6 @@ export default function SearchResult() {
                     </div>
                   </div>
                 </a>
-                {/* bj 썸네일 & 제목 & bj 이름 가로정렬 */}
                 <div className={styles.responsive_second_row}>
                   <a
                     href={`https://cheeseballoon.site/detail/${live.streamerId}`}
@@ -229,12 +286,11 @@ export default function SearchResult() {
                         onError={(
                           e: React.SyntheticEvent<HTMLImageElement, Event>
                         ) => {
-                          e.currentTarget.src = no_image_profile.src; // Set the source to the fallback image
+                          e.currentTarget.src = no_image_profile.src;
                         }}
                       ></img>
                     </div>
                   </a>
-                  {/* 제목, bj 이름 세로정렬 */}
                   <div className={styles.responisve_info}>
                     <a
                       href={live.streamUrl}
@@ -258,7 +314,7 @@ export default function SearchResult() {
                         {live.platform === "C" && (
                           <img
                             className={styles.responisve_platform}
-                            src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
+                            src={c_icon.src}
                             alt="Platform C"
                           />
                         )}

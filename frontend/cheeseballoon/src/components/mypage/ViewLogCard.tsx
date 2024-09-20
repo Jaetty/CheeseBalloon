@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import styles from "./ViewLogCard.module.scss";
 

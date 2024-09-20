@@ -42,6 +42,11 @@ const nextConfig = {
         destination: "/home",
         permanent: true,
       },
+      {
+        source: "/mypage",
+        destination: "/home",
+        permanent: true,
+      },
     ];
   },
 };

@@ -6,6 +6,15 @@
   padding-bottom: 0%;
 }
 
+.searchresult1 {
+  color: white;
+  background-color: #1e1f27;
+  padding-left: 10.67708333333333%;
+  padding-right: 10.67708333333333%;
+  padding-bottom: 0%;
+  min-height: 900px;
+}
+
 .top {
   border-bottom: 1px solid rgba(#e4e4e4, 0.5);
 }
@@ -93,6 +102,11 @@
   height: 55px;
   overflow: hidden;
   border-radius: 100%;
+  box-sizing: border-box;
+}
+
+.live_border {
+  border: 2px solid red;
 }
 
 .streamer_thumbnail > img {
