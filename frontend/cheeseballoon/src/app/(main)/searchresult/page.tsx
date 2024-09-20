@@ -181,14 +181,14 @@ export default function SearchResult() {
                     </div>
                   </div>
                 </div>
-                <div
+                {/* <div
                   className={styles.favorites}
                   onClick={() => {
                     alert("로그인 기능 개발 중입니다.");
                   }}
                 >
                   <img src={empty.src} alt="favorite" />
-                </div>
+                </div> */}
               </div>
             ))
         ) : (
