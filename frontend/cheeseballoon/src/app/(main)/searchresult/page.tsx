@@ -19,6 +19,7 @@ import no_image_profile from "src/stores/no_image_profile.png";
 import soop from "src/stores/soop_icon.png";
 import on_air from "src/stores/on_air.png";
 import c_icon from "public/svgs/chzzk.svg";
+import Loading from "src/app/loading";
 
 interface data_2 {
   data:
@@ -62,6 +63,7 @@ export default function SearchResult() {
   const [liveIncrement, setLiveIncrement] = useState(12);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
   const [liveStatus, setLiveStatus] = useState<{ [key: number]: boolean }>({});
+  const [loading, setLoading] = useState(true);
 
   const [searchStreamerResults, setSearchStreamerResults] = useState<data_3>({
     data: null,
@@ -83,22 +85,24 @@ export default function SearchResult() {
   useEffect(() => {
     setVisibleStreamerCount(12);
     setVisibleLiveCount(12);
+    setLoading(true);
 
-    fetch(`${cheese_api}/streamer/search?query=${query}`, {})
+    const fetchStreamers = fetch(
+      `${cheese_api}/streamer/search?query=${query}`,
+      {}
+    )
       .then((response) => response.json())
       .then((data) => {
         setSearchStreamerResults(data);
 
         if (data?.data?.length > 0) {
-          data.data.forEach((streamer: any) => {
+          const liveStatusPromises = data.data.map((streamer: any) =>
             fetch(
               `${cheese_api}/streamer/live?streamerId=${streamer.streamerId}`,
               {}
             )
               .then((response) => response.json())
               .then((liveData) => {
-                // console.log(liveData);
-                // liveData.data.live가 true일 경우 해당 스트리머의 live 상태를 true로 설정
                 if (liveData?.data?.live) {
                   setLiveStatus((prevStatus) => ({
                     ...prevStatus,
@@ -106,22 +110,50 @@ export default function SearchResult() {
                   }));
                 }
               })
-              .catch((error) => {
-                // console.error(
-                //   `Error fetching live data for streamerId ${streamer.streamerId}:`,
-                //   error
-                // );
-              });
-          });
+              .catch((error) => {})
+          );
+
+          return Promise.all(liveStatusPromises);
         }
+        return undefined;
       })
-      .catch((error) => {
-        // console.error("Error fetching streamer search results:", error);
+      .catch((error) => {});
+
+    const fetchLives = fetch(`${cheese_api}/live/search?query=${query}`, {})
+      .then((response) => response.json())
+      .then((data) => {
+        setSearchLiveResults(data);
+      })
+      .catch((error) => {});
+
+    Promise.all([fetchStreamers, fetchLives])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
       });
 
     const token = localStorage.getItem("authToken");
     setIsLoggedIn(!!token);
   }, [cheese_api, query]);
+
+  if (loading) {
+    return (
+      <>
+        <div className={styles.searchresult1}>
+          <div className={styles.top}>
+            <p className={styles.title}>검색결과</p>
+            <p className={styles.sub_title}>
+              입력하신 <span>‘{query}’ </span>을(를) 포함한 스트리머와 LIVE 방송
+              결과입니다.
+            </p>
+          </div>
+        </div>
+        <Loading />
+      </>
+    );
+  }
 
   return (
     <div className={styles.searchresult}>
@@ -165,6 +197,9 @@ export default function SearchResult() {
                         {/* 플랫폼 아이콘 */}
                         {streamer.platform === "S" && (
                           <img src={a_icon.src} alt="Platform A" />
+                        )}{" "}
+                        {streamer.platform === "C" && (
+                          <img src={c_icon.src} alt="Platform A" />
                         )}
                       </div>
                       <a
@@ -279,7 +314,7 @@ export default function SearchResult() {
                         {live.platform === "C" && (
                           <img
                             className={styles.responisve_platform}
-                            src={a_icon.src}
+                            src={c_icon.src}
                             alt="Platform C"
                           />
                         )}
