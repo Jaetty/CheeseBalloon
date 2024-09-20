@@ -37,7 +37,6 @@ import on_air from "src/stores/on_air.png";
 
 interface DataContext {
   platform: "S" | "C"; // 플랫폼을 나타내는 문자열
-  profileUrl: string;
 }
 
 interface live_data {
@@ -240,49 +239,8 @@ export default function Home() {
 
     yAxis.get("renderer").labels.template.setAll({
       fill: am5.color("#FFFFFF"),
+      text: "{category}", // 특수 문자를 그대로 출력하기 위해 html 사용
     });
-
-    // 컨테이너를 활용한 이미지 + 텍스트 설정
-    setTimeout(() => {
-      yAxis.dataItems.forEach((dataItem) => {
-        const context = dataItem.dataContext as {
-          profileUrl: string;
-          name: string;
-        };
-
-        // 이미지와 텍스트를 포함할 컨테이너 생성
-        const container = am5.Container.new(root, {
-          layout: root.horizontalLayout,
-        });
-
-        // 프로필 이미지 추가
-        const image = am5.Picture.new(root, {
-          cors: "anonymous",
-          src: context.profileUrl, // profileUrl에서 이미지 불러오기
-          width: 30,
-          height: 30,
-        });
-
-        // 이름 텍스트 추가
-        const label = am5.Label.new(root, {
-          text: context.name, // 텍스트로 name 출력
-          fontSize: 16,
-          fill: am5.color("#FFFFFF"), // 흰색 텍스트 설정
-          paddingLeft: 5,
-        });
-
-        // 컨테이너에 이미지와 텍스트 추가
-        container.children.push(image);
-        container.children.push(label);
-
-        // 기존 레이블을 컨테이너로 대체
-        const oldLabel = dataItem.get("label");
-        if (oldLabel) {
-          oldLabel.children.clear(); // 기존 children 비우기
-          oldLabel.children.push(container); // 컨테이너 추가
-        }
-      });
-    }, 1000);
 
     const xAxis = chart.xAxes.push(
       am5xy.ValueAxis.new(root, {
@@ -443,7 +401,7 @@ export default function Home() {
           profileUrl: d[n].profileUrl,
           platform: d[n].platform,
         });
-        yAxis.data.push({ name: n, profileUrl: d[n].profileUrl }); // yAxis에 name 추가
+        yAxis.data.push({ name: n }); // yAxis에 name 추가
       }
     }
 
