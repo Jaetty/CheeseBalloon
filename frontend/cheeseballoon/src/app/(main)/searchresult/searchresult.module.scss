@@ -93,6 +93,11 @@
   height: 55px;
   overflow: hidden;
   border-radius: 100%;
+  box-sizing: border-box;
+}
+
+.live_border {
+  border: 2px solid red;
 }
 
 .streamer_thumbnail > img {
