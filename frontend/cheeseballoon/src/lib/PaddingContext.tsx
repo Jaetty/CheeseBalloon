@@ -40,11 +40,7 @@ export function PaddingProvider({
     setPaddingValue(value);
   }, [value]);
 
-  return (
-    <PaddingContext.Provider value={value}>
-      <div style={paddingStyle}>{children}</div>
-    </PaddingContext.Provider>
-  );
+  return <div style={paddingStyle}>{children}</div>;
 }
 
 export const usePadding = () => useContext(PaddingContext);
