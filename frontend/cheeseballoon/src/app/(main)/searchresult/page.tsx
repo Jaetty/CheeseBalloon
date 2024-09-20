@@ -18,6 +18,7 @@ import no_image from "src/stores/no_image.png";
 import no_image_profile from "src/stores/no_image_profile.png";
 import soop from "src/stores/soop_icon.png";
 import on_air from "src/stores/on_air.png";
+import c_icon from "public/svgs/chzzk.svg";
 
 interface data_2 {
   data:
@@ -278,7 +279,7 @@ export default function SearchResult() {
                         {live.platform === "C" && (
                           <img
                             className={styles.responisve_platform}
-                            src="https://cdn.mhns.co.kr/news/photo/202401/570626_699706_5828.png"
+                            src={a_icon.src}
                             alt="Platform C"
                           />
                         )}

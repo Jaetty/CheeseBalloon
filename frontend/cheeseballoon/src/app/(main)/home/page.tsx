@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-else-return */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable func-names */
@@ -158,8 +159,8 @@ export default function Home() {
             }
 
             dataList.forEach((streamer) => {
-              const { name, average_viewer, profile_url, platform } = streamer;
-
+              let { name, average_viewer, profile_url, platform } = streamer;
+              name = name.replace(/\[/g, "[[").replace(/\]/g, "]]");
               newAllData[date][name] = {
                 averageViewer: average_viewer,
                 profileUrl: profile_url,
@@ -277,7 +278,6 @@ export default function Home() {
     });
 
     // 막대의 색상을 초록색과 파란색 두 가지로 설정
-    const colors = [am5.color("#67DC75"), am5.color("#6794DC")]; // 초록색, 파란색 배열
 
     series.columns.template.adapters.add("fill", (fill, target) => {
       const dataItem = target.dataItem;
@@ -286,11 +286,14 @@ export default function Home() {
         // dataContext의 타입을 명시적으로 지정
         const context = dataItem.dataContext as DataContext;
 
-        // platform 값을 사용하여 색상을 결정
         if (context.platform === "S") {
-          return am5.color("#6794DC"); // 파란색
+          const platformColor = am5.color("#6794DC" as any); // 파란색
+          target.set("stroke", platformColor); // stroke 색상 설정
+          return platformColor;
         } else if (context.platform === "C") {
-          return am5.color("#67DC75"); // 초록색
+          const platformColor = am5.color("#67DC75" as any); // 초록색
+          target.set("stroke", platformColor); // stroke 색상 설정
+          return platformColor;
         }
       }
 
@@ -381,9 +384,9 @@ export default function Home() {
       sortCategoryAxis();
     }, 100);
 
-    function escapeLabelText(text: string) {
-      return text.replace(/\[/g, "[[").replace(/\]/g, "]]");
-    }
+    // function escapeLabelText(text: string) {
+    //   return text.replace(/\[/g, "[[").replace(/\]/g, "]]");
+    // }
 
     function setInitialData() {
       if (!barchartData || !dateKeys[currentDateIndex]) return;
@@ -393,11 +396,12 @@ export default function Home() {
 
       for (const n in d) {
         series.data.push({
-          name: escapeLabelText(n), // name을 y축에 사용하도록 설정
+          name: n, // name을 y축에 사용하도록 설정
           value: d[n].averageViewer,
           profileUrl: d[n].profileUrl,
+          platform: d[n].platform,
         });
-        yAxis.data.push({ name: escapeLabelText(n) }); // yAxis에 name 추가
+        yAxis.data.push({ name: n }); // yAxis에 name 추가
       }
     }
 
