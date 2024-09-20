@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import styles1 from "src/components/nav/MenuButton.module.scss";
 import Image from "next/image";
 import menu from "public/svgs/big.png";

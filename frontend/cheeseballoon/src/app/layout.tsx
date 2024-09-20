@@ -49,7 +49,7 @@ export default function RootLayout({
           <div className="flex-container">
             <GoogleAnalytics gaId="G-F2SWLBDJYR" />
             <div className="children">{children}</div>
-            <CustomAlert />
+            {/* <CustomAlert /> */}
           </div>
         </body>
       </PopstateProvider>
