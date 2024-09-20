@@ -257,9 +257,10 @@ export default function Home() {
 
         // 프로필 이미지 추가
         const image = am5.Picture.new(root, {
+          cors: "anonymous",
+          src: context.profileUrl, // profileUrl에서 이미지 불러오기
           width: 30,
           height: 30,
-          src: context.profileUrl, // profileUrl에서 이미지 불러오기
         });
 
         // 이름 텍스트 추가
