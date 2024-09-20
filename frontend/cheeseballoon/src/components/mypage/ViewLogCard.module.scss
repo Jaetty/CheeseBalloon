@@ -9,10 +9,10 @@
 }
 
 .image {
-  width: 48px;
-  height: 48px;
-  max-width: 48px;
-  max-height: 48px;
+  width: 40px;
+  height: 40px;
+  max-width: 40px;
+  max-height: 40px;
   border-radius: 3rem;
   overflow: hidden;
   border: 1px solid white;
@@ -28,7 +28,7 @@
 }
 
 .liveinput {
-  flex: 0 0 2.5%;
+  flex: 0 0 4%;
   margin: 0;
 }
 
@@ -36,15 +36,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1.2rem;
+  gap: 1rem;
   flex: 0 0 15%;
   margin: 0;
 }
 
 .livename {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
   line-height: 1.4em;
   color: rgba(255, 255, 255, 0.8);
+  max-width: 65%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -52,7 +53,7 @@
 }
 
 .livetitleinfo {
-  flex: 0 0 55%;
+  flex: 1 1 53.5%;
   margin: 0;
   font-weight: 300;
   font-size: 0.8rem;
@@ -88,4 +89,52 @@
   letter-spacing: -0.1px;
   text-align: center;
   color: #ffffff;
+}
+
+@media (max-width: 1090px) {
+  .image {
+    width: 4vw;
+    height: 4vw;
+    max-width: 4vw;
+    max-height: 4vw;
+  }
+  .liveinput {
+    flex: 0 0 4%;
+    width: 12px;
+    height: 12px;
+  }
+
+  .livenameinfo {
+    gap: 1rem;
+    flex: 0 0 12%;
+  }
+
+  .livename {
+    font-size: clamp(0.6rem, 1.7vw, 0.9rem);
+  }
+
+  .livetitleinfo {
+    flex: 1 1 65.5%;
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+  }
+
+  .livesubinfo {
+    display: none;
+  }
+
+  .livedate {
+    flex: 0 0 17.5%;
+    font-size: clamp(0.5rem, 1.3vw, 0.7rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .livenameinfo {
+    gap: 2vw;
+  }
+
+  .livetitleinfo {
+    flex: 1 1 65.5%;
+    font-size: clamp(0.5rem, 1.3vw, 0.7rem);
+  }
 }

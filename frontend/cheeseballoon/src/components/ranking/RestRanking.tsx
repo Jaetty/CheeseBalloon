@@ -12,7 +12,14 @@ import noimage from "public/svgs/blank_profile.png";
 import { useState, useEffect } from "react";
 import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
-import { isMobileState } from "src/stores/store";
+import {
+  isMobileState,
+  isSignInState,
+  useAlertStore,
+  useFavStore,
+} from "src/stores/store";
+import { useNotification } from "src/lib/NotificationContext";
+import customFetch from "src/lib/CustomFetch";
 
 type RankingData = {
   streamerId: number;
@@ -25,6 +32,8 @@ type RankingData = {
   category?: string;
   streamUrl?: string;
   bookmark?: boolean;
+  liveId?: number;
+  liveLogId?: number;
 };
 
 type Props = {
@@ -48,6 +57,13 @@ export default function RestRanking({ data }: Props) {
   const [updatedUrls, setUpdatedUrls] = useState<Record<number, string>>({});
   const [bookmarks, setBookmarks] = useState<Record<number, boolean>>({});
   const isMobile = isMobileState((state) => state.isMobile);
+  const isSign = isSignInState((state) => state.isSignIn);
+  const { showNotification } = useNotification();
+  const { showAlert, showConfirm } = useAlertStore((state) => ({
+    showAlert: state.showAlert,
+    showConfirm: state.showConfirm,
+  }));
+  const fetchData = useFavStore((state) => state.fetchData);
 
   useEffect(() => {
     if (data) {
@@ -93,11 +109,73 @@ export default function RestRanking({ data }: Props) {
     }
   };
 
-  const toggleBookmark = (id: number) => {
-    setBookmarks((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+  const toggleBookmark = async (item: RankingData) => {
+    if (!isSign) {
+      showAlert("로그인이 필요한 서비스입니다");
+      return;
+    }
+
+    try {
+      let response;
+      if (bookmarks[item.streamerId]) {
+        const confirmed = await showConfirm("삭제하시겠습니까?");
+        if (!confirmed) return;
+        response = await customFetch(
+          `${process.env.NEXT_PUBLIC_MYPAGE_DBOOK}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              streamerId: item.streamerId,
+            }),
+          }
+        );
+      } else {
+        response = await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            streamerId: item.streamerId,
+          }),
+        });
+      }
+
+      if (response && response.status === 401) {
+        showAlert("로그인이 필요한 서비스입니다");
+        return;
+      }
+
+      showNotification(
+        bookmarks[item.streamerId]
+          ? "즐겨찾기가 삭제되었습니다."
+          : "즐겨찾기가 추가되었습니다."
+      );
+
+      await fetchData();
+      setBookmarks((prev) => ({
+        ...prev,
+        [item.streamerId]: !prev[item.streamerId],
+      }));
+    } catch (error) {
+      showAlert("로그인이 필요한 서비스입니다");
+    }
+  };
+
+  const handleLinkClick = async (item: RankingData) => {
+    await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_VIEW}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        liveId: item.liveId,
+        liveLogId: item.liveLogId,
+      }),
+    });
   };
 
   return (
@@ -155,6 +233,7 @@ export default function RestRanking({ data }: Props) {
                     href={item.streamUrl || ""}
                     className={style.link}
                     target="_blank"
+                    onClick={() => handleLinkClick(item)}
                   >
                     {item.value}
                   </Link>
@@ -181,7 +260,7 @@ export default function RestRanking({ data }: Props) {
                       alt=""
                       width={20}
                       height={20}
-                      onClick={() => toggleBookmark(item.streamerId)}
+                      onClick={() => toggleBookmark(item)}
                       role="presentation"
                     />
                   </div>
@@ -330,7 +409,7 @@ export default function RestRanking({ data }: Props) {
                       alt=""
                       width={20}
                       height={20}
-                      onClick={() => toggleBookmark(item.streamerId)}
+                      onClick={() => toggleBookmark(item)}
                       role="presentation"
                     />
                   </div>

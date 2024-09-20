@@ -75,6 +75,8 @@ export interface RatingRankData {
 
 export interface LiveRankData {
   streamerId: number;
+  liveId: number;
+  liveLogId: number;
   name: string;
   title: string;
   platform: string;
@@ -111,7 +113,28 @@ export interface FavState {
   streamerId: number;
   name: string;
   platform: string;
+  streamUrl: string;
   profileUrl: string;
   followerCnt: number;
   isLive: boolean;
+}
+
+export interface AccessTokenState {
+  accessToken: string | null;
+  setAccessToken: (token: string | null) => void;
+}
+
+export interface SignInState {
+  isSignIn: boolean;
+  setIsSignIn: (value: boolean) => void;
+}
+
+export interface AlertState {
+  message: string;
+  isVisible: boolean;
+  isConfirm: boolean;
+  resolveConfirm: (value: boolean) => void;
+  showAlert: (message: string) => void;
+  showConfirm: (message: string) => Promise<boolean>;
+  hideAlert: () => void;
 }

@@ -1,9 +1,13 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import ViewLogCard from "src/components/mypage/ViewLogCard";
-import PeriodPicker from "./PeriodPicker";
-import styles from "./ViewLog.module.scss";
+import history from "public/svgs/history.svg";
+import Image from "next/image";
+import DatePicker from "src/components/mypage/DatePicker";
+import styles from "src/components/mypage/ViewLog.module.scss";
+import { isMobileState, useAlertStore } from "src/stores/store";
+import customFetch from "src/lib/CustomFetch";
 
 interface LogItem {
   viewLogId: number;
@@ -12,61 +16,8 @@ interface LogItem {
   profileUrl: string;
   category: string;
   title: string;
-  regDt: Date;
+  regDt: string;
 }
-
-const testData: LogItem[] = [
-  {
-    viewLogId: 1,
-    streamerId: 101,
-    name: "Streamer1",
-    profileUrl:
-      "https://profile.img.afreecatv.com/LOGO/af/affifaonline/affifaonline.jpg",
-    category: "Gaming",
-    title: "Stream Title 1",
-    regDt: new Date(),
-  },
-  {
-    viewLogId: 2,
-    streamerId: 102,
-    name: "Streamer2",
-    profileUrl:
-      "https://profile.img.afreecatv.com/LOGO/af/affifaonline/affifaonline.jpg",
-    category: "Music",
-    title: "Stream Title 2",
-    regDt: new Date(),
-  },
-  {
-    viewLogId: 3,
-    streamerId: 103,
-    name: "Streamer3",
-    profileUrl:
-      "https://profile.img.afreecatv.com/LOGO/af/affifaonline/affifaonline.jpg",
-    category: "Education",
-    title: "Stream Title 3",
-    regDt: new Date(),
-  },
-  {
-    viewLogId: 4,
-    streamerId: 104,
-    name: "Streamer4",
-    profileUrl:
-      "https://profile.img.afreecatv.com/LOGO/af/affifaonline/affifaonline.jpg",
-    category: "Talk Show",
-    title: "Stream Title 4",
-    regDt: new Date(),
-  },
-  {
-    viewLogId: 5,
-    streamerId: 105,
-    name: "Streamer5",
-    profileUrl:
-      "https://profile.img.afreecatv.com/LOGO/af/affifaonline/affifaonline.jpg",
-    category: "Cooking",
-    title: "Stream Title 5",
-    regDt: new Date(),
-  },
-];
 
 export default function ViewLog() {
   const [start, setStart] = useState<string | null>(null);
@@ -74,16 +25,14 @@ export default function ViewLog() {
   const [logs, setLogs] = useState<LogItem[]>([]);
   const [selectedLogs, setSelectedLogs] = useState<number[]>([]);
   const [allSelected, setAllSelected] = useState<boolean>(false);
-  const endInputRef = useRef<HTMLInputElement | null>(null);
+  const isMobile = isMobileState((state) => state.isMobile);
+  const showConfirm = useAlertStore((state) => state.showConfirm);
 
   const fetchLogs = async (starti: string, endi: string) => {
-    const response = await fetch(
+    const response = await customFetch(
       `${process.env.NEXT_PUBLIC_MYPAGE_VIEW}?start=${starti}&end=${endi}`,
       {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_AUTH}`,
-        },
       }
     );
     const responseData = await response.json();
@@ -93,10 +42,10 @@ export default function ViewLog() {
   const deleteLogs = async (viewLogs: number[]) => {
     await Promise.all(
       viewLogs.map(async (logId) => {
-        await fetch(`${process.env.NEXT_PUBLIC_MYPAGE_VIEW}`, {
+        await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_VIEW}`, {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_AUTH}`,
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             viewLogId: logId,
@@ -104,6 +53,8 @@ export default function ViewLog() {
         });
       })
     );
+    setSelectedLogs([]);
+    setAllSelected(false);
   };
 
   useEffect(() => {
@@ -113,8 +64,8 @@ export default function ViewLog() {
   }, [start, end]);
 
   const handleDelete = async () => {
-    // eslint-disable-next-line no-restricted-globals, no-alert
-    if (confirm("삭제하시겠습니까?")) {
+    const confirmed = await showConfirm("삭제하시겠습니까?");
+    if (confirmed) {
       await deleteLogs(selectedLogs);
       if (start && end) {
         fetchLogs(start, end);
@@ -132,28 +83,51 @@ export default function ViewLog() {
     }
   };
 
+  const handleDateChange = (startDate: string, endDate: string) => {
+    setStart(startDate);
+    setEnd(endDate);
+  };
+
+  const containerClassName = `${styles.container} ${
+    start && end && logs.length > 0 ? styles.nonCenteredContainer : ""
+  }`;
+
   return (
-    <div>
-      <div className={styles.periodPicker}>
-        <PeriodPicker
-          setStart={setStart}
-          setEnd={setEnd}
-          start={start}
-          end={end}
-          endInputRef={endInputRef}
-        />
+    <div className={styles.box}>
+      <div className={styles.flexbox}>
+        <div className={styles.viewtitle}>
+          <div className={styles.image}>
+            <div className={styles.imageWrapper}>
+              <Image
+                src={history}
+                alt=""
+                fill
+                style={{ objectFit: "cover" }}
+                sizes="(max-width: 768px) 6vw, 22px"
+              />
+            </div>
+          </div>
+          <span> 시청기록</span>
+          {!isMobile && (
+            <span className={styles.subexp}>
+              실시간 LIVE 랭킹과 실시간 방송에서 이동한 것만 기록됩니다
+            </span>
+          )}
+        </div>
+        <DatePicker onDateChange={handleDateChange} />
       </div>
-      <div className={styles.container}>
+      <div className={containerClassName}>
         {(!start || !end) && (
           <div className={styles.centerMessage}>
             <p className={styles.centerMessageText}>기간을 설정해주세요</p>
           </div>
         )}
-        {start && end && logs.length === 0 ? (
+        {start && end && logs.length === 0 && (
           <div className={styles.centerMessage}>
             <p className={styles.loading}>시청 기록이 없습니다</p>
           </div>
-        ) : (
+        )}
+        {start && end && logs.length > 0 && (
           <>
             <div className={styles.overview}>
               <input
@@ -167,7 +141,7 @@ export default function ViewLog() {
               <p className={styles.overviewCategory}>카테고리</p>
               <p className={styles.overviewDate}>날짜</p>
             </div>
-            {testData.map((item, index) => (
+            {logs.map((item, index) => (
               <ViewLogCard
                 key={index}
                 item={item}
@@ -176,19 +150,19 @@ export default function ViewLog() {
                 allSelected={allSelected}
               />
             ))}
+            <div className={styles.deleteButtonContainer}>
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={selectedLogs.length === 0}
+                className={`${styles.deleteButton} ${
+                  selectedLogs.length > 0 ? styles.deleteButtonActive : ""
+                }`}
+              >
+                삭제
+              </button>
+            </div>
           </>
-        )}
-        {selectedLogs.length !== 0 && (
-          <button
-            type="button"
-            onClick={handleDelete}
-            disabled={selectedLogs.length === 0}
-            className={`${styles.deleteButton} ${
-              selectedLogs.length > 0 ? styles.deleteButtonActive : ""
-            }`}
-          >
-            삭제
-          </button>
         )}
       </div>
     </div>

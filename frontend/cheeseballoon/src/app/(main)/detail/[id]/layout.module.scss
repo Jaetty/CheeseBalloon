@@ -1,7 +1,8 @@
 .wrapper {
   padding-top: 7rem;
   padding-bottom: 7rem;
-  min-width: 700px;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .container {
@@ -10,14 +11,7 @@
 }
 
 .profile {
-  background-color: #4e4e4e;
-  border-radius: 20px;
   margin-bottom: 2rem;
-  border: 2px solid white;
-
-  &:hover {
-    filter: brightness(90%);
-  }
 }
 
 .live {
@@ -38,14 +32,11 @@
   .wrapper {
     padding-top: 3rem;
     padding-bottom: 3rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
     min-width: 300px;
   }
 
   .profile {
     margin-bottom: 1rem;
-    border: 1px solid white;
   }
 
   .live {

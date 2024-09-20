@@ -5,33 +5,39 @@ import FavCard from "src/components/nav/item/FavCard";
 import Image from "next/image";
 import arrow from "public/svgs/down_arrow.png";
 import { useState, useEffect } from "react";
+import { useFavStore } from "src/stores/store";
 
 interface ValueProps {
   value: boolean;
 }
 
-export default function Fav({ value }: ValueProps) {
-  const [favData, setFavData] = useState([]);
-  const [toggle1, setToggle] = useState(false);
+export interface FavState {
+  bookmarkId: number;
+  streamerId: number;
+  name: string;
+  platform: string;
+  streamUrl: string;
+  profileUrl: string;
+  followerCnt: number;
+  isLive: boolean;
+}
 
+export default function Fav({ value }: ValueProps) {
+  const [toggle1, setToggle] = useState(false);
+  const favData = useFavStore((state) => state.favData);
+  const fetchData = useFavStore((state) => state.fetchData);
   const switchToggle = () => {
     setToggle(!toggle1);
   };
 
-  const fetchData = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_AUTH}`,
-      },
-    });
-    const responseData = await response.json();
-    setFavData(responseData.data);
-  };
-
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (favData === null) {
+    return null;
+  }
 
   const visibleData = favData.slice(0, 5);
   const hiddenData = favData.length > 5 ? favData.slice(5) : null;

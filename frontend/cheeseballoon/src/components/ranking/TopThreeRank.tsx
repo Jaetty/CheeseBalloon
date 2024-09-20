@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import style from "src/components/ranking/TopThree.module.scss";
 import Image from "next/image";
 import aflogo from "src/stores/afreeca.ico";
@@ -12,9 +13,11 @@ import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import noimage from "public/svgs/blank_profile.png";
-import { useState, useEffect } from "react";
 import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
+import { useNotification } from "src/lib/NotificationContext";
+import customFetch from "src/lib/CustomFetch";
+import { isSignInState, useAlertStore, useFavStore } from "src/stores/store";
 
 type RankingData = {
   streamerId: number;
@@ -27,13 +30,13 @@ type RankingData = {
   category?: string;
   streamUrl?: string;
   bookmark?: boolean;
+  liveId?: number;
+  liveLogId?: number;
 };
 
 type Props = {
   data: RankingData[] | undefined;
 };
-
-function noop() {}
 
 const fixProfileUrl = (url: string) => {
   if (url === "default" || url === "None") {
@@ -49,28 +52,103 @@ export default function TopThreeRanking({ data }: Props) {
   const reorderedData = data && [data[1], data[0], data[2]];
   const rankImages = [second, first, third];
   const pathname = usePathname()?.split("/").pop() || "";
+  const { showNotification } = useNotification();
   const [updatedUrls, setUpdatedUrls] = useState<Record<number, string>>({});
-  const [bookmarks, setBookmarks] = useState<Record<number, boolean>>({});
+  const [bookmarkState, setBookmarkState] = useState<Record<number, boolean>>(
+    {}
+  );
+  const isSign = isSignInState((state) => state.isSignIn);
+  const { showAlert, showConfirm } = useAlertStore((state) => ({
+    showAlert: state.showAlert,
+    showConfirm: state.showConfirm,
+  }));
+  const fetchData = useFavStore((state) => state.fetchData);
 
   const handleImageError = async (id: number) => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ streamer_id: id }),
+    });
+    const datas = await response.json();
+    const newProfileUrl = datas.detail.profile_url;
+    if (newProfileUrl) {
+      setUpdatedUrls((prev) => ({
+        ...prev,
+        [id]: fixProfileUrl(newProfileUrl),
+      }));
+    }
+  };
+
+  const handleLinkClick = async (item: RankingData) => {
+    await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_VIEW}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        liveId: item.liveId,
+        liveLogId: item.liveLogId,
+      }),
+    });
+  };
+
+  const toggleBookmark = async (item: RankingData) => {
+    if (!isSign) {
+      showAlert("로그인이 필요한 서비스입니다");
+      return;
+    }
+
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ streamer_id: id }),
-      });
-      const datas = await response.json();
-      const newProfileUrl = datas.detail.profile_url;
-      if (newProfileUrl) {
-        setUpdatedUrls((prev) => ({
-          ...prev,
-          [id]: fixProfileUrl(newProfileUrl),
-        }));
+      let response;
+      if (bookmarkState[item.streamerId]) {
+        const confirmed = await showConfirm("삭제하시겠습니까?");
+        if (!confirmed) return;
+        response = await customFetch(
+          `${process.env.NEXT_PUBLIC_MYPAGE_DBOOK}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              streamerId: item.streamerId,
+            }),
+          }
+        );
+      } else {
+        response = await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            streamerId: item.streamerId,
+          }),
+        });
       }
+
+      if (response && response.status === 401) {
+        showAlert("로그인이 필요한 서비스입니다");
+        return;
+      }
+
+      showNotification(
+        bookmarkState[item.streamerId]
+          ? "즐겨찾기가 삭제되었습니다."
+          : "즐겨찾기가 추가되었습니다."
+      );
+
+      await fetchData();
+
+      setBookmarkState((prev) => ({
+        ...prev,
+        [item.streamerId]: !prev[item.streamerId],
+      }));
     } catch (error) {
-      noop();
+      showAlert("로그인이 필요한 서비스입니다");
     }
   };
 
@@ -92,16 +170,9 @@ export default function TopThreeRanking({ data }: Props) {
         },
         {} as Record<number, boolean>
       );
-      setBookmarks(initialBookmarks);
+      setBookmarkState(initialBookmarks);
     }
   }, [data]);
-
-  const toggleBookmark = (id: number) => {
-    setBookmarks((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
 
   return (
     <div className={style.wrapper}>
@@ -110,13 +181,16 @@ export default function TopThreeRanking({ data }: Props) {
           <div key={index} className={style.box}>
             <div className={style.image}>
               <Link href={`/detail/${item.streamerId}`}>
-                <Image
-                  src={updatedUrls[item.streamerId] || noimage.src}
-                  alt=""
-                  width={70}
-                  height={70}
-                  onError={() => handleImageError(item.streamerId)}
-                />
+                <div className={style.imageWrapper}>
+                  <Image
+                    src={updatedUrls[item.streamerId] || noimage.src}
+                    alt=""
+                    fill
+                    style={{ objectFit: "cover" }}
+                    sizes="(max-width: 768px) 6vw, 70px"
+                    onError={() => handleImageError(item.streamerId)}
+                  />
+                </div>
               </Link>
             </div>
             <div className={style.rankimage}>
@@ -124,11 +198,11 @@ export default function TopThreeRanking({ data }: Props) {
             </div>
             <div className={style.favimage}>
               <Image
-                src={bookmarks[item.streamerId] ? fav : nofav}
+                src={bookmarkState[item.streamerId] ? fav : nofav}
                 alt=""
                 width={20}
                 height={20}
-                onClick={() => toggleBookmark(item.streamerId)}
+                onClick={() => toggleBookmark(item)}
                 role="presentation"
               />
             </div>
@@ -181,6 +255,7 @@ export default function TopThreeRanking({ data }: Props) {
                     href={item.streamUrl || ""}
                     className={style.link}
                     target="_blank"
+                    onClick={() => handleLinkClick(item)}
                   >
                     {item.value}
                   </Link>
@@ -253,9 +328,6 @@ export default function TopThreeRanking({ data }: Props) {
                     )}
                     {item.diff === 0 && (
                       <span className={style.zero}>( - )</span>
-                    )}
-                    {item.diff === 0 && (
-                      <span className={style.zero1}>( - )</span>
                     )}
                   </>
                 )}

@@ -2,17 +2,20 @@
 
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
+import customFetch from "@/src/lib/CustomFetch";
 import chzzkIcon from "public/svgs/chzzk.svg";
-import afreecaIcon from "public/svgs/afreeca.svg";
+import afreecaIcon from "@/src/stores/afreeca.ico";
 import error from "public/svgs/no_image.jpg";
 import blankProfile from "public/svgs/blank_profile.png";
 import style from "./LiveCard.module.scss";
+
+const VIEWLOG_API = process.env.NEXT_PUBLIC_VIEWLOG_API_URL;
 
 interface LiveInfo {
   liveinfo: {
     streamerId: number;
     liveId: number;
+    liveLogId: number;
     name: string;
     title: string;
     thumbnailUrl: string;
@@ -53,6 +56,15 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
   };
 
   const handleOpenUrl = (url: string) => {
+    const data = { liveId: liveinfo.liveId, liveLogId: liveinfo.liveLogId };
+    customFetch(`${VIEWLOG_API}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
     window.open(url, "_blank");
   };
 
@@ -68,7 +80,7 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
         }
       }}
     >
-      <div className={style["first-container"]}>
+      <div className={style["thumbnail-container"]}>
         <img
           src={liveinfo.thumbnailUrl}
           alt="썸네일"
@@ -77,51 +89,11 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
           }}
           className={style.thumbnail}
         />
-      </div>
-      <div className={style["second-container"]}>
-        <div className={style["platform-icon"]}>
-          {liveinfo.platform === "C" ? (
-            <Image src={chzzkIcon} alt="" />
-          ) : (
-            <Image src={afreecaIcon} alt="" />
-          )}
+        <div className={style.viewers}>
+          {liveinfo.viewerCnt.toLocaleString()}명 시청중
         </div>
-        <div
-          role="button"
-          tabIndex={0}
-          className={style.name}
-          onClick={(event) => {
-            event.stopPropagation();
-            handleOpenUrl(liveinfo.channelUrl);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleOpenUrl(liveinfo.channelUrl);
-            }
-          }}
-        >
-          {liveinfo.name}
-        </div>
-        {liveinfo.category.length > 0 && (
-          <div
-            role="button"
-            tabIndex={0}
-            className={style.category}
-            onClick={(event) => {
-              event.stopPropagation();
-              handleQuery(event);
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                handleQuery(event);
-              }
-            }}
-          >
-            {liveinfo.category}
-          </div>
-        )}
       </div>
-      <div className={style["third-container"]}>
+      <div className={style["contents-container"]}>
         <div
           role="button"
           tabIndex={0}
@@ -142,27 +114,73 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
             className={style.profile}
           />
         </div>
-        <div
-          role="button"
-          tabIndex={0}
-          onClick={(event) => {
-            event.stopPropagation();
-            handleOpenUrl(liveinfo.streamUrl);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
+        <div className={style.contents}>
+          <div
+            role="button"
+            tabIndex={0}
+            title={liveinfo.title}
+            onClick={(event) => {
+              event.stopPropagation();
               handleOpenUrl(liveinfo.streamUrl);
-            }
-          }}
-          className={style.title}
-        >
-          {liveinfo.title}
-        </div>
-      </div>
-      <div className={style["fourth-container"]}>
-        <img src="/svgs/viewericon.svg" alt="" className={style.viewericon} />
-        <div className={style.viewers}>
-          {liveinfo.viewerCnt.toLocaleString()}
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                handleOpenUrl(liveinfo.streamUrl);
+              }
+            }}
+            className={style.title}
+          >
+            {liveinfo.title}
+          </div>
+          <div className={style["platform-name-category"]}>
+            {liveinfo.platform === "C" ? (
+              <img
+                src={chzzkIcon.src}
+                alt=""
+                className={style["platform-icon"]}
+              />
+            ) : (
+              <img
+                src={afreecaIcon.src}
+                alt=""
+                className={style["platform-icon"]}
+              />
+            )}
+            <div
+              role="button"
+              tabIndex={0}
+              className={style.name}
+              onClick={(event) => {
+                event.stopPropagation();
+                router.push(`/detail/${liveinfo.streamerId}`);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  router.push(`/detail/${liveinfo.streamerId}`);
+                }
+              }}
+            >
+              {liveinfo.name}
+            </div>
+            {liveinfo.category.length > 0 && (
+              <div
+                role="button"
+                tabIndex={0}
+                className={style.category}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleQuery(event);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    handleQuery(event);
+                  }
+                }}
+              >
+                {liveinfo.category}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

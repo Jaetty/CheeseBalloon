@@ -6,25 +6,24 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import Card from "src/components/mypage/CardCompoent";
+import Card from "src/components/mypage/CardComponent";
+import { FavState } from "src/types/type";
+import styles from "src/components/mypage/CardCarousel.module.scss";
 
-export default function MySwiper() {
-  const [data, setData] = useState([]);
+interface CardCarouselProps {
+  data: FavState[];
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_AUTH}`,
-        },
-      });
-      const responseData = await response.json();
-      setData(responseData.data);
-    };
+export default function MySwiper({ data }: CardCarouselProps) {
+  const [favData, setData] = useState(data);
 
-    fetchData();
-  }, []);
+  if (data.length === 0) {
+    return (
+      <div className={styles.centerMessage}>
+        <p className={styles.centerMessageText}>즐겨찾기 목록이 없습니다</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -54,7 +53,7 @@ export default function MySwiper() {
         }}
         modules={[Navigation, Pagination]}
       >
-        {data.map((item, index) => (
+        {favData.map((item, index) => (
           <SwiperSlide key={index}>
             <Card data={item} />
           </SwiperSlide>

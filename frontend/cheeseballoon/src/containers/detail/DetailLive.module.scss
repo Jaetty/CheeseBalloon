@@ -15,8 +15,8 @@
 .on-air-box {
   display: flex;
   position: absolute;
-  left: 20px;
-  top: 5px;
+  left: 13px;
+  top: -2px;
 }
 
 .on-air {
@@ -26,6 +26,7 @@
 .link {
   text-decoration: none;
   color: inherit;
+  filter: brightness(100%);
 }
 
 .thumbnail {
@@ -34,8 +35,9 @@
   border-radius: 20px;
 }
 
-.thumbnail:hover {
+.link:hover {
   filter: brightness(80%);
+  cursor: pointer;
 }
 
 .line {
@@ -47,6 +49,10 @@
     border: 1px solid white;
     border-radius: 10px;
     padding: 0.3rem;
+  }
+
+  .link {
+    filter: none;
   }
 
   .on-air-box {

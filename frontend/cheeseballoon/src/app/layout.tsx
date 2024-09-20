@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import "src/styles/globals.css";
 import Nav from "src/components/nav/index";
+import CustomAlert from "src/lib/CustomAlert";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import { PopstateProvider } from "src/lib/PopContext";
-import AuthContext from "../context/AuthContext";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "치즈벌룬",
@@ -15,12 +17,20 @@ export const metadata: Metadata = {
   keywords: [
     "치즈벌룬",
     "아프리카tv",
+    "숲",
     "치지직",
     "방송 통계",
     "랭킹",
+    "실시간 방송",
     "인터넷 방송",
+    "시청자수",
+    "시청률",
+    "팔로워",
+    "방송 시간",
   ],
 };
+
+const SignInChecker = dynamic(() => import("@/src/lib/SignInChecker"));
 
 export default function RootLayout({
   children,
@@ -31,14 +41,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <GoogleTagManager gtmId="G-F2SWLBDJYR" />
       <PopstateProvider>
+        <Suspense fallback={null}>
+          <SignInChecker />
+        </Suspense>
         <body>
-          <AuthContext>
-            <Nav />
-            <div className="flex-container">
-              <GoogleAnalytics gaId="G-F2SWLBDJYR" />
-              <div className="children">{children}</div>
-            </div>
-          </AuthContext>
+          <Nav />
+          <div className="flex-container">
+            <GoogleAnalytics gaId="G-F2SWLBDJYR" />
+            <div className="children">{children}</div>
+            <CustomAlert />
+          </div>
         </body>
       </PopstateProvider>
     </html>

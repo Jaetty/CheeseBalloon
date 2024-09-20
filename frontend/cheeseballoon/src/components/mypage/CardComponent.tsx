@@ -7,6 +7,9 @@ import chzlogo from "public/svgs/chzzk.svg";
 import fav from "public/svgs/fav.svg";
 import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
+import { useNotification } from "src/lib/NotificationContext";
+import customFetch from "src/lib/CustomFetch";
+import { useAlertStore, useFavStore } from "src/stores/store";
 
 type CardProps = {
   data: FavState;
@@ -14,29 +17,38 @@ type CardProps = {
 
 export default function Card({ data }: CardProps) {
   const [isFav, setIsFav] = useState(true);
+  const { showNotification } = useNotification();
+  const showConfirm = useAlertStore((state) => state.showConfirm);
+  const fetchData = useFavStore((state) => state.fetchData);
 
-  const handleFavClick = () => {
+  const handleFavClick = async () => {
     if (isFav) {
-      fetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
+      const confirmed = await showConfirm("삭제하시겠습니까?");
+      if (!confirmed) return;
+
+      await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_AUTH}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          streamerId: data.streamerId,
+          bookmarkId: data.bookmarkId,
         }),
       });
+      showNotification("즐겨찾기가 삭제되었습니다.");
     } else {
-      fetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
+      await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEST_AUTH}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           streamerId: data.streamerId,
         }),
       });
+      showNotification("즐겨찾기가 추가되었습니다.");
     }
+    await fetchData();
     setIsFav((prev) => !prev);
   };
 
@@ -67,9 +79,7 @@ export default function Card({ data }: CardProps) {
         />
       </div>
       <div className={styles.cardname}>
-        <Link href={`/detail/${data.streamerId}`} className={styles.link}>
-          {data.name}
-        </Link>
+        <div className={styles.name}>{data.name}</div>
         <span className={styles.logo}>
           {data.platform === "A" || data.platform === "S" ? (
             <Image src={aflogo} alt="" width={16} height={16} />
@@ -80,17 +90,13 @@ export default function Card({ data }: CardProps) {
       </div>
       <div className={styles.buttonsWrapper}>
         {data.isLive ? (
-          <Link
-            href={`/detail/${data.streamerId}`}
-            className={styles.link}
-            passHref
-          >
+          <Link href={data.streamUrl} className={styles.link} target="blank">
             <div className={styles.liveButton}>LIVE</div>
           </Link>
         ) : (
           <div className={styles.disabledButton}>LIVE</div>
         )}
-        <Link href="/detail/3" className={styles.link}>
+        <Link href={`/detail/${data.streamerId}`} className={styles.link}>
           <div className={styles.detailButton}>상세</div>
         </Link>
       </div>

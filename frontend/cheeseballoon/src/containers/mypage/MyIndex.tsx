@@ -2,10 +2,14 @@ import styles from "src/containers/mypage/MyIndex.module.scss";
 import CardCarousel from "src/components/mypage/CardCarousel";
 import ViewLog from "src/components/mypage/ViewLog";
 import fav from "public/svgs/fav.svg";
-import history from "public/svgs/history.svg";
 import Image from "next/image";
+import { FavState } from "src/types/type";
 
-export default function MyPage() {
+interface MyIndexProps {
+  data: FavState[];
+}
+
+export default function MyPage({ data }: MyIndexProps) {
   return (
     <div className={styles.ranking}>
       <p className={styles.title}>마이페이지</p>
@@ -16,16 +20,22 @@ export default function MyPage() {
       </div>
       <div className={styles.carousel}>
         <div className={styles.favtitle}>
-          <Image src={fav} alt="" width={22} height={22} />
+          <div className={styles.image}>
+            <div className={styles.imageWrapper}>
+              <Image
+                src={fav}
+                alt=""
+                fill
+                style={{ objectFit: "cover" }}
+                sizes="(max-width: 768px) 6vw, 22px"
+              />
+            </div>
+          </div>
           <span>즐겨찾기</span>
         </div>
-        <CardCarousel />
+        <CardCarousel data={data} />
       </div>
       <div className={styles.viewlog}>
-        <div className={styles.viewtitle}>
-          <Image src={history} alt="" width={22} height={22} />
-          <span> 시청기록</span>
-        </div>
         <ViewLog />
       </div>
     </div>

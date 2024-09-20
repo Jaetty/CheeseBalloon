@@ -8,6 +8,7 @@ import LiveCard from "./LiveCard";
 interface LiveInfo {
   streamerId: number;
   liveId: number;
+  liveLogId: number;
   name: string;
   title: string;
   thumbnailUrl: string;
@@ -46,6 +47,14 @@ export default function LiveList() {
       setLiveData(data.data);
     };
     fetchData();
+
+    const intervalData = setInterval(() => {
+      fetchData();
+    }, 360000);
+
+    return () => {
+      clearInterval(intervalData);
+    };
   }, [searchParams]);
 
   const handleLiveNum = () => {
