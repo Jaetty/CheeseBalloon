@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import logo from "public/svgs/chzzk.svg";
-import Image from "next/image";
 import styles from "./DatePicker.module.scss";
 
 interface DatePickerProps {
@@ -12,16 +10,15 @@ interface DatePickerProps {
 export default function DatePicker({ onDateChange }: DatePickerProps) {
   const datepickerRef = useRef(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [picker, setPicker] = useState<any>(null); // picker 인스턴스를 상태로 저장
+  const [picker, setPicker] = useState<any>(null);
 
   const handleClick = () => {
     if (picker) {
-      picker.show(); // picker가 존재하면 show() 메서드 호출
+      picker.show();
     }
   };
 
   useEffect(() => {
-    // 클라이언트에서만 실행되도록 import
     // eslint-disable-next-line consistent-return
     import("litepicker").then(({ default: Litepicker }) => {
       if (datepickerRef.current) {
@@ -37,7 +34,7 @@ export default function DatePicker({ onDateChange }: DatePickerProps) {
             picker1.on("selected", (startDate, endDate) => {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const formatDateToKST = (date: any) => {
-                const kstOffset = 9 * 60; // UTC+9 시간 차이(분 단위)
+                const kstOffset = 9 * 60;
                 const localDate = new Date(
                   date.dateInstance.getTime() + kstOffset * 60 * 1000
                 );
@@ -51,7 +48,7 @@ export default function DatePicker({ onDateChange }: DatePickerProps) {
           },
         });
         newPicker.gotoDate(koreaTime);
-        setPicker(newPicker); // picker 인스턴스를 상태에 저장
+        setPicker(newPicker);
 
         return () => {
           newPicker.destroy();

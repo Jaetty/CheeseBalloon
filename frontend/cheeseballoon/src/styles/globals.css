@@ -3,6 +3,11 @@
   src: url("../styles/font/esamanru\ Light.ttf") format("truetype");
 }
 
+:root {
+  --breakpoint-lg: 1210px;
+  --breakpoint-md: 768px;
+}
+
 .children {
   flex-grow: 1;
   overflow: auto;

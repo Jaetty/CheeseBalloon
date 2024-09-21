@@ -4,7 +4,7 @@ import Menubutton from "src/components/nav/MenuButton";
 import MobileMenuButton from "src/components/nav/MobileMenuButton";
 import styles from "src/components/nav/index.module.scss";
 import Searchbar from "src/components/nav/searchbar/index";
-import IsLogin from "src/components/nav/islogin/index";
+// import IsLogin from "src/components/nav/islogin/index";
 import MainLogo from "src/components/nav/MainLogo";
 import Menu from "src/components/nav/MobileMenu";
 import searchBtn from "src/stores/search_button.png";
@@ -64,7 +64,7 @@ export default function Nav() {
               onClick={openSearchModal}
             />
           </div>
-          <IsLogin />
+          {/* <IsLogin /> */}
         </div>
       </div>
       {isMobile && isMenuOpen && (

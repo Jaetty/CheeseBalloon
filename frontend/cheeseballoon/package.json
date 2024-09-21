@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@amcharts/amcharts5": "^5.10.3",
     "@next/third-parties": "^14.2.3",
     "@nivo/calendar": "^0.87.0",
     "@tinymce/tinymce-react": "^5.1.1",
