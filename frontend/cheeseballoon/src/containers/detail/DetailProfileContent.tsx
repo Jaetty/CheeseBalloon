@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import customFetch from "src/lib/CustomFetch";
-import { useNotification } from "src/lib/NotificationContext";
+// import { useNotification } from "src/lib/NotificationContext";
 import afreeca from "src/stores/afreeca.ico";
 import chzzk from "public/svgs/chzzk.svg";
 import error from "public/svgs/blank_profile.png";
@@ -54,7 +54,7 @@ export default function DetailProfileContent() {
   const [bookmarkChange, setBookmarkChange] = useState<boolean>(false);
   const isSignIn = isSignInState((state) => state.isSignIn);
   const router = useRouter();
-  const { showNotification } = useNotification();
+  // const { showNotification } = useNotification();
   // const { showAlert, showConfirm } = useAlertStore((state) => ({
   //   showAlert: state.showAlert,
   //   showConfirm: state.showConfirm,
