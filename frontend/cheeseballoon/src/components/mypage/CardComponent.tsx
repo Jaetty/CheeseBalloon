@@ -7,8 +7,8 @@ import chzlogo from "public/svgs/chzzk.svg";
 import fav from "public/svgs/fav.svg";
 import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
-import { useNotification } from "src/lib/NotificationContext";
-import customFetch from "src/lib/CustomFetch";
+// import { useNotification } from "src/lib/NotificationContext";
+// import customFetch from "src/lib/CustomFetch";
 // import { useAlertStore, useFavStore } from "src/stores/store";
 
 // type CardProps = {
