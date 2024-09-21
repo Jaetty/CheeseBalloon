@@ -47,14 +47,14 @@ export default function Login() {
   function loginButton(provider: string, ko: string) {
     return (
       <div
-        role="button"
-        tabIndex={0}
-        onClick={() => handleLogin(provider)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleLogin(provider);
-          }
-        }}
+        // role="button"
+        // tabIndex={0}
+        // onClick={() => handleLogin(provider)}
+        // onKeyDown={(e) => {
+        //   if (e.key === "Enter") {
+        //     handleLogin(provider);
+        //   }
+        // }}
         className={`${styles["login-button-wrapper"]} ${styles[provider]}`}
       >
         <div className={styles["login-button-logo"]}>
