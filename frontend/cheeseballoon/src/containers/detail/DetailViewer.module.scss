@@ -1,0 +1,103 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  gap: 2rem;
+}
+
+.viewer {
+  display: grid;
+  gap: 3rem;
+  color: white;
+  width: 100%;
+  align-content: center;
+  box-sizing: border-box;
+}
+
+.viewer-container {
+  border: 2px solid white;
+  border-radius: 20px;
+  padding: 1rem;
+  box-sizing: border-box;
+  align-content: center;
+  text-align: center;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+}
+
+.viewer-title {
+  color: white;
+  font-size: 1rem;
+}
+
+.viewer-cnt {
+  margin-top: 0.8rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+}
+
+.viewer-diff {
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.positive {
+  color: #8ce09e;
+}
+
+.negative {
+  color: #d38883;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    display: block;
+  }
+
+  .chart {
+    padding: 0;
+  }
+
+  .viewer {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .viewer-container {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid white;
+    width: 100%;
+    border-radius: 10px;
+    padding: 0.5rem;
+  }
+
+  .viewer-title {
+    color: white;
+    font-size: 0.4rem;
+  }
+
+  .viewer-cnt {
+    font-size: 0.5rem;
+    margin: 0;
+    margin-left: auto;
+  }
+
+  .viewer-diff {
+    font-size: 0.3rem;
+    margin: 0;
+    margin-left: auto;
+  }
+
+  .positive {
+    color: #8ce09e;
+  }
+
+  .negative {
+    color: #d38883;
+  }
+}

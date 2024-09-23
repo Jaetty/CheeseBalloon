@@ -1,0 +1,78 @@
+.wrapper {
+  margin: 3rem;
+}
+
+.title-container {
+  margin-bottom: 1rem;
+}
+
+.title-subtitle {
+  font-size: x-large;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.title-input {
+  height: 1.5rem;
+  outline: none;
+  width: 99%;
+}
+
+.editor-container {
+  margin-bottom: 1rem;
+}
+
+.thumbnail-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.thumbnail-subtitle {
+  font-size: large;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.thumbnail-input {
+  color: transparent;
+}
+
+.thumbnail-preview {
+  margin-right: auto;
+  width: 300px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+
+.submit-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-button {
+  margin-left: auto;
+}
+
+.shake {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

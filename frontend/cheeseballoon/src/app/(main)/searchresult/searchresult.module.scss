@@ -1,0 +1,614 @@
+.searchresult {
+  color: white;
+  background-color: #1e1f27;
+  padding-left: 10.67708333333333%;
+  padding-right: 10.67708333333333%;
+  padding-bottom: 0%;
+}
+
+.searchresult1 {
+  color: white;
+  background-color: #1e1f27;
+  padding-left: 10.67708333333333%;
+  padding-right: 10.67708333333333%;
+  padding-bottom: 0%;
+  min-height: 900px;
+}
+
+.top {
+  border-bottom: 1px solid rgba(#e4e4e4, 0.5);
+}
+
+.title {
+  font-size: 32px;
+  margin-bottom: 2%;
+  font-weight: bold;
+  font-family: "GmarketSans";
+}
+
+.sub_title {
+  font-family: "GmarketSans";
+  margin-top: 0%;
+  color: #a8a8a8;
+  font-weight: lighter;
+  font-size: 13px;
+}
+
+.sub_title > span {
+  color: yellow;
+  font-weight: bold;
+}
+
+.streamer_title {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "GmarketSans";
+  margin-top: 1%;
+}
+
+.streamer_list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  // border-bottom: 1px solid rgba(#e4e4e4, 0.5);
+}
+
+.streamer {
+  // width: 22%;
+  // height: 8%;
+  flex: 1 1 calc(25% - 16px);
+  max-width: calc(25% - 16px);
+  min-width: calc(25% - 16px);
+  min-height: 70px;
+
+  box-sizing: border-box;
+  display: flex;
+  background-color: #3e3e3e;
+  align-items: center;
+  gap: 6px;
+  padding: 1%;
+  // gap: 5px;
+  margin-bottom: 2%;
+  margin-right: 1%;
+  border-radius: 8px;
+}
+
+@media (max-width: 1300px) {
+  .streamer {
+    flex: 1 1 calc(50% - 16px);
+    max-width: calc(50% - 16px);
+    min-width: calc(50% - 16px);
+    min-height: 70px;
+  }
+}
+
+@media (min-width: 3840px) {
+  .streamer {
+    flex: 1 1 calc(16.66% - 18px); /* 6개의 스트리머를 한 줄에 표시 */
+    max-width: calc(14.66% - 16px);
+    min-width: calc(14.66% - 16px);
+  }
+}
+
+@media (max-width: 1000px) {
+  .streamer {
+    flex: 1 1 calc(100% - 16px);
+    max-width: calc(100% - 16px);
+    min-width: calc(100% - 16px);
+    min-height: 70px;
+  }
+}
+
+.streamer_thumbnail {
+  margin-left: 5px;
+  margin-right: 8px;
+  flex: 1;
+  width: 55px;
+  height: 55px;
+  overflow: hidden;
+  border-radius: 100%;
+  box-sizing: border-box;
+}
+
+.live_border {
+  border: 2px solid red;
+}
+
+.streamer_thumbnail > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.streamer_info {
+  flex: 2.5;
+  // padding-left: 6%;
+  // padding-top: 6%;
+  display: flex;
+  // flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.streamer_name {
+  display: flex;
+  align-items: center;
+  padding-left: 4%;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: "GmarketSans";
+  text-overflow: ellipsis;
+}
+
+.first_container {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+  width: 100%;
+}
+
+.pla_na {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.platform {
+  width: 24px;
+  height: 24px;
+}
+
+.platform > img {
+  height: 24px;
+  border-radius: 10%;
+}
+
+.no_data {
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 200px;
+}
+
+.followers {
+  padding-top: 4%;
+  display: flex;
+  color: white;
+  opacity: 69%;
+  font-size: 10px;
+}
+
+.favorites {
+  flex: 1;
+  // width: 30%;
+  padding-left: 4%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorites > img {
+  width: 25px;
+}
+
+.live_list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+  border-bottom: 1px solid rgba(#e4e4e4, 0.5);
+  font-family: "GmarketSans";
+}
+
+.live_list_title {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "GmarketSans";
+  display: flex;
+  margin-top: 2%;
+  padding-bottom: 2%;
+  justify-content: flex-start;
+}
+
+.more {
+  width: 50%;
+  max-width: 200px;
+  height: 30px;
+  margin: 1rem auto 0 auto;
+  border: 1px solid #949393;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 0.7rem;
+  cursor: pointer;
+  font-family: "esamanru";
+  font-weight: bold;
+}
+
+.more > p {
+  position: inherit;
+}
+
+.live {
+  font-family: "GmarketSans";
+  width: 2200px;
+  height: 250px;
+  display: flex;
+  background-color: #3e3e3e;
+  padding: 1%;
+  flex-direction: column;
+  margin-bottom: 2%;
+  margin-right: 3%;
+  border-radius: 8px;
+}
+
+.live_thumbnail {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.live_thumbnail > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.second_container {
+  display: flex;
+  align-items: center;
+  font-weight: 300;
+  width: 100%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.platform_icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.platform_icon > img {
+  border-radius: 8px;
+  width: 24px;
+}
+
+.bj_name {
+  width: 100%;
+  font-family: "GmarketSans";
+  font-size: 10px;
+  padding-left: 3%;
+}
+
+.category {
+  font-size: 10px;
+  margin-left: auto;
+}
+
+.third_container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bj_thumbnail {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+}
+
+.bj_thumbnail > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.live_title {
+  width: calc(100% - 50px);
+  height: 50px;
+  font-size: 13px;
+  font-weight: medium;
+  padding-left: 5%;
+  padding-right: 0;
+  padding-bottom: 1%;
+  align-items: flex-end;
+}
+
+.responsive_platfrom_box {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+.cnt {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cnt_icon {
+  margin-right: 5px;
+}
+
+.cnt_icon > img {
+  opacity: 69%;
+}
+
+.viewer {
+  opacity: 69%;
+}
+
+.responsive_live_content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+}
+
+.responsive_live_flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+}
+
+.responsive_live_item {
+  border-radius: 8px;
+  padding: 10px;
+  flex: 1 1 calc(25% - 16px);
+  max-width: calc(25% - 16px);
+  min-width: calc(25% - 16px);
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: flex-basis 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.hyper_link {
+  color: inherit;
+  text-decoration: none;
+  &:hover .responisve_bj_name {
+    color: yellow; /* 호버 시 노란색으로 변경 */
+  }
+}
+
+@media (max-width: 1300px) {
+  .responsive_live_item {
+    flex: 1 1 calc(50% - 16px);
+    max-width: calc(50% - 16px);
+    min-width: calc(50% - 16px);
+  }
+}
+
+@media (max-width: 1000px) {
+  .responsive_live_item {
+    flex: 1 1 calc(100% - 16px);
+    max-width: calc(100% - 16px);
+    min-width: calc(100% - 16px);
+  }
+}
+
+.responsive_first_row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.responsive_live_thumbnail_box {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.responsive_live_thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.responisve_on_air_box,
+.responisve_platform_box {
+  display: flex;
+  align-items: center;
+}
+
+.responisve_on_air_box {
+  position: absolute;
+  left: 8px;
+  top: -6px;
+}
+
+.responisve_platform_box {
+  left: 59px;
+  top: 8px;
+}
+
+.responisve_view {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-size: 14px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.responisve_on_air {
+  width: 50px;
+}
+
+.responisve_platform {
+  width: 24px;
+  height: 24px;
+}
+
+.responsive_second_row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.responisve_bj_thumbnail_box {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  margin-right: 8px;
+  overflow: hidden;
+}
+
+.responsive_live_thumbnail_box:hover {
+  transform: scale(1.2);
+}
+
+.zoom-image:hover {
+  transform: scale(1.2);
+}
+
+.responsive_bj_thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.responisve_info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.responisve_live_title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.responisve_bj_name {
+  font-size: 14px;
+  color: #666;
+  margin-left: 5px; /* 플랫폼 박스와 이름 사이에 간격 추가 */
+  transition: color 0.3s;
+}
+
+.responsive_category {
+  font-size: 14px;
+  padding-left: 3%;
+  font-weight: 500;
+  margin-left: auto; /* 이름과 카테고리 사이의 공간을 최대한 차지 */
+}
+
+.responsive_third_container {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: space-between; /* 요소들 사이의 간격을 균등하게 배분 */
+}
+
+@media (max-width: 1200px) {
+  .live {
+    width: calc(50% - 1%);
+  }
+}
+
+@media (min-width: 1200px) {
+  .live {
+    width: calc(20%);
+  }
+}
+
+@font-face {
+  font-family: "GmarketSans";
+  font-weight: 300;
+  font-style: normal;
+  src: url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.eot");
+  src:
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.woff2")
+      format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.woff")
+      format("woff"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansLight.ttf")
+      format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GmarketSans";
+  font-weight: 500;
+  font-style: normal;
+  src: url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.eot");
+  src:
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.woff2")
+      format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.woff")
+      format("woff"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansMedium.ttf")
+      format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GmarketSans";
+  font-weight: 700;
+  font-style: normal;
+  src: url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.eot");
+  src:
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.woff2")
+      format("woff2"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.woff")
+      format("woff"),
+    url("https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSansBold.ttf")
+      format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SeoulHangangM";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SeoulHangangM.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.test {
+  border-bottom: 1px solid rgba(#e4e4e4, 0.5);
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
