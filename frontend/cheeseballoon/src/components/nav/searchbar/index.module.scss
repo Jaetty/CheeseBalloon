@@ -29,7 +29,8 @@
 }
 
 .search__input:focus {
-  color: white;
+  outline: none;
+  border-color: #f6b738;
 }
 
 .search_btn {

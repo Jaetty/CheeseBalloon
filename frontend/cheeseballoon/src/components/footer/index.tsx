@@ -8,14 +8,6 @@ export default function Footer() {
     <div className={styles.container}>
       <div className={styles.contactLinks}>
         <a
-          href="https://github.com/Jaetty/CheeseBalloon"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Github 링크"
-        >
-          <Image src={githubmark} alt="" width={30} height={30} />
-        </a>
-        <a
           href="mailto:cheeseballoon24@gmail.com"
           target="_blank"
           rel="noreferrer"
