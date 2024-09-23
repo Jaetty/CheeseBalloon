@@ -62,7 +62,7 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
             String dtCode = startDate.plusDays(i).toString()+"-0";
             ret.add(FindBarchartData.builder().Date(startDate.plusDays(i).format(DateTimeFormatter.ofPattern("MM/dd"))).dataList(livePort.findBarchartData(currDt,dtCode)).build());
         }
-        ret.add(FindBarchartData.builder().Date(startDate.plusDays(14).format(DateTimeFormatter.ofPattern("MM/dd"))).dataList(livePort.findBarchartData(currDt,startDate.plusDays(13).toString()+"-0")).build());
+//        ret.add(FindBarchartData.builder().Date(startDate.plusDays(14).format(DateTimeFormatter.ofPattern("MM/dd"))).dataList(livePort.findBarchartData(currDt,startDate.plusDays(13).toString()+"-0")).build());
 
 
         return ret;
