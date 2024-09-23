@@ -1,0 +1,156 @@
+.wrapper {
+  margin-top: 10rem;
+  min-width: 700px;
+  height: 100%;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 60%;
+  // z-index: -99;
+  display: flex;
+}
+
+.video_descript {
+  color: white;
+  font-size: 50px;
+  position: absolute;
+  top: 50%;
+  opacity: 0;
+  z-index: -99999;
+}
+
+.left {
+  // width: 50vw;
+  text-align: center;
+}
+
+.right {
+  width: 35rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.right_title {
+  padding-top: 18%;
+}
+
+.sub {
+  font-family: "Pretendard-Regular";
+  padding-top: 10%;
+  font-size: 15px;
+  color: #878c9e;
+}
+
+.login-button {
+  padding-top: 2rem;
+}
+
+@font-face {
+  font-family: "Comfortaa", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  src: url("../../../styles/font/Comfortaa.ttf.woff");
+}
+
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+.login-button-wrapper {
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: white;
+  margin-top: 1rem;
+  height: 4rem;
+  border-radius: 12px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.login-button-logo {
+  position: relative;
+  height: 100%;
+}
+
+.logo {
+  position: absolute;
+  border-radius: 12px;
+  height: auto;
+  max-height: 100%;
+}
+
+.login-button-text {
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: bold;
+}
+
+.google {
+  background-color: white;
+}
+
+.kakao {
+  background-color: #fee500;
+}
+
+.naver {
+  background-color: #03c75a;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    min-width: 320px;
+    margin-top: 5rem;
+  }
+
+  .right {
+    width: 80%;
+  }
+
+  .right_title {
+    width: 100%;
+  }
+
+  .cheeseballoon {
+    width: 100%;
+  }
+
+  .sub {
+    font-size: 12px;
+  }
+
+  .login-button {
+    padding-top: 1rem;
+  }
+
+  .login-button-wrapper {
+    margin-top: 1rem;
+    height: 3rem;
+  }
+
+  .login-button-text {
+    font-weight: normal;
+    font-size: 14px;
+  }
+
+  .google {
+    background-color: white;
+  }
+
+  .kakao {
+    background-color: #fee500;
+  }
+
+  .naver {
+    background-color: #03c75a;
+  }
+}

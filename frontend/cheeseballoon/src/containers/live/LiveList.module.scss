@@ -1,0 +1,70 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+
+.atag {
+  text-decoration: none;
+}
+
+.livecard {
+  display: block;
+  width: calc(25% - (9rem / 4));
+}
+
+.no-result-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 15rem;
+}
+
+.no-result {
+  color: gray;
+  font-size: large;
+}
+
+.plus {
+  width: 100%;
+  border-radius: 2rem;
+  color: white;
+  background-color: transparent;
+  border: solid white;
+  font-size: larger;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+  color: black;
+  background-color: gray;
+  }
+}
+
+@media (max-width: 1440px) {
+  .wrapper {
+    gap: 2rem;
+  }
+
+  .livecard {
+    width: calc((100% - 4rem) / 3);
+  }
+}
+
+@media (max-width: 1080px) {
+  .wrapper {
+    gap: 1rem;
+  }
+
+  .livecard {
+    width: calc((100% - 1rem) / 2);
+  }
+}
+
+@media (max-width: 768px) {
+  .livecard {
+    width: 100%;
+  }
+}

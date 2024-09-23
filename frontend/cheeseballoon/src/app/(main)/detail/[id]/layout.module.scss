@@ -1,0 +1,55 @@
+.wrapper {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.container {
+  max-width: 1290px;
+  margin: 0 auto;
+}
+
+.profile {
+  margin-bottom: 2rem;
+}
+
+.live {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.summary {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chart {
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    min-width: 300px;
+  }
+
+  .profile {
+    margin-bottom: 1rem;
+  }
+
+  .live {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .summary {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .chart {
+    margin-top: 1rem;
+  }
+}

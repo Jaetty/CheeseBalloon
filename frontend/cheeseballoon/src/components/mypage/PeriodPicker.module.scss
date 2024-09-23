@@ -1,0 +1,16 @@
+.periodPickerContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.dateInput {
+  width: 110px;
+}
+
+@media (max-width: 768px) {
+  .dateInput {
+    font-size: 0.7rem;
+    width: 90px;
+  }
+}

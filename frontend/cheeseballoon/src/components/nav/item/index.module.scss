@@ -1,0 +1,25 @@
+.body {
+  position: fixed;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  width: 60px;
+  height: 100%;
+  scrollbar-width: none;
+  z-index: 20000;
+  // transition: width 10s;
+}
+
+.open {
+  width: 220px;
+  background: #1e1f27;
+}
+
+.hovered {
+  margin-right: -200px;
+  padding-right: 200px;
+}
+
+.body::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+}

@@ -1,0 +1,96 @@
+.container {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  width: 15px;
+  display: flex;
+  padding: 0.5rem;
+}
+
+.input {
+  height: 30px;
+  outline: none;
+  padding: 0 0 0 2rem;
+  background-color: #4e4e4e;
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  color: white;
+  border: 2px solid;
+  border-color: transparent;
+}
+
+.input::placeholder {
+  color: white;
+  font-weight: bold;
+  font-size: smaller;
+}
+
+.input:focus {
+  border: 2px solid;
+}
+
+.input:focus::placeholder {
+  color: transparent;
+}
+
+.input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.dropdown-container {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 999;
+}
+
+.dropdown {
+  background-color: #4e4e4e;
+  border-radius: 0.25rem;
+  margin-top: 0;
+  max-height: 10rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: gray #4e4e4e;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.dropdownItem {
+  color: white;
+  font-size: smaller;
+  font-weight: bold;
+  padding-bottom: 0.25rem;
+  padding-top: 0.5rem;
+  padding-left: 2rem;
+  border: 0;
+  background-color: transparent;
+  width: 100%;
+  text-align: left;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-content: center;
+}
+
+.dropdownItem:hover {
+  background-color: darkcyan;
+  cursor: pointer;
+}
+
+.hover {
+  background-color: darkcyan;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+
+  .input {
+    width: 100%;
+  }
+}

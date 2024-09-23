@@ -1,0 +1,26 @@
+.select {
+  display: flex;
+  justify-content: center;
+}
+
+.date {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .select {
+    width: 100%;
+  }
+
+  .date {
+    margin-left: auto;
+    margin-bottom: 1rem;
+  }
+}

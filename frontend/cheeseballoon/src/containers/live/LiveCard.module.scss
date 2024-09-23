@@ -1,0 +1,154 @@
+.wrapper {
+  cursor: pointer;
+  display: block;
+}
+
+.thumbnail-container {
+  position: relative;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.thumbnail {
+  border-radius: 10px;
+  width: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.viewers {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  font-size: 14px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.contents-container {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.profile {
+  height: 3rem;
+  width: 3rem;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.contents {
+  width: 100%;
+  padding-left: 0.5rem;
+  max-width: calc(100% - 3.5rem);
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+
+  :hover {
+    content: attr(title);
+  }
+}
+
+.platform-name-category {
+  display: flex;
+  align-items: center;
+  padding-top: 0.2rem;
+}
+
+.platform-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 30%;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration-line: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #666;
+  padding-left: 0.3rem;
+  max-width: 50%;
+
+  &:hover {
+    color: yellow;
+  }
+}
+
+.category {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: white;
+  margin-left: auto;
+  font-size: 0.9rem;
+  max-width: 50%;
+  cursor: pointer;
+
+  &:hover {
+    font-weight: bold;
+    color: yellow;
+  }
+}
+
+@media (max-width: 768px) {
+  .thumbnail {
+    border-radius: 5px;
+  }
+
+  .viewers {
+    right: 0.7rem;
+    bottom: 0.7rem;
+    font-size: 10px;
+    border-radius: 2px;
+  }
+
+  .contents-container {
+    margin-top: 0.3rem;
+  }
+
+  .profile {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .contents {
+    padding-left: 0.5rem;
+    max-width: calc(100% - 3.5rem);
+  }
+
+  .title {
+    font-size: 0.8rem;
+  }
+
+  .platform-name-category {
+    padding-top: 0.1 rem;
+  }
+
+  .platform-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .name {
+    font-size: 0.7rem;
+    padding-left: 0.2rem;
+  }
+
+  .category {
+    font-size: 0.6rem;
+  }
+}
