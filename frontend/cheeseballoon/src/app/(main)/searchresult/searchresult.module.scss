@@ -53,7 +53,7 @@
   padding-top: 2%;
   padding-bottom: 2%;
   width: 100%;
-  border-bottom: 1px solid rgba(#e4e4e4, 0.5);
+  // border-bottom: 1px solid rgba(#e4e4e4, 0.5);
 }
 
 .streamer {
@@ -82,6 +82,14 @@
     max-width: calc(50% - 16px);
     min-width: calc(50% - 16px);
     min-height: 70px;
+  }
+}
+
+@media (min-width: 3840px) {
+  .streamer {
+    flex: 1 1 calc(16.66% - 18px); /* 6개의 스트리머를 한 줄에 표시 */
+    max-width: calc(14.66% - 16px);
+    min-width: calc(14.66% - 16px);
   }
 }
 
@@ -597,4 +605,10 @@
     format("woff");
   font-weight: normal;
   font-style: normal;
+}
+
+.test {
+  border-bottom: 1px solid rgba(#e4e4e4, 0.5);
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
