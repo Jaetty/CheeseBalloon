@@ -372,12 +372,17 @@ export default function Home() {
 
     const interval = setInterval(() => {
       currentDateIndex++;
-      if (currentDateIndex >= dateKeys.length) {
-        clearInterval(interval);
-        clearInterval(sortInterval);
-      }
 
-      updateData();
+      // 마지막 데이터를 받을 때도 updateData를 호출하여 차트를 업데이트
+      if (currentDateIndex >= dateKeys.length - 1) {
+        updateData(); // 마지막 데이터를 적용
+        setTimeout(() => {
+          clearInterval(interval);
+          clearInterval(sortInterval);
+        }, stepDuration); // 애니메이션이 끝날 시간을 줌
+      } else {
+        updateData(); // 정상적인 데이터 업데이트
+      }
     }, stepDuration);
 
     const sortInterval = setInterval(() => {
@@ -471,7 +476,7 @@ export default function Home() {
         </div>
         <div className={styles.ranking}>
           <div className={styles.title}>
-            <p>일일 시청자 수 랭킹</p>
+            <p>일일 평균 시청자 수 랭킹</p>
           </div>
           <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
         </div>

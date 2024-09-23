@@ -165,70 +165,73 @@ export default function SearchResult() {
         </p>
       </div>
       <div className={styles.streamer_title}>스트리머</div>
-      <div className={styles.streamer_list}>
-        {searchStreamerResults.data && searchStreamerResults.data.length > 0 ? (
-          searchStreamerResults.data
-            .slice(0, visibleStreamerCount)
-            .map((streamer) => (
-              <div key={streamer.streamerId} className={styles.streamer}>
-                <a
-                  href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
-                  className={styles.hyper_link}
-                >
-                  <div
-                    className={`${styles.streamer_thumbnail} ${liveStatus[streamer.streamerId] ? styles.live_border : ""}`}
+      <div className={styles.test}>
+        <div className={styles.streamer_list}>
+          {searchStreamerResults.data &&
+          searchStreamerResults.data.length > 0 ? (
+            searchStreamerResults.data
+              .slice(0, visibleStreamerCount)
+              .map((streamer) => (
+                <div key={streamer.streamerId} className={styles.streamer}>
+                  <a
+                    href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
+                    className={styles.hyper_link}
                   >
-                    <img
-                      src={streamer.profileUrl}
-                      alt=""
-                      onError={(
-                        e: React.SyntheticEvent<HTMLImageElement, Event>
-                      ) => {
-                        e.currentTarget.src = no_image.src;
-                      }}
-                    />
-                  </div>
-                </a>
-                {/* streamer_name, followers, 등 다른 요소들 */}
-                <div className={styles.streamer_info}>
-                  <div className={styles.first_container}>
-                    <div className={styles.pla_na}>
-                      <div className={styles.platform}>
-                        {/* 플랫폼 아이콘 */}
-                        {streamer.platform === "S" && (
-                          <img src={a_icon.src} alt="Platform A" />
-                        )}{" "}
-                        {streamer.platform === "C" && (
-                          <img src={c_icon.src} alt="Platform A" />
-                        )}
-                      </div>
-                      <a
-                        href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
-                        className={styles.hyper_link}
-                      >
-                        <div className={styles.streamer_name}>
-                          {streamer.name}
+                    <div
+                      className={`${styles.streamer_thumbnail} ${liveStatus[streamer.streamerId] ? styles.live_border : ""}`}
+                    >
+                      <img
+                        src={streamer.profileUrl}
+                        alt=""
+                        onError={(
+                          e: React.SyntheticEvent<HTMLImageElement, Event>
+                        ) => {
+                          e.currentTarget.src = no_image.src;
+                        }}
+                      />
+                    </div>
+                  </a>
+                  {/* streamer_name, followers, 등 다른 요소들 */}
+                  <div className={styles.streamer_info}>
+                    <div className={styles.first_container}>
+                      <div className={styles.pla_na}>
+                        <div className={styles.platform}>
+                          {/* 플랫폼 아이콘 */}
+                          {streamer.platform === "S" && (
+                            <img src={a_icon.src} alt="Platform A" />
+                          )}{" "}
+                          {streamer.platform === "C" && (
+                            <img src={c_icon.src} alt="Platform A" />
+                          )}
                         </div>
-                      </a>
-                    </div>
-                    <div className={styles.followers}>
-                      팔로워 {streamer.follower}명
+                        <a
+                          href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
+                          className={styles.hyper_link}
+                        >
+                          <div className={styles.streamer_name}>
+                            {streamer.name}
+                          </div>
+                        </a>
+                      </div>
+                      <div className={styles.followers}>
+                        팔로워 {streamer.follower}명
+                      </div>
                     </div>
                   </div>
-                </div>
-                {/* <div
+                  {/* <div
                   className={styles.favorites}
                   onClick={() => {
                     alert("로그인 기능 개발 중입니다.");
-                  }}
-                >
+                    }}
+                  >
                   <img src={empty.src} alt="favorite" />
                 </div> */}
-              </div>
-            ))
-        ) : (
-          <div className={styles.no_data}>조회된 내역이 없습니다.</div>
-        )}
+                </div>
+              ))
+          ) : (
+            <div className={styles.no_data}>조회된 내역이 없습니다.</div>
+          )}
+        </div>
         {searchStreamerResults.data &&
           searchStreamerResults.data.length > visibleStreamerCount &&
           visibleStreamerCount < 24 && (
