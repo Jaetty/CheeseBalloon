@@ -18,6 +18,10 @@ export default function Footer() {
       </div>
       <div className={styles.info}>
         <p>
+          본 사이트는 비영리로 운영되며 방송인 데이터 등의 모든 지적재산권은
+          각각 치지직과 아프리카(숲)에 있습니다.
+        </p>
+        <p>
           본 웹사이트는 (주)공게임즈 이사만루체, GMarketSans 폰트를 사용하여
           제작되었습니다.
         </p>

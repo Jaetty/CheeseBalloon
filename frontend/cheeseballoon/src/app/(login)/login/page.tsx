@@ -32,17 +32,17 @@ export default function Login() {
     return signInUrl;
   }
 
-  const handleLogin = async (provider: string) => {
-    if (provider === "google") {
-      router.replace(googleURL);
-    } else if (provider === "kakao") {
-      router.replace(kakaoURL);
-    } else if (provider === "naver") {
-      const naverURL = await getUrl(`${naverLoginUrl}`);
+  // const handleLogin = async (provider: string) => {
+  //   if (provider === "google") {
+  //     router.replace(googleURL);
+  //   } else if (provider === "kakao") {
+  //     router.replace(kakaoURL);
+  //   } else if (provider === "naver") {
+  //     const naverURL = await getUrl(`${naverLoginUrl}`);
 
-      router.replace(naverURL);
-    }
-  };
+  //     router.replace(naverURL);
+  //   }
+  // };
 
   function loginButton(provider: string, ko: string) {
     return (
