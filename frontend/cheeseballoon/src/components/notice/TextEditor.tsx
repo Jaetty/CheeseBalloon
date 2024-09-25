@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from "tinymce";
+import { accessTokenState } from "src/stores/store";
+
 
 interface EditorProps {
   setContentProps: (newValue: string | null) => void;
 }
 
 const API_KEY = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
-const AUTH = process.env.NEXT_PUBLIC_BEARER_AUTH;
 const IMAGE_UPLOAD_API = process.env.NEXT_PUBLIC_NOTICE_IMAGE_UPLOAD_API_URL;
 
 export default function TinyMCE({
@@ -17,6 +18,7 @@ export default function TinyMCE({
 }: EditorProps) {
   const [content, setContent] = useState<string | null>(null);
   const editorRef = useRef<TinyMCEEditor | null>(null);
+  const accessToken = accessTokenState((state) => state.accessToken);
 
   useEffect(() => {
     setContentProps(content);
@@ -70,7 +72,7 @@ export default function TinyMCE({
             const res = await fetch(`${IMAGE_UPLOAD_API}`, {
               method: "POST",
               headers: {
-                Authorization: `Bearer ${AUTH}`,
+                Authorization: `Bearer ${accessToken}`,
               },
               body: formData,
             });
