@@ -64,7 +64,6 @@ public class StreamerController {
     public ResponseEntity<CustomBody> streamerDetailLive(@RequestParam Long streamerId){
 
         FindStreamerDetailLiveResDto ret = streamerUsecase.streamerDetailLive(streamerId);
-//        FindStreamerDetailLiveResDto ret = FindStreamerDetailLiveResDto.builder().isLive(true).streamerUrl("https://chzzk.naver.com/live/75cbf189b3bb8f9f687d2aca0d0a382b").thumbnailUrl("https://livecloud-thumb.akamaized.net/chzzk/livecloud/KR/stream/26464698/live/5885133/record/27970556/thumbnail/image_480.jpg").build();
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
     }
@@ -74,6 +73,10 @@ public class StreamerController {
 
         if(memberId == null){
             memberId = -1L;
+        }
+
+        if(query.isEmpty()){
+            query = " ";
         }
 
         List<FindSearchStreamerResDtoInterface> ret = streamerUsecase.searchStreamer(query, memberId);

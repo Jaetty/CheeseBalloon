@@ -26,8 +26,7 @@ public class RedisTest {
                 .build());
         redisUtil.setData("key", res, 600000L);
 
-        List<FindLiveRankingResDto> ret=redisUtil.getData("key", new TypeReference<List<FindLiveRankingResDto>>() {});
-        if(ret!=null)
-            System.out.println(ret.get(0).getPlatform());
+        List<FindLiveRankingResDto> ret = redisUtil.getData("key", new TypeReference<List<FindLiveRankingResDto>>() {});
+        System.out.println(ret.get(0));
     }
 }

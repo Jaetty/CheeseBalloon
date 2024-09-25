@@ -15,6 +15,8 @@ public class FindBookmarkResDto {
     private String name;
     private Character platform;
     private String profileUrl;
+    private String channelUrl;
+    private String streamUrl;
     private Integer followerCnt;
     private Boolean isLive;
 }

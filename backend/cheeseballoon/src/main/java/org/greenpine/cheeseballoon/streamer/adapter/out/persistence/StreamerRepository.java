@@ -21,15 +21,13 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
     FindStreamerDetailResDtoInterface findStreamerDetailByStreamerId(Long streamerId, Long memberId);
 
     // 스트리머 이름으로 스트리머 정보 가져오기 -> isLive도 가져와야해서 join이 있음
-    @Query(value = "SELECT case when b.bookmark_id IS NOT NULL then 'true' ELSE 'false' END AS bookmark, streamer.streamer_id AS streamerId, streamer.name, streamer.isLive, streamer.profile_url AS profileUrl, streamer.channel_url AS channelUrl, streamer.follower, streamer.platform  FROM\n" +
-            "(SELECT * FROM bookmarks WHERE member_id = :memberId) AS b right outer JOIN\n" +
-            "(SELECT s.streamer_id, s.NAME, li.is_live AS isLive, s.profile_url, s.channel_url ,sl.follower, s.platform\n" +
-            "FROM streamers s JOIN (SELECT streamer_id, follower, reg_dt \n" +
-            "\tFROM streamer_logs \n" +
-            "\tWHERE (streamer_id, reg_dt) IN (SELECT streamer_id, max(reg_dt) AS reg_dt FROM streamer_logs GROUP BY streamer_id) ORDER BY reg_dt DESC) sl\n" +
-            "on s.streamer_id = sl.streamer_id, lives AS li\n" +
-            "WHERE NAME LIKE CONCAT('%', :query, '%') AND li.streamer_id = s.streamer_id GROUP BY s.streamer_id) AS streamer\n" +
-            "ON streamer.streamer_id = b.streamer_id", nativeQuery = true)
+    @Query(value = "SELECT streamers.streamer_id AS streamerId, streamers.name, streamers.profile_url AS profileUrl, streamers.channel_url AS channelUrl, streamers.platform, streamer_logs.follower, case when bookmarks.bookmark_id IS NOT NULL then 'true' ELSE 'false' END AS bookmark, case when max(lives.is_live) = 1 then 'true' ELSE 'false' END  AS isLive\n" +
+            "FROM streamers JOIN streamer_logs\n" +
+            "on streamer_logs.streamer_id = streamers.streamer_id AND streamer_logs.reg_dt > DATE_SUB((SELECT MAX(reg_dt) FROM streamer_logs), INTERVAL 2 HOUR) AND streamers.`name` LIKE CONCAT('%',:query, '%')\n" +
+            "JOIN lives on lives.streamer_id = streamers.streamer_id\n" +
+            "LEFT OUTER JOIN bookmarks ON bookmarks.streamer_id = streamers.streamer_id AND bookmarks.member_id = :memberId \n" +
+            "GROUP BY streamerId\n" +
+            "LIMIT 30", nativeQuery = true)
     List<FindSearchStreamerResDtoInterface> findStreamerInfoByName(String query, Long memberId);
 
     @Query(value = "SELECT l.streamer_id, t.live_log_id, t.live_id, t.cycle_log_id, MAX(t.viewer_cnt) AS maxViewer, ROUND(AVG(t.viewer_cnt),0) AS viewer, t.date FROM lives AS l INNER JOIN \n" +

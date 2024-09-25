@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,5 +28,10 @@ public interface StreamerLogRepository extends JpaRepository<StreamerLogEntity,L
     List<FindFollowerRankResDtoInterface> findFollowerRanking(LocalDateTime startDate, LocalDateTime endDate, String platform, Long memberId);
 
     List<StreamerLogEntity> findStreamerLogEntitiesByStreamerAndRegDtBetween(StreamerEntity streamer, LocalDateTime start, LocalDateTime end);
+
+    @Query(value = "SELECT follower \n" +
+            "FROM streamer_logs \n" +
+            "WHERE streamer_id = :streamerId AND reg_dt = (select max(reg_dt) FROM streamer_logs WHERE streamer_id=:streamerId AND streamer_logs.reg_dt <= :endDate)", nativeQuery = true)
+    Integer findFollowerByEndDate(Long streamerId, LocalDateTime endDate);
 
 }

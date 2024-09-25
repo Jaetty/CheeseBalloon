@@ -5,14 +5,11 @@ import org.greenpine.cheeseballoon.global.token.JwtUtil;
 import org.greenpine.cheeseballoon.member.adapter.out.persistence.MemberEntity;
 import org.greenpine.cheeseballoon.member.application.port.in.AuthUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.MemberUsecase;
-import org.greenpine.cheeseballoon.member.application.port.in.BookmarkUsecase;
-import org.greenpine.cheeseballoon.member.application.port.in.ViewLogUsecase;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.ChangeNicknameReqDto;
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.MemberPort;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +24,11 @@ public class MemberService implements MemberUsecase, AuthUsecase {
     public LoginResDto login(UserInfoDto dto) {
         MemberEntity member = memberPort.findMember(dto);
         if(member==null){ //비회원
-            String nickname = dto.getName();
+            String nickname = generateRandomString(10);
             while(true){
                 if(memberPort.findByNickname(nickname)==null)
                     break;
-                nickname= dto.getName()+generateRandomString(6);
+                nickname = generateRandomString(10);
             }
             dto.setName(nickname);
             member = memberPort.register(dto); //회원가입

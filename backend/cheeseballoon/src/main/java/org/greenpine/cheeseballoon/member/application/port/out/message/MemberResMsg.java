@@ -8,4 +8,5 @@ public class MemberResMsg {
     public static final String NOT_EXIST = "없는 데이터 입니다.";
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
     public static final String DB_ERROR = "데이터베이스 에러";
+    public static final String UNAUTHORIZED = "인증되지 않은 접근입니다.";
 }

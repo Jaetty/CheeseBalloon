@@ -7,6 +7,8 @@ public class StreamerLiveDomain {
     @Getter
     private Long liveId;
     @Getter
+    private Long liveLogId;
+    @Getter
     private Long liveOriginId;
     @Getter
     private String streamUrl;
@@ -20,8 +22,9 @@ public class StreamerLiveDomain {
     public StreamerLiveDomain() {
     }
 
-    public StreamerLiveDomain(Long liveId, Long liveOriginId, String streamUrl, String thumbnailUrl, Boolean isLive, StreamerDomain streamer) {
+    public StreamerLiveDomain(Long liveId, Long liveLogId, Long liveOriginId, String streamUrl, String thumbnailUrl, Boolean isLive, StreamerDomain streamer) {
         this.liveId = liveId;
+        this.liveLogId = liveLogId;
         this.liveOriginId = liveOriginId;
         this.streamUrl = streamUrl;
         this.thumbnailUrl = thumbnailUrl;
@@ -40,6 +43,8 @@ public class StreamerLiveDomain {
         this.liveId = liveId;
     }
 
+    public void setLiveLogId(Long liveLogId){ this.liveLogId = liveLogId;}
+
     public void setLiveOriginId(Long liveOriginId) {
         this.liveOriginId = liveOriginId;
     }
@@ -47,7 +52,6 @@ public class StreamerLiveDomain {
     public void setStreamUrl(String streamUrl) {
         this.streamUrl = streamUrl;
     }
-
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
     }

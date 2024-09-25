@@ -1,6 +1,7 @@
 package org.greenpine.cheeseballoon.member.adapter.in.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -14,6 +15,7 @@ import org.greenpine.cheeseballoon.member.application.port.in.dto.*;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.FindBookmarkResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.FindViewLogResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.LoginResDto;
+import org.greenpine.cheeseballoon.member.application.port.out.dto.NaverLoginUrl;
 import org.greenpine.cheeseballoon.member.application.port.out.message.MemberResMsg;
 import org.greenpine.cheeseballoon.member.application.service.OauthService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -81,7 +83,6 @@ public class MemberController {
         try{
             UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
-
             return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
@@ -95,7 +96,7 @@ public class MemberController {
     public ResponseEntity<CustomBody> loginKakao(@RequestParam String code) {
         log.info("login/kakao - Call");
         System.out.println(code);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, code));
         /*try {
             UserInfoDto userInfoDto = oauthService.getKakaoUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
@@ -119,6 +120,41 @@ public class MemberController {
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
         }catch (BadRequestException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
+        }
+    }
+
+    @GetMapping("/login/naver")
+    public ResponseEntity<CustomBody> loginNaver(HttpSession session){
+
+        String[] value = oauthService.getNaverUrl();
+        NaverLoginUrl naverLoginUrl =new NaverLoginUrl(value[1]);
+
+        session.setAttribute("stateToken", value[0]);
+
+        return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, naverLoginUrl));
+
+    }
+
+    @GetMapping("/login/naver/code")
+    public ResponseEntity<CustomBody> loginNaverCode(@RequestParam String code, @RequestParam String state, HttpSession session){
+
+        log.info("loginNaverCode - Call");
+
+        String sessionStateToken  = (String) session.getAttribute("stateToken");
+
+        if(!sessionStateToken.equals(state)){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.UNAUTHORIZED, null));
+        }
+
+        try {
+            UserInfoDto userInfoDto = oauthService.getNaverUserInfo(code, state);
+            LoginResDto resDto = authUsecase.login(userInfoDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
+        }catch (JsonProcessingException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
+        }
+        catch (BadRequestException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.INTERNAL_SERVER_ERROR, null));
         }
     }
@@ -168,6 +204,19 @@ public class MemberController {
         reqDto.setMemberId(memberId);
         try{
             bookmarkUsecase.deleteBookmark(reqDto);
+            return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
+        }catch (DuplicateKeyException e){
+            return ResponseEntity.ok(new CustomBody(StatusEnum.NOT_EXIST, MemberResMsg.NOT_EXIST, null));
+        }
+
+    }
+
+    @DeleteMapping("/bookmark-streamer")
+    public ResponseEntity<CustomBody> deleteBookmarkByStreamerId(@AuthenticationPrincipal Long memberId, @RequestBody DeleteBookmarkByStreamerIdReqDto reqDto){
+        log.info("deleteBookmarkByStreamerId - Call " + memberId);
+        reqDto.setMemberId(memberId);
+        try{
+            bookmarkUsecase.deleteBookmarkByStreamerId(reqDto);
             return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, null));
         }catch (DuplicateKeyException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.NOT_EXIST, MemberResMsg.NOT_EXIST, null));

@@ -2,6 +2,7 @@ package org.greenpine.cheeseballoon.member.application.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -11,6 +12,7 @@ import org.greenpine.cheeseballoon.member.application.port.in.dto.GetAccessToken
 import org.greenpine.cheeseballoon.member.application.port.in.dto.UserInfoDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.GoogleUserInfoResDto;
 import org.greenpine.cheeseballoon.member.application.port.out.dto.KakaoUserInfoResDto;
+import org.greenpine.cheeseballoon.member.application.port.out.dto.NaverUserInfoResDto;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,6 +20,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,13 +37,23 @@ public class OauthService {
     @Value("${oauth2.google.redirect-uri}")
     private String GOOGLE_REDIRECT_URL;
 
-    private final String KAKAO_USER_API = "https://kapi.kakao.com/v2/user/me";
+    private final String KAKAO_TOKEN_API = "https://kapi.kakao.com/v2/user/me";
     @Value("${oauth2.kakao.redirect-uri}")
     private String KAKAO_REDIRECT_URL;
     @Value("${oauth2.kakao.rest-api-key}")
     private String KAKAO_RESTAPI_KEY;
 
+    private final String NAVER_USER_API = "https://openapi.naver.com/v1/nid/me";
+    private final String NAVER_TOKEN_URL = "https://nid.naver.com/oauth2.0/token";
+    @Value("${oauth2.naver.redirect-uri}")
+    private String NAVER_REDIRECT_URL;
+    @Value("${oauth2.naver.client-id}")
+    private String NAVER_CLIENT_ID;
+    @Value("${oauth2.naver.client-secret}")
+    private String NAVER_CLIENT_SECRET;
+
     private final JwtUtil jwtUtil;
+    private final ObjectMapper objectMapper;
 
     public GetAccessTokenResDto getNewAccessToken(Long memberId, String role){
         String accessToken = jwtUtil.createAccessToken(memberId, role);
@@ -62,7 +76,6 @@ public class OauthService {
 
         if(responseEntity.getStatusCode() == HttpStatus.OK){
             //System.out.println(responseEntity.getBody());
-            ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
             String accessToken = (String) jsonMap.get("access_token");
             //System.out.println("accessToken:"+accessToken);
@@ -85,9 +98,6 @@ public class OauthService {
             GoogleUserInfoResDto googleUserInfo = responseEntity.getBody();
             //System.out.println(googleUserInfo);
             return UserInfoDto.builder()
-                    .email(googleUserInfo.getEmail())
-                    .name(googleUserInfo.getName())
-                    .profileImgUrl(googleUserInfo.getPicture())
                     .originId(googleUserInfo.getSub())
                     .platform('G')
                     .build();
@@ -125,7 +135,6 @@ public class OauthService {
         //System.out.println(responseEntity.getBody());
         if(responseEntity.getStatusCode() == HttpStatus.OK){
             //System.out.println(responseEntity.getBody());
-            ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
             String accessToken = (String) jsonMap.get("access_token");
             //System.out.println(accessToken);
@@ -142,7 +151,7 @@ public class OauthService {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
-                KAKAO_USER_API,
+                KAKAO_TOKEN_API,
                 HttpMethod.GET,
                 entity,
                 String.class
@@ -151,14 +160,11 @@ public class OauthService {
         if (response.getStatusCode().is2xxSuccessful()) {
             String responseBody = response.getBody();
             //System.out.println(responseBody);
-            ObjectMapper objectMapper = new ObjectMapper();
             KakaoUserInfoResDto kakaoUserInfo = objectMapper.readValue(responseBody, KakaoUserInfoResDto.class);
             //System.out.println("id: " + kakaoUserInfo.getId());
             //System.out.println("nickname: " + kakaoUserInfo.getProperties().getNickname());
             //System.out.println("Thumbnail Image: " + kakaoUserInfo.getProperties().getProfileImage());
             return UserInfoDto.builder()
-                    .profileImgUrl(kakaoUserInfo.getProperties().getProfileImage())
-                    .name(kakaoUserInfo.getProperties().getNickname())
                     .originId(kakaoUserInfo.getId())
                     .platform('K')
                     .build();
@@ -166,4 +172,76 @@ public class OauthService {
             throw new BadRequestException();
         }
     }
+
+    public String[] getNaverUrl(){
+
+        String state = generateState();
+
+        String naverLoginUrl = "https://nid.naver.com/oauth2.0/authorize?response_type=code"
+                + "&client_id=" + NAVER_CLIENT_ID
+                + "&redirect_uri=" + NAVER_REDIRECT_URL
+                + "&state=" + state;
+
+        return new String[] {state, naverLoginUrl};
+    }
+
+    public UserInfoDto getNaverUserInfo(String accessCode, String state) throws BadRequestException, JsonProcessingException {
+        // HTTP POST를 요청할 때 보내는 데이터(body)를 설명해주는 헤더도 만들어 같이 보내줘야 한다.
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        // body 데이터를 담을 오브젝트인 MultiValueMap를 만들어보자
+        // body는 보통 key, value의 쌍으로 이루어지기 때문에 자바에서 제공해주는 MultiValueMap 타입을 사용한다.
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", NAVER_CLIENT_ID);
+        params.add("client_secret", NAVER_CLIENT_SECRET);
+        params.add("code", accessCode);
+        params.add("state", state);
+        // 요청하기 위해 헤더(Header)와 데이터(Body)를 합친다.
+        RestTemplate restTemplate=new RestTemplate();
+        ResponseEntity<String> responseEntity=restTemplate.postForEntity(NAVER_TOKEN_URL, params,String.class);
+//        System.out.println(responseEntity.getStatusCode());
+        if(responseEntity.getStatusCode() == HttpStatus.OK) {
+            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
+            String accessToken = (String) jsonMap.get("access_token");
+            return requestNaverUserInfo(accessToken);
+        }
+        return null;
+    }
+
+    public UserInfoDto requestNaverUserInfo(String accessToken) throws BadRequestException, JsonProcessingException {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                NAVER_USER_API,
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            String responseBody = response.getBody();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(responseBody);
+            String id = rootNode.path("response").path("id").asText();
+
+            return UserInfoDto.builder()
+                    .originId(id)
+                    .platform('N')
+                    .build();
+        } else {
+            throw new BadRequestException();
+        }
+
+    }
+
+    private String generateState()
+    {
+        SecureRandom random = new SecureRandom();
+        return new BigInteger(130, random).toString(32);
+    }
+
 }

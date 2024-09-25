@@ -7,13 +7,13 @@ import org.greenpine.cheeseballoon.live.application.port.in.dto.FindLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.in.dto.SearchLivesReqDto;
 import org.greenpine.cheeseballoon.live.application.port.out.CategoryPort;
 import org.greenpine.cheeseballoon.live.application.port.out.LivePort;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindCategoriesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindHotCategoriesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.FindLivesResDto;
-import org.greenpine.cheeseballoon.live.application.port.out.dto.SearchLivesResDto;
+import org.greenpine.cheeseballoon.live.application.port.out.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +48,24 @@ public class LiveService implements LiveUsecase, CategoryUsecase {
     @Override
     public FindCategoriesResDto findCategories(String query) {
         return categoryPort.findCategories(query);
+    }
+
+    @Override
+    public List<FindBarchartData> findBarchartData() {
+
+        LocalDate startDate = LocalDate.now().minusDays (14);
+        String currDt = LocalDate.now().minusDays (1).toString()+"-0";
+
+        List<FindBarchartData> ret = new ArrayList<>();
+
+        for(int i=0; i<14; i++){
+            String dtCode = startDate.plusDays(i).toString()+"-0";
+            ret.add(FindBarchartData.builder().Date(startDate.plusDays(i).format(DateTimeFormatter.ofPattern("MM/dd"))).dataList(livePort.findBarchartData(currDt,dtCode)).build());
+        }
+//        ret.add(FindBarchartData.builder().Date(startDate.plusDays(14).format(DateTimeFormatter.ofPattern("MM/dd"))).dataList(livePort.findBarchartData(currDt,startDate.plusDays(13).toString()+"-0")).build());
+
+
+        return ret;
     }
 
     @Override

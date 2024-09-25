@@ -7,7 +7,9 @@ public interface BookmarkWithFollower {
     Long getStreamer_id();
     String getName();
     Character getPlatform();
-    String getProfile_img_url();
+    String getProfile_url();
+    String getChannel_url();
     Integer getFollower();
+    String getStream_url();
     Boolean getIs_live();
 }

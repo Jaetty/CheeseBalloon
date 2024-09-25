@@ -13,8 +13,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class MinioManager {
-    @Value("${minio.url}")
-    private String minioUrl;
+    @Value("${minio.sslUrl}")
+    private String minioSslUrl;
 
     private final MinioClient minioClient;
 
@@ -36,7 +36,7 @@ public class MinioManager {
 
         minioClient.putObject(putObjectArgs);
 
-        return minioUrl+"/"+bucketName+"/"+uniqueFilename;
+        return minioSslUrl+"/"+bucketName+"/"+uniqueFilename;
     }
 
     public void deleteFile(String imgUrl) throws Exception {

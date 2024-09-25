@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             Long memberId = jwtUtil.getUserId(claims);
             String role = jwtUtil.getRole(claims);
-            System.out.println("필터 memberId : " + memberId +" "+role);
+//            System.out.println("필터 memberId : " + memberId +" "+role);
             List<GrantedAuthority> auth;
             if(role.equals("MANAGER")) auth = managerAuth;
             else auth = userAuth;

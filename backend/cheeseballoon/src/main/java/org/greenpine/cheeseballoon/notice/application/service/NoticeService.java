@@ -26,8 +26,8 @@ public class NoticeService implements NoticeUsecase {
     }
 
     @Override
-    public List<FindAllNoticeResDto> findAllNotice(FindAllNoticeReqDto reqDto) {
-        return noticePort.findAllNotice(reqDto);
+    public List<FindAllNoticeResDto> findAllNotice() {
+        return noticePort.findAllNotice();
     }
 
     @Override

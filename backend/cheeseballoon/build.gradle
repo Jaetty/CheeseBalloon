@@ -52,6 +52,9 @@ dependencies {
 	//minio
 	implementation 'io.minio:minio:8.4.3'
 
+	//aes encryption
+	implementation 'javax.xml.bind:jaxb-api:2.3.0'
+
 
 }
 
