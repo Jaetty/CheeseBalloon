@@ -11,32 +11,42 @@ import java.util.List;
 
 public interface StatisticsRepository extends JpaRepository<StatisticsEntity, Long> {
 
-    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY average_viewer DESC, streamers.streamer_id) AS RANK, streamers.streamer_id AS streamerId, average_viewer AS averageViewer, streamers.`name`, profile_url AS profileUrl, channel_url, platform, case when bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark\n" +
-            "FROM statistics, streamers \n" +
-            "LEFT OUTER JOIN bookmarks ON bookmarks.streamer_id = streamers.streamer_id AND bookmarks.member_id = :memberId \n" +
-            "WHERE dt_code = :dtCode AND streamers.platform LIKE :platform AND streamers.streamer_id = statistics.streamer_id AND average_viewer > 100\n" +
-            "LIMIT 300", nativeQuery = true)
+    @Query(value =
+            "SELECT RANK, statistic.streamer_id AS streamerId, average_viewer AS averageViewer, name, profile_url AS profileUrl, channel_url, platform, case when bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark FROM \n" +
+            "(SELECT streamers.streamer_id, streamers.`name`, streamers.profile_url, streamers.channel_url, streamers.platform, statistics.average_viewer, ROW_NUMBER() OVER(ORDER BY average_viewer DESC, streamers.streamer_id) AS RANK\n" +
+            "FROM streamers \n" +
+            "JOIN statistics ON streamers.streamer_id = statistics.streamer_id AND statistics.dt_code = :dtCode AND streamers.platform LIKE :platform AND statistics.average_viewer > 100\n" +
+            "LIMIT 300) AS statistic \n" +
+            "LEFT OUTER JOIN bookmarks\n" +
+            " ON bookmarks.streamer_id = statistic.streamer_id AND bookmarks.member_id = :memberId", nativeQuery = true)
     List<FindAvgViewerRankResDtoInterface> findAverageViewerRanking(String dtCode, String platform, Long memberId);
 
-    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY top_viewer DESC, streamers.streamer_id) AS RANK, streamers.streamer_id AS streamerId, top_viewer AS topViewer, streamers.`name`, profile_url AS profileUrl, channel_url, platform, case when bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark\n" +
-            "FROM statistics, streamers \n" +
-            "LEFT OUTER JOIN bookmarks ON bookmarks.streamer_id = streamers.streamer_id AND bookmarks.member_id = :memberId \n" +
-            "WHERE dt_code = :dtCode AND streamers.platform LIKE :platform AND streamers.streamer_id = statistics.streamer_id AND average_viewer > 100\n" +
-            "LIMIT 300", nativeQuery = true)
+    @Query(value = "SELECT RANK, statistic.streamer_id AS streamerId, top_viewer AS TopViewer, name, profile_url AS profileUrl, channel_url, platform, case when bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark FROM \n" +
+            "(SELECT streamers.streamer_id, streamers.`name`, streamers.profile_url, streamers.channel_url, streamers.platform, statistics.top_viewer, ROW_NUMBER() OVER(ORDER BY top_viewer DESC, streamers.streamer_id) AS RANK\n" +
+            "FROM streamers \n" +
+            "JOIN statistics ON streamers.streamer_id = statistics.streamer_id AND statistics.dt_code = :dtCode AND streamers.platform LIKE :platform AND statistics.average_viewer > 100\n" +
+            "LIMIT 300) AS statistic \n" +
+            "LEFT OUTER JOIN bookmarks\n" +
+            " ON bookmarks.streamer_id = statistic.streamer_id AND bookmarks.member_id = :memberId", nativeQuery = true)
     List<FindTopViewerRankResDtoInterface> findTopViewerRanking(String dtCode, String platform, Long memberId);
 
-    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY rating DESC, streamers.streamer_id) AS RANK, streamers.streamer_id AS streamerId, rating, streamers.`name`, profile_url AS profileUrl, channel_url, platform, case when bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark\n" +
-            "FROM statistics, streamers \n" +
-            "LEFT OUTER JOIN bookmarks ON bookmarks.streamer_id = streamers.streamer_id AND bookmarks.member_id = :memberId \n" +
-            "WHERE dt_code = :dtCode AND streamers.platform LIKE :platform AND streamers.streamer_id = statistics.streamer_id AND average_viewer > 100\n" +
-            "LIMIT 300", nativeQuery = true)
+    @Query(value = "SELECT RANK, statistic.streamer_id AS streamerId, rating, name, profile_url AS profileUrl, channel_url, platform, case when bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark FROM \n" +
+            "(SELECT streamers.streamer_id, streamers.`name`, streamers.profile_url, streamers.channel_url, streamers.platform, statistics.rating, ROW_NUMBER() OVER(ORDER BY rating DESC, streamers.streamer_id) AS RANK\n" +
+            "FROM streamers \n" +
+            "JOIN statistics ON streamers.streamer_id = statistics.streamer_id AND statistics.dt_code = :dtCode AND streamers.platform LIKE :platform AND statistics.average_viewer > 100\n" +
+            "LIMIT 300) AS statistic \n" +
+            "LEFT OUTER JOIN bookmarks\n" +
+            " ON bookmarks.streamer_id = statistic.streamer_id AND bookmarks.member_id = :memberId", nativeQuery = true)
     List<FindRatingRankResDtoInterface> findRatingRanking(String dtCode, String platform, Long memberId);
 
-    @Query(value = "SELECT ROW_NUMBER() OVER(ORDER BY total_air_time DESC, streamers.streamer_id) AS RANK, streamers.streamer_id AS streamerId, time_to_sec(total_air_time) AS totalAirTime, streamers.`name`, profile_url AS profileUrl, channel_url, platform, case when bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark\n" +
-            "FROM statistics, streamers \n" +
-            "LEFT OUTER JOIN bookmarks ON bookmarks.streamer_id = streamers.streamer_id AND bookmarks.member_id = :memberId \n" +
-            "WHERE dt_code = :dtCode AND streamers.platform LIKE :platform AND streamers.streamer_id = statistics.streamer_id AND average_viewer > 100\n" +
-            "LIMIT 300", nativeQuery = true)
+
+    @Query(value = "SELECT RANK, statistic.streamer_id AS streamerId, time_to_sec(total_air_time) AS totalAirTime, name, profile_url AS profileUrl, channel_url, platform, case when bookmark_id IS NULL then 'false' ELSE 'true' END AS bookmark FROM \n" +
+            "(SELECT streamers.streamer_id, streamers.`name`, streamers.profile_url, streamers.channel_url, streamers.platform, statistics.total_air_time, ROW_NUMBER() OVER(ORDER BY total_air_time DESC, streamers.streamer_id) AS RANK\n" +
+            "FROM streamers \n" +
+            "JOIN statistics ON streamers.streamer_id = statistics.streamer_id AND statistics.dt_code = :dtCode AND streamers.platform LIKE :platform AND statistics.average_viewer > 100\n" +
+            "LIMIT 300) AS statistic \n" +
+            "LEFT OUTER JOIN bookmarks\n" +
+            " ON bookmarks.streamer_id = statistic.streamer_id AND bookmarks.member_id = :memberId", nativeQuery = true)
     List<FindTotalAirTimeRankResDtoInterface> findTotalAirTimeRanking(String dtCode, String platform, Long memberId);
 
     @Query(value = "SELECT RANK, averageViewer, topViewer, rating, totalAirTime, streamerId, follower \n" +
