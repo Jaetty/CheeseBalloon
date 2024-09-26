@@ -35,9 +35,6 @@ public class RankingController {
                                                            @Pattern(regexp = "^[SCT]") @Size(min = 1, max = 1) String platform,
                                                            @AuthenticationPrincipal Long memberId){
 
-        String a = "%";
-        System.out.println(a.charAt(0));
-
         if(memberId == null){
             memberId = -1L;
         }
