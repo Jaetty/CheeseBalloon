@@ -109,7 +109,7 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDateTime[] dates, String[] dtCode) {
+    public FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDate[] dates, String[] dtCode) {
 
         List<FindStreamerDailyViewerResDtoInterface> curr = streamerPort.streamerDetailViewer(streamerId, dates[0], dates[1]);
         List<FindStreamerDailyViewerResDtoInterface> before = streamerPort.streamerDetailViewer(streamerId, dates[2], dates[3]);
@@ -120,7 +120,7 @@ public class StreamerService implements StreamerUsecase {
 
         List<DailyAvgViewer> dailyAvgViewer = new ArrayList<>();
 
-        for(LocalDate date = dates[0].toLocalDate(); !date.isAfter(dates[1].toLocalDate()); date = date.plusDays(1)){
+        for(LocalDate date = dates[0]; !date.isAfter(dates[1]); date = date.plusDays(1)){
             dailyAvgViewer.add(new DailyAvgViewer(date.toString(),0,0));
         }
 
@@ -160,7 +160,7 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerRatingDto streamerDetailRating(Long streamerId, LocalDateTime[] dates, String[] dtCode) {
+    public FindStreamerRatingDto streamerDetailRating(Long streamerId, LocalDate[] dates, String[] dtCode) {
 
         StreamerEntity streamerEntity = streamerPort.findByStreamerId(streamerId);
         StatisticsEntity statisticsEntity = streamerPort.streamerStatistics(streamerEntity, dtCode[0]);
@@ -168,7 +168,7 @@ public class StreamerService implements StreamerUsecase {
 
         List<DailyRate> dailyRates = new ArrayList<>();
 
-        for(LocalDate date = dates[0].toLocalDate(); !date.isAfter(dates[1].toLocalDate()); date = date.plusDays(1)){
+        for(LocalDate date = dates[0]; !date.isAfter(dates[1]); date = date.plusDays(1)){
             dailyRates.add(new DailyRate(date.toString(),0.00,0.00));
         }
 

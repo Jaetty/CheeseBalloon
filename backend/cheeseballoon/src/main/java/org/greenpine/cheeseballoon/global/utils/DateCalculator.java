@@ -22,6 +22,22 @@ public class DateCalculator {
         return result;
     }
 
+    public static LocalDate[] getLocalDatePeriod(int date){
+
+        LocalDate[] result = new LocalDate[4];
+        int[] days = {0,6,13,29};
+
+        LocalDate now = LocalDate.now().minusDays (1);
+        LocalDate before = now.minusDays(days[date] + 1);
+
+        result[0] = now.minusDays(days[date]);
+        result[1] = now;
+        result[2] = before.minusDays(days[date]);
+        result[3] = before;
+
+        return result;
+    }
+
     public static LocalDateTime[] getPeriod(int date){
 
         LocalDateTime[] result = new LocalDateTime[4];
