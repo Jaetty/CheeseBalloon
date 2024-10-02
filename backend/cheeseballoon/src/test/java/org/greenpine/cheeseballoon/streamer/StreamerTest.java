@@ -63,14 +63,14 @@ public class StreamerTest {
     public void streamerViewerTest(){
 
         long streamer_id = 3;
-        LocalDateTime[] dates = DateCalculator.getPeriod(1);
+        LocalDate[] dates = DateCalculator.getLocalDatePeriod(1);
 
         System.out.println(LocalDateTime.now());
 
         List<FindStreamerDailyViewerResDtoInterface> ret = streamerRepository.findDailyViewer(streamer_id, dates[0], dates[1]);
         List<DailyAvgViewer> dailyAvgViewer = new ArrayList<>();
 
-        for(LocalDate s = dates[0].toLocalDate(); !s.isEqual(dates[1].toLocalDate()); s = s.plusDays(1)){
+        for(LocalDate s = dates[0]; !s.isEqual(dates[1]); s = s.plusDays(1)){
             dailyAvgViewer.add(new DailyAvgViewer(s.toString(),0,0));
         }
         int index = 0;
@@ -151,7 +151,7 @@ public class StreamerTest {
     public void streamerRatingTest(){
 
         long streamer_id = 3;
-        LocalDateTime[] dates = DateCalculator.getPeriod(1);
+        LocalDate[] dates = DateCalculator.getLocalDatePeriod(1);
 
         System.out.println(LocalDateTime.now());
 
