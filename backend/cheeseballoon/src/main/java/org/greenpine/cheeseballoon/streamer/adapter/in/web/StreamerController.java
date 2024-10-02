@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +99,7 @@ public class StreamerController {
     @GetMapping("/viewer")
     public ResponseEntity<CustomBody> streamerViewerDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+        LocalDate[] dates = DateCalculator.getLocalDatePeriod(date);
         String[] dtCode = DateCalculator.getDateCodes(date);
         FindStreamerViewerDto ret = streamerUsecase.streamerDetailViewer(streamerId, dates, dtCode);
 
@@ -199,7 +200,7 @@ public class StreamerController {
     @GetMapping("/rating")
     public ResponseEntity<CustomBody> streamerRatingDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
+        LocalDate[] dates = DateCalculator.getLocalDatePeriod(date);
         String[] dtCode = DateCalculator.getDateCodes(date);
         FindStreamerRatingDto ret = streamerUsecase.streamerDetailRating(streamerId, dates, dtCode);
 

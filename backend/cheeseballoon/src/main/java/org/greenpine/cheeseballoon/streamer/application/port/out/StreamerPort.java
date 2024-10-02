@@ -26,9 +26,9 @@ public interface StreamerPort {
 
     Integer streamerFollower(Long streamerId, LocalDateTime endDate);
 
-    List<FindStreamerDailyViewerResDtoInterface> streamerDetailViewer(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
+    List<FindStreamerDailyViewerResDtoInterface> streamerDetailViewer(Long streamerId, LocalDate startDate, LocalDate endDate);
 
-    List<FindStreamerRatingResDtoInterface> streamerDetailRating(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
+    List<FindStreamerRatingResDtoInterface> streamerDetailRating(Long streamerId, LocalDate startDate, LocalDate endDate);
     List<FindStreamerCategoryResDtoInterface> streamerDetailCategory(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<FindTimeDetailResDtoInterface> streamerDetailTime(Long streamerId, LocalDateTime startDate, LocalDateTime endDate);

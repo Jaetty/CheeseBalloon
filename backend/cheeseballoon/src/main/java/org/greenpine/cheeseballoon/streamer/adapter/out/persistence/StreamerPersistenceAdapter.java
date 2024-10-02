@@ -84,13 +84,13 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     }
 
     @Override
-    public List<FindStreamerDailyViewerResDtoInterface> streamerDetailViewer(Long streamerId, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<FindStreamerDailyViewerResDtoInterface> streamerDetailViewer(Long streamerId, LocalDate startDate, LocalDate endDate) {
 
         return streamerRepository.findDailyViewer(streamerId, startDate, endDate);
     }
 
     @Override
-    public List<FindStreamerRatingResDtoInterface> streamerDetailRating(Long streamerId, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<FindStreamerRatingResDtoInterface> streamerDetailRating(Long streamerId, LocalDate startDate, LocalDate endDate) {
 
         return streamerRepository.findRatingInfo(streamerId, startDate, endDate);
     }
