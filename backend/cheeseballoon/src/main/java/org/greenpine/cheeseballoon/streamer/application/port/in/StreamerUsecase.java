@@ -5,6 +5,7 @@ import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.FindSearchSt
 import org.greenpine.cheeseballoon.streamer.adapter.out.persistence.FindStreamerRecordDtoInterface;
 import org.greenpine.cheeseballoon.streamer.application.port.out.dto.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,8 +17,8 @@ public interface StreamerUsecase {
     FindStreamerDetailLiveResDto streamerDetailLive(Long streamerId);
     List<FindStreamerFollowDto> streamerDetailFollower(Long streamerId, LocalDateTime[] dates);
 
-    FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDateTime[] dates, String[] dtCode);
-    FindStreamerRatingDto streamerDetailRating(Long streamerId, LocalDateTime[] dates, String[] dtCode);
+    FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDate[] dates, String[] dtCode);
+    FindStreamerRatingDto streamerDetailRating(Long streamerId, LocalDate[] dates, String[] dtCode);
     FindStreamerCategoryDto streamerDetailCategory(Long streamerId, LocalDateTime[] dates);
     FindStreamerTimeDto streamerDetailTime(Long streamerId, String[] dtCodes, LocalDateTime[] dates, LocalDateTime[] specificDates);
 
