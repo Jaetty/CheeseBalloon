@@ -37,6 +37,9 @@ public interface StreamerRepository extends JpaRepository<StreamerEntity,Long> {
     @Query(value = "SELECT statistics.soop_rating AS soopRating, statistics.chzz_rating AS chzzkRating, statistics.rating AS totalRating, LEFT(dt_code,10) AS date FROM statistics WHERE streamer_id = :streamerId AND left(dt_code, 10) BETWEEN :beforeDay AND :today AND dt_code LIKE '%0';", nativeQuery = true)
     List<FindStreamerRatingResDtoInterface> findRatingInfo(Long streamerId, LocalDate beforeDay, LocalDate today);
 
+    @Query(value = "SELECT TIME_TO_SEC(statistics.total_air_time) AS totalAirTime, LEFT(dt_code,10) AS date FROM statistics WHERE streamer_id = :streamerId AND left(dt_code, 10) BETWEEN :beforeDay AND :today AND dt_code LIKE '%0';", nativeQuery = true)
+    List<FindTimeDetailResDtoInterface> findTimeInfo(Long streamerId, LocalDate beforeDay, LocalDate today);
+
     @Query(value = "SELECT COUNT(category) * 5 * 60 AS `time`, category, result.date, result.category_id AS categoryId, ROUND(AVG(result.viewer_cnt),0) AS avgViewer FROM categories JOIN\n" +
             "(SELECT c.cycle_dt, c.date, r.live_log_id, r.live_id, r.cycle_log_id, r.category_id, r.title, r.viewer_cnt, r.streamer_id, r.stream_url, r.thumbnail_url, r.is_live, r.`name`, r.profile_url, r.channel_url, r.platform FROM\n" +
             "(SELECT *, DATE(cycle_dt) AS date FROM cycle_logs WHERE cycle_dt BETWEEN :beforeDay AND :today) AS c JOIN\n" +
