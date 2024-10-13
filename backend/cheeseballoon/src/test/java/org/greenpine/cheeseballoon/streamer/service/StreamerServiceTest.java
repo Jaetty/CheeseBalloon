@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @SpringBootTest
@@ -21,9 +22,9 @@ public class StreamerServiceTest {
         long streamer_id = 3;
         String[] dtCodes = DateCalculator.getDateCodes(0);
         LocalDateTime[] specificDates = DateCalculator.getSpecificPeriod(0);
-        LocalDateTime[] dates = DateCalculator.getPeriod(0);
+        LocalDate[] dates = DateCalculator.getLocalDatePeriod(0);
 
-        FindStreamerTimeDto ret = streamerService.streamerDetailTime(streamer_id, dtCodes, dates, specificDates);
+        FindStreamerTimeDto ret = streamerService.streamerDetailTime(streamer_id, dates, dtCodes, specificDates);
 
         System.out.println(ret.getTotalTime());
         System.out.println(ret.getTimeDiff());

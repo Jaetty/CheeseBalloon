@@ -101,8 +101,8 @@ public class StreamerPersistenceAdapter implements StreamerPort { // 어뎁터�
     }
 
     @Override
-    public List<FindTimeDetailResDtoInterface> streamerDetailTime(Long streamerId, LocalDateTime startDate, LocalDateTime endDate) {
-        return liveRepository.findDetailTimeByDatesAndStreamerId(streamerId, startDate, endDate);
+    public List<FindTimeDetailResDtoInterface> streamerDetailTime(Long streamerId, LocalDate startDate, LocalDate endDate) {
+        return streamerRepository.findTimeInfo(streamerId, startDate, endDate);
     }
 
     @Override
