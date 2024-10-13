@@ -230,24 +230,24 @@ public class StreamerService implements StreamerUsecase {
     }
 
     @Override
-    public FindStreamerTimeDto streamerDetailTime(Long streamerId, String[] dtCodes, LocalDateTime[] dates, LocalDateTime[] specificDates) {
+    public FindStreamerTimeDto streamerDetailTime(Long streamerId, LocalDate[] dates, String[] dtCodes, LocalDateTime[] specificDates) {
 
         List<FindTimeDetailResDtoInterface> timeResult = streamerPort.streamerDetailTime(streamerId, dates[0], dates[1]);
 
         List<DailyTime> dailyTimes = new ArrayList<>();
         int index = 0;
 
-        for(LocalDate date = dates[0].toLocalDate(); !date.isAfter(dates[1].toLocalDate()); date = date.plusDays(1)){
+        for(LocalDate date = dates[0]; !date.isAfter(dates[1]); date = date.plusDays(1)){
             dailyTimes.add(new DailyTime(date.toString(),0));
         }
 
-        for(FindTimeDetailResDtoInterface val : timeResult){
-            while ( index < dailyTimes.size() && !dailyTimes.get(index).getDate().equals(val.getDate()) ){
+        for(FindTimeDetailResDtoInterface result : timeResult){
+            while ( index < dailyTimes.size() && !dailyTimes.get(index).getDate().equals(result.getDate()) ){
                 index++;
             }
             if(index >= dailyTimes.size()) break;
-            dailyTimes.get(index).setDate(val.getDate());
-            dailyTimes.get(index).setTotalAirTime(val.getTotalAirTime());
+            dailyTimes.get(index).setDate(result.getDate());
+            dailyTimes.get(index).setTotalAirTime(result.getTotalAirTime());
         }
 
         FindSummaryRankResDtoInterface curr = streamerPort.streamerDetailSummary(streamerId, dtCodes[0], specificDates[0], specificDates[1]);

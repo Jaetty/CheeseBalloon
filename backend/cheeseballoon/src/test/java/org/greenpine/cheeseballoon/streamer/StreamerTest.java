@@ -120,7 +120,7 @@ public class StreamerTest {
         List<FindTimeDetailResDtoInterface> ret = liveRepository.findDetailTimeByDatesAndStreamerId(streamer_id, dates[0], dates[1]);
 
         for(FindTimeDetailResDtoInterface val : ret){
-            System.out.println("값 : " + val.getTotalAirTime() + " " + val.getLiveId() + " date : " + val.getDate());
+            System.out.println("값 : " + val.getTotalAirTime() + " date : " + val.getDate());
         }
 
         System.out.println(LocalDateTime.now());

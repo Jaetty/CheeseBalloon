@@ -40,16 +40,6 @@ public class StreamerController {
         }
 
         FindStreamerDetailResDto ret = streamerUsecase.streamerDetail(streamerId, memberId);
-//        FindStreamerDetailResDto ret = FindStreamerDetailResDto.builder()
-//                .streamerId(285L)
-//                .channelUrl("https://chzzk.naver.com/75cbf189b3bb8f9f687d2aca0d0a382b")
-//                .platform('C')
-//                .originId("75cbf189b3bb8f9f687d2aca0d0a382b")
-//                .profileUrl("https://nng-phinf.pstatic.net/MjAyMzEyMTVfMTgx/MDAxNzAyNjAxMjEyMTYw.Hw6vs76aI0L1zeu4fziwXDE35gidFriwTSgAjq7KWxUg.0V3KaKvctGKcVYa76UiDVTXMjXeUSuUezHX6nGU4y9kg.PNG/123.png?type=f120_120_na")
-//                .name("한동숙")
-//                .bookmark(true)
-//                .rank(5)
-//                .diff(2).build();
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
     }
@@ -103,27 +93,6 @@ public class StreamerController {
         String[] dtCode = DateCalculator.getDateCodes(date);
         FindStreamerViewerDto ret = streamerUsecase.streamerDetailViewer(streamerId, dates, dtCode);
 
-//        FindStreamerViewerDto ret = FindStreamerViewerDto.builder()
-//                .maxViewer(3000)
-//                .maxDiff( date%2==0 ? 100 : -200 )
-//                .avgViewer(2800)
-//                .avgDiff(date%2==0 ? 30 : -20)
-//                .dailyAvgViewers(null)
-//                .build();
-//
-//        String val = "2024-03-1";
-//
-//        List<DailyAvgViewer> list = new ArrayList<>();
-//
-//        for(int i=0; i<7; i++){
-//
-//            int random = (int) (Math.random() * 150);
-//
-//            list.add(DailyAvgViewer.builder().viewer(2800 + i).date(val + i).maxViewer(3000 - random).build());
-//        }
-//
-//        ret.setDailyAvgViewers(list);
-
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
 
     }
@@ -134,20 +103,6 @@ public class StreamerController {
         LocalDateTime[] dates = DateCalculator.getPeriod(date);
         FindStreamerCategoryDto ret = streamerUsecase.streamerDetailCategory(streamerId, dates);
 
-//        int totalTime = 3600*24*5;
-//
-//        FindStreamerCategoryDto ret = FindStreamerCategoryDto.builder().totalTime(totalTime).build();
-//
-//        List<DailyCategory> list = new ArrayList<>();
-//        String dateStr = "2024-05-0";
-//
-//        for(int i=0; i<7; i++){
-//
-//            list.add(DailyCategory.builder().date(dateStr+1+i).category("카테고리 id : "+i+1).time(totalTime/2).avgViewer(500 * (i+1)).build());
-//        }
-//
-//        ret.setDailyCategories(list);
-
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
 
     }
@@ -156,23 +111,9 @@ public class StreamerController {
     public ResponseEntity<CustomBody> streamerTimeDetail(@RequestParam Long streamerId, @Range(min = 1, max = 3) int date){
 
         String[] dtCodes = DateCalculator.getDateCodes(date);
+        LocalDate[] dates = DateCalculator.getLocalDatePeriod(date);
         LocalDateTime[] specificDates = DateCalculator.getSpecificPeriod(date);
-        LocalDateTime[] dates = DateCalculator.getPeriod(date);
-        FindStreamerTimeDto ret = streamerUsecase.streamerDetailTime(streamerId, dtCodes, dates, specificDates);
-
-//        FindStreamerTimeDto ret = FindStreamerTimeDto.builder().timeDiff(date %2 == 0 ? 500 : -400).totalTime(3600*7).build();
-//
-//
-//        String val = "2024-03-1";
-//
-//        List<DailyTime> list = new ArrayList<>();
-//
-//        for(int i=0; i<7; i++){
-//
-//            list.add(DailyTime.builder().time(3600).date(val + i).build());
-//        }
-//
-//        ret.setDailyTimes(list);
+        FindStreamerTimeDto ret = streamerUsecase.streamerDetailTime(streamerId, dates, dtCodes, specificDates);
 
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
@@ -185,14 +126,6 @@ public class StreamerController {
         LocalDateTime[] dates = DateCalculator.getPeriod(date);
         List<FindStreamerFollowDto> ret = streamerUsecase.streamerDetailFollower(streamerId, dates);
 
-//        List<FindStreamerFollowDto> ret = new ArrayList<>();
-//        String val = "2024-03-1";
-//
-//        for(int i=0; i<7; i++){
-//            ret.add(FindStreamerFollowDto.builder().follower(500+i).date(val + i).build());
-//        }
-
-
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
 
     }
@@ -203,18 +136,6 @@ public class StreamerController {
         LocalDate[] dates = DateCalculator.getLocalDatePeriod(date);
         String[] dtCode = DateCalculator.getDateCodes(date);
         FindStreamerRatingDto ret = streamerUsecase.streamerDetailRating(streamerId, dates, dtCode);
-
-//        FindStreamerRatingDto ret = new FindStreamerRatingDto();
-//        String val = "2024-03-1";
-//        List<DailyRate> list = new ArrayList<>();
-//
-//        for(int i=0; i<7; i++){
-//            list.add(DailyRate.builder().total(7.5 - i/2).platform(10.5 - i/3).date(val + i).build());
-//        }
-//
-//        ret.setDailyRates(list);
-//        ret.setTotalRating(7.12);
-//        ret.setPlatformRating(8.74);
 
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, StreamerResMsg.SUCCESS, ret));
 
