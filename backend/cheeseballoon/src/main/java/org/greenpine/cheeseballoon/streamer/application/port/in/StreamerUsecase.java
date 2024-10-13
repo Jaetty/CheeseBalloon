@@ -20,7 +20,7 @@ public interface StreamerUsecase {
     FindStreamerViewerDto streamerDetailViewer(Long streamerId, LocalDate[] dates, String[] dtCode);
     FindStreamerRatingDto streamerDetailRating(Long streamerId, LocalDate[] dates, String[] dtCode);
     FindStreamerCategoryDto streamerDetailCategory(Long streamerId, LocalDateTime[] dates);
-    FindStreamerTimeDto streamerDetailTime(Long streamerId, String[] dtCodes, LocalDateTime[] dates, LocalDateTime[] specificDates);
+    FindStreamerTimeDto streamerDetailTime(Long streamerId, LocalDate[] dates, String[] dtCode, LocalDateTime[] specificDates);
 
     List<FindStreamerRecordDtoInterface> streamerDetailRecord(Long streamerId);
 
