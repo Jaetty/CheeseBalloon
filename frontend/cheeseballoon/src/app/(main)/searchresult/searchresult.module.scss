@@ -23,11 +23,9 @@
   font-size: 32px;
   margin-bottom: 2%;
   font-weight: bold;
-  font-family: "GmarketSans";
 }
 
 .sub_title {
-  font-family: "GmarketSans";
   margin-top: 0%;
   color: #a8a8a8;
   font-weight: lighter;
@@ -42,7 +40,6 @@
 .streamer_title {
   font-size: 18px;
   font-weight: bold;
-  font-family: "GmarketSans";
   margin-top: 1%;
 }
 
@@ -144,7 +141,6 @@
   padding-left: 4%;
   font-size: 14px;
   font-weight: bold;
-  font-family: "GmarketSans";
   text-overflow: ellipsis;
 }
 
@@ -160,15 +156,17 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  gap: 0.3rem;
 }
 
 .platform {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .platform > img {
-  height: 24px;
+  height: 20px;
+  width: 20px;
   border-radius: 10%;
 }
 
@@ -211,13 +209,11 @@
   padding-bottom: 2%;
   width: 100%;
   border-bottom: 1px solid rgba(#e4e4e4, 0.5);
-  font-family: "GmarketSans";
 }
 
 .live_list_title {
   font-size: 18px;
   font-weight: bold;
-  font-family: "GmarketSans";
   display: flex;
   margin-top: 2%;
   padding-bottom: 2%;
@@ -246,7 +242,6 @@
 }
 
 .live {
-  font-family: "GmarketSans";
   width: 2200px;
   height: 250px;
   display: flex;
@@ -295,7 +290,6 @@
 
 .bj_name {
   width: 100%;
-  font-family: "GmarketSans";
   font-size: 10px;
   padding-left: 3%;
 }
