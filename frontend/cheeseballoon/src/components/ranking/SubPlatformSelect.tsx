@@ -35,7 +35,7 @@ export default function PlatformSelect({
         className={style.subplatformselect}
       >
         <option value="T">전체 랭킹</option>
-        <option value="S">아프리카TV 랭킹</option>
+        <option value="S">SOOP TV 랭킹</option>
         <option value="C">치지직 랭킹</option>
       </select>
     </div>

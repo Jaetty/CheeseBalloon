@@ -13,10 +13,8 @@ import styles from "src/app/(main)/searchresult/searchresult.module.scss";
 import empty from "public/svgs/nofav.svg";
 import fill from "public/svgs/fav.svg"; // 향후 사용할 이미지
 import a_icon from "src/stores/afreeca.ico";
-import cnt from "src/stores/cnt_icon.png";
 import no_image from "src/stores/no_image.png";
 import no_image_profile from "src/stores/no_image_profile.png";
-import soop from "src/stores/soop_icon.png";
 import on_air from "src/stores/on_air.png";
 import c_icon from "public/svgs/chzzk.svg";
 import Loading from "src/app/loading";

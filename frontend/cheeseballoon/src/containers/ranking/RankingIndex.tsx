@@ -27,7 +27,7 @@ export default function Ranking() {
       "최고 시청자 수",
       "총 방송시간",
       "시청률",
-      "실시간 LIVE",
+      "실시간 방송",
     ],
     []
   );
@@ -55,7 +55,7 @@ export default function Ranking() {
       case "시청률":
         url = `${process.env.NEXT_PUBLIC_RATING_RANK}?date=${selectedDate}&platform=${selectedPlatform}`;
         break;
-      case "실시간 LIVE":
+      case "실시간 방송":
         url = `${process.env.NEXT_PUBLIC_LIVE_RANK}?platform=${selectedPlatform}`;
         break;
       default:
