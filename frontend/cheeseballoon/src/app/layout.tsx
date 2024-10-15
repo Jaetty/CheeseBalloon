@@ -10,13 +10,14 @@ import { Suspense } from "react";
 export const metadata: Metadata = {
   title: "치즈벌룬",
   description:
-    "치지직과 아프리카TV 방송인들의 주요 데이터들을 수집하여 제공합니다.",
+    "치지직과 SOOP TV 방송인들의 주요 데이터들을 수집하여 제공합니다.",
   icons: {
     icon: "/svgs/cheese.png",
   },
   keywords: [
     "치즈벌룬",
     "아프리카tv",
+    "SOOP TV",
     "숲",
     "치지직",
     "방송 통계",

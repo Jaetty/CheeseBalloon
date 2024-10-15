@@ -28,7 +28,7 @@ export default function Rank({ title, data }: Props) {
     "최고 시청자 수": "topview",
     "총 방송시간": "time",
     시청률: "rating",
-    "실시간 LIVE": "live",
+    "실시간 방송": "live",
   };
 
   const subtitle = mapping[title];
