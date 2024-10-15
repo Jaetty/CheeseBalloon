@@ -154,7 +154,7 @@ export default function SubRanking() {
     topview: "최고 시청자 수",
     time: "총 방송시간",
     rating: "시청률",
-    live: "실시간 LIVE",
+    live: "실시간 방송",
   };
 
   const observer = useRef<IntersectionObserver | null>(null);
