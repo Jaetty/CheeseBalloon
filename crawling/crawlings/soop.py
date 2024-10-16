@@ -35,7 +35,7 @@ class Soop:
             streamer_follower_list = []
             logger.info("아프리카 팔로우 크롤링 시작합니다.")
             for s in streamers:
-                response = await client.get(f'https://bjapi.afreecatv.com/api/{s.origin_id}/station',
+                response = await client.get(f'https://chapi.sooplive.co.kr/api/{s.origin_id}/station',
                                             headers=headers)
                 res = response.json()
                 if 'station' not in res:
@@ -68,7 +68,7 @@ class Soop:
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
                               "Chrome/123.0.0.0 Safari/537.36",
             }
-            response = await client.get(f'https://bjapi.afreecatv.com/api/{origin_id}/station',
+            response = await client.get(f'https://chapi.sooplive.co.kr/api/{origin_id}/station',
                                         headers=headers)
             return response.json()
 
@@ -88,8 +88,7 @@ class Soop:
                           "BCAA%26unick%3Drudgns8285%26apply_date%3D1711949431%26name_chk%3D1%26sess_adult_chk%3D0%2" +
                           "6broad_name_chk%3D0%26change_password%3D%26chnnl_cd%3D23%26chnnl_name_chk%3D0; isBbs=1;"
             }
-            res = await client.get('https://live.afreecatv.com/api/main_broad_list_api.php?' +
-                                   'callback=jQuery110208194747818255699_1715133203459&selectType=action&' +
+            res = await client.get('https://live.sooplive.co.kr/api/main_broad_list_api.php?selectType=action&' +
                                    'selectValue=all&orderType=view_cnt&pageNo=1&lang=ko_KR&_=1714723094228',
                                    headers=headers)
             content = res.text
@@ -119,8 +118,7 @@ class Soop:
                           "BCAA%26unick%3Drudgns8285%26apply_date%3D1711949431%26name_chk%3D1%26sess_adult_chk%3D0%2" +
                           "6broad_name_chk%3D0%26change_password%3D%26chnnl_cd%3D23%26chnnl_name_chk%3D0; isBbs=1;"
             }
-            res = await client.get('https://live.afreecatv.com/api/main_broad_list_api.php?' +
-                                   'callback=jQuery110208194747818255699_1715133203459&selectType=action&' +
+            res = await client.get('https://live.sooplive.co.kr/api/main_broad_list_api.php?selectType=action&' +
                                    f'selectValue=all&orderType=view_cnt&pageNo={page_no}&lang=ko_KR&_=1714723094228',
                                    headers=headers)
             content = res.text
@@ -140,7 +138,7 @@ class Soop:
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " +
                               "Chrome/123.0.0.0 Safari/537.36"
             }
-            res = await client.get('https://live.afreecatv.com/script/locale/ko_KR/broad_category.js',
+            res = await client.get('https://live.sooplive.co.kr/script/locale/ko_KR/broad_category.js',
                                    headers=headers)
             content = res.text
 
@@ -181,11 +179,11 @@ class Soop:
             streamer_info = StreamerInfo(
                 origin_id=str(new_item['user_id']),
                 name=str(new_item['user_nick']),
-                profile_url=f"https://profile.img.afreecatv.com/LOGO/{new_item['user_id'][0:2]}/{new_item['user_id']}" +
+                profile_url=f"https://profile.img.sooplive.co.kr/LOGO/{new_item['user_id'][0:2]}/{new_item['user_id']}" +
                             f"/{new_item['user_id']}.jpg",
-                channel_url=f"https://bj.afreecatv.com/{new_item['user_id']}",
+                channel_url=f"https://ch.sooplive.co.kr/{new_item['user_id']}",
                 platform="S",
-                stream_url=f"https://play.afreecatv.com/{new_item['user_id']}/{new_item['broad_no']}",
+                stream_url=f"https://play.sooplive.co.kr/{new_item['user_id']}/{new_item['broad_no']}",
                 live_origin_id=int(new_item['broad_no']),
                 live_start=datetime.strptime(new_item['broad_start'], '%Y-%m-%d %H:%M:%S'),
                 thumbnail_url=str(new_item['broad_thumb']),
@@ -213,11 +211,11 @@ class Soop:
                 streamer_info = StreamerInfo(
                     origin_id=str(new_item['user_id']),
                     name=str(new_item['user_nick']),
-                    profile_url=f"https://stimg.afreecatv.com/LOGO/{new_item['user_id'][0:2]}/{new_item['user_id']}" +
+                    profile_url=f"https://profile.img.sooplive.co.kr/LOGO/{new_item['user_id'][0:2]}/{new_item['user_id']}" +
                                 f"/m/{new_item['user_id']}.webp",
-                    channel_url=f"https://bj.afreecatv.com/{new_item['user_id']}",
+                    channel_url=f"https://ch.sooplive.co.kr/{new_item['user_id']}",
                     platform="S",
-                    stream_url=f"https://play.afreecatv.com/{new_item['user_id']}/{new_item['broad_no']}",
+                    stream_url=f"https://play.sooplive.co.kr/{new_item['user_id']}/{new_item['broad_no']}",
                     live_origin_id=int(new_item['broad_no']),
                     live_start=datetime.strptime(new_item['broad_start'], '%Y-%m-%d %H:%M:%S'),
                     thumbnail_url=str(new_item['broad_thumb']),
@@ -227,7 +225,7 @@ class Soop:
                 )
                 streamer_list.append(streamer_info)
 
-        # print(streamer_list)
+        print(streamer_list)
         logger.info("아프리카 크롤링을 종료합니다.")
         return streamer_list
 
