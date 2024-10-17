@@ -49,7 +49,7 @@ export default function RankCard({ item, title, number }: Props) {
   } else if (item.platform === "C") {
     logo = chzlogo;
   }
-  const RenderRank = title !== "실시간 LIVE";
+  const RenderRank = title !== "실시간 방송";
   const [profileUrl, setProfileUrl] = useState<string>("");
 
   const handleImageError = async (id: number) => {

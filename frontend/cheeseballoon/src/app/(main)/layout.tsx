@@ -9,7 +9,7 @@ import { cookies } from "next/headers";
 export const metadata: Metadata = {
   title: "치즈벌룬",
   description:
-    "치지직과 아프리카TV 방송인들의 주요 데이터들을 수집하여 통계를 제공합니다. 시청자수, 팔로워, 시청률, 방송시간",
+    "치지직과 SOOP TV 방송인들의 주요 데이터들을 수집하여 통계를 제공합니다. 시청자수, 팔로워, 시청률, 방송시간",
   icons: {
     icon: "/svgs/cheese.png",
   },
