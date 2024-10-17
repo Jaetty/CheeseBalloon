@@ -225,7 +225,7 @@ class Soop:
                 )
                 streamer_list.append(streamer_info)
 
-        print(streamer_list)
+        # print(streamer_list)
         logger.info("아프리카 크롤링을 종료합니다.")
         return streamer_list
 
