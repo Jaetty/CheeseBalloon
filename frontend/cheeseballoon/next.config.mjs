@@ -9,6 +9,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "stimg.sooplive.co.kr",
+        port: "",
+      },
+      {
+        protocol: "https",
         hostname: "nng-phinf.pstatic.net",
         port: "",
       },
@@ -19,12 +24,22 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "res.sooplive.co.kr",
+        port: "",
+      },
+      {
+        protocol: "https",
         hostname: "ssl.pstatic.net",
         port: "",
       },
       {
         protocol: "https",
         hostname: "profile.img.afreecatv.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "profile.img.sooplive.co.kr",
         port: "",
       },
       {
