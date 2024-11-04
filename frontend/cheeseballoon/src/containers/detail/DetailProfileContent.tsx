@@ -10,8 +10,8 @@ import error from "public/svgs/blank_profile.png";
 import style from "src/containers/detail/DetailProfileContent.module.scss";
 import favorite from "public/svgs/fav.svg";
 import noFavorite from "public/svgs/nofav.svg";
-// import { isSignInState, useAlertStore, useFavStore } from "src/stores/store";
 import { isSignInState } from "src/stores/store";
+// import { isSignInState, useAlertStore, useFavStore } from "src/stores/store";
 
 interface StreamerDataType {
   streamId: number;
