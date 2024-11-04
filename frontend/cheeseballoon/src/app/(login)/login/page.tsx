@@ -32,29 +32,29 @@ export default function Login() {
     return signInUrl;
   }
 
-  const handleLogin = async (provider: string) => {
-    if (provider === "google") {
-      router.replace(googleURL);
-    } else if (provider === "kakao") {
-      router.replace(kakaoURL);
-    } else if (provider === "naver") {
-      const naverURL = await getUrl(`${naverLoginUrl}`);
+  // const handleLogin = async (provider: string) => {
+  //   if (provider === "google") {
+  //     router.replace(googleURL);
+  //   } else if (provider === "kakao") {
+  //     router.replace(kakaoURL);
+  //   } else if (provider === "naver") {
+  //     const naverURL = await getUrl(`${naverLoginUrl}`);
 
-      router.replace(naverURL);
-    }
-  };
+  //     router.replace(naverURL);
+  //   }
+  // };
 
   function loginButton(provider: string, ko: string) {
     return (
       <div
-        role="button"
-        tabIndex={0}
-        onClick={() => handleLogin(provider)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleLogin(provider);
-          }
-        }}
+        // role="button"
+        // tabIndex={0}
+        // onClick={() => handleLogin(provider)}
+        // onKeyDown={(e) => {
+        //   if (e.key === "Enter") {
+        //     handleLogin(provider);
+        //   }
+        // }}
         className={`${styles["login-button-wrapper"]} ${styles[provider]}`}
       >
         <div className={styles["login-button-logo"]}>
@@ -72,11 +72,11 @@ export default function Login() {
   return (
     <div className={styles.wrapper}>
       {/* <div className={styles.left}>
-        <video className={styles.video} muted autoPlay loop>
-          <source src="/videos/login.mp4" type="video/mp4" />
-        </video>
-        <div className={styles.video_descript}>Welcome to CheeseBalloon</div>
-      </div> */}
+          <video className={styles.video} muted autoPlay loop>
+            <source src="/videos/login.mp4" type="video/mp4" />
+          </video>
+          <div className={styles.video_descript}>Welcome to CheeseBalloon</div>
+        </div> */}
       <div className={styles.right}>
         <div className={styles.right_title}>
           <img src={logo.src} alt="asfd" className={styles.cheeseballoon} />
