@@ -71,12 +71,12 @@ export default function Login() {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.left}>
+      {/* <div className={styles.left}>
         <video className={styles.video} muted autoPlay loop>
           <source src="/videos/login.mp4" type="video/mp4" />
         </video>
         <div className={styles.video_descript}>Welcome to CheeseBalloon</div>
-      </div>
+      </div> */}
       <div className={styles.right}>
         <div className={styles.right_title}>
           <img src={logo.src} alt="asfd" className={styles.cheeseballoon} />
