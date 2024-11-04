@@ -45,7 +45,7 @@ function transformFollowData(data: FollowRankData[]): RankingData[] {
     diff: item.diff,
     rankDiff: item.rankDiff,
     value: `${item.follower.toLocaleString()} 명`,
-    // bookmark: item.bookmark,
+    bookmark: item.bookmark,
   }));
 }
 
@@ -58,7 +58,7 @@ function transformTopviewData(data: TopviewRankData[]): RankingData[] {
     diff: item.diff,
     rankDiff: item.rankDiff,
     value: `${item.topViewer.toLocaleString()} 명`,
-    // bookmark: item.bookmark,
+    bookmark: item.bookmark,
   }));
 }
 
@@ -71,7 +71,7 @@ function transformAvgData(data: AvgRankData[]): RankingData[] {
     diff: item.diff,
     rankDiff: item.rankDiff,
     value: `${item.averageViewer.toLocaleString()} 명`,
-    // bookmark: item.bookmark,
+    bookmark: item.bookmark,
   }));
 }
 
@@ -102,7 +102,7 @@ function transformTimeData(data: TimeRankData[]): RankingData[] {
       diff: timeConvert(item.diff),
       rankDiff: item.rankDiff,
       value: `${hours}h ${minutes}m`,
-      // bookmark: item.bookmark,
+      bookmark: item.bookmark,
     };
   });
 }
@@ -116,7 +116,7 @@ function transformRatingData(data: RatingRankData[]): RankingData[] {
     diff: item.diff,
     rankDiff: item.rankDiff,
     value: `${item.rating.toFixed(2)} %`,
-    // bookmark: item.bookmark,
+    bookmark: item.bookmark,
   }));
 }
 
@@ -130,7 +130,7 @@ function transformLiveData(data: LiveRankData[]): RankingData[] {
     value: decodetext(item.title),
     category: decodetext(item.category),
     streamUrl: item.streamUrl,
-    // bookmark: item.bookmark,
+    bookmark: item.bookmark,
     liveId: item.liveId,
     liveLogId: item.liveLogId,
   }));
