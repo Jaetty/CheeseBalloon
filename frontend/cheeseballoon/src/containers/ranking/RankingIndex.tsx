@@ -10,7 +10,7 @@ import Loading from "src/app/loading";
 import decodetext from "src/lib/DecodeText";
 import { usePopstate } from "src/lib/PopContext";
 import { useToggleState, isMobileState } from "src/stores/store";
-// import customFetch from "src/lib/CustomFetch";
+import customFetch from "src/lib/CustomFetch";
 
 export default function Ranking() {
   const [date, setDate] = useState(1);
@@ -62,7 +62,7 @@ export default function Ranking() {
         url = undefined;
     }
     if (url) {
-      const response = await fetch(url);
+      const response = await customFetch(url);
       const data = await response.json();
       if (data?.data) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

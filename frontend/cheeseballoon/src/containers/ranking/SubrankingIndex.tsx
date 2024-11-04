@@ -208,7 +208,7 @@ export default function SubRanking() {
         apiUrl = process.env.NEXT_PUBLIC_AVG_RANK;
         break;
     }
-    const response = await fetch(`${apiUrl}?${queryString}`, {
+    const response = await customFetch(`${apiUrl}?${queryString}`, {
       method: "GET",
     });
     const newData = await response.json();

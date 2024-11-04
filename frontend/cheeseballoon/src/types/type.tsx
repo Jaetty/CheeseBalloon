@@ -108,16 +108,16 @@ export interface MobileState {
   setIsMobile: (value: boolean) => void;
 }
 
-// export interface FavState {
-//   bookmarkId: number;
-//   streamerId: number;
-//   name: string;
-//   platform: string;
-//   streamUrl: string;
-//   profileUrl: string;
-//   followerCnt: number;
-//   isLive: boolean;
-// }
+export interface FavState {
+  bookmarkId: number;
+  streamerId: number;
+  name: string;
+  platform: string;
+  streamUrl: string;
+  profileUrl: string;
+  followerCnt: number;
+  isLive: boolean;
+}
 
 export interface AccessTokenState {
   accessToken: string | null;
@@ -129,12 +129,12 @@ export interface SignInState {
   setIsSignIn: (value: boolean) => void;
 }
 
-// export interface AlertState {
-//   message: string;
-//   isVisible: boolean;
-//   isConfirm: boolean;
-//   resolveConfirm: (value: boolean) => void;
-//   showAlert: (message: string) => void;
-//   showConfirm: (message: string) => Promise<boolean>;
-//   hideAlert: () => void;
-// }
+export interface AlertState {
+  message: string;
+  isVisible: boolean;
+  isConfirm: boolean;
+  resolveConfirm: (value: boolean) => void;
+  showAlert: (message: string) => void;
+  showConfirm: (message: string) => Promise<boolean>;
+  hideAlert: () => void;
+}
