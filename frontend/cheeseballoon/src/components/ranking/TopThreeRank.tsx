@@ -8,16 +8,16 @@ import chzlogo from "public/svgs/chzzk.svg";
 import first from "public/svgs/1st.svg";
 import second from "public/svgs/2nd.svg";
 import third from "public/svgs/3rd.svg";
-// import fav from "public/svgs/fav.svg";
-// import nofav from "public/svgs/nofav.svg";
+import fav from "public/svgs/fav.svg";
+import nofav from "public/svgs/nofav.svg";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import noimage from "public/svgs/blank_profile.png";
 import ArrowUp from "public/svgs/uparrow.png";
 import ArrowDown from "public/svgs/downarrow.png";
-// import { useNotification } from "src/lib/NotificationContext";
-// import customFetch from "src/lib/CustomFetch";
-// import { isSignInState, useAlertStore, useFavStore } from "src/stores/store";
+import { useNotification } from "src/lib/NotificationContext";
+import customFetch from "src/lib/CustomFetch";
+import { isSignInState, useAlertStore, useFavStore } from "src/stores/store";
 
 type RankingData = {
   streamerId: number;
@@ -29,7 +29,7 @@ type RankingData = {
   value: string;
   category?: string;
   streamUrl?: string;
-  // bookmark?: boolean;
+  bookmark?: boolean;
   liveId?: number;
   liveLogId?: number;
 };
@@ -52,17 +52,17 @@ export default function TopThreeRanking({ data }: Props) {
   const reorderedData = data && [data[1], data[0], data[2]];
   const rankImages = [second, first, third];
   const pathname = usePathname()?.split("/").pop() || "";
-  // const { showNotification } = useNotification();
+  const { showNotification } = useNotification();
   const [updatedUrls, setUpdatedUrls] = useState<Record<number, string>>({});
-  // const [bookmarkState, setBookmarkState] = useState<Record<number, boolean>>(
-  //   {}
-  // );
-  // const isSign = isSignInState((state) => state.isSignIn);
-  // const { showAlert, showConfirm } = useAlertStore((state) => ({
-  //   showAlert: state.showAlert,
-  //   showConfirm: state.showConfirm,
-  // }));
-  // const fetchData = useFavStore((state) => state.fetchData);
+  const [bookmarkState, setBookmarkState] = useState<Record<number, boolean>>(
+    {}
+  );
+  const isSign = isSignInState((state) => state.isSignIn);
+  const { showAlert, showConfirm } = useAlertStore((state) => ({
+    showAlert: state.showAlert,
+    showConfirm: state.showConfirm,
+  }));
+  const fetchData = useFavStore((state) => state.fetchData);
 
   const handleImageError = async (id: number) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_PF_UPDATE}`, {
@@ -82,75 +82,75 @@ export default function TopThreeRanking({ data }: Props) {
     }
   };
 
-  // const handleLinkClick = async (item: RankingData) => {
-  //   await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_VIEW}`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       liveId: item.liveId,
-  //       liveLogId: item.liveLogId,
-  //     }),
-  //   });
-  // };
+  const handleLinkClick = async (item: RankingData) => {
+    await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_VIEW}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        liveId: item.liveId,
+        liveLogId: item.liveLogId,
+      }),
+    });
+  };
 
-  // const toggleBookmark = async (item: RankingData) => {
-  //   if (!isSign) {
-  //     showAlert("로그인이 필요한 서비스입니다");
-  //     return;
-  //   }
+  const toggleBookmark = async (item: RankingData) => {
+    if (!isSign) {
+      showAlert("로그인이 필요한 서비스입니다");
+      return;
+    }
 
-  //   try {
-  //     let response;
-  //     if (bookmarkState[item.streamerId]) {
-  //       const confirmed = await showConfirm("삭제하시겠습니까?");
-  //       if (!confirmed) return;
-  //       response = await customFetch(
-  //         `${process.env.NEXT_PUBLIC_MYPAGE_DBOOK}`,
-  //         {
-  //           method: "DELETE",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({
-  //             streamerId: item.streamerId,
-  //           }),
-  //         }
-  //       );
-  //     } else {
-  //       response = await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           streamerId: item.streamerId,
-  //         }),
-  //       });
-  //     }
+    try {
+      let response;
+      if (bookmarkState[item.streamerId]) {
+        const confirmed = await showConfirm("삭제하시겠습니까?");
+        if (!confirmed) return;
+        response = await customFetch(
+          `${process.env.NEXT_PUBLIC_MYPAGE_DBOOK}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              streamerId: item.streamerId,
+            }),
+          }
+        );
+      } else {
+        response = await customFetch(`${process.env.NEXT_PUBLIC_MYPAGE_BOOK}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            streamerId: item.streamerId,
+          }),
+        });
+      }
 
-  //     if (response && response.status === 401) {
-  //       showAlert("로그인이 필요한 서비스입니다");
-  //       return;
-  //     }
+      if (response && response.status === 401) {
+        showAlert("로그인이 필요한 서비스입니다");
+        return;
+      }
 
-  //     showNotification(
-  //       bookmarkState[item.streamerId]
-  //         ? "즐겨찾기가 삭제되었습니다."
-  //         : "즐겨찾기가 추가되었습니다."
-  //     );
+      showNotification(
+        bookmarkState[item.streamerId]
+          ? "즐겨찾기가 삭제되었습니다."
+          : "즐겨찾기가 추가되었습니다."
+      );
 
-  //     await fetchData();
+      await fetchData();
 
-  //     setBookmarkState((prev) => ({
-  //       ...prev,
-  //       [item.streamerId]: !prev[item.streamerId],
-  //     }));
-  //   } catch (error) {
-  //     showAlert("로그인이 필요한 서비스입니다");
-  //   }
-  // };
+      setBookmarkState((prev) => ({
+        ...prev,
+        [item.streamerId]: !prev[item.streamerId],
+      }));
+    } catch (error) {
+      showAlert("로그인이 필요한 서비스입니다");
+    }
+  };
 
   useEffect(() => {
     if (data) {
@@ -163,14 +163,14 @@ export default function TopThreeRanking({ data }: Props) {
       );
       setUpdatedUrls(initialUrls);
 
-      // const initialBookmarks = data.reduce(
-      //   (acc, item) => {
-      //     acc[item.streamerId] = item.bookmark || false;
-      //     return acc;
-      //   },
-      //   {} as Record<number, boolean>
-      // );
-      // setBookmarkState(initialBookmarks);
+      const initialBookmarks = data.reduce(
+        (acc, item) => {
+          acc[item.streamerId] = item.bookmark || false;
+          return acc;
+        },
+        {} as Record<number, boolean>
+      );
+      setBookmarkState(initialBookmarks);
     }
   }, [data]);
 
@@ -196,7 +196,7 @@ export default function TopThreeRanking({ data }: Props) {
             <div className={style.rankimage}>
               <Image src={rankImages[index]} alt="" width={28} height={28} />
             </div>
-            {/* <div className={style.favimage}>
+            <div className={style.favimage}>
               <Image
                 src={bookmarkState[item.streamerId] ? fav : nofav}
                 alt=""
@@ -205,7 +205,7 @@ export default function TopThreeRanking({ data }: Props) {
                 onClick={() => toggleBookmark(item)}
                 role="presentation"
               />
-            </div> */}
+            </div>
             <div className={style.name}>
               <Link href={`/detail/${item.streamerId}`} className={style.link}>
                 {item.name}
@@ -255,7 +255,7 @@ export default function TopThreeRanking({ data }: Props) {
                     href={item.streamUrl || ""}
                     className={style.link}
                     target="_blank"
-                    // onClick={() => handleLinkClick(item)}
+                    onClick={() => handleLinkClick(item)}
                   >
                     {item.value}
                   </Link>

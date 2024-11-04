@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "src/styles/globals.css";
 import Footer from "src/components/footer";
 import { PaddingProvider } from "src/lib/PaddingContext";
-// import NotificationProvider from "src/lib/NotificationContext";
+import NotificationProvider from "src/lib/NotificationContext";
 import { MenuProvider } from "src/lib/MenuContext";
 import { cookies } from "next/headers";
 
@@ -30,14 +30,14 @@ export default function MainLayout({
       initialIsMobile={initialIsMobile}
     >
       <PaddingProvider initialToggleValue={toggleValue}>
-        {/* <NotificationProvider> */}
-        <div className="children">
-          {children}
-          <div className="footer">
-            <Footer />
+        <NotificationProvider>
+          <div className="children">
+            {children}
+            <div className="footer">
+              <Footer />
+            </div>
           </div>
-        </div>
-        {/* </NotificationProvider> */}
+        </NotificationProvider>
       </PaddingProvider>
     </MenuProvider>
   );
