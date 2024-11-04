@@ -24,7 +24,6 @@ export default function Footer() {
           본 웹사이트는 (주)공게임즈 이사만루체, GMarketSans 폰트를 사용하여
           제작되었습니다.
         </p>
-        <p>@2024 cheeseballoon all right reserved. Presented by 푸른소나무</p>
       </div>
     </div>
   );
