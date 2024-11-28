@@ -37,8 +37,15 @@ public class StreamerService implements StreamerUsecase {
         FindSummaryRankResDtoInterface curr = streamerPort.streamerDetailSummary(streamerId, dtCodes[0], specificDates[0], specificDates[1]);
         FindSummaryRankResDtoInterface before = streamerPort.streamerDetailSummary(streamerId, dtCodes[1], specificDates[2], specificDates[3]);
 
-        int follower = streamerPort.streamerFollower(streamerId, specificDates[1]);
-        int before_follower = streamerPort.streamerFollower(streamerId, specificDates[3]);
+        Integer follower = streamerPort.streamerFollower(streamerId, specificDates[1]);
+        Integer before_follower = streamerPort.streamerFollower(streamerId, specificDates[3]);
+
+        if(follower == null){
+            follower = 0;
+        }
+        if(before_follower == null){
+            before_follower = 0;
+        }
 
         FindStreamerSummaryResDto ret = new FindStreamerSummaryResDto(0,0,0,0,0,0, follower,follower-before_follower,0D,0D);
 
