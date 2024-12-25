@@ -4,7 +4,7 @@
 
 ### 치즈벌룬 접속하기 ( https://cheeseballoon.site )
 
-<!-- <img src='./asset/cheeseballoon.gif'> -->
+<img src='./asset/cheeseballoon.gif'>
 
 ## 서비스 설명
 
