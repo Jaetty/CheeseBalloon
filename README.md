@@ -1,8 +1,7 @@
 # CheeseBalloon
 
-## 사이트 접속 (운영 기간 : 2024.06.18 ~ 2025.02.12)
-
-### 치즈벌룬 접속하기 ( https://cheeseballoon.site )
+### 서비스 운영 기간 : 2024.06.18 ~ 2025.02.12
+### 치즈벌룬 주소 : ( https://cheeseballoon.site )
 
 <img src='./asset/cheeseballoon.gif'>
 
