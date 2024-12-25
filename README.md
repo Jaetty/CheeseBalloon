@@ -1,9 +1,10 @@
 # CheeseBalloon
 
-### 서비스 운영 기간 : 2024.06.18 ~ 2025.02.12
 ### 치즈벌룬 주소 : ( https://cheeseballoon.site )
 
 <img src='./asset/cheeseballoon.gif'>
+
+### 서비스 운영 기간 : 2024.06.18 ~ 2025.02.12
 
 ## 서비스 설명
 
