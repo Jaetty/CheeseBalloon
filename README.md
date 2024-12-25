@@ -1,10 +1,9 @@
 # CheeseBalloon
 
 ### 치즈벌룬 주소 : ( https://cheeseballoon.site )
+### 사이트 접속 (운영 기간 : 2024.06.18 ~ 2025.02.12)
 
 <img src='./asset/cheeseballoon.gif'>
-
-### 서비스 운영 기간 : 2024.06.18 ~ 2025.02.12
 
 ## 서비스 설명
 
