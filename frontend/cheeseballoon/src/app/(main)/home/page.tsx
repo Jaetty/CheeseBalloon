@@ -467,7 +467,7 @@ export default function Home() {
               <div className={styles.content}>
                 <div className={styles.pin}>공지</div>
                 <div className={styles.notice_title}>
-                  치즈벌룬은 2월 12일자 서비스 종료 안내. (자세히)
+                  치즈벌룬 서비스 종료(일자 : 2월 12일) 공지
                 </div>
                 <div className={styles.date}>2025.01.12</div>
               </div>
