@@ -44,6 +44,9 @@
 ### 방송 랭킹
 <img src="./asset/gif_ranking1.gif"><br/><img src="./asset/gif_ranking2.gif" alt="방송랭킹">
 
+### 방송인 통계
+<img src="./asset/gif_detail1.gif" alt="실시간 방송">
+
 ### 실시간 방송
 <img src="./asset/gif_live.gif" alt="실시간 방송">
 
