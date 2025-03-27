@@ -1,26 +1,49 @@
 # CheeseBalloon
 
-### 서비스 운영 기간 : 2024.06.18 ~ 2025.02.14
-
 <img src='./asset/cheeseballoon.gif'>
 
 ## 서비스 설명
 
-#### 2025.02.14로 서비스가 종료되었습니다. 저희 사이트로 방송 기록을 확인해주셨던 모든 이용자분들께 감사드립니다.
+#### 치즈벌룬은 2025.02.14로 서비스가 종료되었습니다.
+##### 치즈벌룬은 비영리로 운영되었으며, 데이터의 법적 권리를 주장하지 않습니다.
 
+### 📝 기획 의도
+
+> 치즈벌룬은 인터넷 방송 이용자가 증가하던 2024년의 상황(MAU: 23년 12월 기준 286만 명 → 24년 1월 기준 349만 명)에 맞춰, 이용자들이 플랫폼(SOOP,치지직) 구분없이 한곳에서 원하는 실시간 방송 정보를 편리하게 확인할 수 있는 **통합 서비스를 제공하기 위해** 제작되었습니다.
+
+> 자금 사정상 개인 PC (CPU: I5-7400, RAM: 16GB, HDD)를 서버(Ubuntu, 포트포워딩, 가비아 DNS 설정)로 하여 제작되었습니다.<br>따라서, 현실적인 동접 트래픽 한계(500명), 지속 가능성(단순 CRUD 배제), 사용자 유치 가능성을 고려한 결과 해당 서비스가 기획되었습니다.
+
+### 🎯 프로젝트 목표 및 성과
+
+> 치즈벌룬은 일 평균 15만 건, 월평균 1GB의 데이터를 수집하여, 실시간 방송 정보 및 방송인 통계 정보를 제공합니다.<br>
+> 이에 인터넷 성능과 PC 성능을 고려하여, 높은 트래픽 획득보다 실질적으로 운영 가능한 범위의 서비스 제공을 목표로 하였습니다.
+
+> **목표 이용자** : 주간 200명 이상 <br>
+> **최대 이용자** : 주간 621명 (홍보 당시) <br>
+> **최대 동접 이용자** : 200명 (홍보 당시) <br>
+> **실제 평균 이용자** : 주간 40명 (홍보 제외 기준) <br>
+```
+@ 홍보는 인터넷 방송과 관련된 커뮤니티 사이트에서 익명으로 수행했습니다.
+```
+> **서비스 종료일 기준** : 59명<br>
 <img src='./asset/02_15_viwer.png'>
 
-#### 7일 기준 평균 이용자 수 : 40명 안팎 (이미지는 서버 마지막날 02.14 기준)
+```
+기획 의도와 달리 서비스는 사용자들의 니즈와 반대되었고, 이용자를 고정시킬 콘텐츠 부족으로 최소 목표치를 달성하지 못했습니다.
+```
 
-치즈벌룬은 인터넷 방송의 팬분들이 더욱 방송을 즐길 수 있도록, 인터넷 방송 플랫폼인 SOOP과 치지직의 방송의 통합 플랫폼을 제공하는 사이트입니다.
-
-저희 서비스로 최애 방송인의 방송 기록 / 카테고리 / 시청자 수 / 방송 기간 / 팔로워 수를 확인해보세요!
-
-@ 저희 사이트는 비영리로 운영하며 데이터의 법적 권리는 방송 플랫폼(SOOP/치지직)에 있습니다.
+- Locust 기준 성능 테스트(Redis 적용 전) 결과:
+  - 100명: 평균 응답속도 60ms
+  - 200명: 평균 응답속도 250ms
+  - 300명: 평균 응답속도 450ms
+  - 400명: 평균 응답속도 800ms (1초 이내, 성능 한계 도달)
+  - Redis 적용 후 (Rollback으로 인해 기록 유실) : 60ms
 
 ### 1️⃣ 프로젝트 개요
 
-<span style="font-size : 14pt"><b>개발 기간</b>　:　2024.01.05 ~ 2024.05.16</span><br>
+> 개발기간 : 2024.01.05 ~ 2024.05.16
+
+> 운영기간 : 2024.06.18 ~ 2025.02.14
 
 #### 팀원
 
@@ -32,6 +55,8 @@
 | 이승민 | FE |
 | 최창근 | FE, 디자인 |
 | 배우찬 | FE |
+
+
 
 ### 2️⃣ 서비스 기능 소개
 
@@ -74,8 +99,9 @@
 ### 모니터링 스택
 <img src="https://img.shields.io/badge/elasticsearch-005571?style=for-the-badge&logo=elasticsearch&logoColor=white"> <img src="https://img.shields.io/badge/logstash-005571?style=for-the-badge&logo=logstash&logoColor=white"> <img src="https://img.shields.io/badge/kibana-005571?style=for-the-badge&logo=kibana&logoColor=white"> <img src="https://img.shields.io/badge/googleanalytics-E37400?style=for-the-badge&logo=googleanalytics&logoColor=white">
 
-### GIT
-<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+### 협업툴
+
+<img src="https://img.shields.io/badge/confluence-0052CC?style=for-the-badge&logo=confluence&logoColor=white"> <img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 
 ### 4️⃣ 아키텍처
 <img src="./asset/architecture.png">
